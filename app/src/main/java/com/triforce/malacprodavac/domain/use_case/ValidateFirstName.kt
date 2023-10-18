@@ -1,11 +1,12 @@
 package com.triforce.malacprodavac.domain.use_case
 
-class ValidateRepeatedPassword {
-    fun execute(password: String, repeatedPassword: String):ValidationResult {
-        if(password != repeatedPassword) {
+
+class ValidateFirstName {
+    fun execute(firstName: String):ValidationResult {
+        if(firstName.isBlank()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The passwords don't match"
+                errorMessage = "The first name can't be blank"
             )
         }
         return ValidationResult(

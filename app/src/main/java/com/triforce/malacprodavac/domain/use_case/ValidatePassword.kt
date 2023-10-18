@@ -1,7 +1,5 @@
 package com.triforce.malacprodavac.domain.use_case
 
-import android.util.Patterns
-
 class ValidatePassword {
     fun execute(password: String):ValidationResult {
         if(password.length < 8) {
