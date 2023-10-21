@@ -16,12 +16,20 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -181,6 +189,10 @@ class MainActivity : ComponentActivity() {
                         }
                         Spacer(modifier = Modifier.height(16.dp))
 
+                        DropDownList()
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
                         Row (
                             modifier = Modifier.fillMaxWidth()
                         ){
@@ -208,6 +220,54 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropDownList() {
+    val rolesList = listOf(
+        "BUYER",
+        "DELIVERER",
+        "SELLER"
+    )
+    var expanded by remember { mutableStateOf(false) }
+    var selectedRole by remember { mutableStateOf(rolesList[0]) }
+
+    // menu box
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = {
+            expanded = !expanded
+        }
+    ) {
+        TextField(
+            modifier = Modifier
+                .menuAnchor(), // menuAnchor modifier must be passed to the text field for correctness.
+            readOnly = true,
+            value = selectedRole,
+            onValueChange = {},
+            label = { Text("Roles") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        // menu
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = {
+                expanded = false
+            },) {
+            rolesList.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(selectionOption)},
+                    onClick = {
+                        selectedRole = selectionOption
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
             }
         }
     }
