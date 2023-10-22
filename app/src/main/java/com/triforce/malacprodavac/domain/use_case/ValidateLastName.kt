@@ -5,7 +5,7 @@ class ValidateLastName {
         if(lastName.isBlank()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The last name can't be blank"
+                errorMessage = "Prezime ne može biti prazno"
             )
         }
         return ValidationResult(

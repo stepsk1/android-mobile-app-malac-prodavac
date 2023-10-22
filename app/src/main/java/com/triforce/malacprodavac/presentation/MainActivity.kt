@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
             MalacProdavacTheme {
                 Surface (
                     modifier = Modifier.fillMaxSize(),
-                    color = Color.Transparent
+                    color = Color.Green
                 ) {
                     val viewModel = viewModel<MainViewModel>()
                     val state = viewModel.state
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                                 is MainViewModel.ValidationEvent.Success -> {
                                     Toast.makeText(
                                         context,
-                                        "Registration successful",
+                                        "Uspešna registracija",
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
                             isError = state.firstNameError != null,
                             modifier = Modifier.fillMaxWidth(),
                             placeholder = {
-                                Text(text = "First name")
+                                Text(text = "Ime")
                             },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text
@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
                             isError = state.lastNameError != null,
                             modifier = Modifier.fillMaxWidth(),
                             placeholder = {
-                                Text(text = "Last name")
+                                Text(text = "Prezime")
                             },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text
@@ -149,7 +149,7 @@ class MainActivity : ComponentActivity() {
                             isError = state.passwordError != null,
                             modifier = Modifier.fillMaxWidth(),
                             placeholder = {
-                                Text(text = "Password")
+                                Text(text = "Lozinka")
                             },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Password
@@ -173,7 +173,7 @@ class MainActivity : ComponentActivity() {
                             isError = state.repeatedPasswordError != null,
                             modifier = Modifier.fillMaxWidth(),
                             placeholder = {
-                                Text(text = "Repeated password")
+                                Text(text = "Ponovljena lozinka")
                             },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Password
@@ -203,7 +203,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "Accept terms")
+                            Text(text = "Prihvati uslove")
                         }
                         if(state.termsError != null) {
                             Text(
@@ -215,8 +215,8 @@ class MainActivity : ComponentActivity() {
                         Button(onClick = {
                             viewModel.onEvent(RegistrationFormEvent.Submit)
                         },
-                        modifier = Modifier.align(Alignment.End)) {
-                            Text(text = "Submit")
+                        modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                            Text(text = "Registruj se")
                         }
                     }
                 }
@@ -229,9 +229,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DropDownList() {
     val rolesList = listOf(
-        "BUYER",
-        "DELIVERER",
-        "SELLER"
+        "KUPAC",
+        "DOSTAVLJAČ",
+        "PRODAVAC"
     )
     var expanded by remember { mutableStateOf(false) }
     var selectedRole by remember { mutableStateOf(rolesList[0]) }

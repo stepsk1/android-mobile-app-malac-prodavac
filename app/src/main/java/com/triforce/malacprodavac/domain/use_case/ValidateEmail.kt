@@ -8,13 +8,13 @@ class ValidateEmail {
         if(email.isBlank()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The email can't be blank"
+                errorMessage = "Email adresa ne može biti prazna"
             )
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "That's not a valid email"
+                errorMessage = "To nije važeća email adresa"
             )
         }
         return ValidationResult(

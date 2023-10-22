@@ -6,7 +6,7 @@ class ValidateFirstName {
         if(firstName.isBlank()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The first name can't be blank"
+                errorMessage = "Ime ne može biti prazno"
             )
         }
         return ValidationResult(
