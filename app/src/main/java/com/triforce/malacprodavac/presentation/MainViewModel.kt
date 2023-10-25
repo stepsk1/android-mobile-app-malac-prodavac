@@ -28,6 +28,7 @@ class MainViewModel(
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
+    var hasError = false
 
     fun onEvent(event: RegistrationFormEvent) {
         when(event) {
@@ -67,7 +68,7 @@ class MainViewModel(
             state.password, state.repeatedPassword)
         val termsResult = validateTerms.execute(state.acceptedTerms)
 
-        val hasError = listOf(
+        hasError = listOf(
             firstNameResult,
             lastNameResult,
             emailResult,
