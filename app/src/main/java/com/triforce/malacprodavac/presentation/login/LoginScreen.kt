@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,8 +19,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -35,6 +40,27 @@ fun LoginScreen(navController: NavController) {
     val viewModel = viewModel<LoginViewModel>()
     val state = viewModel.state
     val context = LocalContext.current
+    val annotatedString = buildAnnotatedString {
+        val text = "Nemaš nalog? Registruj se!"
+        append(text)
+
+        val start = text.indexOf("Registruj se!")
+        val end = start + "Registruj se!".length
+        addStyle(
+            SpanStyle(
+                color = MaterialTheme.colorScheme.primary,
+                textDecoration = TextDecoration.Underline
+            ),
+            start,
+            end
+        )
+        addStringAnnotation(
+            "registration",
+            "Screen.LoginScreen",
+            start,
+            end
+        )
+    }
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect {event ->
             when(event) {
@@ -105,10 +131,28 @@ fun LoginScreen(navController: NavController) {
         Button(onClick = {
             viewModel.onEvent(LoginFormEvent.Submit)
             if(!viewModel.hasError)
-                navController.navigate(Screen.RegistrationScreen.route)
+                navController.navigate(Screen.HomeScreen.route)
         },
             modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(text = "Prijavi se")
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            //val uriHandler = LocalUriHandler.current
+            ClickableText(
+                text = annotatedString,
+                onClick = {offset ->
+                    val uri = annotatedString.getStringAnnotations("registration",
+                        offset, offset).firstOrNull()?.item
+                    if(uri!=null)
+                        navController.navigate(Screen.RegistrationScreen.route)
+                }
+            )
         }
     }
 }

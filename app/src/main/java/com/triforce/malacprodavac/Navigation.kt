@@ -28,13 +28,13 @@ fun Navigation() {
                         nullable = true
                     }
                 )
-            ) {entry ->
+            ) {
                 RegistrationScreen(navController = navController)
             }
             composable(
                 route = Screen.HomeScreen.route,
 
-            ) {entry->
+            ) {
 
             }
     }
