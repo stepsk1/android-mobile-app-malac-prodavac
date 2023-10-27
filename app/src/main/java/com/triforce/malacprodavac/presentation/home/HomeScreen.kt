@@ -119,7 +119,8 @@ fun HomeScreen(navController: NavController) {
                     title = "Korpa",
                     graphicID = Icons.Default.ShoppingCart
                 )
-            )
+            ), modifier = Modifier
+                .align(Alignment.BottomCenter)
         )
     }
 }

@@ -10,6 +10,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.RegistrationScreen
+import com.triforce.malacprodavac.presentation.home.HomeScreen
 
 @Composable
 fun Navigation() {
@@ -21,6 +22,7 @@ fun Navigation() {
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController = navController)
         }
+
         composable(
             route = Screen.RegistrationScreen.route + "",
             arguments = listOf(
@@ -33,11 +35,9 @@ fun Navigation() {
         ) {
             RegistrationScreen(navController = navController)
         }
-        composable(
-            route = Screen.HomeScreen.route,
 
-            ) {
-
+        composable(route = Screen.HomeScreen.route) {
+            HomeScreen(navController = navController)
         }
     }
 }
