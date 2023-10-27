@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,6 +43,7 @@ import com.triforce.malacprodavac.presentation.login.LoginViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -52,6 +55,7 @@ fun HomeScreen(navController: NavController) {
         Column {
             GreetingSection()
             CategoriesSection(categories = listOf("Malac Pijaca", "Profil", "Porudžbine"))
+            GoToStore()
         }
     }
 }
@@ -120,6 +124,51 @@ fun CategoriesSection(
             {
                 Text(text = categories[it], color = MP_White )
             }
+        }
+    }
+}
+
+@Composable
+fun GoToStore(
+    color: Color = MP_Pink
+) {
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .padding(15.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(color)
+            .padding(horizontal = 15.dp, vertical = 20.dp)
+            .fillMaxWidth()
+    ){
+        Column {
+            Text(
+                text = "Istraži našu prodavnicu",
+                style = MaterialTheme.typography.h2
+            )
+            Text(
+                text = "Od sirupa do sira!",
+                style = MaterialTheme.typography.body1,
+                color = MP_White
+            )
+        }
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(MP_GreenDark)
+                .padding(10.dp)
+        ){
+            Icon(
+                imageVector = Icons.Default.ShoppingCart,
+                contentDescription = "Store",
+                tint = MP_White,
+                modifier = Modifier
+                    .size(16.dp)
+            )
         }
     }
 }
