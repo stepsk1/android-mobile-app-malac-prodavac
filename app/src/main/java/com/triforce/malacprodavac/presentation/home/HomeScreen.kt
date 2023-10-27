@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.presentation.RegistrationFormEvent
 import com.triforce.malacprodavac.presentation.login.LoginFormEvent
@@ -95,6 +97,30 @@ fun HomeScreen(navController: NavController) {
                 )
             )
         }
+        BottomNavigationMenu(
+            items = listOf(
+                BottomNavigationMenuContent(
+                    title = "Početna",
+                    graphicID = Icons.Default.Home
+                ),
+                BottomNavigationMenuContent(
+                    title = "Prodavnica",
+                    graphicID = Icons.Default.AddCircle
+                ),
+                BottomNavigationMenuContent(
+                    title = "Moj Profil",
+                    graphicID = Icons.Default.AccountCircle
+                ),
+                BottomNavigationMenuContent(
+                    title = "Omiljeno",
+                    graphicID = Icons.Default.Favorite
+                ),
+                BottomNavigationMenuContent(
+                    title = "Korpa",
+                    graphicID = Icons.Default.ShoppingCart
+                )
+            )
+        )
     }
 }
 
@@ -279,7 +305,7 @@ fun RecommendedFeatureItem(
                 text = "Otvori",
                 color = MP_White,
                 fontSize = 14.sp,
-                fontWeight =  FontWeight.Bold,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .clickable {
                         // we need to handle the click...
@@ -290,5 +316,84 @@ fun RecommendedFeatureItem(
                     .padding(vertical = 6.dp, horizontal = 15.dp)
             )
         }
+    }
+}
+
+@Composable
+fun BottomNavigationMenu(
+    items: List<BottomNavigationMenuContent>,
+    modifier: Modifier = Modifier,
+    selectedColor: Color = MP_GreenLight,
+    selectedTextColor: Color = MP_White,
+    nonActiveTextColor: Color = MP_GreenLight,
+    initSelectedItemID: Int = 0 // select first item by default
+) {
+    var selectedItemID by remember {
+        mutableStateOf(initSelectedItemID)
+    }
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MP_GreenDark)
+            .padding(15.dp)
+    ) {
+        items.forEachIndexed { index, item ->
+            BottomNavigationMenuItem(
+                item = item,
+                isActive = index == selectedItemID,
+                selectedColor = selectedColor,
+                selectedTextColor = selectedTextColor,
+                nonActiveTextColor = nonActiveTextColor
+            ) {
+                selectedItemID = index // updated
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationMenuItem(
+    item: BottomNavigationMenuContent,
+    isActive: Boolean = false,
+    selectedColor: Color = MP_GreenLight,
+    selectedTextColor: Color = MP_White,
+    nonActiveTextColor: Color = MP_GreenLight,
+    onMenuItemClick: () -> Unit // does nothing, void
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.clickable {
+            onMenuItemClick()
+        }
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(
+                    if (isActive) {
+                        selectedColor
+                    } else {
+                        Color.Transparent
+                    }
+                )
+                .padding(10.dp)
+        ) {
+            Icon(
+                imageVector = item.graphicID,
+                contentDescription = item.title,
+                tint = if (isActive) selectedTextColor else nonActiveTextColor,
+                modifier = Modifier
+                    .size(20.dp)
+            )
+        }
+        Text(
+            text = item.title,
+            color = if (isActive) selectedTextColor else nonActiveTextColor
+        )
     }
 }
