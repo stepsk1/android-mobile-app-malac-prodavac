@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 
 import androidx.navigation.Navigation
