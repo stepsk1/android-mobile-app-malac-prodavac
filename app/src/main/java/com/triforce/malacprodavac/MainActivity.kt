@@ -45,6 +45,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.triforce.malacprodavac.Navigation
+import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.ui.theme.MalacProdavacTheme
 
 class MainActivity : ComponentActivity() {

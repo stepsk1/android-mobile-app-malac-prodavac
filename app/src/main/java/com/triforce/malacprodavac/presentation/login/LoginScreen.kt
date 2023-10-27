@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.login
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,12 +13,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
@@ -31,6 +34,8 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.MainViewModel
 import com.triforce.malacprodavac.presentation.RegistrationFormEvent
+import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +53,7 @@ fun LoginScreen(navController: NavController) {
         val end = start + "Registruj se!".length
         addStyle(
             SpanStyle(
-                color = MaterialTheme.colorScheme.primary,
+                color = MP_Green,
                 textDecoration = TextDecoration.Underline
             ),
             start,
@@ -81,7 +86,7 @@ fun LoginScreen(navController: NavController) {
             .padding(32.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        TextField(
+        OutlinedTextField(
             value = state.email,
             onValueChange = {
                 viewModel.onEvent(LoginFormEvent.EmailChanged(it))
@@ -98,13 +103,13 @@ fun LoginScreen(navController: NavController) {
         if(state.emailError != null) {
             Text(
                 text = state.emailError,
-                color = MaterialTheme.colorScheme.error,
+                color = MP_Pink,
                 modifier = Modifier.align(Alignment.End)
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextField(
+        OutlinedTextField(
             value = state.password,
             onValueChange = {
                 viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
@@ -122,7 +127,7 @@ fun LoginScreen(navController: NavController) {
         if(state.passwordError != null) {
             Text(
                 text = state.passwordError,
-                color = MaterialTheme.colorScheme.error,
+                color = MP_Pink,
                 modifier = Modifier.align(Alignment.End)
             )
         }
@@ -134,7 +139,7 @@ fun LoginScreen(navController: NavController) {
                 navController.navigate(Screen.HomeScreen.route)
         },
             modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text(text = "Prijavi se")
+            Text(text = "prijavi se")
         }
 
         Column(
