@@ -54,6 +54,7 @@ import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.presentation.RegistrationFormEvent
 import com.triforce.malacprodavac.presentation.login.LoginFormEvent
 import com.triforce.malacprodavac.presentation.login.LoginViewModel
+import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
@@ -70,7 +71,7 @@ fun HomeScreen(navController: NavController) {
     ) {
         Column {
             GreetingSection()
-            CategoriesSection(categories = listOf("Malac Pijaca", "Profil", "Porudžbine"))
+            CategoriesSection(categories = listOf("Pijaca", "Profil", "Porudžbine", "Korpa", "Prodavnica"))
             GoToStoreSection()
             RecommendedFeaturesSection(
                 features = listOf(
@@ -93,6 +94,16 @@ fun HomeScreen(navController: NavController) {
                         title = "Korpa",
                         graphicID = Icons.Default.ShoppingCart,
                         backgroundColor = MP_Green
+                    ),
+                    Feature(
+                        title = "Prodavnica",
+                        graphicID = Icons.Default.AddCircle,
+                        backgroundColor = MP_GreenDark
+                    ),
+                    Feature(
+                        title = "Moj Profil",
+                        graphicID = Icons.Default.AccountCircle,
+                        backgroundColor = MP_Orange
                     )
                 )
             )
@@ -110,10 +121,6 @@ fun HomeScreen(navController: NavController) {
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle
-                ),
-                BottomNavigationMenuContent(
-                    title = "Omiljeno",
-                    graphicID = Icons.Default.Favorite
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",
@@ -142,20 +149,22 @@ fun GreetingSection(
         ) {
             Text(
                 text = "Dobrodošao $name!",
-                style = MaterialTheme.typography.h2
+                style = MaterialTheme.typography.h4,
+                color = MP_Green
             )
             Text(
                 text = "Želimo Vam srećnu kupovinu!",
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body1,
+                color = MP_Black
             )
         }
 
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = "Search",
-            tint = MP_White,
+            tint = MP_Black,
             modifier = Modifier
-                .size(24.dp)
+                .size(35.dp)
         )
     }
 }
@@ -173,7 +182,7 @@ fun CategoriesSection(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(start = 15.dp, top = 15.dp, bottom = 15.dp)
+                    .padding(start = 15.dp, top = 5.dp, bottom = 5.dp)
                     .clickable {
                         selectedCategoryIndex = it // current index of the box
                     }
@@ -209,8 +218,9 @@ fun GoToStoreSection(
     ) {
         Column {
             Text(
-                text = "Istraži našu prodavnicu",
-                style = MaterialTheme.typography.h2
+                text = "Otvori prodavnicu",
+                style = MaterialTheme.typography.h5,
+                color = MP_White
             )
             Text(
                 text = "Od sirupa do sira!",
@@ -222,17 +232,17 @@ fun GoToStoreSection(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(40.dp)
+                .size(50.dp)
                 .clip(CircleShape)
-                .background(MP_GreenDark)
+                .background(MP_White)
                 .padding(10.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.ShoppingCart,
                 contentDescription = "Store",
-                tint = MP_White,
+                tint = MP_Pink,
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(30.dp)
             )
         }
     }
@@ -248,9 +258,9 @@ fun RecommendedFeaturesSection(
     ) {
         Text(
             text = "Istaknute Akcije",
-            style = MaterialTheme.typography.h1,
+            style = MaterialTheme.typography.h5,
             modifier = Modifier
-                .padding(15.dp)
+                .padding(start = 15.dp, bottom = 15.dp)
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -290,8 +300,9 @@ fun RecommendedFeatureItem(
         ) {
             Text(
                 text = feature.title,
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 lineHeight = 26.sp,
+                color = MP_White,
                 modifier = Modifier
                     .align(Alignment.TopStart)
             )
@@ -301,6 +312,7 @@ fun RecommendedFeatureItem(
                 tint = MP_White,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
+                    .size(35.dp)
             )
             Text(
                 text = "Otvori",
@@ -339,7 +351,7 @@ fun BottomNavigationMenu(
         modifier = modifier
             .fillMaxWidth()
             .background(MP_GreenDark)
-            .padding(15.dp)
+            .padding(vertical = 10.dp)
     ) {
         items.forEachIndexed { index, item ->
             BottomNavigationMenuItem(
@@ -382,19 +394,22 @@ fun BottomNavigationMenuItem(
                         Color.Transparent
                     }
                 )
-                .padding(10.dp)
+                .padding(vertical = 5.dp, horizontal = 5.dp)
         ) {
             Icon(
                 imageVector = item.graphicID,
                 contentDescription = item.title,
                 tint = if (isActive) selectedTextColor else nonActiveTextColor,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(25.dp)
             )
         }
         Text(
             text = item.title,
-            color = if (isActive) selectedTextColor else nonActiveTextColor
+            style = MaterialTheme.typography.button,
+            color = if (isActive) selectedTextColor else nonActiveTextColor,
+            modifier = Modifier
+                .padding(top = 5.dp)
         )
     }
 }
