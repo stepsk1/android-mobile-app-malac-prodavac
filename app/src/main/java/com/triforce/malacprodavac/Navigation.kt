@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.RegistrationScreen
 import com.triforce.malacprodavac.presentation.home.HomeScreen
+import com.triforce.malacprodavac.presentation.store.StoreScreen
 
 @Composable
 fun Navigation() {
@@ -38,6 +39,10 @@ fun Navigation() {
 
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(navController = navController)
+        }
+
+        composable(route = Screen.StoreScreen.route) {
+            StoreScreen(navController = navController)
         }
     }
 }
