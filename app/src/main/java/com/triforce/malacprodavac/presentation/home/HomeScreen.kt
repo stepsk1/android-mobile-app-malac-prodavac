@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -97,32 +98,32 @@ fun HomeScreen(navController: NavController) {
                     Feature(
                         title = "Prodavnica",
                         graphicID = Icons.Default.AddCircle,
-                        color1 = MP_GreenLight,
-                        color2 = MP_Green
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
                     ),
                     Feature(
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange_Dark
+                        color1 = MP_Orange_Dark,
+                        color2 = MP_Orange
                     ),
                     Feature(
                         title = "Omiljeno",
                         graphicID = Icons.Default.Favorite,
-                        color1 = MP_GreenLight,
-                        color2 = MP_Green
+                        color1 = MP_Orange_Dark,
+                        color2 = MP_Orange
                     ),
                     Feature(
                         title = "Korpa",
                         graphicID = Icons.Default.ShoppingCart,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange_Dark
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
                     ),
                     Feature(
                         title = "Prodavnica",
                         graphicID = Icons.Default.AddCircle,
-                        color1 = MP_GreenLight,
-                        color2 = MP_Green
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
                     ),
                     Feature(
                         title = "Moj Profil",
@@ -208,6 +209,11 @@ fun CategoriesSection(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .padding(start = 15.dp, top = 40.dp, bottom = 5.dp)
+                    .shadow(
+                        elevation = 5.dp,
+                        spotColor = MP_Black,
+                        shape = RoundedCornerShape(7.5.dp)
+                    )
                     .clickable {
                         selectedCategoryIndex = it // current index of the box
                     }
@@ -249,7 +255,13 @@ fun GoToStoreSection(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .padding(15.dp)
+            .padding(14.dp)
+            .shadow(
+                elevation = 5.dp,
+                spotColor = MP_Black,
+                shape = RoundedCornerShape(7.5.dp)
+            )
+            .padding(1.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(
                 Brush.linearGradient(
@@ -333,7 +345,13 @@ fun RecommendedFeatureItem(
 ) {
     BoxWithConstraints(
         modifier = Modifier
-            .padding(7.5.dp)
+            .padding(6.dp)
+            .shadow(
+                elevation = 5.dp,
+                spotColor = MP_Black,
+                shape = RoundedCornerShape(7.5.dp)
+                )
+            .padding(1.5.dp)
             .aspectRatio(1.5F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
             .clip(RoundedCornerShape(10.dp))
             .background(
@@ -404,7 +422,7 @@ fun BottomNavigationMenu(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(MP_GreenDark)
+            .background(MP_Black)
             .padding(vertical = 10.dp)
     ) {
         items.forEachIndexed { index, item ->
