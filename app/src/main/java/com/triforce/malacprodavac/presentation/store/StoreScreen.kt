@@ -4,21 +4,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -29,23 +38,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.modifier.modifierLocalMapOf
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
+import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.home.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.home.GreetingSection
+import com.triforce.malacprodavac.presentation.home.RecommendedFeaturesSection
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
+import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -58,12 +76,12 @@ fun StoreScreen(navController: NavController)
     ){
         LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark )
         Surface (
+            color = MP_White,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(1F)
                 .padding(top = 67.dp)
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(color = MP_Pink)
         ){
 
         }
@@ -74,6 +92,46 @@ fun StoreScreen(navController: NavController)
                 sectionText = "Pronađite najbolje proizvode od malih proizvođača. Pratite svoje omiljene proizvođače i podržite lokalnu ekonomiju!",
                 iconImage = Icons.Default.Star,
                 iconColor = MP_Green
+            )
+            StoreCategoriesSection(
+                features = listOf(
+                    Feature(
+                        title = "Sirevi i mleko",
+                        graphicID = Icons.Default.Favorite,
+                        color1 = MP_Orange_Dark,
+                        color2 = MP_Orange
+                    ),
+                    Feature(
+                        title = "Voće i povrće",
+                        graphicID = Icons.Default.Star,
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
+                    ),
+                    Feature(
+                        title = "Peciva i kolači",
+                        graphicID = Icons.Default.Star,
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
+                    ),
+                    Feature(
+                        title = "Sokovi i sirupi",
+                        graphicID = Icons.Default.Favorite,
+                        color1 = MP_Pink,
+                        color2 = MP_Pink_Dark
+                    ),
+                    Feature(
+                        title = "Dodatna kat.",
+                        graphicID = Icons.Default.Add,
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
+                    ),
+                    Feature(
+                        title = "Dodatna kat.",
+                        graphicID = Icons.Default.Add,
+                        color1 = MP_Orange,
+                        color2 = MP_Orange_Dark
+                    )
+                )
             )
         }
 
@@ -189,5 +247,78 @@ fun TitleTextContentSection(
             modifier = Modifier
                 .padding(top = 15.dp)
         )
+    }
+}
+
+@Composable
+fun StoreCategoriesSection(
+    features: List<Feature>
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(
+            start = 7.5.dp,
+            end = 7.5.dp,
+            bottom = 80.dp
+        ), // 100 dp bottom padding because navigation
+        modifier = Modifier.fillMaxHeight(),
+    ) {
+        items(features.size) {// how many items do we have
+            // define one of items
+            StoreCategorieItem(feature = features[it])
+        }
+    }
+}
+
+@Composable
+fun StoreCategorieItem(
+    feature: Feature
+) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .padding(start = 7.5.dp, end = 7.5.dp, bottom = 15.dp)
+            .shadow(
+                elevation = 5.dp,
+                spotColor = MP_Black,
+                shape = RoundedCornerShape(7.5.dp)
+            )
+            .clickable {
+
+            }
+            .padding(1.5.dp)
+            .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
+            .clip(RoundedCornerShape(10.dp))
+            .background(
+                Brush.linearGradient(
+                    0.0f to feature.color1,
+                    0.5f to feature.color2,
+
+                    start = Offset.Zero,
+                    end = Offset.Infinite
+                )
+            )
+    ) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp)
+        ) {
+            Text(
+                text = feature.title,
+                style = MaterialTheme.typography.body1,
+                color = MP_White,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+            )
+            Icon(
+                imageVector = feature.graphicID,
+                contentDescription = feature.title,
+                tint = MP_White,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .size(100.dp)
+            )
+        }
     }
 }
