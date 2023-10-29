@@ -275,7 +275,7 @@ fun GoToStoreSection(
                 )
             )
             .clickable {
-                navController.navigate(Screen.HomeScreen.route)
+                navController.navigate(Screen.StoreScreen.route)
             }
             .padding(horizontal = 15.dp, vertical = 20.dp)
             .fillMaxWidth()
