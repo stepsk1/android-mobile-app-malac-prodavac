@@ -122,16 +122,17 @@ fun StoreScreen(navController: NavController)
                     Feature(
                         title = "Dodatna kat.",
                         graphicID = Icons.Default.Add,
-                        color1 = MP_Green,
-                        color2 = MP_GreenLight
+                        color1 = MP_Orange_Dark,
+                        color2 = MP_Orange
                     ),
                     Feature(
                         title = "Dodatna kat.",
                         graphicID = Icons.Default.Add,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange_Dark
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
                     )
-                )
+                ),
+                navController
             )
         }
 
@@ -252,7 +253,8 @@ fun TitleTextContentSection(
 
 @Composable
 fun StoreCategoriesSection(
-    features: List<Feature>
+    features: List<Feature>,
+    navController: NavController
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -265,14 +267,15 @@ fun StoreCategoriesSection(
     ) {
         items(features.size) {// how many items do we have
             // define one of items
-            StoreCategorieItem(feature = features[it])
+            StoreCategorieItem(feature = features[it], navController)
         }
     }
 }
 
 @Composable
 fun StoreCategorieItem(
-    feature: Feature
+    feature: Feature,
+    navController: NavController
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -283,7 +286,7 @@ fun StoreCategorieItem(
                 shape = RoundedCornerShape(7.5.dp)
             )
             .clickable {
-
+                navController.navigate(Screen.StoreCategoryScreen.route)
             }
             .padding(1.5.dp)
             .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
