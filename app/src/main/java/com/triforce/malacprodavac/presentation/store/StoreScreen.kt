@@ -98,38 +98,38 @@ fun StoreScreen(navController: NavController)
                     Feature(
                         title = "Sirevi i mleko",
                         graphicID = Icons.Default.Favorite,
-                        color1 = MP_Orange_Dark,
+                        color1 = MP_Orange,
                         color2 = MP_Orange
                     ),
                     Feature(
                         title = "Voće i povrće",
                         graphicID = Icons.Default.Star,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight
+                        color2 = MP_Green
                     ),
                     Feature(
                         title = "Peciva i kolači",
                         graphicID = Icons.Default.Star,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight
+                        color2 = MP_Green
                     ),
                     Feature(
                         title = "Sokovi i sirupi",
                         graphicID = Icons.Default.Favorite,
                         color1 = MP_Pink,
-                        color2 = MP_Pink_Dark
+                        color2 = MP_Pink
                     ),
                     Feature(
                         title = "Dodatna kat.",
                         graphicID = Icons.Default.Add,
-                        color1 = MP_Orange_Dark,
+                        color1 = MP_Orange,
                         color2 = MP_Orange
                     ),
                     Feature(
                         title = "Dodatna kat.",
                         graphicID = Icons.Default.Add,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight
+                        color2 = MP_Green
                     )
                 ),
                 navController
@@ -172,7 +172,7 @@ fun HeaderSectionTitle(
             .padding(15.dp)
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .size(width = 240.dp, height = 35.dp)
@@ -191,7 +191,9 @@ fun HeaderSectionTitle(
             Text(
                 text = msg,
                 style = MaterialTheme.typography.h5,
-                color = MP_White
+                color = MP_White,
+                modifier = Modifier
+                    .padding(start = 10.dp)
             )
         }
 
