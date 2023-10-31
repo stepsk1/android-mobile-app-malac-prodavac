@@ -1,13 +1,27 @@
 package com.triforce.malacprodavac.data.remote.dto
 
-import com.squareup.moshi.Json
+import com.triforce.malacprodavac.domain.model.Courier
+import com.triforce.malacprodavac.domain.model.Customer
+import com.triforce.malacprodavac.domain.model.Shop
+import java.time.LocalDateTime
 
 data class UserDto(
     val userId: Int,
-    val email: String,
-    @field: Json(name = "profilePicId") val profilePicUrl: String,
+    //@field: Json(name = "profilePicId") val profilePicUrl: String,
     val firstName: String,
     val lastName: String,
+    val email: String,
     val password: String,
-    val role: String
+    val address: String,
+    val phoneNumber: String,
+    val updateAt: LocalDateTime,
+    val createAt: LocalDateTime,
+    val addressLatitude: Int,
+    val addressLongitude: Int,
+    val paymentMethod: String,
+    val roles: List<String>,
+    val currency: String,
+    val customer: Customer?,
+    val courier: Courier?,
+    val shop: Shop?
 )

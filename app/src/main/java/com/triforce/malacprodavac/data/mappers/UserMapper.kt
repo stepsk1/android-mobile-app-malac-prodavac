@@ -7,28 +7,61 @@ import com.triforce.malacprodavac.domain.model.User
 fun UserEntity.toUser(): User
         = User(
     id = userId ?: 0,
-    email = email,
     firstName = firstName,
     lastName = lastName,
-    profilePicUrl = profilePicUrl,
-    role = role
+    email = email,
+    password = password,
+    address = address,
+    phoneNumber = phoneNumber,
+    addressLatitude = addressLatitude,
+    addressLongitude = addressLongitude,
+    createdAt = createAt,
+    updatedAt = updateAt,
+    paymentMethod = paymentMethod,
+    roles = roles,
+    currency = currency,
+    customer = customer,
+    courier = courier,
+    shop = shop
 )
 
 fun UserDto.toUser(): User
         = User(
     id = userId,
-    email = email,
-    profilePicUrl = profilePicUrl,
     firstName = firstName,
     lastName = lastName,
-    role = role
+    email = email,
+    password = password,
+    address = address,
+    phoneNumber = phoneNumber,
+    updatedAt = updateAt,
+    createdAt = createAt,
+    addressLatitude = addressLatitude,
+    addressLongitude = addressLongitude,
+    paymentMethod = paymentMethod,
+    roles = roles,
+    currency = currency,
+    customer = customer,
+    courier = courier,
+    shop = shop
 )
 
 fun UserDto.toUserEntity(): UserEntity =
     UserEntity(
-        email = email,
-        profilePicUrl = profilePicUrl,
         firstName = firstName,
         lastName = lastName,
-        role = role
+        email = email,
+        password = password,
+        address = address,
+        phoneNumber = phoneNumber,
+        updateAt = updateAt,
+        createAt = createAt,
+        addressLatitude = addressLatitude,
+        addressLongitude = addressLongitude,
+        paymentMethod = paymentMethod,
+        roles = roles,
+        currency = currency,
+        customer = customer,
+        courier = courier,
+        shop = shop
     )

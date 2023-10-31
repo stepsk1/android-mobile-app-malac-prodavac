@@ -28,7 +28,7 @@ object ApplicationModule {
     @Singleton
     fun provideUserApi(): UserApi {
         return Retrofit.Builder()
-            .baseUrl(UserApi.REGISTER_COURIER)
+            .baseUrl(UserApi.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create()

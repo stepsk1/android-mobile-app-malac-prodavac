@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.SessionManager
+import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.repository.UserRepository
 import com.triforce.malacprodavac.domain.use_case.ValidateEmail

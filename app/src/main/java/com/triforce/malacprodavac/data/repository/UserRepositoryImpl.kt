@@ -7,13 +7,17 @@ import com.triforce.malacprodavac.data.mappers.toUserEntity
 import com.triforce.malacprodavac.data.remote.UserApi
 import com.triforce.malacprodavac.data.remote.dto.AuthenticationResponse
 import com.triforce.malacprodavac.data.remote.dto.LoginRequest
-import com.triforce.malacprodavac.data.remote.dto.RegisterRequest
+import com.triforce.malacprodavac.data.remote.dto.RegisterCourierRequest
+import com.triforce.malacprodavac.data.remote.dto.RegisterCustomerRequest
+import com.triforce.malacprodavac.data.remote.dto.RegisterShopRequest
 import com.triforce.malacprodavac.data.services.SessionManager
+import com.triforce.malacprodavac.domain.model.Courier
+import com.triforce.malacprodavac.domain.model.Customer
+import com.triforce.malacprodavac.domain.model.Shop
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.repository.UserRepository
 import com.triforce.malacprodavac.util.Resource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -27,58 +31,17 @@ class UserRepositoryImpl @Inject constructor(
     private val sessionManager: SessionManager
 ): UserRepository {
     private val dao = db.userDao
-
-    override suspend fun registerUser(
-        email: String,
-        firstName: String,
-        lastName: String,
-//        profilePic: String,
-        password: String,
-        repeatPassword: String,
-        role: String
-    ): Flow<Resource<User>> {
+    override suspend fun registerCustomer(
+        user: User
+    ): Flow<Resource<Customer>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
             val authResponse = try {
-                if(role == "KUPAC"){
-                    api.registerCustomer(
-                        RegisterRequest(
-                            email = email,
-                            firstName = firstName,
-                            lastName = lastName,
-                            password = password,
-                            repeatPassword = repeatPassword,
-                            role = role
-    //                        profilePic = ""
-                        )
+                api.registerCustomer(
+                    RegisterCustomerRequest(
+                        user = user
                     )
-                }
-                else if(role == "DOSTAVLJAČ"){
-                    api.registerCouriers(
-                        RegisterRequest(
-                            email = email,
-                            firstName = firstName,
-                            lastName = lastName,
-                            password = password,
-                            repeatPassword = repeatPassword,
-                            role = role
-//                          profilePic = ""
-                        )
-                    )
-                }
-                else{
-                    api.registerShops(
-                        RegisterRequest(
-                            email = email,
-                            firstName = firstName,
-                            lastName = lastName,
-                            password = password,
-                            repeatPassword = repeatPassword,
-                            role = role
-                            //                        profilePic = ""
-                        )
-                    )
-                }
+                )
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't register user."))
@@ -91,13 +54,78 @@ class UserRepositoryImpl @Inject constructor(
             authResponse?.let {
                 authenticateUser(it)
                 dao.insertUser(listOf(it.user.toUserEntity()))
-                emit(Resource.Success(data = it.user.toUser()))
+                // emit(Resource.Success(data = it.user.toUser())) POPRAVITI OVAJ DEO KODA
             }
             emit(Resource.Loading(isLoading = false))
         }
     }
 
-    override suspend fun loginUser(email: String, password: String): Flow<Resource<User>> {
+    override suspend fun registerCourier(
+        user: User,
+        pricePerKilometer: Int
+    ): Flow<Resource<Courier>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val authResponse = try {
+                api.registerCouriers(
+                    RegisterCourierRequest(
+                        pricePerKilometer = pricePerKilometer,
+                        user = user
+                    )
+                )
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't register user."))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't register user."))
+                null
+            }
+            authResponse?.let {
+                authenticateUser(it)
+                dao.insertUser(listOf(it.user.toUserEntity()))
+                emit(Resource.Success(data = null)) // POPRAVITI OVAJ DEO
+            }
+            emit(Resource.Loading(isLoading = false))
+        }
+    }
+
+    override suspend fun registerShop(
+        user: User,
+        businessName: String
+    ): Flow<Resource<Shop>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val authResponse = try {
+                api.registerShops(
+                    RegisterShopRequest(
+                        user = user,
+                        businessName = businessName
+                    )
+                )
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't register user."))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't register user."))
+                null
+            }
+            authResponse?.let {
+                authenticateUser(it)
+                dao.insertUser(listOf(it.user.toUserEntity()))
+                emit(Resource.Success(data = null)) // POPRAVITI OVAJ DEO
+            }
+            emit(Resource.Loading(isLoading = false))
+        }
+    }
+
+
+    override suspend fun loginUser(
+        email: String,
+        password: String): Flow<Resource<User>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
             val authResponse = try {

@@ -71,6 +71,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
 
+    implementation("com.google.code.gson:gson:2.8.8")
+
     implementation("androidx.compose.ui:ui:1.0.0")
     implementation("androidx.compose.material:material:1.0.0")
 
@@ -90,6 +92,7 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.2.9")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 

@@ -5,8 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.data.local.user.UserDao
-import com.triforce.malacprodavac.data.local.user.UserEntity
+import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.repository.UserRepository
 import com.triforce.malacprodavac.domain.use_case.ValidateEmail
@@ -19,9 +18,9 @@ import com.triforce.malacprodavac.util.AuthResult
 import com.triforce.malacprodavac.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -79,6 +78,29 @@ class RegistrationViewModel @Inject constructor(
         val repeatedPasswordResult = validateRepeatedPassword.execute(
             state.password, state.repeatedPassword)
         val termsResult = validateTerms.execute(state.acceptedTerms)
+        val firstName = state.firstName
+        val lastName = state.lastName
+        val email = state.email
+        val password = state.password
+        val user = User(
+            4,
+             firstName,
+             lastName,
+             email,
+             password,
+            "",
+            0,
+            0,
+            null,
+            "RSD",
+            "onDelivery",
+            "",
+            listOf<String>("KUPAC"),
+            null,
+            null,
+            null,
+            LocalDateTime.now()
+        )
 
         hasError = listOf(
             firstNameResult,
@@ -91,7 +113,7 @@ class RegistrationViewModel @Inject constructor(
 
 
         if(!hasError) {
-            registerUser(state.email, state.firstName, state.lastName, state.password, state.repeatedPassword, state.role)
+            registerCustomer(user)
         }
 
         if(hasError) {
@@ -119,20 +141,20 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun registerUser(email: String, firstName: String, lastName: String, password: String, repeatedPassword: String, role: String) {
+    private fun registerCustomer(user: User) {
         viewModelScope.launch {
-            repository.registerUser(email, firstName, lastName, password, repeatedPassword, role)
+            repository.registerCustomer(user)
                 .collect { result ->
                     when(result) {
                         is Resource.Success -> {
-                            if (result.data !is User) {
+                            if (result.data !is Customer) {
                                 state = state.copy(
                                     status = AuthResult.Unauthorized()
                                 )
                             }
-                            if (result.data is User) {
+                            if (result.data is Customer) {
                                 state = state.copy(
-                                    status = AuthResult.Authorized(result.data.email)
+                                    status = AuthResult.Authorized(state.email)
                                 )
                             }
                         }
