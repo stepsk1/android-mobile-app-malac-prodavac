@@ -5,6 +5,6 @@ data class Customer(
     val createdAt: String,
     val favoriteProducts: List<String>,
     val favoriteShops: List<String>,
-    val updatedAt: String,
+    val upStringdAt: String,
     val userId: Int
 )

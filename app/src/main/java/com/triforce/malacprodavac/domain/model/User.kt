@@ -2,7 +2,6 @@ package com.triforce.malacprodavac.domain.model
 
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
 
 
 data class User(
@@ -22,8 +21,8 @@ data class User(
     val addressLatitude: Int,
     @SerializedName("addressLongitude")
     val addressLongitude: Int,
-    @SerializedName("createAt")
-    val createdAt: LocalDateTime?,
+    @SerializedName("createdAt")
+    val createdAt: String?,
     @SerializedName("currency")
     val currency: String,
     @SerializedName("paymentMethod")
@@ -38,6 +37,6 @@ data class User(
     val shop: Shop?,
     @SerializedName("courier")
     val courier: Courier?,
-    @SerializedName("updateAt")
-    val updatedAt: LocalDateTime?
+    @SerializedName("upStringdAt")
+    val upStringdAt: String?
 )

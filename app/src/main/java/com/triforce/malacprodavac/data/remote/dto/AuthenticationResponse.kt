@@ -9,5 +9,5 @@ data class AuthenticationResponse(
 
 data class Body(
     val value: String,
-    val expirationDate: String
+    val expirationString: String
 )

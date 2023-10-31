@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 import com.triforce.malacprodavac.domain.model.Courier
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.Shop
-import java.time.LocalDateTime
 
 @Entity
 data class UserEntity(
@@ -16,8 +15,8 @@ data class UserEntity(
     val email: String,
     val address: String,
     val phoneNumber: String,
-    val updateAt: LocalDateTime,
-    val createAt: LocalDateTime,
+    val upStringdAt: String,
+    val createdAt: String,
     val addressLatitude: Int,
     val addressLongitude: Int,
     val paymentMethod: String,

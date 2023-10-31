@@ -3,7 +3,6 @@ package com.triforce.malacprodavac.data.local.user
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.time.LocalDate
 
 @Entity(foreignKeys = [ForeignKey(
     entity = UserEntity::class,
@@ -17,7 +16,7 @@ data class CourierEntity(
     val currentLocationLatitude: Double,
     val currentLocationLongitude: Double,
     val currentLocation: String,
-    val updateAt: LocalDate,
-    val createAt: LocalDate,
+    val upStringdAt: String,
+    val createdAt: String,
     val user: UserEntity?
 )

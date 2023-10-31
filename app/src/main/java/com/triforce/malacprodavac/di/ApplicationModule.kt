@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
 import com.triforce.malacprodavac.data.remote.UserApi
 import com.triforce.malacprodavac.data.remote.interceptors.AuthInterceptorImpl
@@ -19,7 +21,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import javax.inject.Singleton
-
 @Module
 @InstallIn(SingletonComponent::class)
 object ApplicationModule {
@@ -29,7 +30,7 @@ object ApplicationModule {
     fun provideUserApi(): UserApi {
         return Retrofit.Builder()
             .baseUrl(UserApi.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().add(KotlinJsonAdapterFactory()).build()))
             .build()
             .create()
     }

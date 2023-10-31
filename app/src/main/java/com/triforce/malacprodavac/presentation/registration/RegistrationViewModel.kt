@@ -8,19 +8,18 @@ import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.repository.UserRepository
-import com.triforce.malacprodavac.domain.use_case.ValidateEmail
-import com.triforce.malacprodavac.domain.use_case.ValidateFirstName
-import com.triforce.malacprodavac.domain.use_case.ValidateLastName
-import com.triforce.malacprodavac.domain.use_case.ValidatePassword
-import com.triforce.malacprodavac.domain.use_case.ValidateRepeatedPassword
-import com.triforce.malacprodavac.domain.use_case.ValidateTerms
+import com.triforce.malacprodavac.domain.use_case.ValiStringEmail
+import com.triforce.malacprodavac.domain.use_case.ValiStringFirstName
+import com.triforce.malacprodavac.domain.use_case.ValiStringLastName
+import com.triforce.malacprodavac.domain.use_case.ValiStringPassword
+import com.triforce.malacprodavac.domain.use_case.ValiStringRepeatedPassword
+import com.triforce.malacprodavac.domain.use_case.ValiStringTerms
 import com.triforce.malacprodavac.util.AuthResult
 import com.triforce.malacprodavac.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,12 +28,12 @@ class RegistrationViewModel @Inject constructor(
     private val repository: UserRepository
 ): ViewModel() {
 
-    private val validateFirstName: ValidateFirstName = ValidateFirstName()
-    private val validateLastName: ValidateLastName = ValidateLastName()
-    private val validateEmail: ValidateEmail = ValidateEmail()
-    private val validatePassword: ValidatePassword = ValidatePassword()
-    private val validateRepeatedPassword: ValidateRepeatedPassword = ValidateRepeatedPassword()
-    private val validateTerms: ValidateTerms = ValidateTerms()
+    private val valiStringFirstName: ValiStringFirstName = ValiStringFirstName()
+    private val valiStringLastName: ValiStringLastName = ValiStringLastName()
+    private val valiStringEmail: ValiStringEmail = ValiStringEmail()
+    private val valiStringPassword: ValiStringPassword = ValiStringPassword()
+    private val valiStringRepeatedPassword: ValiStringRepeatedPassword = ValiStringRepeatedPassword()
+    private val valiStringTerms: ValiStringTerms = ValiStringTerms()
     var state by mutableStateOf(RegistrationFormState())
 
     private val validationEventChannel = Channel<ValidationEvent>()
@@ -71,13 +70,13 @@ class RegistrationViewModel @Inject constructor(
     }
 
     private fun submitData() {
-        val firstNameResult = validateFirstName.execute(state.firstName)
-        val lastNameResult = validateLastName.execute(state.lastName)
-        val emailResult = validateEmail.execute(state.email)
-        val passwordResult = validatePassword.execute(state.password)
-        val repeatedPasswordResult = validateRepeatedPassword.execute(
+        val firstNameResult = valiStringFirstName.execute(state.firstName)
+        val lastNameResult = valiStringLastName.execute(state.lastName)
+        val emailResult = valiStringEmail.execute(state.email)
+        val passwordResult = valiStringPassword.execute(state.password)
+        val repeatedPasswordResult = valiStringRepeatedPassword.execute(
             state.password, state.repeatedPassword)
-        val termsResult = validateTerms.execute(state.acceptedTerms)
+        val termsResult = valiStringTerms.execute(state.acceptedTerms)
         val firstName = state.firstName
         val lastName = state.lastName
         val email = state.email
@@ -99,7 +98,7 @@ class RegistrationViewModel @Inject constructor(
             null,
             null,
             null,
-            LocalDateTime.now()
+            String()
         )
 
         hasError = listOf(

@@ -7,7 +7,8 @@ import com.squareup.moshi.Types
 import com.triforce.malacprodavac.domain.model.Courier
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.Shop
-import java.time.LocalDateTime
+import java.time.Instant
+//import java.util.String
 import javax.inject.Inject
 
 class RoomConverters @Inject constructor(){
@@ -26,15 +27,15 @@ class RoomConverters @Inject constructor(){
         return adapter.fromJson(value)!!
     }
 
-    @TypeConverter
-    fun timeToString(time: LocalDateTime): String {
-        return time.toString()
-    }
-
-    @TypeConverter
-    fun StringToTime(string: String): LocalDateTime {
-        return LocalDateTime.parse(string)
-    }
+//    @TypeConverter
+//    fun timeToString(time: String): String {
+//        return time.toString()
+//    }
+//
+//    @TypeConverter
+//    fun StringToTime(string: String): String {
+//        return String.from(Instant.parse(string))
+//    }
 
     @TypeConverter
     fun fromCustomer(customer: Customer): String {

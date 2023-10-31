@@ -1,6 +1,6 @@
 package com.triforce.malacprodavac.domain.use_case
 
-class ValidateTerms {
+class ValiStringTerms {
     fun execute(acceptedTerms: Boolean):ValidationResult {
         if(!acceptedTerms) {
             return ValidationResult(

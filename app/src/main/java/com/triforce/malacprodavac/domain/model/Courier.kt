@@ -7,6 +7,6 @@ data class Courier(
     val currentLocationLatitude: Int,
     val currentLocationLongitude: Int,
     val pricePerKilometer: Int,
-    val updatedAt: String,
+    val upStringdAt: String,
     val userId: Int
 )

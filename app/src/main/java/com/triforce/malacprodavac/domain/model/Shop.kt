@@ -4,6 +4,6 @@ data class Shop(
     val id: Int,
     val businessName: String,
     val createdAt: String,
-    val updatedAt: String,
+    val upStringdAt: String,
     val userId: Int
 )

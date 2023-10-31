@@ -1,7 +1,7 @@
 package com.triforce.malacprodavac.domain.use_case
 
 
-class ValidateFirstName {
+class ValiStringFirstName {
     fun execute(firstName: String):ValidationResult {
         if(firstName.isBlank()) {
             return ValidationResult(
