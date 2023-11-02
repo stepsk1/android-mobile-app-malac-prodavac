@@ -11,14 +11,17 @@ import androidx.navigation.compose.rememberNavController
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.RegistrationScreen
 import com.triforce.malacprodavac.presentation.home.HomeScreen
+import com.triforce.malacprodavac.presentation.store.StoreScreen
+import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Screen.LoginScreen.route
+        startDestination = Screen.HomeScreen.route
     ) {
+
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController = navController)
         }
@@ -38,6 +41,14 @@ fun Navigation() {
 
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(navController = navController)
+        }
+
+        composable(route = Screen.StoreScreen.route) {
+            StoreScreen(navController = navController)
+        }
+
+        composable(route = Screen.StoreCategoryScreen.route) {
+            StoreCategoryScreen(navController = navController)
         }
     }
 }

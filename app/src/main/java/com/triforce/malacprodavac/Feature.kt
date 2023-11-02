@@ -7,5 +7,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class Feature(
     val title: String,
     val graphicID: ImageVector,
-    val backgroundColor: Color
+    val color1: Color,
+    val color2: Color
 )

@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
@@ -28,6 +29,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -41,7 +43,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,6 +57,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Feature
+import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.presentation.RegistrationFormEvent
 import com.triforce.malacprodavac.presentation.login.LoginFormEvent
 import com.triforce.malacprodavac.presentation.login.LoginViewModel
@@ -59,7 +66,9 @@ import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
+import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -69,41 +78,57 @@ fun HomeScreen(navController: NavController) {
             .background(MP_White)
             .fillMaxSize()
     ) {
+        LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark)
+        Surface (
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(top = 100.dp)
+                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+        ){
+
+        }
         Column {
-            GreetingSection()
+            GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac")
             CategoriesSection(categories = listOf("Pijaca", "Profil", "Porudžbine", "Korpa", "Prodavnica"))
-            GoToStoreSection()
+            GoToStoreSection(navController)
             RecommendedFeaturesSection(
                 features = listOf(
                     Feature(
                         title = "Prodavnica",
                         graphicID = Icons.Default.AddCircle,
-                        backgroundColor = MP_GreenDark
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
                     ),
                     Feature(
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
-                        backgroundColor = MP_Orange
+                        color1 = MP_Orange_Dark,
+                        color2 = MP_Orange
                     ),
                     Feature(
                         title = "Omiljeno",
                         graphicID = Icons.Default.Favorite,
-                        backgroundColor = MP_GreenLight
+                        color1 = MP_Orange_Dark,
+                        color2 = MP_Orange
                     ),
                     Feature(
                         title = "Korpa",
                         graphicID = Icons.Default.ShoppingCart,
-                        backgroundColor = MP_Green
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
                     ),
                     Feature(
                         title = "Prodavnica",
                         graphicID = Icons.Default.AddCircle,
-                        backgroundColor = MP_GreenDark
+                        color1 = MP_Green,
+                        color2 = MP_GreenLight
                     ),
                     Feature(
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
-                        backgroundColor = MP_Orange
+                        color1 = MP_Orange,
+                        color2 = MP_Orange_Dark
                     )
                 )
             )
@@ -134,7 +159,9 @@ fun HomeScreen(navController: NavController) {
 
 @Composable
 fun GreetingSection(
-    name: String = "Filip"
+    name: String = "Filip",
+    msg: String,
+    subMsg: String = ""
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -148,21 +175,21 @@ fun GreetingSection(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Dobrodošao $name!",
+                text = msg,
                 style = MaterialTheme.typography.h4,
-                color = MP_Green
+                color = MP_White
             )
             Text(
-                text = "Želimo Vam srećnu kupovinu!",
+                text = subMsg,
                 style = MaterialTheme.typography.body1,
-                color = MP_Black
+                color = MP_White
             )
         }
 
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = "Search",
-            tint = MP_Black,
+            tint = MP_White,
             modifier = Modifier
                 .size(35.dp)
         )
@@ -182,16 +209,34 @@ fun CategoriesSection(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(start = 15.dp, top = 5.dp, bottom = 5.dp)
+                    .padding(start = 15.dp, top = 30.dp, bottom = 5.dp)
+                    .shadow(
+                        elevation = 5.dp,
+                        spotColor = MP_Black,
+                        shape = RoundedCornerShape(7.5.dp)
+                    )
                     .clickable {
                         selectedCategoryIndex = it // current index of the box
                     }
                     .clip(RoundedCornerShape(10.dp))
                     .background(
                         if (selectedCategoryIndex == it)
-                            MP_GreenDark
+                            Brush.linearGradient(
+                                0.0f to MP_Pink_Dark,
+                                500.0f to MP_Pink,
+
+                                start = Offset.Zero,
+                                end = Offset.Infinite
+                            )
                         else
-                            MP_GreenLight
+                            Brush.linearGradient(
+                                0.0f to MP_GreenLight,
+                                0.5f to MP_Green,
+
+                                start = Offset.Zero,
+                                end = Offset.Infinite
+                            )
+
                     )
                     .padding(15.dp)
             )
@@ -204,15 +249,34 @@ fun CategoriesSection(
 
 @Composable
 fun GoToStoreSection(
-    color: Color = MP_Pink
+    navController: NavController,
+    color1: Color = MP_Pink,
+    color2: Color = MP_Pink_Dark
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .padding(15.dp)
+            .padding(14.dp)
+            .shadow(
+                elevation = 5.dp,
+                spotColor = MP_Black,
+                shape = RoundedCornerShape(7.5.dp)
+            )
+            .padding(1.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(color)
+            .background(
+                Brush.linearGradient(
+                    0.0f to color1,
+                    500.0f to color2,
+
+                    start = Offset.Zero,
+                    end = Offset.Infinite
+                )
+            )
+            .clickable {
+                navController.navigate(Screen.StoreScreen.route)
+            }
             .padding(horizontal = 15.dp, vertical = 20.dp)
             .fillMaxWidth()
     ) {
@@ -257,8 +321,9 @@ fun RecommendedFeaturesSection(
             .fillMaxWidth()
     ) {
         Text(
-            text = "Istaknute Akcije",
+            text = "Podržite lokalnu ekonomiju",
             style = MaterialTheme.typography.h5,
+            color = MP_Black,
             modifier = Modifier
                 .padding(start = 15.dp, bottom = 15.dp)
         )
@@ -285,13 +350,25 @@ fun RecommendedFeatureItem(
 ) {
     BoxWithConstraints(
         modifier = Modifier
-            .padding(7.5.dp)
-            .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
+            .padding(6.dp)
+            .shadow(
+                elevation = 5.dp,
+                spotColor = MP_Black,
+                shape = RoundedCornerShape(7.5.dp)
+                )
+            .padding(1.5.dp)
+            .aspectRatio(1.5F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
             .clip(RoundedCornerShape(10.dp))
-            .background(feature.backgroundColor)
+            .background(
+                Brush.linearGradient(
+                    0.0f to feature.color1,
+                    0.5f to feature.color2,
+
+                    start = Offset.Zero,
+                    end = Offset.Infinite
+                )
+            )
     ) {
-        val width = constraints.maxWidth
-        val height = constraints.maxHeight
 
         Box(
             modifier = Modifier
@@ -350,7 +427,15 @@ fun BottomNavigationMenu(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(MP_GreenDark)
+            .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+            .background(
+                Brush.linearGradient(
+                    0.0f to Color.DarkGray,
+                    1.0f to Color.Black,
+                    start = Offset.Zero,
+                    end = Offset.Infinite
+                )
+            )
             .padding(vertical = 10.dp)
     ) {
         items.forEachIndexed { index, item ->
@@ -379,7 +464,8 @@ fun BottomNavigationMenuItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.clickable {
+        modifier = Modifier
+            .clickable {
             onMenuItemClick()
         }
     ) {
