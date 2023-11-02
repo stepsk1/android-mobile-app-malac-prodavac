@@ -82,17 +82,16 @@ fun HomeScreen(navController: NavController) {
         Surface (
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.9F)
+                .fillMaxHeight()
                 .padding(top = 100.dp)
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(color = MP_Pink)
         ){
 
         }
         Column {
-            GreetingSection()
+            GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac")
             CategoriesSection(categories = listOf("Pijaca", "Profil", "Porudžbine", "Korpa", "Prodavnica"))
-            GoToStoreSection()
+            GoToStoreSection(navController)
             RecommendedFeaturesSection(
                 features = listOf(
                     Feature(
@@ -160,7 +159,9 @@ fun HomeScreen(navController: NavController) {
 
 @Composable
 fun GreetingSection(
-    name: String = "Filip"
+    name: String = "Filip",
+    msg: String,
+    subMsg: String = ""
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -174,12 +175,12 @@ fun GreetingSection(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Početna Strana",
+                text = msg,
                 style = MaterialTheme.typography.h4,
                 color = MP_White
             )
             Text(
-                text = "Pretražite Malac Prodavac",
+                text = subMsg,
                 style = MaterialTheme.typography.body1,
                 color = MP_White
             )
@@ -208,7 +209,7 @@ fun CategoriesSection(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(start = 15.dp, top = 40.dp, bottom = 5.dp)
+                    .padding(start = 15.dp, top = 30.dp, bottom = 5.dp)
                     .shadow(
                         elevation = 5.dp,
                         spotColor = MP_Black,
@@ -248,6 +249,7 @@ fun CategoriesSection(
 
 @Composable
 fun GoToStoreSection(
+    navController: NavController,
     color1: Color = MP_Pink,
     color2: Color = MP_Pink_Dark
 ) {
@@ -272,6 +274,9 @@ fun GoToStoreSection(
                     end = Offset.Infinite
                 )
             )
+            .clickable {
+                navController.navigate(Screen.StoreScreen.route)
+            }
             .padding(horizontal = 15.dp, vertical = 20.dp)
             .fillMaxWidth()
     ) {
@@ -422,7 +427,15 @@ fun BottomNavigationMenu(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(MP_Black)
+            .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+            .background(
+                Brush.linearGradient(
+                    0.0f to Color.DarkGray,
+                    1.0f to Color.Black,
+                    start = Offset.Zero,
+                    end = Offset.Infinite
+                )
+            )
             .padding(vertical = 10.dp)
     ) {
         items.forEachIndexed { index, item ->
@@ -451,7 +464,8 @@ fun BottomNavigationMenuItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.clickable {
+        modifier = Modifier
+            .clickable {
             onMenuItemClick()
         }
     ) {
