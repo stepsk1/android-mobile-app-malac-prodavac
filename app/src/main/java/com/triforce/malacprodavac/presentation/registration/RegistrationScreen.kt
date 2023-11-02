@@ -220,7 +220,7 @@ fun RegistrationScreen(navController: NavController) {
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-            DropDownList()
+            DropDownList(viewModel)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -281,7 +281,7 @@ fun RegistrationScreen(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDownList() {
+fun DropDownList(viewModel: RegistrationViewModel) {
     val rolesList = listOf(
         "KUPAC",
         "DOSTAVLJAČ",
@@ -302,8 +302,10 @@ fun DropDownList() {
                 .menuAnchor(), // menuAnchor modifier must be passed to the text field for correctness.
             readOnly = true,
             value = selectedRole,
-            onValueChange = {},
-            label = { Text("Roles") },
+            onValueChange = {
+                viewModel.onEvent(RegistrationFormEvent.RoleChanged(it))
+            },
+            label = { Text("Uloga") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
         )

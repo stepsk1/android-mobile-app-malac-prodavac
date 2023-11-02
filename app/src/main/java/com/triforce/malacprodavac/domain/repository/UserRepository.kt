@@ -1,6 +1,7 @@
 package com.triforce.malacprodavac.domain.repository
 
 import com.triforce.malacprodavac.domain.model.Courier
+import com.triforce.malacprodavac.domain.model.CreateUser
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.Shop
 import com.triforce.malacprodavac.domain.model.User
@@ -9,16 +10,16 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     suspend fun registerCustomer(
-        user: User
+        createUser: CreateUser
     ): Flow<Resource<Customer>>
 
     suspend fun registerCourier(
-        user: User,
-        pricePerKilometer: Int
+        createUser: CreateUser,
+        pricePerKilometer: Double
     ): Flow<Resource<Courier>>
 
     suspend fun registerShop(
-        user: User,
+        createUser: CreateUser,
         businessName: String
     ): Flow<Resource<Shop>>
 

@@ -12,6 +12,7 @@ import com.triforce.malacprodavac.data.remote.dto.RegisterCustomerRequest
 import com.triforce.malacprodavac.data.remote.dto.RegisterShopRequest
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.model.Courier
+import com.triforce.malacprodavac.domain.model.CreateUser
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.Shop
 import com.triforce.malacprodavac.domain.model.User
@@ -32,14 +33,14 @@ class UserRepositoryImpl @Inject constructor(
 ): UserRepository {
     private val dao = db.userDao
     override suspend fun registerCustomer(
-        user: User
+        createUser: CreateUser
     ): Flow<Resource<Customer>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
             val authResponse = try {
                 api.registerCustomer(
                     RegisterCustomerRequest(
-                        user = user
+                        createUser = createUser
                     )
                 )
             } catch (e: IOException) {
@@ -61,8 +62,8 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun registerCourier(
-        user: User,
-        pricePerKilometer: Int
+        createUser: CreateUser,
+        pricePerKilometer: Double
     ): Flow<Resource<Courier>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
@@ -70,7 +71,7 @@ class UserRepositoryImpl @Inject constructor(
                 api.registerCouriers(
                     RegisterCourierRequest(
                         pricePerKilometer = pricePerKilometer,
-                        user = user
+                         createUser = createUser
                     )
                 )
             } catch (e: IOException) {
@@ -92,7 +93,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun registerShop(
-        user: User,
+        createUser: CreateUser,
         businessName: String
     ): Flow<Resource<Shop>> {
         return flow {
@@ -100,7 +101,7 @@ class UserRepositoryImpl @Inject constructor(
             val authResponse = try {
                 api.registerShops(
                     RegisterShopRequest(
-                        user = user,
+                        createUser = createUser,
                         businessName = businessName
                     )
                 )

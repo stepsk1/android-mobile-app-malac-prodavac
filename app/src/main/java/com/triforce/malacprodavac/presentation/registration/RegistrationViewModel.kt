@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.triforce.malacprodavac.domain.model.Courier
+import com.triforce.malacprodavac.domain.model.CreateUser
 import com.triforce.malacprodavac.domain.model.Customer
-import com.triforce.malacprodavac.domain.model.User
+import com.triforce.malacprodavac.domain.model.Shop
 import com.triforce.malacprodavac.domain.repository.UserRepository
 import com.triforce.malacprodavac.domain.use_case.ValiStringEmail
 import com.triforce.malacprodavac.domain.use_case.ValiStringFirstName
@@ -81,24 +83,11 @@ class RegistrationViewModel @Inject constructor(
         val lastName = state.lastName
         val email = state.email
         val password = state.password
-        val user = User(
-            4,
-             firstName,
-             lastName,
-             email,
-             password,
-            "",
-            0,
-            0,
-            null,
-            "RSD",
-            "onDelivery",
-            "",
-            listOf<String>("KUPAC"),
-            null,
-            null,
-            null,
-            String()
+        val createUser = CreateUser(
+             firstName = firstName,
+             lastName = lastName,
+             email = email,
+             password = password
         )
 
         hasError = listOf(
@@ -112,7 +101,12 @@ class RegistrationViewModel @Inject constructor(
 
 
         if(!hasError) {
-            registerCustomer(user)
+            if(state.role == "KUPAC")
+                registerCustomer(createUser)
+            else if(state.role == "DOSTAVLJAČ")
+                registerCourier(createUser, 0.0)
+            else
+                registerShop(createUser, "")
         }
 
         if(hasError) {
@@ -140,9 +134,9 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun registerCustomer(user: User) {
+    private fun registerCustomer(createUser: CreateUser) {
         viewModelScope.launch {
-            repository.registerCustomer(user)
+            repository.registerCustomer(createUser)
                 .collect { result ->
                     when(result) {
                         is Resource.Success -> {
@@ -152,6 +146,66 @@ class RegistrationViewModel @Inject constructor(
                                 )
                             }
                             if (result.data is Customer) {
+                                state = state.copy(
+                                    status = AuthResult.Authorized(state.email)
+                                )
+                            }
+                        }
+                        is Resource.Error -> {
+                            Unit
+                        }
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun registerCourier(createUser: CreateUser, pricePerKilometer: Double) {
+        viewModelScope.launch {
+            repository.registerCourier(createUser, pricePerKilometer)
+                .collect { result ->
+                    when(result) {
+                        is Resource.Success -> {
+                            if (result.data !is Courier) {
+                                state = state.copy(
+                                    status = AuthResult.Unauthorized()
+                                )
+                            }
+                            if (result.data is Courier) {
+                                state = state.copy(
+                                    status = AuthResult.Authorized(state.email)
+                                )
+                            }
+                        }
+                        is Resource.Error -> {
+                            Unit
+                        }
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun registerShop(createUser: CreateUser, businessName: String) {
+        viewModelScope.launch {
+            repository.registerShop(createUser, businessName)
+                .collect { result ->
+                    when(result) {
+                        is Resource.Success -> {
+                            if (result.data !is Shop) {
+                                state = state.copy(
+                                    status = AuthResult.Unauthorized()
+                                )
+                            }
+                            if (result.data is Shop) {
                                 state = state.copy(
                                     status = AuthResult.Authorized(state.email)
                                 )

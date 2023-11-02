@@ -31,9 +31,9 @@ interface UserApi {
 
     companion object {
         const val BASE_URL = "http://localhost:3000/"
-        const val LOGIN = "auth/login/"
-        const val REGISTER_CUSTOMER = "customers/"
-        const val REGISTER_COURIER = "couriers/"
-        const val REGISTER_SHOP = "shops/"
+        const val LOGIN = "auth/login"
+        const val REGISTER_CUSTOMER = "/customers"
+        const val REGISTER_COURIER = "/couriers"
+        const val REGISTER_SHOP = "/shops"
     }
 }

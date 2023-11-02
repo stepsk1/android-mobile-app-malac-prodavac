@@ -1,8 +1,8 @@
 package com.triforce.malacprodavac.data.remote.dto
 
-import com.triforce.malacprodavac.domain.model.User
+import com.triforce.malacprodavac.domain.model.CreateUser
 
 data class RegisterCourierRequest(
-    val user: User,
-    val pricePerKilometer: Int
+    val createUser: CreateUser,
+    val pricePerKilometer: Double
 )
