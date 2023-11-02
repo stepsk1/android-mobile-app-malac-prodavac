@@ -1,8 +1,8 @@
-package com.triforce.malacprodavac.domain.model
+package com.triforce.malacprodavac.data.remote.users.dto
 
-data class CreateUser(
+data class CreateUserDto(
     val currency: String? = "RSD",
-    val paymentMethod: String? = "OnDelivery",
+    val paymentMethod: String? = "onDelivery",
     val firstName: String,
     val lastName: String,
     val email: String,
@@ -10,5 +10,5 @@ data class CreateUser(
     val address: String? = null,
     val addressLatitude: Int? = 0,
     val addressLongitude: Int? = 0,
-    val phoneNumber: String? = null
+    val phoneNumber: String? = ""
 )

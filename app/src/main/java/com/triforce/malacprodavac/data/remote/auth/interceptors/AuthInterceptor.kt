@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.data.remote.interceptors
+package com.triforce.malacprodavac.data.remote.auth.interceptors
 
 import android.util.Log
 import com.triforce.malacprodavac.data.services.SessionManager

@@ -2,27 +2,21 @@ package com.triforce.malacprodavac.data.local.user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.triforce.malacprodavac.domain.model.Courier
-import com.triforce.malacprodavac.domain.model.Customer
-import com.triforce.malacprodavac.domain.model.Shop
 
 @Entity
 data class UserEntity(
-    @PrimaryKey val userId: Int? = null,
+    @PrimaryKey
+    val id: Int,
     val firstName: String,
     val lastName: String,
-    val password: String,
     val email: String,
     val address: String,
-    val phoneNumber: String,
-    val upStringdAt: String,
+    val phoneNumber: String?,
+    val addressLatitude: Double?,
+    val addressLongitude: Double?,
+    val paymentMethod: String,//Convert to enum
+    val roles: List<String>,  //Convert to enum
+    val currency: String, //Convert to enum
     val createdAt: String,
-    val addressLatitude: Int,
-    val addressLongitude: Int,
-    val paymentMethod: String,
-    val roles: List<String>,
-    val currency: String,
-    val customer: Customer?,
-    val courier: Courier?,
-    val shop: Shop?
+    val updatedAt: String,
 )

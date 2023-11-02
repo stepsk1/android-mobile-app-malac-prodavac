@@ -6,10 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.model.Courier
+import com.triforce.malacprodavac.domain.model.CreateCourier
+import com.triforce.malacprodavac.domain.model.CreateCustomer
+import com.triforce.malacprodavac.domain.model.CreateShop
 import com.triforce.malacprodavac.domain.model.CreateUser
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.Shop
-import com.triforce.malacprodavac.domain.repository.UserRepository
+import com.triforce.malacprodavac.domain.repository.CourierRepository
+import com.triforce.malacprodavac.domain.repository.CustomerRepository
+import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.use_case.ValiStringEmail
 import com.triforce.malacprodavac.domain.use_case.ValiStringFirstName
 import com.triforce.malacprodavac.domain.use_case.ValiStringLastName
@@ -27,14 +32,17 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     //private val savedStateHandle: SavedStateHandle,
-    private val repository: UserRepository
-): ViewModel() {
+    private val customersRepository: CustomerRepository,
+    private val couriersRepository: CourierRepository,
+    private val shopsRepository: ShopRepository,
+) : ViewModel() {
 
     private val valiStringFirstName: ValiStringFirstName = ValiStringFirstName()
     private val valiStringLastName: ValiStringLastName = ValiStringLastName()
     private val valiStringEmail: ValiStringEmail = ValiStringEmail()
     private val valiStringPassword: ValiStringPassword = ValiStringPassword()
-    private val valiStringRepeatedPassword: ValiStringRepeatedPassword = ValiStringRepeatedPassword()
+    private val valiStringRepeatedPassword: ValiStringRepeatedPassword =
+        ValiStringRepeatedPassword()
     private val valiStringTerms: ValiStringTerms = ValiStringTerms()
     var state by mutableStateOf(RegistrationFormState())
 
@@ -43,28 +51,35 @@ class RegistrationViewModel @Inject constructor(
     var hasError = false
 
     fun onEvent(event: RegistrationFormEvent) {
-        when(event) {
+        when (event) {
             is RegistrationFormEvent.FirstNameChanged -> {
                 state = state.copy(firstName = event.firstName)
             }
+
             is RegistrationFormEvent.LastNameChanged -> {
                 state = state.copy(lastName = event.lastName)
             }
+
             is RegistrationFormEvent.RoleChanged -> {
                 state = state.copy(role = event.role)
             }
+
             is RegistrationFormEvent.EmailChanged -> {
                 state = state.copy(email = event.email)
             }
+
             is RegistrationFormEvent.PasswordChanged -> {
                 state = state.copy(password = event.password)
             }
+
             is RegistrationFormEvent.RepeatedPasswordChanged -> {
                 state = state.copy(repeatedPassword = event.repeatedPassword)
             }
+
             is RegistrationFormEvent.AcceptTermsChanged -> {
                 state = state.copy(acceptedTerms = event.isAccepted)
             }
+
             is RegistrationFormEvent.Submit -> {
                 submitData()
             }
@@ -77,17 +92,18 @@ class RegistrationViewModel @Inject constructor(
         val emailResult = valiStringEmail.execute(state.email)
         val passwordResult = valiStringPassword.execute(state.password)
         val repeatedPasswordResult = valiStringRepeatedPassword.execute(
-            state.password, state.repeatedPassword)
+            state.password, state.repeatedPassword
+        )
         val termsResult = valiStringTerms.execute(state.acceptedTerms)
         val firstName = state.firstName
         val lastName = state.lastName
         val email = state.email
         val password = state.password
         val createUser = CreateUser(
-             firstName = firstName,
-             lastName = lastName,
-             email = email,
-             password = password
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
+            password = password
         )
 
         hasError = listOf(
@@ -100,16 +116,15 @@ class RegistrationViewModel @Inject constructor(
         ).any { !it.successful }
 
 
-        if(!hasError) {
-            if(state.role == "KUPAC")
-                registerCustomer(createUser)
-            else if(state.role == "DOSTAVLJAČ")
-                registerCourier(createUser, 0.0)
-            else
-                registerShop(createUser, "")
+        if (!hasError) {
+            when (state.role) {
+                "KUPAC" -> registerCustomer(CreateCustomer(createUser))
+                "DOSTAVLJAČ" -> registerCourier(CreateCourier(createUser, 0.0))
+                else -> registerShop(CreateShop(createUser, ""))
+            }
         }
 
-        if(hasError) {
+        if (hasError) {
             state = state.copy(
                 firstNameError = firstNameResult.errorMessage,
                 lastNameError = lastNameResult.errorMessage,
@@ -134,11 +149,11 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun registerCustomer(createUser: CreateUser) {
+    private fun registerCustomer(createCustomer: CreateCustomer) {
         viewModelScope.launch {
-            repository.registerCustomer(createUser)
+            customersRepository.registerCustomer(createCustomer)
                 .collect { result ->
-                    when(result) {
+                    when (result) {
                         is Resource.Success -> {
                             if (result.data !is Customer) {
                                 state = state.copy(
@@ -151,9 +166,11 @@ class RegistrationViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         is Resource.Error -> {
                             Unit
                         }
+
                         is Resource.Loading -> {
                             state = state.copy(
                                 isLoading = result.isLoading
@@ -164,11 +181,11 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun registerCourier(createUser: CreateUser, pricePerKilometer: Double) {
+    private fun registerCourier(createCourier: CreateCourier) {
         viewModelScope.launch {
-            repository.registerCourier(createUser, pricePerKilometer)
+            couriersRepository.registerCourier(createCourier)
                 .collect { result ->
-                    when(result) {
+                    when (result) {
                         is Resource.Success -> {
                             if (result.data !is Courier) {
                                 state = state.copy(
@@ -181,9 +198,11 @@ class RegistrationViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         is Resource.Error -> {
                             Unit
                         }
+
                         is Resource.Loading -> {
                             state = state.copy(
                                 isLoading = result.isLoading
@@ -194,11 +213,11 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun registerShop(createUser: CreateUser, businessName: String) {
+    private fun registerShop(createShop: CreateShop) {
         viewModelScope.launch {
-            repository.registerShop(createUser, businessName)
+            shopsRepository.registerShop(createShop)
                 .collect { result ->
-                    when(result) {
+                    when (result) {
                         is Resource.Success -> {
                             if (result.data !is Shop) {
                                 state = state.copy(
@@ -211,9 +230,11 @@ class RegistrationViewModel @Inject constructor(
                                 )
                             }
                         }
+
                         is Resource.Error -> {
                             Unit
                         }
+
                         is Resource.Loading -> {
                             state = state.copy(
                                 isLoading = result.isLoading
@@ -225,6 +246,6 @@ class RegistrationViewModel @Inject constructor(
     }
 
     sealed class ValidationEvent {
-        object Success: ValidationEvent()
+        object Success : ValidationEvent()
     }
 }

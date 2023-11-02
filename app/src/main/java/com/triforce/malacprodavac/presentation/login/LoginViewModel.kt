@@ -6,9 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.SessionManager
-import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.User
-import com.triforce.malacprodavac.domain.repository.UserRepository
+import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.use_case.ValiStringEmail
 import com.triforce.malacprodavac.domain.use_case.ValiStringPassword
 import com.triforce.malacprodavac.util.AuthResult
@@ -21,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: UserRepository,
+    private val repository: AuthRepository,
     private val sessionManager: SessionManager
 ): ViewModel() {
 
@@ -85,7 +84,7 @@ class LoginViewModel @Inject constructor(
 
     private fun loginUser(email: String, password: String) {
         viewModelScope.launch {
-            repository.loginUser(email, password)
+            repository.login(email, password)
                 .collect { result ->
                     when(result) {
                         is Resource.Success -> {
