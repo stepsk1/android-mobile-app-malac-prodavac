@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,9 +24,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -43,27 +40,19 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.modifier.modifierLocalMapOf
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.home.BottomNavigationMenu
-import com.triforce.malacprodavac.presentation.home.GreetingSection
-import com.triforce.malacprodavac.presentation.home.RecommendedFeaturesSection
 import com.triforce.malacprodavac.ui.theme.MP_Black
-import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
-import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -99,37 +88,43 @@ fun StoreScreen(navController: NavController)
                         title = "Sirevi i mleko",
                         graphicID = Icons.Default.Favorite,
                         color1 = MP_Orange,
-                        color2 = MP_Orange
+                        color2 = MP_Orange,
+                        screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Voće i povrće",
                         graphicID = Icons.Default.Star,
                         color1 = MP_Green,
-                        color2 = MP_Green
+                        color2 = MP_Green,
+                        screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Peciva i kolači",
                         graphicID = Icons.Default.Star,
                         color1 = MP_Green,
-                        color2 = MP_Green
+                        color2 = MP_Green,
+                        screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Sokovi i sirupi",
                         graphicID = Icons.Default.Favorite,
                         color1 = MP_Pink,
-                        color2 = MP_Pink
+                        color2 = MP_Pink,
+                        screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Dodatna kat.",
                         graphicID = Icons.Default.Add,
                         color1 = MP_Orange,
-                        color2 = MP_Orange
+                        color2 = MP_Orange,
+                        screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Dodatna kat.",
                         graphicID = Icons.Default.Add,
                         color1 = MP_Green,
-                        color2 = MP_Green
+                        color2 = MP_Green,
+                        screen = Screen.StoreScreen
                     )
                 ),
                 navController
@@ -137,22 +132,31 @@ fun StoreScreen(navController: NavController)
         }
 
         BottomNavigationMenu(
+            navController = navController,
             items = listOf(
                 BottomNavigationMenuContent(
                     title = "Početna",
-                    graphicID = Icons.Default.Home
+                    graphicID = Icons.Default.Home,
+                    screen = Screen.HomeScreen,
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle
+                    graphicID = Icons.Default.AddCircle,
+                    screen = Screen.HomeScreen,
+                    isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
-                    graphicID = Icons.Default.AccountCircle
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.HomeScreen,
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",
-                    graphicID = Icons.Default.ShoppingCart
+                    graphicID = Icons.Default.ShoppingCart,
+                    screen = Screen.CartScreen,
+                    isActive = false
                 )
             ), modifier = Modifier.align(Alignment.BottomCenter)
         )
