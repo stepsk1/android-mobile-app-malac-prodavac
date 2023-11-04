@@ -1,26 +1,22 @@
 package com.triforce.malacprodavac
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
+
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.triforce.malacprodavac.presentation.login.LoginScreen
-import com.triforce.malacprodavac.presentation.RegistrationScreen
-import com.triforce.malacprodavac.presentation.cart.CartScreen
-import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
+import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.home.HomeScreen
-import com.triforce.malacprodavac.presentation.store.StoreScreen
-import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
+    var startDestination = Screen.LoginScreen.route
+
     NavHost(
         navController = navController,
-        startDestination = Screen.CartDetailsScreen.route
+        startDestination = startDestination
     ) {
-
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController = navController)
         }
@@ -28,11 +24,11 @@ fun Navigation() {
         composable(
             route = Screen.RegistrationScreen.route + "",
             arguments = listOf(
-                navArgument("name") {
-                    type = NavType.StringType
-                    defaultValue = "Uros"
-                    nullable = true
-                }
+//                navArgument("name") {
+//                    type = NavType.StringType
+//                    defaultValue = "Uros"
+//                    nullable = true
+//                }
             )
         ) {
             RegistrationScreen(navController = navController)

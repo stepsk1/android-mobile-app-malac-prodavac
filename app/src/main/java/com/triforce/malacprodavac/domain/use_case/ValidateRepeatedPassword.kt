@@ -1,6 +1,6 @@
 package com.triforce.malacprodavac.domain.use_case
 
-class ValidateRepeatedPassword {
+class ValiStringRepeatedPassword {
     fun execute(password: String, repeatedPassword: String):ValidationResult {
         if(password != repeatedPassword) {
             return ValidationResult(

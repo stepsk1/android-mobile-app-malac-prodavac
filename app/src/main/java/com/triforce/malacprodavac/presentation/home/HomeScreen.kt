@@ -71,9 +71,10 @@ fun HomeScreen(navController: NavController) {
         Surface (
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxHeight(0.9F)
                 .padding(top = 100.dp)
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+                .background(color = MP_Pink)
         ){
 
         }
