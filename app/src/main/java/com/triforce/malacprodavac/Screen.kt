@@ -7,6 +7,7 @@ sealed class Screen(val route: String) {
     object StoreScreen : Screen("store_screen")
     object StoreCategoryScreen : Screen("store_category_screen")
     object CartScreen : Screen("cart_screen")
+    object  CartDetailsScreen : Screen("cart_deatils_screen")
 
     fun withArgs(vararg args: String): String {
         return buildString {
