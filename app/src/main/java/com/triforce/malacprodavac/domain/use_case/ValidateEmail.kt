@@ -2,7 +2,7 @@ package com.triforce.malacprodavac.domain.use_case
 
 import android.util.Patterns as Patterns
 
-class ValidateEmail {
+class ValiStringEmail {
 
     fun execute(email: String):ValidationResult {
         if(email.isBlank()) {

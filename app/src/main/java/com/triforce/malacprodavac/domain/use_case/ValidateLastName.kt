@@ -1,6 +1,6 @@
 package com.triforce.malacprodavac.domain.use_case
 
-class ValidateLastName {
+class ValiStringLastName {
     fun execute(lastName: String):ValidationResult {
         if(lastName.isBlank()) {
             return ValidationResult(
