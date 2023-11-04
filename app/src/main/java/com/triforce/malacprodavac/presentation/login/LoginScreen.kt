@@ -155,7 +155,7 @@ fun LoginScreen(navController: NavController) {
                     val uri = annotatedString.getStringAnnotations("registration",
                         offset, offset).firstOrNull()?.item
                     if(uri!=null)
-                        navController.navigate(Screen.HomeScreen.route) // promenio sam da me šalje odmah na home
+                        navController.navigate(Screen.RegistrationScreen.route)
                 }
             )
         }

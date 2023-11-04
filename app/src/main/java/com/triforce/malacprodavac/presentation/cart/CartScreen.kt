@@ -98,7 +98,7 @@ fun CartScreen(navController: NavController)
                 .clip(RoundedCornerShape(25.dp))
                 .padding(
                     start = 5.dp,
-                    top = 710.dp,
+                    top = 600.dp,
                     end = 5.dp,
                     bottom = 40.dp
                 )
@@ -300,7 +300,7 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
             .clip(RoundedCornerShape(25.dp))
             .padding(
                 start = 5.dp,
-                top = 635.dp,
+                top = 540.dp,
                 end = 5.dp,
                 bottom = 40.dp
             )
