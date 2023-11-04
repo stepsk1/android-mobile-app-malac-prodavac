@@ -37,5 +37,21 @@ fun Navigation() {
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(navController = navController)
         }
+
+        composable(route = Screen.StoreScreen.route) {
+            StoreScreen(navController = navController)
+        }
+
+        composable(route = Screen.StoreCategoryScreen.route) {
+            StoreCategoryScreen(navController = navController)
+        }
+
+        composable(route = Screen.CartScreen.route) {
+            CartScreen(navController = navController)
+        }
+
+        composable(route = Screen.CartDetailsScreen.route) {
+            CartDetailsScreen(navController = navController)
+        }
     }
 }

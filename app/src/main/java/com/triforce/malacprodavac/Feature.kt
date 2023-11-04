@@ -8,5 +8,6 @@ data class Feature(
     val title: String,
     val graphicID: ImageVector,
     val color1: Color,
-    val color2: Color
+    val color2: Color,
+    val screen: Screen
 )

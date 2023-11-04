@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import com.triforce.malacprodavac.Screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -78,67 +79,83 @@ fun HomeScreen(navController: NavController) {
 
         }
         Column {
-            GreetingSection()
+            GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac")
             CategoriesSection(categories = listOf("Pijaca", "Profil", "Porudžbine", "Korpa", "Prodavnica"))
-            GoToStoreSection()
+            GoToStoreSection(navController)
             RecommendedFeaturesSection(
+                navController = navController,
                 features = listOf(
                     Feature(
                         title = "Prodavnica",
                         graphicID = Icons.Default.AddCircle,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight
+                        color2 = MP_GreenLight,
+                        screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Orange_Dark,
-                        color2 = MP_Orange
+                        color2 = MP_Orange,
+                        screen = Screen.HomeScreen
                     ),
                     Feature(
                         title = "Omiljeno",
                         graphicID = Icons.Default.Favorite,
                         color1 = MP_Orange_Dark,
-                        color2 = MP_Orange
+                        color2 = MP_Orange,
+                        screen = Screen.HomeScreen
                     ),
                     Feature(
                         title = "Korpa",
                         graphicID = Icons.Default.ShoppingCart,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight
+                        color2 = MP_GreenLight,
+                        screen = Screen.CartScreen
                     ),
                     Feature(
                         title = "Prodavnica",
                         graphicID = Icons.Default.AddCircle,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight
+                        color2 = MP_GreenLight,
+                        screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Orange,
-                        color2 = MP_Orange_Dark
+                        color2 = MP_Orange_Dark,
+                        screen = Screen.StoreScreen
                     )
                 )
             )
         }
         BottomNavigationMenu(
+            navController = navController,
             items = listOf(
                 BottomNavigationMenuContent(
                     title = "Početna",
-                    graphicID = Icons.Default.Home
+                    graphicID = Icons.Default.Home,
+                    screen = Screen.HomeScreen,
+                    isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle
+                    graphicID = Icons.Default.AddCircle,
+                    screen = Screen.HomeScreen,
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
-                    graphicID = Icons.Default.AccountCircle
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.HomeScreen,
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",
-                    graphicID = Icons.Default.ShoppingCart
+                    graphicID = Icons.Default.ShoppingCart,
+                    screen = Screen.CartScreen,
+                    isActive = false
                 )
             ), modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -148,7 +165,9 @@ fun HomeScreen(navController: NavController) {
 
 @Composable
 fun GreetingSection(
-    name: String = "Filip"
+    name: String = "Filip",
+    msg: String,
+    subMsg: String = ""
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -162,12 +181,12 @@ fun GreetingSection(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Početna Strana",
+                text = msg,
                 style = MaterialTheme.typography.h4,
                 color = MP_White
             )
             Text(
-                text = "Pretražite Malac Prodavac",
+                text = subMsg,
                 style = MaterialTheme.typography.body1,
                 color = MP_White
             )
@@ -196,7 +215,7 @@ fun CategoriesSection(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(start = 15.dp, top = 40.dp, bottom = 5.dp)
+                    .padding(start = 15.dp, top = 30.dp, bottom = 5.dp)
                     .shadow(
                         elevation = 5.dp,
                         spotColor = MP_Black,
@@ -236,6 +255,7 @@ fun CategoriesSection(
 
 @Composable
 fun GoToStoreSection(
+    navController: NavController,
     color1: Color = MP_Pink,
     color2: Color = MP_Pink_Dark
 ) {
@@ -260,6 +280,9 @@ fun GoToStoreSection(
                     end = Offset.Infinite
                 )
             )
+            .clickable {
+                navController.navigate(Screen.StoreScreen.route)
+            }
             .padding(horizontal = 15.dp, vertical = 20.dp)
             .fillMaxWidth()
     ) {
@@ -297,6 +320,7 @@ fun GoToStoreSection(
 
 @Composable
 fun RecommendedFeaturesSection(
+    navController: NavController,
     features: List<Feature>
 ) {
     Column(
@@ -321,7 +345,10 @@ fun RecommendedFeaturesSection(
         ) {
             items(features.size) {// how many items do we have
                 // define one of items
-                RecommendedFeatureItem(feature = features[it])
+                RecommendedFeatureItem(
+                    navController = navController,
+                    feature = features[it]
+                )
             }
         }
     }
@@ -329,6 +356,7 @@ fun RecommendedFeaturesSection(
 
 @Composable
 fun RecommendedFeatureItem(
+    navController: NavController,
     feature: Feature
 ) {
     BoxWithConstraints(
@@ -381,7 +409,7 @@ fun RecommendedFeatureItem(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .clickable {
-                        // we need to handle the click...
+                        navController.navigate(feature.screen.route)
                     }
                     .align(Alignment.BottomEnd)
                     .clip(RoundedCornerShape(10.dp))
@@ -394,6 +422,7 @@ fun RecommendedFeatureItem(
 
 @Composable
 fun BottomNavigationMenu(
+    navController: NavController,
     items: List<BottomNavigationMenuContent>,
     modifier: Modifier = Modifier,
     selectedColor: Color = MP_GreenLight,
@@ -410,18 +439,27 @@ fun BottomNavigationMenu(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(MP_Black)
+            .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+            .background(
+                Brush.linearGradient(
+                    0.0f to Color.DarkGray,
+                    1.0f to Color.Black,
+                    start = Offset.Zero,
+                    end = Offset.Infinite
+                )
+            )
             .padding(vertical = 10.dp)
     ) {
         items.forEachIndexed { index, item ->
             BottomNavigationMenuItem(
+                navController = navController,
                 item = item,
                 isActive = index == selectedItemID,
                 selectedColor = selectedColor,
                 selectedTextColor = selectedTextColor,
                 nonActiveTextColor = nonActiveTextColor
             ) {
-                selectedItemID = index // upStringd
+                selectedItemID = index // updated
             }
         }
     }
@@ -429,26 +467,29 @@ fun BottomNavigationMenu(
 
 @Composable
 fun BottomNavigationMenuItem(
+    navController: NavController,
     item: BottomNavigationMenuContent,
     isActive: Boolean = false,
     selectedColor: Color = MP_GreenLight,
     selectedTextColor: Color = MP_White,
     nonActiveTextColor: Color = MP_GreenLight,
-    onMenuItemClick: () -> Unit // does nothing, void
+    onMenuItemClick: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.clickable {
-            onMenuItemClick()
-        }
+        modifier = Modifier
+            .clickable {
+                navController.navigate(item.screen.route)
+                item.isActive = true
+            }
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .background(
-                    if (isActive) {
+                    if (item.isActive) {
                         selectedColor
                     } else {
                         Color.Transparent
@@ -459,7 +500,7 @@ fun BottomNavigationMenuItem(
             Icon(
                 imageVector = item.graphicID,
                 contentDescription = item.title,
-                tint = if (isActive) selectedTextColor else nonActiveTextColor,
+                tint = if (item.isActive) selectedTextColor else nonActiveTextColor,
                 modifier = Modifier
                     .size(25.dp)
             )
