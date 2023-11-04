@@ -421,7 +421,7 @@ fun BottomNavigationMenu(
                 selectedTextColor = selectedTextColor,
                 nonActiveTextColor = nonActiveTextColor
             ) {
-                selectedItemID = index // updated
+                selectedItemID = index // upStringd
             }
         }
     }

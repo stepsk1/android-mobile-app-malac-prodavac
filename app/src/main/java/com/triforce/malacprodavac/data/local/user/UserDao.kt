@@ -4,22 +4,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM userentity")
+    @Query("SELECT * FROM UserEntity")
     suspend fun getUsers(): List<UserEntity>
 
-    @Query("""SELECT * FROM userentity
-                WHERE userId = :id""")
+    @Query("""SELECT * FROM UserEntity
+                WHERE id = :id""")
     suspend fun getUserForId(id: Int): List<UserEntity>
 
-    @Query("""SELECT * FROM userentity
+    @Query("""SELECT * FROM UserEntity
         WHERE email = :email""")
     suspend fun getUserForEmail(email: String): List<UserEntity>
 
-    @Query("DELETE FROM userentity")
+    @Query("DELETE FROM UserEntity")
     suspend fun clearUsers()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

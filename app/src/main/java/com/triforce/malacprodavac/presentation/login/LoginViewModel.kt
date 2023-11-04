@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.model.User
-import com.triforce.malacprodavac.domain.repository.UserRepository
-import com.triforce.malacprodavac.domain.use_case.ValidateEmail
-import com.triforce.malacprodavac.domain.use_case.ValidatePassword
+import com.triforce.malacprodavac.domain.repository.AuthRepository
+import com.triforce.malacprodavac.domain.use_case.ValiStringEmail
+import com.triforce.malacprodavac.domain.use_case.ValiStringPassword
 import com.triforce.malacprodavac.util.AuthResult
 import com.triforce.malacprodavac.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,12 +20,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: UserRepository,
+    private val repository: AuthRepository,
     private val sessionManager: SessionManager
 ): ViewModel() {
 
-    private val validateEmail: ValidateEmail = ValidateEmail()
-    private val validatePassword: ValidatePassword = ValidatePassword()
+    private val valiStringEmail: ValiStringEmail = ValiStringEmail()
+    private val valiStringPassword: ValiStringPassword = ValiStringPassword()
     var state by mutableStateOf(LoginFormState())
 
     private val validationEventChannel = Channel<ValidationEvent>()
@@ -53,8 +53,8 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun submitData() {
-        val emailResult = validateEmail.execute(state.email)
-        val passwordResult = validatePassword.execute(state.password)
+        val emailResult = valiStringEmail.execute(state.email)
+        val passwordResult = valiStringPassword.execute(state.password)
 
         hasError = listOf(
             emailResult,
@@ -84,7 +84,7 @@ class LoginViewModel @Inject constructor(
 
     private fun loginUser(email: String, password: String) {
         viewModelScope.launch {
-            repository.loginUser(email, password)
+            repository.login(email, password)
                 .collect { result ->
                     when(result) {
                         is Resource.Success -> {

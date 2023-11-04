@@ -4,9 +4,17 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
-import com.triforce.malacprodavac.data.remote.UserApi
-import com.triforce.malacprodavac.data.remote.interceptors.AuthInterceptorImpl
+import com.triforce.malacprodavac.data.local.RoomConverters
+import com.triforce.malacprodavac.data.remote.Api
+import com.triforce.malacprodavac.data.remote.auth.AuthApi
+import com.triforce.malacprodavac.data.remote.auth.interceptors.AuthInterceptorImpl
+import com.triforce.malacprodavac.data.remote.couriers.CouriersApi
+import com.triforce.malacprodavac.data.remote.customers.CustomersApi
+import com.triforce.malacprodavac.data.remote.shops.ShopsApi
+import com.triforce.malacprodavac.data.remote.users.UsersApi
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
 import com.triforce.malacprodavac.data.services.SessionManager
 import dagger.Module
@@ -23,16 +31,50 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApplicationModule {
-    /*  USER API DEPENDENCY CHAIN */
+
     @Provides
     @Singleton
-    fun provideUserApi(): UserApi {
-        return Retrofit.Builder()
-            .baseUrl(UserApi.REGISTER_COURIER)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
-            .create()
-    }
+    fun provideMoshi(): Moshi =
+        Moshi.Builder().add(
+            KotlinJsonAdapterFactory()
+        ).build()
+
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(moshi: Moshi): Retrofit = Retrofit.Builder().baseUrl(Api.BASE_URL)
+        .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+
+
+    /*  USER API DEPENDENCY CHAIN */
+
+    @Provides
+    @Singleton
+    fun provideAuthApi(retrofit: Retrofit): AuthApi =
+        retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideUsersApi(retrofit: Retrofit): UsersApi =
+        retrofit.create()
+
+
+    @Provides
+    @Singleton
+    fun provideCustomerApi(retrofit: Retrofit): CustomersApi =
+        retrofit.create()
+
+
+    @Provides
+    @Singleton
+    fun provideCouriersApi(retrofit: Retrofit): CouriersApi = retrofit.create()
+
+
+    @Provides
+    @Singleton
+    fun provideShopsApi(retrofit: Retrofit): ShopsApi =
+        retrofit.create()
+
 
     @Provides
     @Singleton
@@ -40,6 +82,7 @@ object ApplicationModule {
         OkHttpClient.Builder()
             .addInterceptor(authInterceptorImpl)
             .build()
+
     @Singleton
     @Provides
     fun provideAuthInterceptorImpl(
@@ -67,16 +110,25 @@ object ApplicationModule {
         context.getSharedPreferences(AppSharedPreferences.SHARED_PREFS, Context.MODE_PRIVATE)
 
     /* DATABASE */
+
     @Provides
     @Singleton
-    fun provideMalacProdavacDatabase(app: Application): MalacProdavacDatabase {
-        return Room.databaseBuilder(
+    fun provideRoomConverters(moshi: Moshi): RoomConverters =
+        RoomConverters(moshi)
+
+    @Provides
+    @Singleton
+    fun provideMalacProdavacDatabase(
+        app: Application,
+        converters: RoomConverters
+    ): MalacProdavacDatabase =
+        Room.databaseBuilder(
             app,
             MalacProdavacDatabase::class.java,
             "malacprodavac.db"
-        )
+        ).addTypeConverter(converters)
             .fallbackToDestructiveMigration()
             .build()
-    }
+
 
 }

@@ -5,21 +5,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.data.local.user.UserDao
-import com.triforce.malacprodavac.data.local.user.UserEntity
-import com.triforce.malacprodavac.domain.model.User
-import com.triforce.malacprodavac.domain.repository.UserRepository
-import com.triforce.malacprodavac.domain.use_case.ValidateEmail
-import com.triforce.malacprodavac.domain.use_case.ValidateFirstName
-import com.triforce.malacprodavac.domain.use_case.ValidateLastName
-import com.triforce.malacprodavac.domain.use_case.ValidatePassword
-import com.triforce.malacprodavac.domain.use_case.ValidateRepeatedPassword
-import com.triforce.malacprodavac.domain.use_case.ValidateTerms
+import com.triforce.malacprodavac.domain.model.Courier
+import com.triforce.malacprodavac.domain.model.CreateCourier
+import com.triforce.malacprodavac.domain.model.CreateCustomer
+import com.triforce.malacprodavac.domain.model.CreateShop
+import com.triforce.malacprodavac.domain.model.CreateUser
+import com.triforce.malacprodavac.domain.model.Customer
+import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.repository.CourierRepository
+import com.triforce.malacprodavac.domain.repository.CustomerRepository
+import com.triforce.malacprodavac.domain.repository.ShopRepository
+import com.triforce.malacprodavac.domain.use_case.ValiStringEmail
+import com.triforce.malacprodavac.domain.use_case.ValiStringFirstName
+import com.triforce.malacprodavac.domain.use_case.ValiStringLastName
+import com.triforce.malacprodavac.domain.use_case.ValiStringPassword
+import com.triforce.malacprodavac.domain.use_case.ValiStringRepeatedPassword
+import com.triforce.malacprodavac.domain.use_case.ValiStringTerms
 import com.triforce.malacprodavac.util.AuthResult
 import com.triforce.malacprodavac.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,15 +32,18 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     //private val savedStateHandle: SavedStateHandle,
-    private val repository: UserRepository
-): ViewModel() {
+    private val customersRepository: CustomerRepository,
+    private val couriersRepository: CourierRepository,
+    private val shopsRepository: ShopRepository,
+) : ViewModel() {
 
-    private val validateFirstName: ValidateFirstName = ValidateFirstName()
-    private val validateLastName: ValidateLastName = ValidateLastName()
-    private val validateEmail: ValidateEmail = ValidateEmail()
-    private val validatePassword: ValidatePassword = ValidatePassword()
-    private val validateRepeatedPassword: ValidateRepeatedPassword = ValidateRepeatedPassword()
-    private val validateTerms: ValidateTerms = ValidateTerms()
+    private val valiStringFirstName: ValiStringFirstName = ValiStringFirstName()
+    private val valiStringLastName: ValiStringLastName = ValiStringLastName()
+    private val valiStringEmail: ValiStringEmail = ValiStringEmail()
+    private val valiStringPassword: ValiStringPassword = ValiStringPassword()
+    private val valiStringRepeatedPassword: ValiStringRepeatedPassword =
+        ValiStringRepeatedPassword()
+    private val valiStringTerms: ValiStringTerms = ValiStringTerms()
     var state by mutableStateOf(RegistrationFormState())
 
     private val validationEventChannel = Channel<ValidationEvent>()
@@ -43,28 +51,35 @@ class RegistrationViewModel @Inject constructor(
     var hasError = false
 
     fun onEvent(event: RegistrationFormEvent) {
-        when(event) {
+        when (event) {
             is RegistrationFormEvent.FirstNameChanged -> {
                 state = state.copy(firstName = event.firstName)
             }
+
             is RegistrationFormEvent.LastNameChanged -> {
                 state = state.copy(lastName = event.lastName)
             }
+
             is RegistrationFormEvent.RoleChanged -> {
                 state = state.copy(role = event.role)
             }
+
             is RegistrationFormEvent.EmailChanged -> {
                 state = state.copy(email = event.email)
             }
+
             is RegistrationFormEvent.PasswordChanged -> {
                 state = state.copy(password = event.password)
             }
+
             is RegistrationFormEvent.RepeatedPasswordChanged -> {
                 state = state.copy(repeatedPassword = event.repeatedPassword)
             }
+
             is RegistrationFormEvent.AcceptTermsChanged -> {
                 state = state.copy(acceptedTerms = event.isAccepted)
             }
+
             is RegistrationFormEvent.Submit -> {
                 submitData()
             }
@@ -72,13 +87,24 @@ class RegistrationViewModel @Inject constructor(
     }
 
     private fun submitData() {
-        val firstNameResult = validateFirstName.execute(state.firstName)
-        val lastNameResult = validateLastName.execute(state.lastName)
-        val emailResult = validateEmail.execute(state.email)
-        val passwordResult = validatePassword.execute(state.password)
-        val repeatedPasswordResult = validateRepeatedPassword.execute(
-            state.password, state.repeatedPassword)
-        val termsResult = validateTerms.execute(state.acceptedTerms)
+        val firstNameResult = valiStringFirstName.execute(state.firstName)
+        val lastNameResult = valiStringLastName.execute(state.lastName)
+        val emailResult = valiStringEmail.execute(state.email)
+        val passwordResult = valiStringPassword.execute(state.password)
+        val repeatedPasswordResult = valiStringRepeatedPassword.execute(
+            state.password, state.repeatedPassword
+        )
+        val termsResult = valiStringTerms.execute(state.acceptedTerms)
+        val firstName = state.firstName
+        val lastName = state.lastName
+        val email = state.email
+        val password = state.password
+        val createUser = CreateUser(
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
+            password = password
+        )
 
         hasError = listOf(
             firstNameResult,
@@ -90,11 +116,15 @@ class RegistrationViewModel @Inject constructor(
         ).any { !it.successful }
 
 
-        if(!hasError) {
-            registerUser(state.email, state.firstName, state.lastName, state.password, state.repeatedPassword, state.role)
+        if (!hasError) {
+            when (state.role) {
+                "KUPAC" -> registerCustomer(CreateCustomer(createUser))
+                "DOSTAVLJAČ" -> registerCourier(CreateCourier(createUser, 0.0))
+                else -> registerShop(CreateShop(createUser, ""))
+            }
         }
 
-        if(hasError) {
+        if (hasError) {
             state = state.copy(
                 firstNameError = firstNameResult.errorMessage,
                 lastNameError = lastNameResult.errorMessage,
@@ -119,26 +149,92 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun registerUser(email: String, firstName: String, lastName: String, password: String, repeatedPassword: String, role: String) {
+    private fun registerCustomer(createCustomer: CreateCustomer) {
         viewModelScope.launch {
-            repository.registerUser(email, firstName, lastName, password, repeatedPassword, role)
+            customersRepository.registerCustomer(createCustomer)
                 .collect { result ->
-                    when(result) {
+                    when (result) {
                         is Resource.Success -> {
-                            if (result.data !is User) {
+                            if (result.data !is Customer) {
                                 state = state.copy(
                                     status = AuthResult.Unauthorized()
                                 )
                             }
-                            if (result.data is User) {
+                            if (result.data is Customer) {
                                 state = state.copy(
-                                    status = AuthResult.Authorized(result.data.email)
+                                    status = AuthResult.Authorized(state.email)
                                 )
                             }
                         }
+
                         is Resource.Error -> {
                             Unit
                         }
+
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun registerCourier(createCourier: CreateCourier) {
+        viewModelScope.launch {
+            couriersRepository.registerCourier(createCourier)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            if (result.data !is Courier) {
+                                state = state.copy(
+                                    status = AuthResult.Unauthorized()
+                                )
+                            }
+                            if (result.data is Courier) {
+                                state = state.copy(
+                                    status = AuthResult.Authorized(state.email)
+                                )
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            Unit
+                        }
+
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun registerShop(createShop: CreateShop) {
+        viewModelScope.launch {
+            shopsRepository.registerShop(createShop)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            if (result.data !is Shop) {
+                                state = state.copy(
+                                    status = AuthResult.Unauthorized()
+                                )
+                            }
+                            if (result.data is Shop) {
+                                state = state.copy(
+                                    status = AuthResult.Authorized(state.email)
+                                )
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            Unit
+                        }
+
                         is Resource.Loading -> {
                             state = state.copy(
                                 isLoading = result.isLoading
@@ -150,6 +246,6 @@ class RegistrationViewModel @Inject constructor(
     }
 
     sealed class ValidationEvent {
-        object Success: ValidationEvent()
+        object Success : ValidationEvent()
     }
 }
