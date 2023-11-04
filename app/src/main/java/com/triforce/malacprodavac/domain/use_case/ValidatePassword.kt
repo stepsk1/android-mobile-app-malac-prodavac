@@ -1,6 +1,6 @@
 package com.triforce.malacprodavac.domain.use_case
 
-class ValiStringPassword {
+class ValidatePassword {
     fun execute(password: String):ValidationResult {
         if(password.length < 8) {
             return ValidationResult(

@@ -15,12 +15,12 @@ import com.triforce.malacprodavac.domain.model.Shop
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
-import com.triforce.malacprodavac.domain.use_case.ValiStringEmail
-import com.triforce.malacprodavac.domain.use_case.ValiStringFirstName
-import com.triforce.malacprodavac.domain.use_case.ValiStringLastName
-import com.triforce.malacprodavac.domain.use_case.ValiStringPassword
-import com.triforce.malacprodavac.domain.use_case.ValiStringRepeatedPassword
-import com.triforce.malacprodavac.domain.use_case.ValiStringTerms
+import com.triforce.malacprodavac.domain.use_case.ValidateEmail
+import com.triforce.malacprodavac.domain.use_case.ValidateFirstName
+import com.triforce.malacprodavac.domain.use_case.ValidateLastName
+import com.triforce.malacprodavac.domain.use_case.ValidatePassword
+import com.triforce.malacprodavac.domain.use_case.ValidateRepeatedPassword
+import com.triforce.malacprodavac.domain.use_case.ValidateTerms
 import com.triforce.malacprodavac.util.AuthResult
 import com.triforce.malacprodavac.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,13 +37,13 @@ class RegistrationViewModel @Inject constructor(
     private val shopsRepository: ShopRepository,
 ) : ViewModel() {
 
-    private val valiStringFirstName: ValiStringFirstName = ValiStringFirstName()
-    private val valiStringLastName: ValiStringLastName = ValiStringLastName()
-    private val valiStringEmail: ValiStringEmail = ValiStringEmail()
-    private val valiStringPassword: ValiStringPassword = ValiStringPassword()
-    private val valiStringRepeatedPassword: ValiStringRepeatedPassword =
-        ValiStringRepeatedPassword()
-    private val valiStringTerms: ValiStringTerms = ValiStringTerms()
+    private val valiStringFirstName: ValidateFirstName = ValidateFirstName()
+    private val valiStringLastName: ValidateLastName = ValidateLastName()
+    private val valiStringEmail: ValidateEmail = ValidateEmail()
+    private val valiStringPassword: ValidatePassword = ValidatePassword()
+    private val valiStringRepeatedPassword: ValidateRepeatedPassword =
+        ValidateRepeatedPassword()
+    private val valiStringTerms: ValidateTerms = ValidateTerms()
     var state by mutableStateOf(RegistrationFormState())
 
     private val validationEventChannel = Channel<ValidationEvent>()

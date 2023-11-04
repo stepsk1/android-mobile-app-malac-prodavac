@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.home.HomeScreen
+import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
 
 @Composable
 fun Navigation() {
@@ -38,17 +40,17 @@ fun Navigation() {
             HomeScreen(navController = navController)
         }
 
-        composable(route = Screen.StoreScreen.route) {
-            StoreScreen(navController = navController)
-        }
+//        composable(route = Screen.StoreScreen.route) {
+//            StoreScreen(navController = navController)
+//        }
 
         composable(route = Screen.StoreCategoryScreen.route) {
             StoreCategoryScreen(navController = navController)
         }
 
-        composable(route = Screen.CartScreen.route) {
-            CartScreen(navController = navController)
-        }
+//        composable(route = Screen.CartScreen.route) {
+//            CartScreen(navController = navController)
+//        }
 
         composable(route = Screen.CartDetailsScreen.route) {
             CartDetailsScreen(navController = navController)
