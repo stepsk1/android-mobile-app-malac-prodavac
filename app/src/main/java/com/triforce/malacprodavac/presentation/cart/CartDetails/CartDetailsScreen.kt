@@ -42,6 +42,7 @@ import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -69,6 +70,15 @@ fun CartDetailsScreen(navController: NavController) {
 
     val typeOfPaymentOptions = listOf("Paypal", "Lično/Pouzećem")
     var selectedTypeOfPayment by remember { mutableStateOf(typeOfPaymentOptions[0]) }
+
+    val addressesOptions = listOf(
+//        "Živorada Kostića, Jagodina 35000, 066/251-101"
+        "Gavrila Principa, Kragujevac, 066/251-102"
+    )
+    var selectedAddress by remember { mutableStateOf(addressesOptions[0]) }
+
+    val typeOfSendingOptions = listOf("Lično preuzimanje", "Kurirska dostava")
+    var selectedTypeOfSending by remember { mutableStateOf(typeOfSendingOptions[0]) }
 
     Box(
         modifier = Modifier
@@ -113,8 +123,8 @@ fun CartDetailsScreen(navController: NavController) {
                         .padding(vertical = 20.dp, horizontal = 20.dp)
                 ){
                     Column(
-                        modifier = Modifier.padding(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(13.dp)
+                        modifier = Modifier.padding(2.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         typeOfPaymentOptions.forEach { payment ->
                             Row(
@@ -126,6 +136,113 @@ fun CartDetailsScreen(navController: NavController) {
                                 )
                                 Text(
                                     text = payment,
+                                    style = MaterialTheme.typography.h6,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text = "Podaci za slanje",
+                    style = MaterialTheme.typography.h5,
+                    color = MP_Black,
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                )
+                Text(
+                    text = "Izmeni",
+                    style = MaterialTheme.typography.h6,
+                    color = MP_White,
+                    modifier = Modifier
+                        .padding(start = 80.dp)
+                        .background(MP_Pink)
+                        .clip(RoundedCornerShape(10.dp))
+                        .padding(6.dp)
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ){
+                Box(
+                    contentAlignment = Alignment.CenterStart,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(
+                            elevation = 5.dp,
+                            spotColor = MP_Black,
+                            shape = RoundedCornerShape(7.5.dp)
+                        )
+                        .clip(RoundedCornerShape(10.dp))
+                        .padding(vertical = 20.dp, horizontal = 20.dp)
+                ){
+                    Column(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .clip(RoundedCornerShape(10.dp)),
+                        verticalArrangement = Arrangement.spacedBy(13.dp),
+                    ) {
+                        addressesOptions.forEach { address ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                RadioButton(
+                                    selected = (address == selectedAddress),
+                                    onClick = { selectedAddress = address }
+                                )
+                                Text(
+                                    text = address,
+                                    style = MaterialTheme.typography.h6,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            Text(
+                text = "Način slanja",
+                style = MaterialTheme.typography.h5,
+                color = MP_Black,
+                modifier = Modifier
+                    .padding(start = 10.dp)
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ){
+                Box(
+                    contentAlignment = Alignment.CenterStart,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(
+                            elevation = 5.dp,
+                            spotColor = MP_Black,
+                            shape = RoundedCornerShape(7.5.dp)
+                        )
+                        .clip(RoundedCornerShape(10.dp))
+                        .padding(vertical = 20.dp, horizontal = 20.dp)
+                ){
+                    Column(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .clip(RoundedCornerShape(10.dp)),
+                        verticalArrangement = Arrangement.spacedBy(13.dp),
+                    ) {
+                        typeOfSendingOptions.forEach { typeOfSending ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                RadioButton(
+                                    selected = (typeOfSending == selectedTypeOfSending),
+                                    onClick = { selectedTypeOfSending = typeOfSending }
+                                )
+                                Text(
+                                    text = typeOfSending,
                                     style = MaterialTheme.typography.h6,
                                     modifier = Modifier.padding(start = 8.dp)
                                 )
