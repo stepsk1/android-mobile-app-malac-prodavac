@@ -188,7 +188,8 @@ fun HeaderSectionTitle(
                 modifier = Modifier
                     .size(30.dp)
                     .clickable {
-                        navController.navigate(Screen.HomeScreen.route)
+                        navController.popBackStack()
+                        //navController.navigate(Screen.HomeScreen.route)
                     }
             )
 

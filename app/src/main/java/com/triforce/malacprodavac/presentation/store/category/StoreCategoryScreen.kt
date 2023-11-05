@@ -27,6 +27,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -87,7 +89,8 @@ fun StoreCategoryScreen(navController: NavController)
             CategorySectionHeader("100% domaći i prirodni sokovi",
                 "Voće se prvo hladno cedi, zatim pasterizuje i bez ikakvih dodataka pakuje u staklenu ambalažu.")
             CategoriesSection(categories = listOf("Bez Aditiva", "Sirupi", "Sokovi"))
-            ShowcaseStoreCategoryProducts(
+            FilterSortRow(navController)
+            ShowcaseProducts(
                 products = listOf(
                     Product(
                         title = "Sok od višnje 0,2l",
@@ -175,7 +178,73 @@ fun CategorySectionHeader(
 }
 
 @Composable
-fun ShowcaseStoreCategoryProducts(
+fun FilterSortRow(
+    navController: NavController
+){
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 20.dp,
+                vertical = 7.5.dp
+            )
+    ){
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .size(
+                    width =  75.dp,
+                    height = 20.dp
+                )
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = "Filtriraj",
+                tint = MP_Green,
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable {
+                    }
+            )
+            Text(
+                text = "Filtriraj",
+                style = androidx.compose.material.MaterialTheme.typography.body2,
+                color = MP_Black,
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .size(
+                    width =  75.dp,
+                    height = 20.dp
+                )
+
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Menu,
+                contentDescription = "Sortiraj",
+                tint = MP_Orange,
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable {
+                    }
+            )
+            Text(
+                text = "Sortiraj",
+                style = androidx.compose.material.MaterialTheme.typography.body2,
+                color = MP_Black,
+            )
+        }
+    }
+}
+
+@Composable
+fun ShowcaseProducts(
     products: List<Product>,
     navController: NavController
 ) {
@@ -283,6 +352,8 @@ fun StoreCategoryProduct (
                             tint = MP_Pink,
                             modifier = Modifier
                                 .size(20.dp)
+                                .clickable {
+                                }
                         )
                     }
                 }
