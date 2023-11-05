@@ -96,37 +96,43 @@ fun StoreCategoryScreen(navController: NavController)
                         title = "Sok od višnje 0,2l",
                         imageID = Icons.Filled.AccountBox,
                         price = 99.0F,
-                        saved = true
+                        saved = true,
+                        desc = ""
                     ),
                     Product(
                         title = "Sok od jagode 0,2l",
                         imageID = Icons.Filled.AccountBox,
                         price = 199.0F,
-                        saved = false
+                        saved = false,
+                        desc = ""
                     ),
                     Product(
                         title = "Sirup od jagode 1l",
                         imageID = Icons.Filled.AccountBox,
                         price = 590.0F,
-                        saved = false
+                        saved = false,
+                        desc = ""
                     ),
                     Product(
                         title = "Sirup od aronije 1l",
                         imageID = Icons.Filled.AccountBox,
                         price = 520.0F,
-                        saved = true
+                        saved = true,
+                        desc = ""
                     ),
                     Product(
                         title = "Sok od ribizle",
                         imageID = Icons.Filled.AccountBox,
                         price = 890.0F,
-                        saved = false
+                        saved = false,
+                        desc = ""
                     ),
                     Product(
                         title = "Sirup od drena",
                         imageID = Icons.Filled.AccountBox,
                         price = 199.0F,
-                        saved = false
+                        saved = false,
+                        desc = ""
                     ),
                 ), navController
             )
