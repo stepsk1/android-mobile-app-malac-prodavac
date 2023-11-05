@@ -15,7 +15,7 @@ import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScree
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-    var startDestination = Screen.HomeScreen.route
+    var startDestination = Screen.LoginScreen.route
 
     NavHost(
         navController = navController,
