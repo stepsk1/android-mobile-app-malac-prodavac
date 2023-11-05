@@ -47,7 +47,6 @@ import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
@@ -65,7 +64,16 @@ fun CartScreen(navController: NavController)
         BuyedProduct(
             name = "Kajmak 100g",
             price = 670.00
+        ),
+        BuyedProduct(
+            name = "Jabuke 1kg",
+            price = 75.00
+        ),
+        BuyedProduct(
+            name = "Domaće mleko 2l",
+            price = 210.99
         )
+
     )
 
     Box(
@@ -98,7 +106,7 @@ fun CartScreen(navController: NavController)
                 .clip(RoundedCornerShape(25.dp))
                 .padding(
                     start = 5.dp,
-                    top = 600.dp,
+                    top = 663.dp,
                     end = 5.dp,
                     bottom = 40.dp
                 )
@@ -170,10 +178,10 @@ fun BuyedProductSection(
             contentPadding = PaddingValues(
                 start = 20.5.dp,
                 end = 7.5.dp,
-                bottom = 170.dp
-            ), // 170 dp bottom padding because navigation and total price
+                bottom = 130.dp
+            ), // 130 dp bottom padding because navigation and total price
             modifier = Modifier
-                .fillMaxHeight()
+                .requiredHeight(500.dp)
         ) {
             items(buyedProducts.size) {// how many items do we have
                 // define one of items
@@ -297,10 +305,10 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(25.dp))
+            .clip(RoundedCornerShape(10.dp))
             .padding(
                 start = 5.dp,
-                top = 540.dp,
+                top = 590.dp,
                 end = 5.dp,
                 bottom = 40.dp
             )
@@ -318,7 +326,7 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
                         spotColor = MP_Black,
                         shape = RoundedCornerShape(7.5.dp)
                     )
-                    .clip(RoundedCornerShape(25.dp))
+                    .clip(RoundedCornerShape(10.dp))
                     .padding(vertical = 20.dp, horizontal = 20.dp)
             )
             {
