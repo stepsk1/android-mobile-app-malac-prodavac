@@ -278,13 +278,13 @@ fun StoreCategoryProduct (
                 spotColor = MP_Black,
                 shape = RoundedCornerShape(7.5.dp)
             )
-            .clickable {
-                navController.navigate(Screen.StoreCategoryScreen.route)
-            }
             .padding(1.5.dp)
             .aspectRatio(0.8F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
             .clip(RoundedCornerShape(10.dp))
             .background(MP_White)
+            .clickable {
+                navController.navigate(Screen.ProductScreen.route)
+            }
     ) {
 
         Box(
