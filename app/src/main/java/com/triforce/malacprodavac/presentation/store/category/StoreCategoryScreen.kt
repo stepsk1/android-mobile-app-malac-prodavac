@@ -25,7 +25,13 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -39,6 +45,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
@@ -49,6 +56,7 @@ import com.triforce.malacprodavac.presentation.home.RecommendedFeaturesSection
 import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
 import com.triforce.malacprodavac.presentation.store.StoreCategorieItem
 import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
@@ -81,43 +89,50 @@ fun StoreCategoryScreen(navController: NavController)
             CategorySectionHeader("100% domaći i prirodni sokovi",
                 "Voće se prvo hladno cedi, zatim pasterizuje i bez ikakvih dodataka pakuje u staklenu ambalažu.")
             CategoriesSection(categories = listOf("Bez Aditiva", "Sirupi", "Sokovi"))
-            ShowcaseStoreCategoryProducts(
+            FilterSortRow(navController)
+            ShowcaseProducts(
                 products = listOf(
                     Product(
                         title = "Sok od višnje 0,2l",
                         imageID = Icons.Filled.AccountBox,
                         price = 99.0F,
-                        saved = true
+                        saved = true,
+                        desc = ""
                     ),
                     Product(
                         title = "Sok od jagode 0,2l",
                         imageID = Icons.Filled.AccountBox,
                         price = 199.0F,
-                        saved = false
+                        saved = false,
+                        desc = ""
                     ),
                     Product(
                         title = "Sirup od jagode 1l",
                         imageID = Icons.Filled.AccountBox,
                         price = 590.0F,
-                        saved = false
+                        saved = false,
+                        desc = ""
                     ),
                     Product(
                         title = "Sirup od aronije 1l",
                         imageID = Icons.Filled.AccountBox,
                         price = 520.0F,
-                        saved = true
+                        saved = true,
+                        desc = ""
                     ),
                     Product(
                         title = "Sok od ribizle",
                         imageID = Icons.Filled.AccountBox,
                         price = 890.0F,
-                        saved = false
+                        saved = false,
+                        desc = ""
                     ),
                     Product(
                         title = "Sirup od drena",
                         imageID = Icons.Filled.AccountBox,
                         price = 199.0F,
-                        saved = false
+                        saved = false,
+                        desc = ""
                     ),
                 ), navController
             )
@@ -169,13 +184,80 @@ fun CategorySectionHeader(
 }
 
 @Composable
-fun ShowcaseStoreCategoryProducts(
+fun FilterSortRow(
+    navController: NavController
+){
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 20.dp,
+                vertical = 7.5.dp
+            )
+    ){
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .size(
+                    width =  75.dp,
+                    height = 20.dp
+                )
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = "Filtriraj",
+                tint = MP_Green,
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable {
+                    }
+            )
+            Text(
+                text = "Filtriraj",
+                style = androidx.compose.material.MaterialTheme.typography.body2,
+                color = MP_Black,
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .size(
+                    width =  75.dp,
+                    height = 20.dp
+                )
+
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Menu,
+                contentDescription = "Sortiraj",
+                tint = MP_Orange,
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable {
+                    }
+            )
+            Text(
+                text = "Sortiraj",
+                style = androidx.compose.material.MaterialTheme.typography.body2,
+                color = MP_Black,
+            )
+        }
+    }
+}
+
+@Composable
+fun ShowcaseProducts(
     products: List<Product>,
     navController: NavController
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(
+            top = 7.5.dp,
             start = 7.5.dp,
             end = 7.5.dp,
             bottom = 80.dp
@@ -193,7 +275,7 @@ fun ShowcaseStoreCategoryProducts(
 fun StoreCategoryProduct (
     product: Product,
     navController: NavController
-){
+) {
     BoxWithConstraints(
         modifier = Modifier
             .padding(start = 7.5.dp, end = 7.5.dp, bottom = 15.dp)
@@ -202,35 +284,86 @@ fun StoreCategoryProduct (
                 spotColor = MP_Black,
                 shape = RoundedCornerShape(7.5.dp)
             )
-            .clickable {
-                navController.navigate(Screen.StoreCategoryScreen.route)
-            }
             .padding(1.5.dp)
-            .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
+            .aspectRatio(0.8F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
             .clip(RoundedCornerShape(10.dp))
             .background(MP_White)
+            .clickable {
+                navController.navigate(Screen.ProductScreen.route)
+            }
     ) {
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(15.dp)
+                .padding(10.dp)
         ) {
-            androidx.compose.material3.Text(
-                text = product.title,
-                style = androidx.compose.material.MaterialTheme.typography.body1,
-                color = MP_White,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-            )
-            Icon(
-                imageVector = product.imageID,
-                contentDescription = product.title,
-                tint = MP_White,
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .size(100.dp)
-            )
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(
+                            width = 150.dp,
+                            height = 125.dp
+                        )
+                        .background(MP_Gray)
+                        .align(Alignment.CenterHorizontally)
+                ){
+                    Icon(
+                        imageVector = Icons.Filled.Home,
+                        contentDescription = product.imageID.toString(),
+                        tint = MP_White,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier
+                        .padding(
+                            top = 7.5.dp
+                        )
+                ) {
+                    Text(
+                        text = product.title,
+                        style = androidx.compose.material.MaterialTheme.typography.body2,
+                        color = MP_Black
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = 5.dp
+                            )
+                    ) {
+                        Text(
+                            text = product.price.toString() + " rsd",
+                            style = androidx.compose.material.MaterialTheme.typography.body2,
+                            color = MP_Green,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Icon(
+                            imageVector = if (product.saved) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Filled.FavoriteBorder
+                            },
+                            contentDescription = product.imageID.toString(),
+                            tint = MP_Pink,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable {
+                                }
+                        )
+                    }
+                }
+            }
         }
     }
 }

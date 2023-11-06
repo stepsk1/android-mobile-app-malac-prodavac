@@ -12,6 +12,7 @@ import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
 import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
+import com.triforce.malacprodavac.presentation.store.product.ProductScreen
 
 @Composable
 fun Navigation() {
@@ -59,8 +60,11 @@ fun Navigation() {
             CartDetailsScreen(navController = navController)
         }
 
-        composable(route = Screen.DetailsOrderScreen.route) {
-            DetailsOrderScreen(navController = navController)
+        composable(route = Screen.ProductScreen.route) {
+            ProductScreen(navController = navController)
+        }
+        composable(route = Screen.HighlightDetailed.route) {
+            HighlightDetailed(navController = navController)
         }
     }
 }

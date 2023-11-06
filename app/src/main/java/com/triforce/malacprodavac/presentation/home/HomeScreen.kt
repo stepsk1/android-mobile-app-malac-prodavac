@@ -89,20 +89,20 @@ fun HomeScreen(navController: NavController) {
                         title = "Prodavnica",
                         graphicID = Icons.Default.AddCircle,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight,
+                        color2 = MP_Green,
                         screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
-                        color1 = MP_Orange_Dark,
+                        color1 = MP_Orange,
                         color2 = MP_Orange,
                         screen = Screen.HomeScreen
                     ),
                     Feature(
                         title = "Omiljeno",
                         graphicID = Icons.Default.Favorite,
-                        color1 = MP_Orange_Dark,
+                        color1 = MP_Orange,
                         color2 = MP_Orange,
                         screen = Screen.HomeScreen
                     ),
@@ -110,21 +110,21 @@ fun HomeScreen(navController: NavController) {
                         title = "Korpa",
                         graphicID = Icons.Default.ShoppingCart,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight,
+                        color2 = MP_Green,
                         screen = Screen.CartScreen
                     ),
                     Feature(
                         title = "Prodavnica",
                         graphicID = Icons.Default.AddCircle,
                         color1 = MP_Green,
-                        color2 = MP_GreenLight,
+                        color2 = MP_Green,
                         screen = Screen.StoreScreen
                     ),
                     Feature(
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Orange,
-                        color2 = MP_Orange_Dark,
+                        color2 = MP_Orange,
                         screen = Screen.StoreScreen
                     )
                 )
@@ -228,7 +228,7 @@ fun CategoriesSection(
                     .background(
                         if (selectedCategoryIndex == it)
                             Brush.linearGradient(
-                                0.0f to MP_Pink_Dark,
+                                0.0f to MP_Pink,
                                 500.0f to MP_Pink,
 
                                 start = Offset.Zero,
@@ -236,7 +236,7 @@ fun CategoriesSection(
                             )
                         else
                             Brush.linearGradient(
-                                0.0f to MP_GreenLight,
+                                0.0f to MP_Green,
                                 0.5f to MP_Green,
 
                                 start = Offset.Zero,
@@ -368,7 +368,7 @@ fun RecommendedFeatureItem(
                 shape = RoundedCornerShape(7.5.dp)
                 )
             .padding(1.5.dp)
-            .aspectRatio(1.5F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
+            .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
             .clip(RoundedCornerShape(10.dp))
             .background(
                 Brush.linearGradient(
