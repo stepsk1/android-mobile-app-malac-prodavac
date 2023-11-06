@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -120,8 +121,7 @@ fun CartScreen(navController: NavController)
                 Button(
                     onClick = {
                         navController.navigate(Screen.CartDetailsScreen.route)
-                    },
-                    modifier = Modifier
+                    }
                 ) {
                     Text(
                         text = "Nastavi sa plaćanjem",
@@ -321,13 +321,10 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .shadow(
-                        elevation = 5.dp,
-                        spotColor = MP_Black,
-                        shape = RoundedCornerShape(7.5.dp)
-                    )
-                    .clip(RoundedCornerShape(10.dp))
                     .padding(vertical = 20.dp, horizontal = 20.dp)
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(MP_Green)
+                    .padding(10.dp)
             )
             {
                 Text(
@@ -335,7 +332,7 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
                     fontWeight = FontWeight.Bold,
                     style = androidx.compose.material.MaterialTheme.typography.h5,
                     lineHeight = 17.sp,
-                    color = MP_Orange,
+                    color = MP_White,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                 )
@@ -344,7 +341,7 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
                     text = totalPrice.toString() + "RSD",
                     style = androidx.compose.material.MaterialTheme.typography.h5,
                     lineHeight = 17.sp,
-                    color = MP_Orange,
+                    color = MP_White,
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                 )
