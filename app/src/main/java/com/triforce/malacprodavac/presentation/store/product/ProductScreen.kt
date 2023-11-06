@@ -1,6 +1,7 @@
 package com.triforce.malacprodavac.presentation.store.product
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -26,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Product
@@ -65,7 +68,28 @@ fun ProductScreen(navController: NavController)
             HeaderSectionTitle("Sok od višnje", navController)
             HeroImage()
             ProductDetails(
-                product = Product (
+                product = Product(
+                    title = "Sok od višnje 0,2l",
+                    imageID = Icons.Filled.AccountBox,
+                    price = 590.0F,
+                    saved = true,
+                    desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
+                            "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
+                            "\n\nPre upotrebe promućkati i sipati."
+                )
+            )
+            ShowHighlightSection(
+                navController = navController,
+                product1 = Product(
+                    title = "Sok od višnje 0,2l",
+                    imageID = Icons.Filled.AccountBox,
+                    price = 520.0F,
+                    saved = true,
+                    desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
+                            "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
+                            "\n\nPre upotrebe promućkati i sipati."
+                ),
+                product2 = Product(
                     title = "Sok od višnje 0,2l",
                     imageID = Icons.Filled.AccountBox,
                     price = 99.0F,
@@ -73,7 +97,8 @@ fun ProductScreen(navController: NavController)
                     desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
                             "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
                             "\n\nPre upotrebe promućkati i sipati."
-                )
+                ),
+                title = "Više proizvoda od prodavca"
             )
         }
     }
@@ -111,6 +136,7 @@ fun ProductDetails(
             .fillMaxWidth()
             .padding(
                 top = 50.dp,
+                bottom = 10.dp,
                 start = 20.dp,
                 end = 20.dp)
     ) {
@@ -120,7 +146,7 @@ fun ProductDetails(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    bottom = 15.dp
+                    bottom = 20.dp
                 )
         ){
             Text(
@@ -141,6 +167,55 @@ fun ProductDetails(
             style = androidx.compose.material.MaterialTheme.typography.body1,
             color = Color.Gray,
             softWrap = true
+        )
+    }
+}
+
+@Composable
+fun ShowHighlightSection(
+    navController: NavController,
+    product1: Product,
+    product2: Product,
+    title: String
+){
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = 15.dp,
+                    bottom = 15.dp,
+                    start = 20.dp,
+                    end = 20.dp
+                )
+        ){
+            Text(
+                text = title,
+                style = MaterialTheme.typography.body1,
+                color = MP_Black,
+                fontWeight = FontWeight.W500
+            )
+            androidx.compose.material3.Text(
+                text = "Vidi više",
+                style = MaterialTheme.typography.caption,
+                color = MP_White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .clickable {
+                    }
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MP_Pink)
+                    .padding(vertical = 6.dp, horizontal = 15.dp)
+            )
+        }
+        ShowcaseProducts(
+            products = listOf(product1,product2),
+            navController = navController
         )
     }
 }
