@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
+import com.triforce.malacprodavac.presentation.cart.CartDetails.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
@@ -56,6 +57,10 @@ fun Navigation() {
 
         composable(route = Screen.CartDetailsScreen.route) {
             CartDetailsScreen(navController = navController)
+        }
+
+        composable(route = Screen.DetailsOrderScreen.route) {
+            DetailsOrderScreen(navController = navController)
         }
     }
 }

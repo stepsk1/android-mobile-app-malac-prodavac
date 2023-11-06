@@ -1,6 +1,7 @@
 package com.triforce.malacprodavac.presentation.cart.CartDetails
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
@@ -17,9 +19,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +45,7 @@ import com.triforce.malacprodavac.presentation.cart.TotalPrice
 import com.triforce.malacprodavac.presentation.home.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
 import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
@@ -97,7 +103,7 @@ fun CartDetailsScreen(navController: NavController) {
 
         }
         Column {
-            HeaderSectionTitle("Detalji plaćanja", navController)
+            HeaderSectionTitleWithoutIcon("Detalji plaćanja", navController)
 
             Text(
                 text = "Način plaćanja",
@@ -158,10 +164,10 @@ fun CartDetailsScreen(navController: NavController) {
                     style = MaterialTheme.typography.h6,
                     color = MP_White,
                     modifier = Modifier
-                        .padding(start = 80.dp)
+                        .padding(start = 80.dp, top = 5.dp)
+                        .clip(RoundedCornerShape(20.dp))
                         .background(MP_Pink)
-                        .clip(RoundedCornerShape(10.dp))
-                        .padding(6.dp)
+                        .padding(7.5.dp)
                 )
             }
             Column(
@@ -229,9 +235,9 @@ fun CartDetailsScreen(navController: NavController) {
                 ){
                     Column(
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(2.dp)
                             .clip(RoundedCornerShape(10.dp)),
-                        verticalArrangement = Arrangement.spacedBy(13.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         typeOfSendingOptions.forEach { typeOfSending ->
                             Row(
@@ -275,7 +281,7 @@ fun CartDetailsScreen(navController: NavController) {
             ) {
                 Button(
                     onClick = {
-                        navController.navigate(Screen.CartDetailsScreen.route)
+                        navController.navigate(Screen.DetailsOrderScreen.route)
                     },
                     modifier = Modifier
                 ) {
@@ -317,5 +323,45 @@ fun CartDetailsScreen(navController: NavController) {
             ), modifier = Modifier.
             align(Alignment.BottomCenter)
         )
+    }
+}
+
+@Composable
+fun HeaderSectionTitleWithoutIcon(
+    msg: String,
+    navController: NavController,
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .size(width = 240.dp, height = 35.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Search",
+                tint = MP_White,
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        navController.navigate(Screen.HomeScreen.route)
+                    }
+            )
+
+            androidx.compose.material3.Text(
+                text = msg,
+                style = MaterialTheme.typography.h5,
+                color = MP_White,
+                modifier = Modifier
+                    .padding(start = 10.dp)
+            )
+        }
     }
 }
