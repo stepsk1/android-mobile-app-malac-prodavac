@@ -36,12 +36,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
+import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.home.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
@@ -264,7 +266,7 @@ fun BuyedProductItem(
                 )
 
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
+                    painter = painterResource(id = R.drawable.round_remove_circle_24),
                     contentDescription = "Remove one",
                     tint = MP_Pink,
                     modifier = Modifier

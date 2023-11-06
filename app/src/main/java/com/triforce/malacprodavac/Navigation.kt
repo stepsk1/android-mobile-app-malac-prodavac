@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
+import com.triforce.malacprodavac.presentation.higlightDetailed.HighlightDetailed
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.home.HomeScreen
@@ -60,9 +61,14 @@ fun Navigation() {
             CartDetailsScreen(navController = navController)
         }
 
+        composable(route = Screen.DetailsOrderScreen.route) {
+            DetailsOrderScreen(navController = navController)
+        }
+
         composable(route = Screen.ProductScreen.route) {
             ProductScreen(navController = navController)
         }
+
         composable(route = Screen.HighlightDetailed.route) {
             HighlightDetailed(navController = navController)
         }

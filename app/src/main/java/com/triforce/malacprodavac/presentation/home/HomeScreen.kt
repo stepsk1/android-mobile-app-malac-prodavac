@@ -55,7 +55,6 @@ import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -71,8 +70,8 @@ fun HomeScreen(navController: NavController) {
         Surface (
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.9F)
-                .padding(top = 100.dp)
+                .fillMaxHeight(1F)
+                .padding(top = 90.dp)
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
                 .background(color = MP_Pink)
         ){
@@ -384,6 +383,9 @@ fun RecommendedFeatureItem(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .clickable {
+                    navController.navigate(feature.screen.route)
+                }
                 .padding(15.dp)
         ) {
             Text(
@@ -495,6 +497,10 @@ fun BottomNavigationMenuItem(
                         Color.Transparent
                     }
                 )
+                .clickable {
+                    navController.navigate(item.screen.route)
+                    item.isActive = true
+                }
                 .padding(vertical = 5.dp, horizontal = 5.dp)
         ) {
             Icon(
