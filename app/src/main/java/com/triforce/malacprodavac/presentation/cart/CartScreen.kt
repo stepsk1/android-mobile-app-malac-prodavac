@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +48,6 @@ import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
@@ -65,7 +65,16 @@ fun CartScreen(navController: NavController)
         BuyedProduct(
             name = "Kajmak 100g",
             price = 670.00
+        ),
+        BuyedProduct(
+            name = "Jabuke 1kg",
+            price = 75.00
+        ),
+        BuyedProduct(
+            name = "Domaće mleko 2l",
+            price = 210.99
         )
+
     )
 
     Box(
@@ -98,7 +107,7 @@ fun CartScreen(navController: NavController)
                 .clip(RoundedCornerShape(25.dp))
                 .padding(
                     start = 5.dp,
-                    top = 600.dp,
+                    top = 663.dp,
                     end = 5.dp,
                     bottom = 40.dp
                 )
@@ -112,8 +121,7 @@ fun CartScreen(navController: NavController)
                 Button(
                     onClick = {
                         navController.navigate(Screen.CartDetailsScreen.route)
-                    },
-                    modifier = Modifier
+                    }
                 ) {
                     Text(
                         text = "Nastavi sa plaćanjem",
@@ -170,10 +178,10 @@ fun BuyedProductSection(
             contentPadding = PaddingValues(
                 start = 20.5.dp,
                 end = 7.5.dp,
-                bottom = 170.dp
-            ), // 170 dp bottom padding because navigation and total price
+                bottom = 130.dp
+            ), // 130 dp bottom padding because navigation and total price
             modifier = Modifier
-                .fillMaxHeight()
+                .requiredHeight(500.dp)
         ) {
             items(buyedProducts.size) {// how many items do we have
                 // define one of items
@@ -297,10 +305,10 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(25.dp))
+            .clip(RoundedCornerShape(10.dp))
             .padding(
                 start = 5.dp,
-                top = 540.dp,
+                top = 590.dp,
                 end = 5.dp,
                 bottom = 40.dp
             )
@@ -313,13 +321,10 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .shadow(
-                        elevation = 5.dp,
-                        spotColor = MP_Black,
-                        shape = RoundedCornerShape(7.5.dp)
-                    )
-                    .clip(RoundedCornerShape(25.dp))
                     .padding(vertical = 20.dp, horizontal = 20.dp)
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(MP_Green)
+                    .padding(10.dp)
             )
             {
                 Text(
@@ -327,7 +332,7 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
                     fontWeight = FontWeight.Bold,
                     style = androidx.compose.material.MaterialTheme.typography.h5,
                     lineHeight = 17.sp,
-                    color = MP_Orange,
+                    color = MP_White,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                 )
@@ -336,7 +341,7 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
                     text = totalPrice.toString() + "RSD",
                     style = androidx.compose.material.MaterialTheme.typography.h5,
                     lineHeight = 17.sp,
-                    color = MP_Orange,
+                    color = MP_White,
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                 )
