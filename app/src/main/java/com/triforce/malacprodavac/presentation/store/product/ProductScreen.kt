@@ -20,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,6 +38,7 @@ import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
 import com.triforce.malacprodavac.presentation.store.category.CategorySectionHeader
 import com.triforce.malacprodavac.presentation.store.category.FilterSortRow
 import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.store.category.StoreCategoryProduct
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -84,7 +86,7 @@ fun ProductScreen(navController: NavController)
                     title = "Sok od višnje 0,2l",
                     imageID = Icons.Filled.AccountBox,
                     price = 520.0F,
-                    saved = true,
+                    saved = false,
                     desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
                             "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
                             "\n\nPre upotrebe promućkati i sipati."
@@ -99,6 +101,9 @@ fun ProductScreen(navController: NavController)
                             "\n\nPre upotrebe promućkati i sipati."
                 ),
                 title = "Više proizvoda od prodavca"
+            )
+            ShowFavouriteAddToCart(
+                navController = navController
             )
         }
     }
@@ -138,7 +143,8 @@ fun ProductDetails(
                 top = 50.dp,
                 bottom = 10.dp,
                 start = 20.dp,
-                end = 20.dp)
+                end = 20.dp
+            )
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -216,6 +222,44 @@ fun ShowHighlightSection(
         ShowcaseProducts(
             products = listOf(product1,product2),
             navController = navController
+        )
+    }
+}
+
+@Composable
+fun ShowFavouriteAddToCart(
+    navController: NavController
+){
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 15.dp,
+                bottom = 15.dp,
+                start = 20.dp,
+                end = 20.dp
+            )
+    ){
+        Icon(
+            imageVector = Icons.Outlined.FavoriteBorder,
+            contentDescription = "FavoriteBorder",
+            tint = MP_Pink,
+            modifier = Modifier
+                .size(50.dp)
+        )
+        Text(
+            text = "Dodaj u korpu",
+            style = MaterialTheme.typography.h5,
+            color = MP_White,
+            fontWeight = FontWeight.W500,
+            modifier = Modifier
+                .clickable {
+                }
+                .clip(RoundedCornerShape(10.dp))
+                .background(MP_Pink)
+                .padding(vertical = 6.dp, horizontal = 15.dp)
         )
     }
 }
