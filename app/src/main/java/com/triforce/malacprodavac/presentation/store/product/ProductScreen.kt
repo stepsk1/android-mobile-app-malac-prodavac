@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Product
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.home.CategoriesSection
 import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
 import com.triforce.malacprodavac.presentation.store.category.CategorySectionHeader
@@ -213,6 +214,7 @@ fun ShowHighlightSection(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .clickable {
+                        navController.navigate(Screen.HighlightDetailed.route)
                     }
                     .clip(RoundedCornerShape(10.dp))
                     .background(MP_Pink)

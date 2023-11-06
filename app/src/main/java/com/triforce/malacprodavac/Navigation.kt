@@ -9,6 +9,7 @@ import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.RegistrationScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
+import com.triforce.malacprodavac.presentation.higlightDetailed.HighlightDetailed
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
 import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
@@ -61,6 +62,9 @@ fun Navigation() {
 
         composable(route = Screen.ProductScreen.route) {
             ProductScreen(navController = navController)
+        }
+        composable(route = Screen.HighlightDetailed.route) {
+            HighlightDetailed(navController = navController)
         }
     }
 }
