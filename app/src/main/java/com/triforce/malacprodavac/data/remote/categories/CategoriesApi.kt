@@ -15,6 +15,13 @@ interface CategoriesApi {
         @Path("id") categoryId: Int
     ): Category
 
+    @GET("${BASE_URL}/{parentId}")
+    suspend fun getSubCategoriesForParentId(
+        @Path("parentId") parentCategoryId: Int
+    ): List<Category>
+
+
+
     companion object{
         const val BASE_URL="${Api.BASE_URL}/categories"
     }

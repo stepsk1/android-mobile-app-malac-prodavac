@@ -21,9 +21,7 @@ class CategoryRepositoryImpl @Inject constructor(
     private val sessionManager: SessionManager
 ): CategoryRepository {
     private val dao = db.categoryDao
-    override suspend fun getCategories(
-        fetchFromRemote: Boolean
-    ): Flow<Resource<List<Category>>> {
+    override suspend fun getCategories(fetchFromRemote: Boolean): Flow<Resource<List<Category>>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
             val localCategories = dao.getAllCategories()
@@ -52,7 +50,10 @@ class CategoryRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCategorie(id: Int, fetchFromRemote: Boolean): Flow<Resource<List<Category>>> {
+    override suspend fun getCategorie(
+        id: Int,
+        fetchFromRemote: Boolean
+    ): Flow<Resource<List<Category>>> {
         return flow {
             emit(Resource.Loading(true))
             val localCategory = dao.getCategoryForId(id)
@@ -75,6 +76,38 @@ class CategoryRepositoryImpl @Inject constructor(
             } catch (e: HttpException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't load post data"))
+                null
+            }
+            emit(Resource.Loading(false))
+        }
+    }
+
+    override suspend fun getSubCategories(
+        id: Int,
+        fetchFromRemote: Boolean
+    ): Flow<Resource<List<Category>>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val localCategories = dao.getCategoryForParentId(id)
+            emit(Resource.Success(
+                data = localCategories.map { it.toCategory() }
+            ))
+
+            val isDbEmpty = localCategories.isEmpty()
+            val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
+            if(shouldJustLoadFromCache) { //we already returned an emit with Resource.Success<data from cache>
+                emit(Resource.Loading(false)) // stop loading indication
+                return@flow
+            }
+            val remoteCategories = try {
+                api.getSubCategoriesForParentId(id)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load category data"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load category data"))
                 null
             }
             emit(Resource.Loading(false))

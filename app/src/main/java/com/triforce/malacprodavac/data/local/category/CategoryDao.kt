@@ -15,6 +15,10 @@ interface CategoryDao {
         WHERE id = :id""")
     suspend fun getCategoryForId(id: Int): List<CategoryEntity>
 
+    @Query("""SELECT * FROM CategoryEntity
+        WHERE parentCategoryId = :parentCategoryId""")
+    suspend fun getCategoryForParentId(parentCategoryId: Int): List<CategoryEntity>
+
     @Query("DELETE FROM CategoryEntity")
     suspend fun clearCategories()
 
