@@ -19,7 +19,7 @@ class CategoryRepositoryImpl @Inject constructor(
     private val api: CategoriesApi,
     private val db: MalacProdavacDatabase,
     private val sessionManager: SessionManager
-): CategoryRepository {
+) : CategoryRepository {
     private val dao = db.categoryDao
     override suspend fun getCategories(fetchFromRemote: Boolean): Flow<Resource<List<Category>>> {
         return flow {
@@ -31,7 +31,7 @@ class CategoryRepositoryImpl @Inject constructor(
 
             val isDbEmpty = localCategories.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
-            if(shouldJustLoadFromCache) { //we already returned an emit with Resource.Success<data from cache>
+            if (shouldJustLoadFromCache) { //we already returned an emit with Resource.Success<data from cache>
                 emit(Resource.Loading(false)) // stop loading indication
                 return@flow
             }
@@ -39,12 +39,16 @@ class CategoryRepositoryImpl @Inject constructor(
                 api.getAllCategories()
             } catch (e: IOException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load category data"))
+                emit(Resource.Error("Couldn't load categories."))
                 null
             } catch (e: HttpException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't load category data"))
                 null
+            }
+            remoteCategories?.let {
+                println(remoteCategories.data)
+                emit(Resource.Success(remoteCategories.data.map { it.toCategory() }))
             }
             emit(Resource.Loading(false))
         }
@@ -63,7 +67,7 @@ class CategoryRepositoryImpl @Inject constructor(
 
             val isDbEmpty = localCategory.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
-            if(shouldJustLoadFromCache){ //we already returned an emit with Resource.Success<data from cache>
+            if (shouldJustLoadFromCache) { //we already returned an emit with Resource.Success<data from cache>
                 emit(Resource.Loading(false)) //stop loading indication
                 return@flow
             }
@@ -95,12 +99,12 @@ class CategoryRepositoryImpl @Inject constructor(
 
             val isDbEmpty = localCategories.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
-            if(shouldJustLoadFromCache) { //we already returned an emit with Resource.Success<data from cache>
+            if (shouldJustLoadFromCache) { //we already returned an emit with Resource.Success<data from cache>
                 emit(Resource.Loading(false)) // stop loading indication
                 return@flow
             }
             val remoteCategories = try {
-                api.getSubCategoriesForParentId(id)
+                api.getSubCategoriesForParentId("parentCategoryId", "=", id)
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't load category data"))

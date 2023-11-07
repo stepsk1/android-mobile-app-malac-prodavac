@@ -7,11 +7,11 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface ShopsApi {
-    @POST(BASE_URL)
+    @POST(ROUTE)
     suspend fun registerShop(
         @Body registerRequest: CreateShopDto
     ): Shop
     companion object{
-        const val BASE_URL="${Api.BASE_URL}/shops"
+        const val ROUTE="/shops"
     }
 }

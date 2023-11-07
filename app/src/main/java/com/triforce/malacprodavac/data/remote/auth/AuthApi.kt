@@ -6,12 +6,12 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthApi {
-    @POST("/${BASE_URL}/login")
+    @POST("${ROUTE}/login")
     suspend fun login(
         @Body loginRequest: LoginDto
     ): User
 
     companion object {
-        const val BASE_URL = "auth"
+        const val ROUTE = "/auth"
     }
 }

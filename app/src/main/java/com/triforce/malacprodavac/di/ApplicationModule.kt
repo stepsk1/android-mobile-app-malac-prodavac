@@ -62,12 +62,12 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideCustomerApi(retrofit: Retrofit): CustomersApi =
+    fun provideCustomersApi(retrofit: Retrofit): CustomersApi =
         retrofit.create()
 
     @Provides
     @Singleton
-    fun provideCategoryApi(retrofit: Retrofit): CategoriesApi =
+    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi =
         retrofit.create()
 
     @Provides

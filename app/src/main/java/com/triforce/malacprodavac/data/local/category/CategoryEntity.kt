@@ -13,7 +13,7 @@ data class CategoryEntity(
     @PrimaryKey
     val id: Int,
     val name: String,
-    val parentCategoryId: Int,
+    val parentCategoryId: Int?,
     val updatedAt: String,
     val createdAt: String
 )

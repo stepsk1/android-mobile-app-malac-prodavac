@@ -1,28 +1,30 @@
 package com.triforce.malacprodavac.data.remote.categories
 
-import com.triforce.malacprodavac.data.remote.Api
+import com.triforce.malacprodavac.data.local.category.CategoryEntity
+import com.triforce.malacprodavac.data.remote.dto.PaginationResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
-import java.util.Locale.Category
+import retrofit2.http.Query
 
 interface CategoriesApi {
 
-    @GET(BASE_URL)
-    suspend fun getAllCategories() : List<Category>
+    @GET(ROUTE)
+    suspend fun getAllCategories(): PaginationResponse
 
-    @GET("${BASE_URL}/{id}")
+    @GET("${ROUTE}/{id}")
     suspend fun getCategoryForId(
         @Path("id") categoryId: Int
-    ): Category
+    ): CategoryEntity
 
-    @GET("${BASE_URL}/{parentId}")
+    @GET(ROUTE)
     suspend fun getSubCategoriesForParentId(
-        @Path("parentId") parentCategoryId: Int
-    ): List<Category>
+        @Query("filter[0][field]") field: String,
+        @Query("filter[0][type]") type: String,
+        @Query("filter[0][value]") value: Int,
+    ): List<CategoryEntity>
 
 
-
-    companion object{
-        const val BASE_URL="${Api.BASE_URL}/categories"
+    companion object {
+        const val ROUTE = "/categories"
     }
 }

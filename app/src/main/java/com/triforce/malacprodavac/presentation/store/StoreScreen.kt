@@ -48,6 +48,7 @@ import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.presentation.home.BottomNavigationMenu
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -56,7 +57,6 @@ import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
-import java.util.Locale.Category
 
 @Composable
 fun StoreScreen(navController: NavController)
