@@ -7,9 +7,12 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface CouriersApi {
-    @POST(BASE_URL)
+    @POST(ROUTE)
     suspend fun registerCouriers(
         @Body registerRequest: CreateCourierDto
     ): Courier
-    companion object{const val BASE_URL="${Api.BASE_URL}/couriers"}
+
+    companion object {
+        const val ROUTE = "/couriers"
+    }
 }

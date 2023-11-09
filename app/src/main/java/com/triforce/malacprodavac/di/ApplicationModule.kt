@@ -11,6 +11,7 @@ import com.triforce.malacprodavac.data.local.RoomConverters
 import com.triforce.malacprodavac.data.remote.Api
 import com.triforce.malacprodavac.data.remote.auth.AuthApi
 import com.triforce.malacprodavac.data.remote.auth.interceptors.AuthInterceptorImpl
+import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
 import com.triforce.malacprodavac.data.remote.couriers.CouriersApi
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
@@ -61,9 +62,13 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideCustomerApi(retrofit: Retrofit): CustomersApi =
+    fun provideCustomersApi(retrofit: Retrofit): CustomersApi =
         retrofit.create()
 
+    @Provides
+    @Singleton
+    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi =
+        retrofit.create()
 
     @Provides
     @Singleton

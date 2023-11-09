@@ -40,12 +40,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.presentation.home.BottomNavigationMenu
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -58,6 +61,13 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 @Composable
 fun StoreScreen(navController: NavController)
 {
+    val viewModel: StoreViewModel = hiltViewModel()
+    val state = viewModel.state
+    val context = LocalContext.current
+
+    val Categories: List<Category> = state.categories
+    val CategoriesToDisplay: List<Category>
+
     Box(
         modifier = Modifier
             .background(MP_White)
