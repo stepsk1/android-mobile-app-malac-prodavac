@@ -5,11 +5,14 @@ import com.triforce.malacprodavac.data.remote.dto.PaginationResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface CategoriesApi {
 
     @GET(ROUTE)
-    suspend fun getAllCategories(): PaginationResponse
+    suspend fun getAllCategories(
+        @QueryMap(encoded = false) queryMap: Map<String, String>?
+    ): PaginationResponse
 
     @GET("${ROUTE}/{id}")
     suspend fun getCategoryForId(
