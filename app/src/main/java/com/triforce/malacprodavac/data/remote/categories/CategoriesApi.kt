@@ -20,7 +20,7 @@ interface CategoriesApi {
     suspend fun getSubCategoriesForParentId(
         @Query("filter[0][field]") field: String,
         @Query("filter[0][type]") type: String,
-        @Query("filter[0][value]") value: Int,
+        @Query("filter[0][value]") value: Int
     ): List<CategoryEntity>
 
 
