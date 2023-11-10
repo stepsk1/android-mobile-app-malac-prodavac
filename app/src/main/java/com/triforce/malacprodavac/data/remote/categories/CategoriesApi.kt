@@ -9,7 +9,9 @@ import retrofit2.http.Query
 interface CategoriesApi {
 
     @GET(ROUTE)
-    suspend fun getAllCategories(): PaginationResponse
+    suspend fun getAllCategories(
+        @Query("limit") limit: Int = 50
+    ): PaginationResponse
 
     @GET("${ROUTE}/{id}")
     suspend fun getCategoryForId(
