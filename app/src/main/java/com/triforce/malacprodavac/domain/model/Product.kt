@@ -1,18 +1,8 @@
-package com.triforce.malacprodavac.data.local.product
+package com.triforce.malacprodavac.domain.model
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.triforce.malacprodavac.data.local.category.CategoryEntity
-import com.triforce.malacprodavac.data.local.user.UserEntity
 
-@Entity(foreignKeys = [ForeignKey(
-    entity = CategoryEntity::class,
-    parentColumns = arrayOf("id"),
-    childColumns = arrayOf("categoryId")
-)])
-data class ProductEntity(
-    @PrimaryKey
+data class Product(
     val id: Int,
     val available: Boolean,
     val price: Double,
