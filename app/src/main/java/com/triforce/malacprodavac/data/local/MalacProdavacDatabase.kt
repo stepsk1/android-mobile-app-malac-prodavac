@@ -5,13 +5,16 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.triforce.malacprodavac.data.local.category.CategoryDao
 import com.triforce.malacprodavac.data.local.category.CategoryEntity
+import com.triforce.malacprodavac.data.local.product.ProductDao
+import com.triforce.malacprodavac.data.local.product.ProductEntity
 import com.triforce.malacprodavac.data.local.user.UserDao
 import com.triforce.malacprodavac.data.local.user.UserEntity
 
 @Database(
     entities = [
         UserEntity::class,
-        CategoryEntity::class
+        CategoryEntity::class,
+        ProductEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -21,4 +24,5 @@ import com.triforce.malacprodavac.data.local.user.UserEntity
 abstract class MalacProdavacDatabase: RoomDatabase() {
     abstract val userDao: UserDao
     abstract val categoryDao: CategoryDao
+    abstract val productDao: ProductDao
 }
