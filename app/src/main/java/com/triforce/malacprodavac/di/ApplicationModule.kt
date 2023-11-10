@@ -43,8 +43,9 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(moshi: Moshi): Retrofit = Retrofit.Builder().baseUrl(Api.BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+    fun provideRetrofit(moshi: Moshi, client: OkHttpClient): Retrofit =
+        Retrofit.Builder().client(client).baseUrl(Api.BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi)).build()
 
 
     /*  USER API DEPENDENCY CHAIN */

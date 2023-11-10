@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,9 +51,7 @@ fun LoginScreen(navController: NavController) {
         isRefreshing = state.isLoading
     )
 
-    if (viewModel.isUserAuthenticated()) {
-        navController.navigate(Screen.HomeScreen.route)
-    }
+
 
     val context = LocalContext.current
     val annotatedString = buildAnnotatedString {
@@ -76,6 +75,7 @@ fun LoginScreen(navController: NavController) {
             end
         )
     }
+
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collect { event ->
             when (event) {
@@ -85,6 +85,8 @@ fun LoginScreen(navController: NavController) {
                         "Uspešna prijava",
                         Toast.LENGTH_LONG
                     ).show()
+                    navController.navigate(Screen.StoreScreen.route)
+
                 }
             }
         }
@@ -163,8 +165,9 @@ fun LoginScreen(navController: NavController) {
                 Button(
                     onClick = {
                         viewModel.onEvent(LoginFormEvent.Submit)
-                        if (!viewModel.hasError)
+                            .let {
                             navController.navigate(Screen.HomeScreen.route)
+                        }
                     },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)

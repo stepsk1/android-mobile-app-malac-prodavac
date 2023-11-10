@@ -61,9 +61,6 @@ class LoginViewModel @Inject constructor(
             passwordResult
         ).any { !it.successful }
 
-        if(!hasError) {
-            loginUser(state.email, state.password)
-        }
 
         if(hasError) {
             state = state.copy(
@@ -72,6 +69,9 @@ class LoginViewModel @Inject constructor(
             )
             return
         }
+
+        loginUser(state.email, state.password)
+
 
         viewModelScope.launch {
             state = state.copy(

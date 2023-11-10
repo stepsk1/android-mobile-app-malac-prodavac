@@ -1,5 +1,7 @@
 package com.triforce.malacprodavac.data.repository.auth
 
+
+import android.util.Log
 import com.triforce.malacprodavac.data.remote.auth.AuthApi
 import com.triforce.malacprodavac.data.remote.auth.dto.LoginDto
 import com.triforce.malacprodavac.domain.model.User
@@ -31,8 +33,6 @@ class AuthRepositoryImpl @Inject constructor(private val api: AuthApi) : AuthRep
                 null
             }
             user?.let {
-//                authenticateUser(it)
-//                dao.insertUser(listOf(it.user.toUserEntity()))
                 emit(Resource.Success(data = it))
             }
             emit(Resource.Loading(isLoading = false))

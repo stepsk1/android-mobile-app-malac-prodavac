@@ -1,7 +1,6 @@
-package com.triforce.malacprodavac.presentation.cart.CartDetails.DetailsOrder
+package com.triforce.malacprodavac.presentation.cart.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -35,8 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.cart.CartDetails.HeaderSectionTitleWithoutIcon
-import com.triforce.malacprodavac.presentation.home.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark

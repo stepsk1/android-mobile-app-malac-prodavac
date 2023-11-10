@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.cart.CartDetails
+package com.triforce.malacprodavac.presentation.cart.components
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -26,7 +26,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.TextButton
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.BottomNavigationMenuContent
@@ -45,7 +43,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.BuyedProduct
 import com.triforce.malacprodavac.presentation.cart.TotalPrice
-import com.triforce.malacprodavac.presentation.home.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark

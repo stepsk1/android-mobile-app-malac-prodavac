@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.data.repository.categories
 
+import android.util.Log
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
 import com.triforce.malacprodavac.data.mappers.toCategory
 import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
@@ -47,7 +48,7 @@ class CategoryRepositoryImpl @Inject constructor(
                 null
             }
             remoteCategories?.let {
-                println(remoteCategories.data)
+                Log.d("CATEGORIES:", it.toString())
                 emit(Resource.Success(remoteCategories.data.map { it.toCategory() }))
             }
             emit(Resource.Loading(false))

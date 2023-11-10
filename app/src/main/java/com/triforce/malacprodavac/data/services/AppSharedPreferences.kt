@@ -1,6 +1,7 @@
 package com.triforce.malacprodavac.data.services
 
 import android.content.SharedPreferences
+import android.util.Log
 import javax.inject.Inject
 
 class AppSharedPreferences @Inject constructor(

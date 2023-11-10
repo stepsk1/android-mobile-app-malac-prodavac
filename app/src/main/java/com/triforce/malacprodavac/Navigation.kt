@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
-import com.triforce.malacprodavac.presentation.cart.CartDetails.DetailsOrder.DetailsOrderScreen
+import com.triforce.malacprodavac.presentation.cart.components.CartDetailsScreen
+import com.triforce.malacprodavac.presentation.cart.components.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.higlightDetailed.HighlightDetailed
 import com.triforce.malacprodavac.presentation.login.LoginScreen
@@ -18,7 +18,7 @@ import com.triforce.malacprodavac.presentation.store.product.ProductScreen
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-    var startDestination = Screen.LoginScreen.route
+    val startDestination = Screen.LoginScreen.route
 
     NavHost(
         navController = navController,

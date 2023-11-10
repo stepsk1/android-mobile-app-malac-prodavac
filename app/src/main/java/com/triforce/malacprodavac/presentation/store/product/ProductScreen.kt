@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -29,23 +27,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Product
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.home.CategoriesSection
 import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
-import com.triforce.malacprodavac.presentation.store.category.CategorySectionHeader
-import com.triforce.malacprodavac.presentation.store.category.FilterSortRow
 import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
-import com.triforce.malacprodavac.presentation.store.category.StoreCategoryProduct
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
-import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
