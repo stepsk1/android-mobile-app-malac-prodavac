@@ -1,10 +1,12 @@
 package com.triforce.malacprodavac.data.local.product
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+@Dao
 interface ProductDao {
     @Query("SELECT * FROM ProductEntity")
     suspend fun getProducts(): List<ProductEntity>

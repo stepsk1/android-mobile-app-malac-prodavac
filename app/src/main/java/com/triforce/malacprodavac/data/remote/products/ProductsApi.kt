@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface ProductsApi {
 
     @GET(ROUTE)
-    suspend fun getAllProducts(): PaginationResponse
+    suspend fun getProducts(): PaginationResponse
 
     @GET("${ROUTE}/{id}")
     suspend fun getProductForId(@Path("id") productId: Int): ProductEntity
