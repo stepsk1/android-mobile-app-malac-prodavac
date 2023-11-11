@@ -21,7 +21,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -66,8 +65,41 @@ fun StoreScreen(navController: NavController)
     val context = LocalContext.current
 
     val Categories: List<Category> = state.categories
-    val CategoriesToDisplay: List<Category>
+    var features : List<Feature> = listOf()
+    var flagNumber: Int = 0
 
+    Categories.forEach {
+        if(it.parentCategoryId == null)
+        {
+            flagNumber++
+            if(flagNumber%3==0){
+                features += Feature(
+                    title = it.name,
+                    graphicID = Icons.Default.Star,
+                    color1 = MP_Orange,
+                    color2 = MP_Orange,
+                    screen = Screen.StoreScreen
+                )
+            }
+            else if(flagNumber%3==1){
+                features += Feature(
+                    title = it.name,
+                    graphicID = Icons.Default.Star,
+                    color1 = MP_Green,
+                    color2 = MP_Green,
+                    screen = Screen.StoreScreen
+                )
+            }else{
+            features += Feature(
+                title = it.name,
+                graphicID = Icons.Default.Star,
+                color1 = MP_Pink,
+                color2 = MP_Pink,
+                screen = Screen.StoreScreen
+            )
+        }
+        }
+    }
     Box(
         modifier = Modifier
             .background(MP_White)
@@ -93,50 +125,7 @@ fun StoreScreen(navController: NavController)
                 iconColor = MP_Green
             )
             StoreCategoriesSection(
-                features = listOf(
-                    Feature(
-                        title = "Sirevi i mleko",
-                        graphicID = Icons.Default.Favorite,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange,
-                        screen = Screen.StoreScreen
-                    ),
-                    Feature(
-                        title = "Voće i povrće",
-                        graphicID = Icons.Default.Star,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
-                        screen = Screen.StoreScreen
-                    ),
-                    Feature(
-                        title = "Peciva i kolači",
-                        graphicID = Icons.Default.Star,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
-                        screen = Screen.StoreScreen
-                    ),
-                    Feature(
-                        title = "Sokovi i sirupi",
-                        graphicID = Icons.Default.Favorite,
-                        color1 = MP_Pink,
-                        color2 = MP_Pink,
-                        screen = Screen.StoreScreen
-                    ),
-                    Feature(
-                        title = "Dodatna kat.",
-                        graphicID = Icons.Default.Add,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange,
-                        screen = Screen.StoreScreen
-                    ),
-                    Feature(
-                        title = "Dodatna kat.",
-                        graphicID = Icons.Default.Add,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
-                        screen = Screen.StoreScreen
-                    )
-                ),
+                features = features,
                 navController
             )
         }

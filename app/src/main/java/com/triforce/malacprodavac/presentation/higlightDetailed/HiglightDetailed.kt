@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
-import com.triforce.malacprodavac.Product
 import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
 import com.triforce.malacprodavac.presentation.store.category.FilterSortRow
 import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts

@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.data.remote.auth.interceptors
 
-import android.util.Log
 import com.triforce.malacprodavac.data.services.SessionManager
 import okhttp3.Interceptor
 import okhttp3.Request
