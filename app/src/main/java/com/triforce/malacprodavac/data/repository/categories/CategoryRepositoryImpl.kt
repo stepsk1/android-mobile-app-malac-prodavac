@@ -2,14 +2,9 @@ package com.triforce.malacprodavac.data.repository.categories
 
 import android.util.Log
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
-import com.triforce.malacprodavac.data.local.category.CategoryEntity
 import com.triforce.malacprodavac.data.mappers.toCategory
 import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
 import com.triforce.malacprodavac.data.services.SessionManager
-import com.triforce.malacprodavac.data.services.filter.Filter
-import com.triforce.malacprodavac.data.services.filter.FilterBuilder
-import com.triforce.malacprodavac.data.services.filter.FilterOperationType
-import com.triforce.malacprodavac.data.services.filter.SingleFilter
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.domain.repository.CategoryRepository
 import com.triforce.malacprodavac.util.Resource
@@ -27,23 +22,25 @@ class CategoryRepositoryImpl @Inject constructor(
     private val sessionManager: SessionManager
 ) : CategoryRepository {
     private val dao = db.categoryDao
-    
-    private val query = FilterBuilder.buildFilterQueryString(
-        Filter(
-            filter = arrayListOf(
-                SingleFilter("!after", FilterOperationType.Eq, 13)
-            ), order = null,offset=null, limit = 20
-        )
-    )
+
+
 
     override suspend fun getCategories(fetchFromRemote: Boolean): Flow<Resource<List<Category>>> {
+        // ****PRIMER****   private val queryMap = FilterBuilder.buildFilterQueryMap(
+        //        Filter(
+        //            filter = listOf(
+        //                SingleFilter("id", FilterOperation.In, listOf(1, 2, 3, 4, 5)),
+        //            ),
+        //            order = listOf(SingleOrder("id", FilterOrder.Asc)),
+        //            offset = null, limit = 20
+        //        )
+        //    )
         return flow {
             emit(Resource.Loading(isLoading = true))
             val localCategories = dao.getAllCategories()
             emit(Resource.Success(
                 data = localCategories.map { it.toCategory() }
             ))
-            Log.d("QUERY", query.toString())
             val isDbEmpty = localCategories.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
             if (shouldJustLoadFromCache) { //we already returned an emit with Resource.Success<data from cache>
@@ -51,7 +48,10 @@ class CategoryRepositoryImpl @Inject constructor(
                 return@flow
             }
             val remoteCategories = try {
-                api.getAllCategories(query)
+                api.getAllCategories(
+                    // ****PRIMER**** queryMap
+                    null
+                )
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't load categories."))

@@ -1,14 +1,10 @@
 package com.triforce.malacprodavac.data.services.filter
 
-enum class FilterOrder {
-    asc{
-        override fun toString(): String {
-            return "asc"
-        }
-    },
-    desc{
-        override fun toString(): String {
-            return "desc"
-        }
+enum class FilterOrder(val order: String) {
+    Asc("asc"),
+    Desc("desc");
+
+    override fun toString(): String {
+        return this.order
     }
 }

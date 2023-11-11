@@ -11,7 +11,7 @@ interface CategoriesApi {
 
     @GET(ROUTE)
     suspend fun getAllCategories(
-        @QueryMap(encoded = false) queryMap: Map<String, String>?
+        @QueryMap() queryMap: Map<String,  String>?
     ): PaginationResponse
 
     @GET("${ROUTE}/{id}")

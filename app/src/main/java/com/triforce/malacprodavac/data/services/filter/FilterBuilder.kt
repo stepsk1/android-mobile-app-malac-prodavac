@@ -1,12 +1,11 @@
 package com.triforce.malacprodavac.data.services.filter
 
-import android.util.Log
-import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.declaredMemberProperties
 
 class FilterBuilder<T> {
 
     companion object {
-        fun <T : Any> buildFilterQueryString(filter: Filter<T>): MutableMap<String, String> {
+        fun <T : Any> buildFilterQueryMap(filter: Filter<T>): MutableMap<String, String> {
             val parts = mutableMapOf<String, String>()
 
             if (filter.offset != null) {
@@ -37,34 +36,45 @@ class FilterBuilder<T> {
             return parts
         }
 
-        private fun <T> buildQueryString(
+        private fun <T : Any> buildQueryString(
             paramName: String,
-            array: ArrayList<SingleFilterOrOrder<T>>
+            array: List<SingleFilterOrOrder<T>>
         ): MutableMap<String, String>? {
             val parts = mutableMapOf<String, String>()
 
-            for (index in 0 until array.size) {
-                if(array[index] is SingleFilter){
-                    for (prop in SingleFilter::class.memberProperties) {
+            array.forEachIndexed { i, it ->
+                if (it is SingleFilter<T>) {
+                    for (prop in SingleFilter::class.declaredMemberProperties) {
                         val key = prop.name
-                        val value = prop.get(array[index] as SingleFilter<*>)
-                        if (value is ArrayList<*>) {
-                            if (value.isEmpty()) {
-                                parts["${paramName}[${index}][${key}]"] = ""
-                            }
-                        } else {
-                            if(value != null)
-                                parts["${paramName}[${index}][${key}]"] = value.toString()
+                        val value = prop.get(it)
+                        if (value is List<*> && value.isEmpty()) {
+                            parts["${paramName}[${i}][${key}]"] = ""
+                        } else if (value is List<*>) {value.forEachIndexed { j, jt ->
+                            parts["${paramName}[${i}][${key}][${j}]"] =  jt?.toString() ?: ""
                         }
-                        Log.d("KEY", key)
+                        } else {
+                            parts["${paramName}[${i}][${key}]"] = value?.toString() ?: ""
+                        }
+                    }
+                } else if (it is SingleOrder<T>) {
+                    for (prop in SingleOrder::class.declaredMemberProperties) {
+                        val key = prop.name
+                        val value = prop.get(it)
+                        if (value is List<*> && value.isEmpty()) {
+                            parts["${paramName}[${i}][${key}]"] = ""
+                        } else if (value is List<*>) {value.forEachIndexed { j, jt ->
+                            parts["${paramName}[${i}][${key}][${j}]"] =  jt?.toString() ?: ""
+                        }
+                        } else {
+                            parts["${paramName}[${i}][${key}]"] = value?.toString() ?: ""
+                        }
                     }
                 }
-
             }
             if (parts.isEmpty())
                 return null
-            Log.d("PARTS", parts.toString())
             return parts
         }
+
     }
 }
