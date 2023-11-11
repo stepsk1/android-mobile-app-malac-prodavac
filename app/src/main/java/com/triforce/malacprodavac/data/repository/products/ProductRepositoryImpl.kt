@@ -47,25 +47,25 @@ class ProductRepositoryImpl @Inject constructor(
                 return@flow
             }
 
-            val remoteProducts = try{
+            val remoteProducts = try {
 
                 api.getProducts()
 
-            } catch (e: IOException){
+            } catch (e: IOException) {
 
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't load products"))
                 null
 
-            } catch(e: HttpException) {
+            } catch (e: HttpException) {
 
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load product data"))
+                emit(Resource.Error("Couldn't load products data"))
                 null
 
             }
 
-            remoteProducts?.let{
+            remoteProducts?.let {
 
                 Log.d("PRODUCTS:", it.toString())
                 emit(Resource.Success(remoteProducts.products.map { it.toProduct() }))
@@ -81,7 +81,51 @@ class ProductRepositoryImpl @Inject constructor(
         id: Int,
         fetchFromRemote: Boolean
     ): Flow<Resource<List<Product>>> {
-        TODO("Not yet implemented")
+
+        return flow {
+
+            emit(Resource.Loading(isLoading = true))
+
+            val localProduct = dao.getProductForId(id)
+
+            emit(Resource.Success(data = localProduct.map { it.toProduct() }))
+
+            val isDbEmpty = localProduct.isEmpty()
+            val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
+
+            if (shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteProduct = try {
+
+                api.getProductForId(id)
+
+            } catch (e: IOException) {
+
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load product"))
+                null
+
+            } catch (e: HttpException) {
+
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load product data"))
+                null
+
+            }
+
+            remoteProduct?.let {
+
+                Log.d("PRODUCTS:", it.toString())
+                emit(Resource.Success(remoteProduct.products.map { it.toProduct() }))
+
+            }
+
+            emit(Resource.Loading(false))
+        }
+
     }
 
     override suspend fun getProductsForCategoryId(

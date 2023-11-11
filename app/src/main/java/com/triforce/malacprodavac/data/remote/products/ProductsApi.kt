@@ -12,14 +12,14 @@ interface ProductsApi {
     suspend fun getProducts(): PaginationResponse
 
     @GET("${ROUTE}/{id}")
-    suspend fun getProductForId(@Path("id") productId: Int): ProductEntity
+    suspend fun getProductForId(@Path("id") productId: Int): PaginationResponse
 
     @GET(ROUTE)
     suspend fun getProductsForCategoryId(
         @Query("filter[0][field]") field: String,
         @Query("filter[0][type]") type: String,
         @Query("filter[0][value]") value: Int
-    ): List<ProductEntity>
+    ): PaginationResponse
 
     companion object {
         const val ROUTE = "/products"
