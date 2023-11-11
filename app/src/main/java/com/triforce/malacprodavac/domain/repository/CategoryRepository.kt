@@ -7,6 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface CategoryRepository {
 
     suspend fun getCategories(fetchFromRemote: Boolean): Flow<Resource<List<Category>>>
-    suspend fun getCategorie(id: Int, fetchFromRemote: Boolean): Flow<Resource<List<Category>>>
-    suspend fun getSubCategories(id: Int, fetchFromRemote: Boolean): Flow<Resource<List<Category>>>
+    suspend fun getCategory(id: Int, fetchFromRemote: Boolean): Flow<Resource<List<Category>>>
 }

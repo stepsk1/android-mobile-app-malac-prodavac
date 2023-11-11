@@ -11,21 +11,14 @@ interface CategoriesApi {
 
     @GET(ROUTE)
     suspend fun getAllCategories(
-        @QueryMap() queryMap: Map<String,  String>?
-    ): PaginationResponse
+        @QueryMap() queryMap: Map<String,  String>
+    ): PaginationResponse<CategoryEntity>
 
     @GET("${ROUTE}/{id}")
     suspend fun getCategoryForId(
         @Path("id") categoryId: Int
     ): CategoryEntity
-
-    @GET(ROUTE)
-    suspend fun getSubCategoriesForParentId(
-        @Query("filter[0][field]") field: String,
-        @Query("filter[0][type]") type: String,
-        @Query("filter[0][value]") value: Int,
-    ): List<CategoryEntity>
-
+    
 
     companion object {
         const val ROUTE = "/categories"

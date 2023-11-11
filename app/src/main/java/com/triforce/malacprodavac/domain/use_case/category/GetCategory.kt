@@ -9,6 +9,6 @@ class GetCategory (
     private val repository: CategoryRepository
 ) {
         suspend operator fun invoke(id: Int, fetchFromRemote: Boolean): Flow<Resource<List<Category>>>? {
-            return repository.getCategorie(id, fetchFromRemote)
+            return repository.getCategory(id, fetchFromRemote)
         }
 }

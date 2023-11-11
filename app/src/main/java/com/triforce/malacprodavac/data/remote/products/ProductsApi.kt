@@ -5,21 +5,15 @@ import com.triforce.malacprodavac.data.remote.dto.PaginationResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface ProductsApi {
 
     @GET(ROUTE)
-    suspend fun getProducts(): PaginationResponse
+    suspend fun getProducts(@QueryMap() queryMap: MutableMap<String, String>): PaginationResponse<ProductEntity>
 
     @GET("${ROUTE}/{id}")
-    suspend fun getProductForId(@Path("id") productId: Int): PaginationResponse
-
-    @GET(ROUTE)
-    suspend fun getProductsForCategoryId(
-        @Query("filter[0][field]") field: String,
-        @Query("filter[0][type]") type: String,
-        @Query("filter[0][value]") value: Int
-    ): PaginationResponse
+    suspend fun getProductForId(@Path("id") productId: Int): ProductEntity
 
     companion object {
         const val ROUTE = "/products"

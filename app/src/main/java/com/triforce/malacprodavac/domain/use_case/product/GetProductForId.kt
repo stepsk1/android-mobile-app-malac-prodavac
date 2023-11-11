@@ -11,7 +11,7 @@ class GetProductForId(
 
 ) {
 
-    suspend operator fun invoke(id: Int, fetchFromRemote: Boolean): Flow<Resource<List<Product>>>? {
+    suspend operator fun invoke(id: Int, fetchFromRemote: Boolean): Flow<Resource<Product>> {
 
         return repository.getProductForId(id, fetchFromRemote)
 

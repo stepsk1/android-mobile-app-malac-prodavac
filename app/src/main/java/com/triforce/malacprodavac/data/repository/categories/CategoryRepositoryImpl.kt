@@ -30,6 +30,7 @@ class CategoryRepositoryImpl @Inject constructor(
         //        Filter(
         //            filter = listOf(
         //                SingleFilter("id", FilterOperation.In, listOf(1, 2, 3, 4, 5)),
+        //                SingleFilter("!after", FilterOperation.Eq, 21),
         //            ),
         //            order = listOf(SingleOrder("id", FilterOrder.Asc)),
         //            offset = null, limit = 20
@@ -50,7 +51,7 @@ class CategoryRepositoryImpl @Inject constructor(
             val remoteCategories = try {
                 api.getAllCategories(
                     // ****PRIMER**** queryMap
-                    null
+                    mutableMapOf()
                 )
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -69,7 +70,7 @@ class CategoryRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCategorie(
+    override suspend fun getCategory(
         id: Int,
         fetchFromRemote: Boolean
     ): Flow<Resource<List<Category>>> {
@@ -100,38 +101,4 @@ class CategoryRepositoryImpl @Inject constructor(
             emit(Resource.Loading(false))
         }
     }
-
-    override suspend fun getSubCategories(
-        id: Int,
-        fetchFromRemote: Boolean
-    ): Flow<Resource<List<Category>>> {
-        return flow {
-            emit(Resource.Loading(isLoading = true))
-            val localCategories = dao.getCategoryForParentId(id)
-            emit(Resource.Success(
-                data = localCategories.map { it.toCategory() }
-            ))
-
-            val isDbEmpty = localCategories.isEmpty()
-            val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
-            if (shouldJustLoadFromCache) { //we already returned an emit with Resource.Success<data from cache>
-                emit(Resource.Loading(false)) // stop loading indication
-                return@flow
-            }
-            val remoteCategories = try {
-                api.getSubCategoriesForParentId("parentCategoryId", "=", id)
-            } catch (e: IOException) {
-                e.printStackTrace()
-                emit(Resource.Error("Couldn't load category data"))
-                null
-            } catch (e: HttpException) {
-                e.printStackTrace()
-                emit(Resource.Error("Couldn't load category data"))
-                null
-            }
-            emit(Resource.Loading(false))
-        }
-    }
-
-
 }

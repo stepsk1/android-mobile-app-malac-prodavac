@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
@@ -76,48 +75,48 @@ fun StoreCategoryScreen(navController: NavController)
             FilterSortRow(navController)
             ShowcaseProducts(
                 products = listOf(
-                    Product(
-                        title = "Sok od višnje 0,2l",
-                        imageID = Icons.Filled.AccountBox,
-                        price = 99.0F,
-                        saved = true,
-                        desc = ""
-                    ),
-                    Product(
-                        title = "Sok od jagode 0,2l",
-                        imageID = Icons.Filled.AccountBox,
-                        price = 199.0F,
-                        saved = false,
-                        desc = ""
-                    ),
-                    Product(
-                        title = "Sirup od jagode 1l",
-                        imageID = Icons.Filled.AccountBox,
-                        price = 590.0F,
-                        saved = false,
-                        desc = ""
-                    ),
-                    Product(
-                        title = "Sirup od aronije 1l",
-                        imageID = Icons.Filled.AccountBox,
-                        price = 520.0F,
-                        saved = true,
-                        desc = ""
-                    ),
-                    Product(
-                        title = "Sok od ribizle",
-                        imageID = Icons.Filled.AccountBox,
-                        price = 890.0F,
-                        saved = false,
-                        desc = ""
-                    ),
-                    Product(
-                        title = "Sirup od drena",
-                        imageID = Icons.Filled.AccountBox,
-                        price = 199.0F,
-                        saved = false,
-                        desc = ""
-                    ),
+//                    Product(
+//                        title = "Sok od višnje 0,2l",
+//                        imageID = Icons.Filled.AccountBox,
+//                        price = 99.0F,
+//                        saved = true,
+//                        desc = ""
+//                    ),
+//                    Product(
+//                        title = "Sok od jagode 0,2l",
+//                        imageID = Icons.Filled.AccountBox,
+//                        price = 199.0F,
+//                        saved = false,
+//                        desc = ""
+//                    ),
+//                    Product(
+//                        title = "Sirup od jagode 1l",
+//                        imageID = Icons.Filled.AccountBox,
+//                        price = 590.0F,
+//                        saved = false,
+//                        desc = ""
+//                    ),
+//                    Product(
+//                        title = "Sirup od aronije 1l",
+//                        imageID = Icons.Filled.AccountBox,
+//                        price = 520.0F,
+//                        saved = true,
+//                        desc = ""
+//                    ),
+//                    Product(
+//                        title = "Sok od ribizle",
+//                        imageID = Icons.Filled.AccountBox,
+//                        price = 890.0F,
+//                        saved = false,
+//                        desc = ""
+//                    ),
+//                    Product(
+//                        title = "Sirup od drena",
+//                        imageID = Icons.Filled.AccountBox,
+//                        price = 199.0F,
+//                        saved = false,
+//                        desc = ""
+//                    ),
                 ), navController
             )
         }
