@@ -18,19 +18,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +39,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.presentation.registration.components.DropDownList
 import com.triforce.malacprodavac.ui.theme.SpaceLarge
 import com.triforce.malacprodavac.ui.theme.SpaceMedium
 
@@ -58,6 +52,8 @@ fun RegistrationScreen(navController: NavController) {
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = state.isLoading
     )
+    var role: String
+
     val annotatedString = buildAnnotatedString {
         val text = "Imaš nalog? Prijavi se!"
         append(text)
@@ -238,7 +234,8 @@ fun RegistrationScreen(navController: NavController) {
                 }
                 Spacer(modifier = Modifier.height(16.dp))
 
-                DropDownList(viewModel)
+                role = DropDownList(viewModel)
+                viewModel.state.role = role
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -293,57 +290,6 @@ fun RegistrationScreen(navController: NavController) {
                         }
                     )
                 }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DropDownList(viewModel: RegistrationViewModel) {
-    val rolesList = listOf(
-        "KUPAC",
-        "DOSTAVLJAČ",
-        "PRODAVAC"
-    )
-    var expanded by remember { mutableStateOf(false) }
-    var selectedRole by remember { mutableStateOf(rolesList[0]) }
-
-    // menu box
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = {
-            expanded = !expanded
-        }
-    ) {
-        TextField(
-            modifier = Modifier
-                .menuAnchor(), // menuAnchor modifier must be passed to the text field for correctness.
-            readOnly = true,
-            value = selectedRole,
-            onValueChange = {
-                viewModel.onEvent(RegistrationFormEvent.RoleChanged(it))
-            },
-            label = { Text("Uloga") },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
-        )
-        // menu
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = {
-                expanded = false
-            },
-        ) {
-            rolesList.forEach { selectionOption ->
-                DropdownMenuItem(
-                    text = { Text(selectionOption) },
-                    onClick = {
-                        selectedRole = selectionOption
-                        expanded = false
-                    },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                )
             }
         }
     }
