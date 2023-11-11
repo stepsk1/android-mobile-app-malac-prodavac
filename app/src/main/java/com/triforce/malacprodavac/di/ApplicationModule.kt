@@ -14,6 +14,7 @@ import com.triforce.malacprodavac.data.remote.auth.interceptors.AuthInterceptorI
 import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
 import com.triforce.malacprodavac.data.remote.couriers.CouriersApi
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
+import com.triforce.malacprodavac.data.remote.products.ProductsApi
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.users.UsersApi
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
@@ -69,6 +70,11 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi =
+        retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideProductsApi(retrofit: Retrofit): ProductsApi =
         retrofit.create()
 
     @Provides
@@ -135,6 +141,5 @@ object ApplicationModule {
         ).addTypeConverter(converters)
             .fallbackToDestructiveMigration()
             .build()
-
 
 }
