@@ -132,7 +132,51 @@ class ProductRepositoryImpl @Inject constructor(
         id: Int,
         fetchFromRemote: Boolean
     ): Flow<Resource<List<Product>>> {
-        TODO("Not yet implemented")
+
+        return flow {
+
+            emit(Resource.Loading(isLoading = true))
+
+            val localProduct = dao.getProductsForCategoryId(id)
+
+            emit(Resource.Success(data = localProduct.map { it.toProduct() }))
+
+            val isDbEmpty = localProduct.isEmpty()
+            val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
+
+            if (shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteProduct = try {
+
+                api.getProductsForCategoryId("parentCategoryId", "=", id)
+
+            } catch (e: IOException) {
+
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load products from category"))
+                null
+
+            } catch (e: HttpException) {
+
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load products from category data"))
+                null
+
+            }
+
+            remoteProduct?.let {
+
+                Log.d("PRODUCTS FROM CATEGORY:", it.toString())
+                emit(Resource.Success(remoteProduct.products.map { it.toProduct() }))
+
+            }
+
+            emit(Resource.Loading(false))
+        }
+
     }
 
 }
