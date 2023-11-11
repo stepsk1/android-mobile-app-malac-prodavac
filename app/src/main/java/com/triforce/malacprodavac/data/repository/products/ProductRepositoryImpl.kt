@@ -179,4 +179,12 @@ class ProductRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun deleteProduct(product: Product) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertProduct(product: Product) {
+        TODO("Not yet implemented")
+    }
+
 }
