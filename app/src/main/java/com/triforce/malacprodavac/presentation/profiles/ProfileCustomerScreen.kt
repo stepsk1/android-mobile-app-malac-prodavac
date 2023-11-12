@@ -158,7 +158,7 @@ fun ProfileCustomerScreen(navController: NavController) {
                     title = "Početna",
                     graphicID = Icons.Default.Home,
                     screen = Screen.HomeScreen,
-                    isActive = true
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
@@ -170,7 +170,7 @@ fun ProfileCustomerScreen(navController: NavController) {
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.ProfileCustomer,
-                    isActive = false
+                    isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",
