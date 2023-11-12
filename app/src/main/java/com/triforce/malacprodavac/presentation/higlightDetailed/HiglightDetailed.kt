@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
-import com.triforce.malacprodavac.presentation.store.category.FilterSortRow
 import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
+import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
@@ -53,12 +53,12 @@ fun HighlightDetailed(navController: NavController) {
 
         }
         Column {
-            HeaderSectionTitle("Više od prodavca", navController)
+            GoBackComp("Više od prodavca", navController)
             BriefDescription(
                 title = "Sveži sokovi za Vaš užitak!",
                 description = "Domaćinstvo Perun se generacijama bavi domaćom proizvodnjom sokova i sirupa od različitog voća koje se hladno cedi, zatim..."
             )
-            FilterSortRow(navController)
+            FilterSortComp(navController)
             ShowcaseProducts(
                 products = listOf(
 //                    Product(

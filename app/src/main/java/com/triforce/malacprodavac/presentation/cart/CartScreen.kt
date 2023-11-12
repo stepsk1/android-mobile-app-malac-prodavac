@@ -45,7 +45,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
-import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
+import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -95,7 +95,7 @@ fun CartScreen(navController: NavController)
 
         }
         Column {
-            HeaderSectionTitle("Moja korpa", navController)
+            GoBackComp("Moja korpa", navController)
             BuyedProductSection(
                 buyedProducts = buyedProducts
             )
