@@ -164,13 +164,13 @@ fun ProfileCustomerScreen(navController: NavController) {
                     title = "Prodavnica",
                     graphicID = Icons.Default.AddCircle,
                     screen = Screen.StoreScreen,
-                    isActive = true
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.ProfileCustomer,
-                    isActive = false
+                    isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",

@@ -77,8 +77,10 @@ fun StoreCategoryScreen(
         }
         Column {
             GoBackComp("Sirupi i sokovi", navController)
-            CategorySectionHeader("100% domaći i prirodni sokovi",
-                "Voće se prvo hladno cedi, zatim pasterizuje i bez ikakvih dodataka pakuje u staklenu ambalažu.")
+
+            CategorySectionHeader(viewModel.categoryTitle.value.title, "Voće se prvo hladno cedi, zatim pasterizuje i bez ikakvih dodataka pakuje u staklenu ambalažu.")
+
+            //CategorySectionHeader("100% domaći i prirodni sokovi", "Voće se prvo hladno cedi, zatim pasterizuje i bez ikakvih dodataka pakuje u staklenu ambalažu.")
             FilterSortComp(navController)
             ShowcaseProducts(
                 products = productsList,

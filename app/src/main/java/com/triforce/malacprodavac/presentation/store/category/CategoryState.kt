@@ -4,6 +4,10 @@ import com.triforce.malacprodavac.domain.model.Product
 
 data class CategoryState (
 
+    val title: String = "",
+    val color1: String = "",
+    val color2: String = "",
+
     val products: List<Product>? = emptyList(),
     val isLoading: Boolean = false,
 

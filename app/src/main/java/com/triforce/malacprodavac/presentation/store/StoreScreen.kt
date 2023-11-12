@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -247,7 +248,7 @@ fun StoreCategoryItem(
                 shape = RoundedCornerShape(7.5.dp)
             )
             .clickable {
-                navController.navigate(Screen.StoreCategoryScreen.route + "?categoryId=${feature.id}")
+                navController.navigate(Screen.StoreCategoryScreen.route + "?categoryId=${feature.id}&color1=${feature.color1}&color2=${feature.color2}&title=${feature.title}")
             }
             .padding(1.5.dp)
             .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same

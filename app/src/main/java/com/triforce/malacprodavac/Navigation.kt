@@ -53,14 +53,35 @@ fun Navigation() {
         }
 
         composable(
-            route = Screen.StoreCategoryScreen.route+ "?categoryId={categoryId}",
+            route = Screen.StoreCategoryScreen.route+ "?categoryId={categoryId}&color1={color1}&color2={color2}&title={title}",
             arguments = listOf(
+
                 navArgument(
                     name = "categoryId"
                 ){
                     type = NavType.IntType
                     defaultValue = -1
+                },
+
+                navArgument(
+                    name = "color1"
+                ){
+                    type = NavType.StringType
+                    defaultValue = -1
+                },
+                navArgument(
+                    name = "color2"
+                ) {
+                    type = NavType.StringType
+                    defaultValue = -1
+                },
+                navArgument(
+                    name = "title"
+                ) {
+                    type = NavType.StringType
+                    defaultValue = -1
                 }
+
             )) {
             StoreCategoryScreen(navController = navController)
         }
