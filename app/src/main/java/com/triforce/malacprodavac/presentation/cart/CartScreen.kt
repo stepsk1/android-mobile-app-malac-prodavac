@@ -29,7 +29,10 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -100,6 +103,7 @@ fun CartScreen(navController: NavController)
                 buyedProducts = buyedProducts
             )
         }
+
         TotalPrice(buyedProducts = buyedProducts)
 
         Row(
@@ -107,9 +111,9 @@ fun CartScreen(navController: NavController)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(25.dp))
                 .padding(
-                    start = 5.dp,
+                    start = 7.5.dp,
                     top = 663.dp,
-                    end = 5.dp,
+                    end = 7.5.dp,
                     bottom = 40.dp
                 )
         ){
@@ -122,46 +126,17 @@ fun CartScreen(navController: NavController)
                 Button(
                     onClick = {
                         navController.navigate(Screen.CartDetailsScreen.route)
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
                 ) {
                     Text(
                         text = "Nastavi sa plaćanjem",
                         color = MP_White,
-                        fontWeight = FontWeight.Bold
+                        style = androidx.compose.material.MaterialTheme.typography.body1
                     )
                 }
             }
         }
-
-        BottomNavigationMenu(navController = navController,
-            items = listOf(
-                BottomNavigationMenuContent(
-                    title = "Početna",
-                    graphicID = Icons.Default.Home,
-                    screen = Screen.HomeScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle,
-                    screen = Screen.HomeScreen,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Moj Profil",
-                    graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.HomeScreen,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Korpa",
-                    graphicID = Icons.Default.ShoppingCart,
-                    screen = Screen.CartScreen,
-                    isActive = false
-                )
-            ), modifier = Modifier.
-            align(Alignment.BottomCenter)
-        )
     }
 }
 
@@ -177,12 +152,13 @@ fun BuyedProductSection(
         LazyVerticalGrid(
             columns = GridCells.Fixed(1),
             contentPadding = PaddingValues(
-                start = 20.5.dp,
-                end = 7.5.dp,
-                bottom = 130.dp
+                start = 15.dp,
+                end = 15.dp,
+                bottom = 50.dp
             ), // 130 dp bottom padding because navigation and total price
             modifier = Modifier
-                .requiredHeight(500.dp)
+                .requiredHeight(530.dp)
+                .padding(top = 20.dp)
         ) {
             items(buyedProducts.size) {// how many items do we have
                 // define one of items
@@ -200,38 +176,35 @@ fun BuyedProductItem(
 ) {
     BoxWithConstraints(
         modifier = Modifier
-            .padding(5.dp)
+            .padding(bottom = 20.dp)
             .shadow(
                 elevation = 5.dp,
                 spotColor = MP_Black,
-                shape = RoundedCornerShape(7.5.dp)
+                shape = RoundedCornerShape(3.5.dp)
             )
-            .aspectRatio(1.8F)
-            .clip(RoundedCornerShape(10.dp))
-            .requiredHeight(195.dp)
+            .clip(RoundedCornerShape(5.dp))
             .background(MP_Gray)
+            .requiredHeight(130.dp)
     ) {
 
         Box(
             modifier = Modifier
-                .requiredWidth(400.dp)
-                .padding(30.dp)
+                .fillMaxSize()
+                .padding(15.dp)
         ) {
 
             Text(
                 text = buyedProduct.name,
                 fontWeight = FontWeight.Bold,
-                style = androidx.compose.material.MaterialTheme.typography.h5,
-                lineHeight = 15.sp,
+                style = androidx.compose.material.MaterialTheme.typography.h6,
                 color = MP_Black,
                 modifier = Modifier
                     .align(Alignment.TopStart)
             )
 
             Text(
-                text = buyedProduct.price.toString() + "rsd",
-                style = androidx.compose.material.MaterialTheme.typography.h6,
-                lineHeight = 15.sp,
+                text = buyedProduct.price.toString() + " rsd",
+                style = androidx.compose.material.MaterialTheme.typography.body1,
                 color = MP_Green,
                 modifier = Modifier
                     .align(Alignment.CenterStart)
@@ -239,7 +212,6 @@ fun BuyedProductItem(
             Text(
                 text = buyedProduct.amount.toString() + "X",
                 style = androidx.compose.material.MaterialTheme.typography.h6,
-                lineHeight = 15.sp,
                 color = MP_Black,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -247,7 +219,7 @@ fun BuyedProductItem(
 
             Box(
                 modifier = Modifier
-                    .padding(6.dp)
+                    .padding(7.5.dp)
                     .align(Alignment.BottomEnd)
                     .requiredWidth(100.dp)
                     .requiredHeight(90.dp)
@@ -322,29 +294,13 @@ fun TotalPrice(buyedProducts: List<BuyedProduct>) {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 20.dp, horizontal = 20.dp)
-                    .clip(RoundedCornerShape(25.dp))
-                    .background(MP_Green)
-                    .padding(10.dp)
+                    .padding(top = 20.dp)
             )
             {
                 Text(
-                    text = "Ukupan iznos:",
-                    fontWeight = FontWeight.Bold,
+                    text = "Ukupno: ${totalPrice.toString()} rsd",
                     style = androidx.compose.material.MaterialTheme.typography.h5,
-                    lineHeight = 17.sp,
-                    color = MP_White,
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                )
-
-                Text(
-                    text = totalPrice.toString() + "RSD",
-                    style = androidx.compose.material.MaterialTheme.typography.h5,
-                    lineHeight = 17.sp,
-                    color = MP_White,
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
+                    color = MP_Black
                 )
             }
         }
