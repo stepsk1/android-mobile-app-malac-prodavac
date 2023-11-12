@@ -13,7 +13,7 @@ data class RegistrationFormState (
     val passwordError: String? = null,
     val repeatedPassword: String = "",
     val repeatedPasswordError: String? = null,
-    val role: String = "",
+    var role: String = "",
     val isLoading: Boolean = false,
     val acceptedTerms: Boolean = false,
     val termsError: String? = null,

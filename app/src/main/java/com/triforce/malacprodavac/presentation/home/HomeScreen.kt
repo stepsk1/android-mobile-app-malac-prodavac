@@ -74,7 +74,7 @@ fun HomeScreen(navController: NavController) {
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Orange,
                         color2 = MP_Orange,
-                        screen = Screen.HomeScreen
+                        screen = Screen.ProfileCustomer
                     ),
                     Feature(
                         title = "Omiljeno",
@@ -119,13 +119,13 @@ fun HomeScreen(navController: NavController) {
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
                     graphicID = Icons.Default.AddCircle,
-                    screen = Screen.HomeScreen,
+                    screen = Screen.StoreScreen,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.HomeScreen,
+                    screen = Screen.ProfileCustomer,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
