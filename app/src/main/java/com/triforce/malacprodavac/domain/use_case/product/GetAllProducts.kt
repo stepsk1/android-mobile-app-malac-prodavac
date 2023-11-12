@@ -6,15 +6,11 @@ import com.triforce.malacprodavac.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 class GetAllProducts (
-
     private val repository: ProductRepository
-
 ) {
 
     suspend operator fun invoke(): Flow<Resource<List<Product>>> {
-
         return repository.getProducts(false)
-
     }
 
 }
