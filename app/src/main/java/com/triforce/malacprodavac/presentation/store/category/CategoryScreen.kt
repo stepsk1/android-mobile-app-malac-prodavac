@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.store.category
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,40 +18,55 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.BottomNavigationMenuContent
+import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
-import com.triforce.malacprodavac.Product
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
+import com.triforce.malacprodavac.domain.model.Category
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.ui.theme.MP_Black
-import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Pink
-import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun StoreCategoryScreen(navController: NavController)
-{
+fun StoreCategoryScreen(
+
+    navController: NavController,
+    viewModel: CategoryViewModel = hiltViewModel()
+
+) {
+
     Box(
         modifier = Modifier
             .background(MP_White)

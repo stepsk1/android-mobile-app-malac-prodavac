@@ -1,10 +1,10 @@
 package com.triforce.malacprodavac.presentation.store.category
 
-import com.triforce.malacprodavac.Product
+import com.triforce.malacprodavac.domain.model.Product
 
 data class CategoryState (
 
-    val products: List<Product> = emptyList(),
+    val products: List<Product>? = emptyList(),
     val isLoading: Boolean = false,
 
     val isOrderSectionVisible: Boolean = false,
