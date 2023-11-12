@@ -1,9 +1,11 @@
 package com.triforce.malacprodavac
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.triforce.malacprodavac.presentation.cart.components.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.components.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
@@ -50,7 +52,16 @@ fun Navigation() {
             StoreScreen(navController = navController)
         }
 
-        composable(route = Screen.StoreCategoryScreen.route) {
+        composable(
+            route = Screen.StoreCategoryScreen.route+ "?categoryId={categoryId}",
+            arguments = listOf(
+                navArgument(
+                    name = "categoryId"
+                ){
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )) {
             StoreCategoryScreen(navController = navController)
         }
 

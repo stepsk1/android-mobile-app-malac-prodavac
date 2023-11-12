@@ -55,7 +55,7 @@ class ProductRepositoryImpl @Inject constructor(
                 Filter(
                     filter = listOf(
                         SingleFilter(
-                            "category.parentCategoryId",
+                            "categoryId",
                             FilterOperation.Eq,
                             categoryId
                         )

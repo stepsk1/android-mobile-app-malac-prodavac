@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.store.category
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -27,6 +28,7 @@ class CategoryViewModel @Inject constructor(
     init {
         savedStateHandle.get<Int>("categoryId")?.let { categoryId ->
             getProducts(true, categoryId);
+            Log.d("CATEGORY_ID ", categoryId.toString())
         }
     }
 
