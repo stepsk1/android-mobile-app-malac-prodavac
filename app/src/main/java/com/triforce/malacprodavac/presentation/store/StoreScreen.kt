@@ -146,13 +146,13 @@ fun StoreScreen(navController: NavController)
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
                     graphicID = Icons.Default.AddCircle,
-                    screen = Screen.HomeScreen,
+                    screen = Screen.StoreScreen,
                     isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.HomeScreen,
+                    screen = Screen.ProfileCustomer,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(

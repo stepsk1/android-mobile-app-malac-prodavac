@@ -120,13 +120,13 @@ fun HomeScreen(navController: NavController) {
                     title = "Početna",
                     graphicID = Icons.Default.Home,
                     screen = Screen.HomeScreen,
-                    isActive = true
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
                     graphicID = Icons.Default.AddCircle,
                     screen = Screen.StoreScreen,
-                    isActive = false
+                    isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
@@ -140,8 +140,7 @@ fun HomeScreen(navController: NavController) {
                     screen = Screen.CartScreen,
                     isActive = false
                 )
-            ), modifier = Modifier
-                .align(Alignment.BottomCenter)
+            ), modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 }
