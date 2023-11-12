@@ -34,7 +34,6 @@ class StoreViewModel @Inject constructor(
                     is Resource.Success -> {
                         if (result.data is List<Category>) {
                             println(result.data)
-                            println("WOHOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!")
                             state = state.copy(categories = result.data)
                         }
                     }
