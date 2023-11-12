@@ -85,7 +85,12 @@ fun LoginScreen(navController: NavController) {
                         "Uspešna prijava",
                         Toast.LENGTH_LONG
                     ).show()
-                    navController.navigate(Screen.StoreScreen.route)
+                    Log.d("", "ULOGA")
+                    Log.d("", viewModel.role)
+                    if (viewModel.role == "Shop")
+                        navController.navigate(Screen.ShopHomeScreen.route)
+                    else if(viewModel.role == "Customer")
+                        navController.navigate(Screen.StoreScreen.route)
 
                 }
             }
@@ -166,8 +171,8 @@ fun LoginScreen(navController: NavController) {
                     onClick = {
                         viewModel.onEvent(LoginFormEvent.Submit)
                             .let {
-                            navController.navigate(Screen.HomeScreen.route)
-                        }
+                                navController.navigate(Screen.HomeScreen.route)
+                            }
                     },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)

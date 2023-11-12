@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.login
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,6 +32,7 @@ class LoginViewModel @Inject constructor(
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()
     var hasError = false
+    var role : String = ""
 
     fun isUserAuthenticated(): Boolean {
         if(sessionManager.getAccessToken() != null)
@@ -70,48 +72,42 @@ class LoginViewModel @Inject constructor(
             return
         }
 
-        loginUser(state.email, state.password)
-
-
         viewModelScope.launch {
-            state = state.copy(
-                emailError = "",
-                passwordError = ""
-            )
-            validationEventChannel.send(ValidationEvent.Success)
-        }
-    }
+                repository.login(state.email, state.password)
+                    .collect { result ->
+                        when(result) {
+                            is Resource.Success -> {
+                                if (result.data !is User){
+                                    state.copy(
+                                        status = AuthResult.Unauthorized()
+                                    )
+                                }
+                                if (result.data is User) {
+                                    state = state.copy(
+                                        status = AuthResult.Authorized(result.data.email),
+                                        role = result.data.roles[0],
+                                        emailError = "",
+                                        passwordError = ""
 
-    private fun loginUser(email: String, password: String) {
-        viewModelScope.launch {
-            repository.login(email, password)
-                .collect { result ->
-                    when(result) {
-                        is Resource.Success -> {
-                            if (result.data !is User){
+                                    )
+                                    role = result.data.roles[0]
+                                    Log.d("", "AKO NE RADI POLOMICU LAPTOP")
+                                    Log.d("", role)
+                                }
+                            }
+                            is Resource.Error -> {
+                                Unit
+                            }
+                            is Resource.Loading -> {
                                 state = state.copy(
-                                    status = AuthResult.Unauthorized()
+                                    isLoading = result.isLoading
                                 )
                             }
-                            if (result.data is User) {
-                                state = state.copy(
-                                    status = AuthResult.Authorized(result.data.email)
-                                )
-                            }
-                        }
-                        is Resource.Error -> {
-                            Unit
-                        }
-                        is Resource.Loading -> {
-                            state = state.copy(
-                                isLoading = result.isLoading
-                            )
                         }
                     }
-                }
+            validationEventChannel.send(ValidationEvent.Success)
+            }
         }
-    }
-
     sealed class ValidationEvent {
         object Success: ValidationEvent()
     }

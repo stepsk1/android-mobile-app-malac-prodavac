@@ -11,6 +11,7 @@ interface CategoriesApi {
 
     @GET(ROUTE)
     suspend fun getAllCategories(
+        @Query("limit") limit : Int = 80,
         @QueryMap() queryMap: Map<String,  String>
     ): PaginationResponse<CategoryEntity>
 

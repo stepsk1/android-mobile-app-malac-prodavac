@@ -8,5 +8,6 @@ data class LoginFormState(
     val password: String = "",
     val passwordError: String? = null,
     val isLoading: Boolean = false,
-    val status: AuthResult<String> = AuthResult.Unauthorized()
+    val status: AuthResult<String> = AuthResult.Unauthorized(),
+    var role: String = ""
 )

@@ -51,6 +51,7 @@ class CategoryRepositoryImpl @Inject constructor(
             val remoteCategories = try {
                 api.getAllCategories(
                     // ****PRIMER**** queryMap
+                    limit = 80,
                     mutableMapOf()
                 )
             } catch (e: IOException) {
