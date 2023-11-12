@@ -9,10 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.repository.AuthRepository
-import com.triforce.malacprodavac.domain.repository.UserRepository
 import com.triforce.malacprodavac.domain.use_case.ValidateEmail
 import com.triforce.malacprodavac.domain.use_case.ValidatePassword
-import com.triforce.malacprodavac.presentation.registration.RegistrationFormState
 import com.triforce.malacprodavac.util.AuthResult
 import com.triforce.malacprodavac.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +28,6 @@ class LoginViewModel @Inject constructor(
     private val ValidateEmail: ValidateEmail = ValidateEmail()
     private val ValidatePassword: ValidatePassword = ValidatePassword()
     var state by mutableStateOf(LoginFormState())
-    var UserState by mutableStateOf(RegistrationFormState())
 
     private val validationEventChannel = Channel<ValidationEvent>()
     val validationEvents = validationEventChannel.receiveAsFlow()

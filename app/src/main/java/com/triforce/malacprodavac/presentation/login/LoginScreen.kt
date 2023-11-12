@@ -47,7 +47,6 @@ fun LoginScreen(navController: NavController) {
 
     val viewModel: LoginViewModel = hiltViewModel()
     val state = viewModel.state
-    val userState = viewModel.UserState
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = state.isLoading
     )
