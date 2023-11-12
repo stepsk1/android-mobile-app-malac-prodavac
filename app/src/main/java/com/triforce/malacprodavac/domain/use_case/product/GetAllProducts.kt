@@ -9,8 +9,8 @@ class GetAllProducts (
     private val repository: ProductRepository
 ) {
 
-    suspend operator fun invoke(): Flow<Resource<List<Product>>> {
-        return repository.getProducts(false)
+    suspend operator fun invoke(categoryId: Int, fetchFromRemote: Boolean): Flow<Resource<List<Product>>> {
+        return repository.getProducts(categoryId, fetchFromRemote)
     }
 
 }

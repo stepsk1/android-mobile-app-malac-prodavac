@@ -75,6 +75,7 @@ fun StoreScreen(navController: NavController)
             flagNumber++
             if(flagNumber%3==0){
                 features += Feature(
+                    id = it.id,
                     title = it.name,
                     graphicID = Icons.Default.Star,
                     color1 = MP_Orange,
@@ -84,6 +85,7 @@ fun StoreScreen(navController: NavController)
             }
             else if(flagNumber%3==1){
                 features += Feature(
+                    id = it.id,
                     title = it.name,
                     graphicID = Icons.Default.Star,
                     color1 = MP_Green,
@@ -92,6 +94,7 @@ fun StoreScreen(navController: NavController)
                 )
             }else{
             features += Feature(
+                id = it.id,
                 title = it.name,
                 graphicID = Icons.Default.Star,
                 color1 = MP_Pink,
@@ -225,13 +228,13 @@ fun StoreCategoriesSection(
     ) {
         items(features.size) {// how many items do we have
             // define one of items
-            StoreCategorieItem(feature = features[it], navController)
+            StoreCategoryItem(feature = features[it], navController)
         }
     }
 }
 
 @Composable
-fun StoreCategorieItem(
+fun StoreCategoryItem(
     feature: Feature,
     navController: NavController
 ) {
@@ -244,7 +247,7 @@ fun StoreCategorieItem(
                 shape = RoundedCornerShape(7.5.dp)
             )
             .clickable {
-                navController.navigate(Screen.StoreCategoryScreen.route)
+                navController.navigate(Screen.StoreCategoryScreen.route + "?categoryId=${feature.id}")
             }
             .padding(1.5.dp)
             .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same

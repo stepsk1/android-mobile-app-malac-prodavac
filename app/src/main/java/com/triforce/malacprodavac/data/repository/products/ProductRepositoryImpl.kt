@@ -33,7 +33,7 @@ class ProductRepositoryImpl @Inject constructor(
 
     private val dao = db.productDao
 
-    override suspend fun getProducts(fetchFromRemote: Boolean): Flow<Resource<List<Product>>> {
+    override suspend fun getProducts(categoryId: Int, fetchFromRemote: Boolean): Flow<Resource<List<Product>>> {
 
         return flow {
 
@@ -50,20 +50,22 @@ class ProductRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 return@flow
             }
-            /*val query = FilterBuilder.buildFilterQueryMap(
+
+            val query = FilterBuilder.buildFilterQueryMap(
                 Filter(
                     filter = listOf(
                         SingleFilter(
-                            "category.parentId",
+                            "category.parentCategoryId",
                             FilterOperation.Eq,
-                            1
+                            categoryId
                         )
                     ), order = null, limit = null, offset = null
                 )
-            )*/
+            )
+
             val remoteProducts = try {
 
-                api.getProducts(mutableMapOf())
+                api.getProducts(query)
 
             } catch (e: IOException) {
 

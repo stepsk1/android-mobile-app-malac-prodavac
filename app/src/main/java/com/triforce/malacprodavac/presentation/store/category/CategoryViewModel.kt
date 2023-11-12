@@ -3,6 +3,7 @@ package com.triforce.malacprodavac.presentation.store.category
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.model.Category
@@ -16,21 +17,24 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
 
-    private val repository: ProductRepository
+    private val repository: ProductRepository,
+    savedStateHandle: SavedStateHandle
 
 ): ViewModel() {
 
     var state by mutableStateOf(CategoryState())
 
     init {
-        getProducts(true, null);
+        savedStateHandle.get<Int>("categoryId")?.let { categoryId ->
+            getProducts(true, categoryId);
+        }
     }
 
-    private fun getProducts(fetchFromRemote: Boolean, product: Product?) {
+    private fun getProducts(fetchFromRemote: Boolean, categoryId: Int) {
 
         viewModelScope.launch {
 
-            repository.getProducts(fetchFromRemote).collect({ result ->
+            repository.getProducts(categoryId, fetchFromRemote).collect({ result ->
 
                 when (result) {
 
