@@ -50,7 +50,7 @@ class ProductRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 return@flow
             }
-            val query = FilterBuilder.buildFilterQueryMap(
+            /*val query = FilterBuilder.buildFilterQueryMap(
                 Filter(
                     filter = listOf(
                         SingleFilter(
@@ -60,10 +60,10 @@ class ProductRepositoryImpl @Inject constructor(
                         )
                     ), order = null, limit = null, offset = null
                 )
-            )
+            )*/
             val remoteProducts = try {
 
-                api.getProducts(query)
+                api.getProducts(mutableMapOf())
 
             } catch (e: IOException) {
 

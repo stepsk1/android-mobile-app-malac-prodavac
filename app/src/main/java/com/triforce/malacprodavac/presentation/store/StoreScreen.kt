@@ -49,6 +49,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
@@ -117,7 +118,7 @@ fun StoreScreen(navController: NavController)
 
         }
         Column {
-            HeaderSectionTitle("Malac prodavnica", navController)
+            GoBackComp("Malac prodavnica", navController)
             TitleTextContentSection(
                 sectionTitle = "Podržite lokalnu ekonomiju",
                 sectionText = "Pronađite najbolje proizvode od malih proizvođača. Pratite svoje omiljene proizvođače i podržite lokalnu ekonomiju!",
@@ -158,55 +159,6 @@ fun StoreScreen(navController: NavController)
                     isActive = false
                 )
             ), modifier = Modifier.align(Alignment.BottomCenter)
-        )
-    }
-}
-
-@Composable
-fun HeaderSectionTitle(
-    msg: String,
-    navController: NavController,
-) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .size(width = 240.dp, height = 35.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Search",
-                tint = MP_White,
-                modifier = Modifier
-                    .size(30.dp)
-                    .clickable {
-                        navController.popBackStack()
-                        //navController.navigate(Screen.HomeScreen.route)
-                    }
-            )
-
-            Text(
-                text = msg,
-                style = MaterialTheme.typography.h5,
-                color = MP_White,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-            )
-        }
-
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "Search",
-            tint = MP_White,
-            modifier = Modifier
-                .size(35.dp)
         )
     }
 }

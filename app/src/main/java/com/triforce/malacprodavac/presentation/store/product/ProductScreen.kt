@@ -31,8 +31,7 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Product
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.store.HeaderSectionTitle
-import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -60,7 +59,7 @@ fun ProductScreen(navController: NavController)
 
         }
         Column {
-            HeaderSectionTitle("Sok od višnje", navController)
+            GoBackComp("Sok od višnje", navController)
             HeroImage()
             ProductDetails(
                 product = Product(
@@ -213,10 +212,10 @@ fun ShowHighlightSection(
                     .padding(vertical = 6.dp, horizontal = 15.dp)
             )
         }
-        ShowcaseProducts(
+        /*ShowcaseProducts(
             products = listOf(product1,product2),
             navController = navController
-        )
+        )*/
     }
 }
 
