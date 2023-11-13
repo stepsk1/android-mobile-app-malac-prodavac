@@ -6,8 +6,6 @@ import com.triforce.malacprodavac.domain.model.Customer
 fun CustomerEntity.toCustomer(): Customer = Customer(
     id = id,
     userId = userId,
-    favoriteProducts = favoriteProducts,
-    favoriteShops = favoriteShops,
     createdAt = createdAt,
     updatedAt = updatedAt,
 

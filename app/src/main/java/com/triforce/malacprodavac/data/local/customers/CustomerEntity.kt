@@ -14,8 +14,6 @@ data class CustomerEntity(
     @PrimaryKey
     val id: Int,
     val userId: Int,
-    val favoriteShops: List<Int>,
-    val favoriteProducts: List<Int>,
     val updatedAt: String,
     val createdAt: String,
 )
