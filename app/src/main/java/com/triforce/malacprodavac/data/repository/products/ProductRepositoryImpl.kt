@@ -18,6 +18,7 @@ import com.triforce.malacprodavac.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
+import retrofit2.http.QueryMap
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,7 +34,11 @@ class ProductRepositoryImpl @Inject constructor(
 
     private val dao = db.productDao
 
-    override suspend fun getProducts(categoryId: Int, fetchFromRemote: Boolean): Flow<Resource<List<Product>>> {
+    override suspend fun getProducts(
+        categoryId: Int,
+        fetchFromRemote: Boolean,
+        @QueryMap() query: MutableMap<String, String>
+    ): Flow<Resource<List<Product>>> {
 
         return flow {
 
@@ -50,18 +55,6 @@ class ProductRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 return@flow
             }
-
-            val query = FilterBuilder.buildFilterQueryMap(
-                Filter(
-                    filter = listOf(
-                        SingleFilter(
-                            "categoryId",
-                            FilterOperation.Eq,
-                            categoryId
-                        )
-                    ), order = null, limit = null, offset = null
-                )
-            )
 
             val remoteProducts = try {
 
@@ -93,57 +86,6 @@ class ProductRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getProductForId(
-        id: Int,
-        fetchFromRemote: Boolean
-    ): Flow<Resource<Product>> {
-
-        return flow {
-
-            emit(Resource.Loading(isLoading = true))
-
-            val localProducts = dao.getProductForId(id)
-
-            emit(
-                Resource.Success(data = localProducts[0].toProduct())
-            )
-
-            val isDbEmpty = localProducts.isEmpty()
-            val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
-
-            if (shouldJustLoadFromCache) {
-                emit(Resource.Loading(false))
-                return@flow
-            }
-
-            val remoteProduct = try {
-
-                api.getProductForId(id)
-
-            } catch (e: IOException) {
-
-                e.printStackTrace()
-                emit(Resource.Error("Couldn't load product"))
-                null
-
-            } catch (e: HttpException) {
-
-                e.printStackTrace()
-                emit(Resource.Error("Couldn't load product data"))
-                null
-
-            }
-
-            remoteProduct?.let {
-
-                Log.d("PRODUCTS:", it.toString())
-                emit(Resource.Success(remoteProduct.toProduct()))
-            }
-
-            emit(Resource.Loading(false))
-        }
-
-    }
 
     override suspend fun deleteProduct(product: Product) {
         TODO("Not yet implemented")

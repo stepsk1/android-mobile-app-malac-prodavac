@@ -10,6 +10,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.triforce.malacprodavac.data.services.filter.Filter
+import com.triforce.malacprodavac.data.services.filter.FilterBuilder
+import com.triforce.malacprodavac.data.services.filter.FilterOperation
+import com.triforce.malacprodavac.data.services.filter.SingleFilter
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.repository.ProductRepository
@@ -58,39 +62,36 @@ class CategoryViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            repository.getProducts(categoryId, fetchFromRemote).collect({ result ->
+            val query = FilterBuilder.buildFilterQueryMap(
+                Filter(
+                    filter = listOf(
+                        SingleFilter(
+                            "categoryId",
+                            FilterOperation.Eq,
+                            categoryId
+                        )
+                    ), order = null, limit = null, offset = null
+                )
+            )
 
+            repository.getProducts(categoryId, fetchFromRemote, query).collect({ result ->
                 when (result) {
-
                     is Resource.Success -> {
-
                         if (result.data is List<Product>) {
-
                             println(result.data)
                             state = state.copy(products = result.data)
-
                         }
-
                     }
-
                     is Resource.Error -> {
                         Unit
                     }
-
                     is Resource.Loading -> {
-
                         state = state.copy(
                             isLoading = result.isLoading
                         )
-
                     }
-
                 }
-
             })
-
         }
-
     }
-
 }

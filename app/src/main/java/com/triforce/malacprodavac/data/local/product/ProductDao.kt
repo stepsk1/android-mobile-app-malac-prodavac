@@ -12,10 +12,7 @@ interface ProductDao {
     suspend fun getProducts(): List<ProductEntity>
 
     @Query("SELECT * FROM ProductEntity WHERE id = :id")
-    suspend fun getProductForId(id: Int):List<ProductEntity>
-
-    @Query("SELECT * FROM ProductEntity WHERE categoryId = :categoryId")
-    suspend fun getProductsForCategoryId(categoryId: Int):List<ProductEntity>
+    suspend fun getProductForId(id: Int):ProductEntity
 
     @Delete
     suspend fun deleteProduct(product: ProductEntity)

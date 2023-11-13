@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.store.product
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,27 +28,58 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
-import com.triforce.malacprodavac.Product
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
+import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun ProductScreen(navController: NavController)
-{
+fun ProductScreen(
+    navController: NavController,
+    viewModel: ProductViewModel = hiltViewModel()
+) {
+
+    val state = viewModel.state
+
+    val productsList: List<Product>? = state.products
+    if (productsList != null) {
+        Log.d("ProductScreen", "Size of the list: ${productsList.size}")
+    }else
+    {
+        Log.d("EMPTY","000000000000000000000000000000000000")
+    }
+    val product = productsList?.get(0)
+
+    var colorBackground = MP_Orange_Dark
+    var colorForeground = MP_Orange
+
+    if (product != null) {
+        if ( product.categoryId % 3 == 1 ) {
+            colorBackground = MP_GreenDark
+            colorForeground = MP_Green
+        } else if ( product.categoryId % 3 == 2 ) {
+            colorBackground = MP_Pink_Dark
+            colorForeground = MP_Pink
+        }
+    }
+
     Box(
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
     ){
-        LinearGradient(color1 = MP_Green, color2 = MP_GreenDark )
+        LinearGradient(color1 = colorForeground, color2 = colorBackground )
         Surface (
             color = MP_White,
             modifier = Modifier
@@ -59,41 +91,18 @@ fun ProductScreen(navController: NavController)
 
         }
         Column {
-            GoBackComp("Sok od višnje", navController)
+            GoBackComp("Malac Pijaca", navController)
             HeroImage()
-            ProductDetails(
-                product = Product(
-                    title = "Sok od višnje 0,2l",
-                    imageID = Icons.Filled.AccountBox,
-                    price = 590.0F,
-                    saved = true,
-                    desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
-                            "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
-                            "\n\nPre upotrebe promućkati i sipati."
+            if (product != null) {
+                ProductDetails(product = product)
+                ShowHighlightSection(
+                    navController = navController,
+                    product1 = product,
+                    product2 = product,
+                    title = "Više proizvoda od prodavca"
                 )
-            )
-            ShowHighlightSection(
-                navController = navController,
-                product1 = Product(
-                    title = "Sok od višnje 0,2l",
-                    imageID = Icons.Filled.AccountBox,
-                    price = 520.0F,
-                    saved = false,
-                    desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
-                            "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
-                            "\n\nPre upotrebe promućkati i sipati."
-                ),
-                product2 = Product(
-                    title = "Sok od višnje 0,2l",
-                    imageID = Icons.Filled.AccountBox,
-                    price = 99.0F,
-                    saved = true,
-                    desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
-                            "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
-                            "\n\nPre upotrebe promućkati i sipati."
-                ),
-                title = "Više proizvoda od prodavca"
-            )
+            }
+
             ShowFavouriteAddToCart(
                 navController = navController
             )
@@ -155,14 +164,14 @@ fun ProductDetails(
             )
             Text(
                 text = product.price.toString() + " rsd",
-                style = androidx.compose.material.MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h5,
                 color = MP_Green,
                 fontWeight = FontWeight.W500
             )
         }
         Text(
             text = product.desc,
-            style = androidx.compose.material.MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.body1,
             color = Color.Gray,
             softWrap = true
         )
@@ -212,10 +221,6 @@ fun ShowHighlightSection(
                     .padding(vertical = 6.dp, horizontal = 15.dp)
             )
         }
-        /*ShowcaseProducts(
-            products = listOf(product1,product2),
-            navController = navController
-        )*/
     }
 }
 
@@ -234,6 +239,7 @@ fun ShowFavouriteAddToCart(
                 start = 20.dp,
                 end = 20.dp
             )
+            .background(MP_Black)
     ){
         Icon(
             imageVector = Icons.Outlined.FavoriteBorder,

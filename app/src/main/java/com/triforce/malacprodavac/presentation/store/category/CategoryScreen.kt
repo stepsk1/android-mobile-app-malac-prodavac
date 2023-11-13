@@ -196,7 +196,9 @@ fun StoreCategoryProduct (
             .clip(RoundedCornerShape(10.dp))
             .background(MP_White)
             .clickable {
-                navController.navigate(Screen.ProductScreen.route)
+                if (product != null) {
+                    navController.navigate(Screen.ProductScreen.route+ "?productId=${product.id}")
+                }
             }
     ) {
         if (product != null) {
