@@ -2,23 +2,19 @@ package com.triforce.malacprodavac.data.repository.products
 
 import android.util.Log
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
-import com.triforce.malacprodavac.data.mappers.toCategory
 import com.triforce.malacprodavac.data.mappers.toProduct
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
+import com.triforce.malacprodavac.data.remote.products.dto.CreateProductDto
+import com.triforce.malacprodavac.data.remote.products.dto.UpdateProductDto
 import com.triforce.malacprodavac.data.services.SessionManager
-import com.triforce.malacprodavac.data.services.filter.Filter
-import com.triforce.malacprodavac.data.services.filter.FilterBuilder
-import com.triforce.malacprodavac.data.services.filter.FilterOperation
-import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.domain.model.Category
+import com.triforce.malacprodavac.domain.model.CreateProduct
 import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.repository.CategoryRepository
+import com.triforce.malacprodavac.domain.model.UpdateProduct
 import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
-import retrofit2.http.QueryMap
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -46,7 +42,7 @@ class ProductRepositoryImpl @Inject constructor(
 
             val localProducts = dao.getProducts()
 
-            if(localProducts.isNotEmpty()){
+            if (localProducts.isNotEmpty()) {
                 emit(Resource.Success(data = localProducts.map { it.toProduct() }))
             }
 
@@ -87,14 +83,14 @@ class ProductRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getProduct(id: Int, fetchFromRemote: Boolean):Flow<Resource<Product>> {
+    override suspend fun getProduct(id: Int, fetchFromRemote: Boolean): Flow<Resource<Product>> {
         return flow {
 
             emit(Resource.Loading(isLoading = true))
 
             val localProducts = dao.getProductForId(id)
 
-            if(localProducts.isNotEmpty()){
+            if (localProducts.isNotEmpty()) {
                 emit(Resource.Success(data = localProducts.first().toProduct()))
             }
 
@@ -135,12 +131,72 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun deleteProduct(product: Product) {
-        TODO("Not yet implemented")
+    override suspend fun deleteProduct(id: Int): Flow<Resource<Product>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val deletedProduct = try {
+                api.delete(id)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't delete Product"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't delete Product"))
+                null
+            }
+            deletedProduct?.let {
+                emit(Resource.Success(it.toProduct()))
+            }
+            emit(Resource.Loading(false))
+        }
     }
 
-    override suspend fun insertProduct(product: Product) {
-        TODO("Not yet implemented")
+    override suspend fun insertProduct(createProduct: CreateProduct): Flow<Resource<Product>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val updateProduct = try {
+                api.create(createProduct as CreateProductDto)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't create Product"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't create Product"))
+                null
+            }
+            updateProduct?.let {
+                emit(Resource.Success(it.toProduct()))
+            }
+
+            emit(Resource.Loading(false))
+        }
+    }
+
+    override suspend fun updateProduct(
+        id: Int,
+        updateProduct: UpdateProduct
+    ): Flow<Resource<Product>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val updatedProduct = try {
+                api.update(id, updateProduct as UpdateProductDto)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't update Product"))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't update Product"))
+                null
+            }
+            updatedProduct?.let {
+                emit(Resource.Success(it.toProduct()))
+            }
+
+            emit(Resource.Loading(false))
+        }
     }
 
 }
