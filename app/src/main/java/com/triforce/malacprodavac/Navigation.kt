@@ -85,7 +85,17 @@ fun Navigation() {
             DetailsOrderScreen(navController = navController)
         }
 
-        composable(route = Screen.ProductScreen.route) {
+        composable(
+            route = Screen.ProductScreen.route+ "?productId={productId}",
+            arguments = listOf(
+                navArgument(
+                    name = "productId"
+                ){
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
             ProductScreen(navController = navController)
         }
 

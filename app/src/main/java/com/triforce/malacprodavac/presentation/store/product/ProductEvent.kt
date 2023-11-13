@@ -1,4 +1,8 @@
 package com.triforce.malacprodavac.presentation.store.product
 
-class ProductEvent {
+import com.triforce.malacprodavac.presentation.store.category.CategoryEvent
+
+sealed class ProductEvent {
+    object ToggleFavouriteProduct: ProductEvent()
+
 }

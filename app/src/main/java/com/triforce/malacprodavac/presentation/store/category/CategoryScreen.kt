@@ -82,7 +82,7 @@ fun StoreCategoryScreen(
             .background(MP_White)
             .fillMaxSize()
     ){
-        LinearGradient(color1 = colorForeground, color2 = colorBackground )
+        LinearGradient(color1 = colorBackground, color2 = colorForeground )
         Surface (
             color = MP_White,
             modifier = Modifier
