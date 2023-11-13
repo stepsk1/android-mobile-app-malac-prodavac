@@ -34,6 +34,7 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
@@ -75,8 +76,8 @@ fun ProductScreen(
 //            updatedAt = "2023-11-13T15:30:00"
 //        )
 
-    var colorBackground = MP_Orange_Dark
-    var colorForeground = MP_Orange
+    var colorBackground = MP_White
+    var colorForeground = MP_White
 
     if (product != null) {
         if (product.categoryId % 3 == 1) {
@@ -85,6 +86,9 @@ fun ProductScreen(
         } else if (product.categoryId % 3 == 2) {
             colorBackground = MP_Pink_Dark
             colorForeground = MP_Pink
+        } else {
+            colorBackground = MP_Orange_Dark
+            colorForeground = MP_Orange
         }
     }
 
@@ -109,6 +113,9 @@ fun ProductScreen(
             HeroImage()
             if (product != null) {
                 ProductDetails(product = product)
+                ShowFavouriteAddToCart(
+                    navController = navController
+                )
                 ShowHighlightSection(
                     navController = navController,
                     product1 = product,
@@ -116,10 +123,6 @@ fun ProductScreen(
                     title = "Više proizvoda od prodavca"
                 )
             }
-
-            ShowFavouriteAddToCart(
-                navController = navController
-            )
         }
     }
 }
@@ -161,9 +164,7 @@ fun ProductDetails(
                 end = 20.dp
             )
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
@@ -235,6 +236,8 @@ fun ShowHighlightSection(
                     .padding(vertical = 6.dp, horizontal = 15.dp)
             )
         }
+
+        ShowcaseProducts(products = listOf(product1,product2), navController = navController)
     }
 }
 
