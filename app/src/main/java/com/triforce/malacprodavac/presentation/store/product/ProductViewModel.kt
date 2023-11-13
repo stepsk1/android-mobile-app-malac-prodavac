@@ -30,12 +30,9 @@ class ProductViewModel @Inject constructor(
 
     var state by mutableStateOf(ProductState())
 
-    var currentProductId: Int? = null
-
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
 
-            currentProductId = productId
             getProducts(true, productId);
         }
 
@@ -49,7 +46,7 @@ class ProductViewModel @Inject constructor(
                 Filter(
                     filter = listOf(
                         SingleFilter(
-                            "categoryId",
+                            "id",
                             FilterOperation.Eq,
                             productId
                         )
@@ -76,7 +73,6 @@ class ProductViewModel @Inject constructor(
                 }
             })
         }
-
     }
 
 }

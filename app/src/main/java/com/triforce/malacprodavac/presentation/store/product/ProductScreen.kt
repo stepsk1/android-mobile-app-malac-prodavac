@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -52,42 +53,56 @@ fun ProductScreen(
 
     val state = viewModel.state
 
-    val productsList: List<Product>? = state.products
-    if (productsList != null) {
-        Log.d("ProductScreen", "Size of the list: ${productsList.size}")
-    }else
-    {
-        Log.d("EMPTY","000000000000000000000000000000000000")
-    }
-    val product = productsList?.get(0)
+    val products: List<Product>? = state.products
+    var product = Product(
+        id = 1,
+        available = true,
+        price = 19.99,
+        unitOfMeasurement = "RSD",
+        rating = 4.5,
+        availableAtLatitude = 40.7128,
+        availableAtLongitude = -74.0060,
+        availableFromHours = 9.0,
+        availableTillHours = 18.0,
+        currency = "RSD",
+        shopId = 101,
+        title = "Example Product",
+        desc = "This is an example product description.",
+        ratingsCount = 100.0,
+        availableAt = "New York, NY",
+        categoryId = 5,
+        createdAt = "2023-01-01T12:00:00",
+        updatedAt = "2023-11-13T15:30:00"
+    )
 
     var colorBackground = MP_Orange_Dark
     var colorForeground = MP_Orange
 
     if (product != null) {
-        if ( product.categoryId % 3 == 1 ) {
+        if (product.categoryId % 3 == 1) {
             colorBackground = MP_GreenDark
             colorForeground = MP_Green
-        } else if ( product.categoryId % 3 == 2 ) {
+        } else if (product.categoryId % 3 == 2) {
             colorBackground = MP_Pink_Dark
             colorForeground = MP_Pink
         }
     }
 
+
     Box(
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
-    ){
-        LinearGradient(color1 = colorForeground, color2 = colorBackground )
-        Surface (
+    ) {
+        LinearGradient(color1 = colorForeground, color2 = colorBackground)
+        Surface(
             color = MP_White,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(1F)
                 .padding(top = 250.dp)
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ){
+        ) {
 
         }
         Column {
@@ -229,17 +244,27 @@ fun ShowFavouriteAddToCart(
     navController: NavController
 ){
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
-                start = 20.dp,
-                end = 20.dp
+                start = 5.dp,
+                end = 5.dp
             )
-            .background(MP_Black)
+            .shadow(
+                elevation = 10.dp,
+                spotColor = MP_Black,
+                shape = RoundedCornerShape(7.5.dp)
+            )
+            .clip(RoundedCornerShape(15.dp))
+            .background(MP_White)
+            .padding(
+                vertical = 10.dp,
+                horizontal = 20.dp
+            )
     ){
         Icon(
             imageVector = Icons.Outlined.FavoriteBorder,
