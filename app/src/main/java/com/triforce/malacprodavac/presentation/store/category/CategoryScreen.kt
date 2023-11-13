@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,9 @@ import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -59,12 +63,26 @@ fun StoreCategoryScreen(
 
     val productsList: List<Product>? = state.products
 
+    val titleState = viewModel.categoryTitle.value
+
+    var colorBackground = MP_Orange_Dark
+    var colorForeground = MP_Orange
+
+    if ( viewModel.currentCategoryId!! % 3 == 1 ) {
+        colorBackground = MP_GreenDark
+        colorForeground = MP_Green
+    }
+    else if ( viewModel.currentCategoryId!! % 3 == 2 ) {
+        colorBackground = MP_Pink_Dark
+        colorForeground = MP_Pink
+    }
+
     Box(
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
     ){
-        LinearGradient(color1 = MP_Pink, color2 = MP_Pink_Dark )
+        LinearGradient(color1 = colorForeground, color2 = colorBackground )
         Surface (
             color = MP_White,
             modifier = Modifier
@@ -76,11 +94,8 @@ fun StoreCategoryScreen(
 
         }
         Column {
-            GoBackComp("Sirupi i sokovi", navController)
-
-            CategorySectionHeader(viewModel.categoryTitle.value.title, "Voće se prvo hladno cedi, zatim pasterizuje i bez ikakvih dodataka pakuje u staklenu ambalažu.")
-
-            //CategorySectionHeader("100% domaći i prirodni sokovi", "Voće se prvo hladno cedi, zatim pasterizuje i bez ikakvih dodataka pakuje u staklenu ambalažu.")
+            GoBackComp("Malac Pijaca", navController)
+            CategorySectionHeader(titleState.title, "Podržite zajednicu, podržavajte lokalno preduzetništvo. Vaša podrška čini razliku!", colorBackground)
             FilterSortComp(navController)
             ShowcaseProducts(
                 products = productsList,
@@ -99,6 +114,7 @@ fun CategoriesSection(categories: List<String>) {
 fun CategorySectionHeader(
     title: String,
     sub: String,
+    colorBackground: Color
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
@@ -106,14 +122,14 @@ fun CategorySectionHeader(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 15.dp, end = 15.dp)
-            .background(MP_Pink, RoundedCornerShape(10.dp))
+            .background(colorBackground, RoundedCornerShape(10.dp))
             .padding(15.dp)
     ) {
         Column (
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.Bold,
                 color = MP_White,
                 modifier = Modifier

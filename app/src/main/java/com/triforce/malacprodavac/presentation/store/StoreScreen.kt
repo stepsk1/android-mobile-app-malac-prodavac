@@ -248,7 +248,7 @@ fun StoreCategoryItem(
                 shape = RoundedCornerShape(7.5.dp)
             )
             .clickable {
-                navController.navigate(Screen.StoreCategoryScreen.route + "?categoryId=${feature.id}&color1=${feature.color1}&color2=${feature.color2}&title=${feature.title}")
+                navController.navigate(Screen.StoreCategoryScreen.route + "?categoryId=${feature.id}&title=${feature.title}")
             }
             .padding(1.5.dp)
             .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same

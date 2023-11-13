@@ -15,10 +15,12 @@ import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
+import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
@@ -37,20 +39,18 @@ class CategoryViewModel @Inject constructor(
     ))
     val categoryTitle: State<CategoryState> = _categoryTitle
 
-    private val _categoryColor1 = mutableStateOf(MP_Green)
-    val categoryColor1: State<Color> = _categoryColor1
-
-    private val _categoryColor2 = mutableStateOf(MP_GreenLight)
-    val categoryColor2: State<Color> = _categoryColor2
+    var currentCategoryId: Int? = null
 
     init {
         savedStateHandle.get<Int>("categoryId")?.let { categoryId ->
+
+            currentCategoryId = categoryId
+
             getProducts(true, categoryId);
         }
+
         savedStateHandle.get<String>("title")?.let { title ->
-            _categoryTitle.value = _categoryTitle.value.copy(
-                title = title
-            )
+            _categoryTitle.value = categoryTitle.value.copy(title = title)
         }
     }
 

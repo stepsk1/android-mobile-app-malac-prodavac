@@ -53,7 +53,7 @@ fun Navigation() {
         }
 
         composable(
-            route = Screen.StoreCategoryScreen.route+ "?categoryId={categoryId}&color1={color1}&color2={color2}&title={title}",
+            route = Screen.StoreCategoryScreen.route+ "?categoryId={categoryId}&title={title}",
             arguments = listOf(
 
                 navArgument(
@@ -62,24 +62,11 @@ fun Navigation() {
                     type = NavType.IntType
                     defaultValue = -1
                 },
-
-                navArgument(
-                    name = "color1"
-                ){
-                    type = NavType.StringType
-                    defaultValue = -1
-                },
-                navArgument(
-                    name = "color2"
-                ) {
-                    type = NavType.StringType
-                    defaultValue = -1
-                },
                 navArgument(
                     name = "title"
                 ) {
                     type = NavType.StringType
-                    defaultValue = -1
+                    defaultValue = ""
                 }
 
             )) {
