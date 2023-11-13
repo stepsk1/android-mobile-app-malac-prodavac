@@ -45,7 +45,7 @@ fun BottomNavigationMenu(
             .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
             .background(
                 Brush.linearGradient(
-                    0.0f to Color.DarkGray,
+                    0.0f to Color.Black,
                     1.0f to Color.Black,
                     start = Offset.Zero,
                     end = Offset.Infinite

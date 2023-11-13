@@ -71,7 +71,7 @@ fun BottomNavigationMenuItem(
         Text(
             text = item.title,
             style = MaterialTheme.typography.button,
-            color = if (isActive) selectedTextColor else nonActiveTextColor,
+            color = if (item.isActive) selectedTextColor else nonActiveTextColor,
             modifier = Modifier
                 .padding(top = 5.dp)
         )

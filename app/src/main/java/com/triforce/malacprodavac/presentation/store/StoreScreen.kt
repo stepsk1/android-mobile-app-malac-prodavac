@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -75,6 +76,7 @@ fun StoreScreen(navController: NavController)
             flagNumber++
             if(flagNumber%3==0){
                 features += Feature(
+                    id = it.id,
                     title = it.name,
                     graphicID = Icons.Default.Star,
                     color1 = MP_Orange,
@@ -84,6 +86,7 @@ fun StoreScreen(navController: NavController)
             }
             else if(flagNumber%3==1){
                 features += Feature(
+                    id = it.id,
                     title = it.name,
                     graphicID = Icons.Default.Star,
                     color1 = MP_Green,
@@ -92,6 +95,7 @@ fun StoreScreen(navController: NavController)
                 )
             }else{
             features += Feature(
+                id = it.id,
                 title = it.name,
                 graphicID = Icons.Default.Star,
                 color1 = MP_Pink,
@@ -143,13 +147,13 @@ fun StoreScreen(navController: NavController)
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
                     graphicID = Icons.Default.AddCircle,
-                    screen = Screen.HomeScreen,
+                    screen = Screen.StoreScreen,
                     isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.HomeScreen,
+                    screen = Screen.ProfileCustomer,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
@@ -225,13 +229,13 @@ fun StoreCategoriesSection(
     ) {
         items(features.size) {// how many items do we have
             // define one of items
-            StoreCategorieItem(feature = features[it], navController)
+            StoreCategoryItem(feature = features[it], navController)
         }
     }
 }
 
 @Composable
-fun StoreCategorieItem(
+fun StoreCategoryItem(
     feature: Feature,
     navController: NavController
 ) {
@@ -244,7 +248,7 @@ fun StoreCategorieItem(
                 shape = RoundedCornerShape(7.5.dp)
             )
             .clickable {
-                navController.navigate(Screen.StoreCategoryScreen.route)
+                navController.navigate(Screen.StoreCategoryScreen.route + "?categoryId=${feature.id}&title=${feature.title}")
             }
             .padding(1.5.dp)
             .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same

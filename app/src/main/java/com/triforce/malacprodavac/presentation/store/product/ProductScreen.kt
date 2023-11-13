@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.store.product
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,79 +25,104 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
-import com.triforce.malacprodavac.Product
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
+import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun ProductScreen(navController: NavController)
-{
+fun ProductScreen(
+    navController: NavController,
+    viewModel: ProductViewModel = hiltViewModel()
+) {
+
+    val state = viewModel.state
+
+    val product = state.product
+//        Product(
+//            id = 1,
+//            available = true,
+//            price = 19.99,
+//            unitOfMeasurement = "RSD",
+//            rating = 4.5,
+//            availableAtLatitude = 40.7128,
+//            availableAtLongitude = -74.0060,
+//            availableFromHours = 9.0,
+//            availableTillHours = 18.0,
+//            currency = "RSD",
+//            shopId = 101,
+//            title = "Example Product",
+//            desc = "This is an example product description.",
+//            ratingsCount = 100.0,
+//            availableAt = "New York, NY",
+//            categoryId = 5,
+//            createdAt = "2023-01-01T12:00:00",
+//            updatedAt = "2023-11-13T15:30:00"
+//        )
+
+    var colorBackground = MP_White
+    var colorForeground = MP_White
+
+    if (product != null) {
+        if (product.categoryId % 3 == 1) {
+            colorBackground = MP_GreenDark
+            colorForeground = MP_Green
+        } else if (product.categoryId % 3 == 2) {
+            colorBackground = MP_Pink_Dark
+            colorForeground = MP_Pink
+        } else {
+            colorBackground = MP_Orange_Dark
+            colorForeground = MP_Orange
+        }
+    }
+
     Box(
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
-    ){
-        LinearGradient(color1 = MP_Green, color2 = MP_GreenDark )
-        Surface (
+    ) {
+        LinearGradient(color1 = colorForeground, color2 = colorBackground)
+        Surface(
             color = MP_White,
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(1F)
                 .padding(top = 250.dp)
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ){
+        ) {
 
         }
         Column {
-            GoBackComp("Sok od višnje", navController)
+            GoBackComp("Malac Pijaca", navController)
             HeroImage()
-            ProductDetails(
-                product = Product(
-                    title = "Sok od višnje 0,2l",
-                    imageID = Icons.Filled.AccountBox,
-                    price = 590.0F,
-                    saved = true,
-                    desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
-                            "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
-                            "\n\nPre upotrebe promućkati i sipati."
+            if (product != null) {
+                ProductDetails(product = product)
+                ShowFavouriteAddToCart(
+                    navController = navController
                 )
-            )
-            ShowHighlightSection(
-                navController = navController,
-                product1 = Product(
-                    title = "Sok od višnje 0,2l",
-                    imageID = Icons.Filled.AccountBox,
-                    price = 520.0F,
-                    saved = false,
-                    desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
-                            "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
-                            "\n\nPre upotrebe promućkati i sipati."
-                ),
-                product2 = Product(
-                    title = "Sok od višnje 0,2l",
-                    imageID = Icons.Filled.AccountBox,
-                    price = 99.0F,
-                    saved = true,
-                    desc = "Domaći sirup od višnje, iako zaslađen šećerom, pruža osvežavajući i okrepljujući ukus. " +
-                            "Razblažuje se sa vodom u razmeri prema ukusu. Ne sadrži veštačke boje, arome i konzervanse. " +
-                            "\n\nPre upotrebe promućkati i sipati."
-                ),
-                title = "Više proizvoda od prodavca"
-            )
-            ShowFavouriteAddToCart(
-                navController = navController
-            )
+                ShowHighlightSection(
+                    navController = navController,
+                    product1 = product,
+                    product2 = product,
+                    title = "Više proizvoda od prodavca"
+                )
+            }
         }
     }
 }
@@ -127,7 +153,7 @@ fun HeroImage(
 @Composable
 fun ProductDetails(
     product: Product
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -138,15 +164,13 @@ fun ProductDetails(
                 end = 20.dp
             )
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     bottom = 20.dp
                 )
-        ){
+        ) {
             Text(
                 text = product.title,
                 style = MaterialTheme.typography.h5,
@@ -155,14 +179,14 @@ fun ProductDetails(
             )
             Text(
                 text = product.price.toString() + " rsd",
-                style = androidx.compose.material.MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h5,
                 color = MP_Green,
                 fontWeight = FontWeight.W500
             )
         }
         Text(
             text = product.desc,
-            style = androidx.compose.material.MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.body1,
             color = Color.Gray,
             softWrap = true
         )
@@ -175,7 +199,7 @@ fun ShowHighlightSection(
     product1: Product,
     product2: Product,
     title: String
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -191,7 +215,7 @@ fun ShowHighlightSection(
                     start = 20.dp,
                     end = 20.dp
                 )
-        ){
+        ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.body1,
@@ -212,29 +236,38 @@ fun ShowHighlightSection(
                     .padding(vertical = 6.dp, horizontal = 15.dp)
             )
         }
-        /*ShowcaseProducts(
-            products = listOf(product1,product2),
-            navController = navController
-        )*/
+
+        ShowcaseProducts(products = listOf(product1,product2), navController = navController)
     }
 }
 
 @Composable
 fun ShowFavouriteAddToCart(
     navController: NavController
-){
+) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 top = 15.dp,
                 bottom = 15.dp,
-                start = 20.dp,
-                end = 20.dp
+                start = 5.dp,
+                end = 5.dp
             )
-    ){
+            .shadow(
+                elevation = 10.dp,
+                spotColor = MP_Black,
+                shape = RoundedCornerShape(7.5.dp)
+            )
+            .clip(RoundedCornerShape(15.dp))
+            .background(MP_White)
+            .padding(
+                vertical = 10.dp,
+                horizontal = 20.dp
+            )
+    ) {
         Icon(
             imageVector = Icons.Outlined.FavoriteBorder,
             contentDescription = "FavoriteBorder",

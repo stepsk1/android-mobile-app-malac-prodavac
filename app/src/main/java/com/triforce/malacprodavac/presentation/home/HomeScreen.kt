@@ -14,6 +14,8 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import com.triforce.malacprodavac.ui.theme.MP_White
 import androidx.compose.runtime.Composable
@@ -63,46 +65,36 @@ fun HomeScreen(navController: NavController) {
                 navController = navController,
                 features = listOf(
                     Feature(
+                        id = 1,
                         title = "Prodavnica",
-                        graphicID = Icons.Default.AddCircle,
+                        graphicID = Icons.Default.Menu,
                         color1 = MP_Green,
                         color2 = MP_Green,
                         screen = Screen.StoreScreen
                     ),
                     Feature(
-                        title = "Moj Profil",
-                        graphicID = Icons.Default.AccountCircle,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange,
-                        screen = Screen.ProfileCustomer
-                    ),
-                    Feature(
-                        title = "Omiljeno",
-                        graphicID = Icons.Default.Favorite,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange,
-                        screen = Screen.HomeScreen
-                    ),
-                    Feature(
+                        id = 1,
                         title = "Korpa",
                         graphicID = Icons.Default.ShoppingCart,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
+                        color1 = MP_Orange,
+                        color2 = MP_Orange,
                         screen = Screen.CartScreen
                     ),
                     Feature(
+                        id = 1,
                         title = "Prodavnica",
-                        graphicID = Icons.Default.AddCircle,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
-                        screen = Screen.StoreScreen
-                    ),
-                    Feature(
-                        title = "Moj Profil",
-                        graphicID = Icons.Default.AccountCircle,
+                        graphicID = Icons.Default.Search,
                         color1 = MP_Orange,
                         color2 = MP_Orange,
                         screen = Screen.StoreScreen
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "Moj Profil",
+                        graphicID = Icons.Default.AccountCircle,
+                        color1 = MP_Green,
+                        color2 = MP_Green,
+                        screen = Screen.ProfileCustomer
                     )
                 )
             )
@@ -134,8 +126,7 @@ fun HomeScreen(navController: NavController) {
                     screen = Screen.CartScreen,
                     isActive = false
                 )
-            ), modifier = Modifier
-                .align(Alignment.BottomCenter)
+            ), modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 }

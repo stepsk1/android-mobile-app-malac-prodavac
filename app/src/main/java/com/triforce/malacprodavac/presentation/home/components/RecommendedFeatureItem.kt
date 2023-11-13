@@ -64,32 +64,21 @@ fun RecommendedFeatureItem(
                 }
                 .padding(15.dp)
         ) {
+            Icon(
+                imageVector = feature.graphicID,
+                contentDescription = feature.title,
+                tint = MP_White,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .size(100.dp)
+            )
             Text(
                 text = feature.title,
                 style = MaterialTheme.typography.h6,
                 lineHeight = 26.sp,
                 color = MP_White,
                 modifier = Modifier
-                    .align(Alignment.TopStart)
-            )
-            Icon(
-                imageVector = feature.graphicID,
-                contentDescription = feature.title,
-                tint = MP_White,
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .size(35.dp)
-            )
-            Text(
-                text = "Otvori",
-                color = MP_White,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MP_Pink)
-                    .padding(vertical = 6.dp, horizontal = 15.dp)
+                    .align(Alignment.BottomCenter)
             )
         }
     }

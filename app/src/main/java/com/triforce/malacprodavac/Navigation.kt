@@ -1,9 +1,11 @@
 package com.triforce.malacprodavac
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.triforce.malacprodavac.presentation.cart.components.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.components.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
@@ -52,7 +54,24 @@ fun Navigation() {
             StoreScreen(navController = navController)
         }
 
-        composable(route = Screen.StoreCategoryScreen.route) {
+        composable(
+            route = Screen.StoreCategoryScreen.route+ "?categoryId={categoryId}&title={title}",
+            arguments = listOf(
+
+                navArgument(
+                    name = "categoryId"
+                ){
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument(
+                    name = "title"
+                ) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+
+            )) {
             StoreCategoryScreen(navController = navController)
         }
 
@@ -68,7 +87,17 @@ fun Navigation() {
             DetailsOrderScreen(navController = navController)
         }
 
-        composable(route = Screen.ProductScreen.route) {
+        composable(
+            route = Screen.ProductScreen.route+ "?productId={productId}",
+            arguments = listOf(
+                navArgument(
+                    name = "productId"
+                ){
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
             ProductScreen(navController = navController)
         }
 

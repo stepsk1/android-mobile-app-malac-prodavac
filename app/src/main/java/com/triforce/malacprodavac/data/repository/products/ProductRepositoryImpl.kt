@@ -18,6 +18,7 @@ import com.triforce.malacprodavac.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
+import retrofit2.http.QueryMap
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,7 +34,11 @@ class ProductRepositoryImpl @Inject constructor(
 
     private val dao = db.productDao
 
-    override suspend fun getProducts(fetchFromRemote: Boolean): Flow<Resource<List<Product>>> {
+    override suspend fun getProducts(
+        categoryId: Int,
+        fetchFromRemote: Boolean,
+        queryMap: MutableMap<String, String>
+    ): Flow<Resource<List<Product>>> {
 
         return flow {
 
@@ -41,7 +46,10 @@ class ProductRepositoryImpl @Inject constructor(
 
             val localProducts = dao.getProducts()
 
-            emit(Resource.Success(data = localProducts.map { it.toProduct() }))
+            if(localProducts.isNotEmpty()){
+                emit(Resource.Success(data = localProducts.map { it.toProduct() }))
+            }
+
 
             val isDbEmpty = localProducts.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
@@ -50,21 +58,9 @@ class ProductRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
                 return@flow
             }
-            /*val query = FilterBuilder.buildFilterQueryMap(
-                Filter(
-                    filter = listOf(
-                        SingleFilter(
-                            "category.parentId",
-                            FilterOperation.Eq,
-                            1
-                        )
-                    ), order = null, limit = null, offset = null
-                )
-            )*/
+
             val remoteProducts = try {
-
-                api.getProducts(mutableMapOf())
-
+                api.getProducts(queryMap)
             } catch (e: IOException) {
 
                 e.printStackTrace()
@@ -91,20 +87,17 @@ class ProductRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getProductForId(
-        id: Int,
-        fetchFromRemote: Boolean
-    ): Flow<Resource<Product>> {
-
+    override suspend fun getProduct(id: Int, fetchFromRemote: Boolean):Flow<Resource<Product>> {
         return flow {
 
             emit(Resource.Loading(isLoading = true))
 
             val localProducts = dao.getProductForId(id)
 
-            emit(
-                Resource.Success(data = localProducts[0].toProduct())
-            )
+            if(localProducts.isNotEmpty()){
+                emit(Resource.Success(data = localProducts.first().toProduct()))
+            }
+
 
             val isDbEmpty = localProducts.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
@@ -115,19 +108,17 @@ class ProductRepositoryImpl @Inject constructor(
             }
 
             val remoteProduct = try {
-
-                api.getProductForId(id)
-
+                api.getProduct(id)
             } catch (e: IOException) {
 
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load product"))
+                emit(Resource.Error("Couldn't load products"))
                 null
 
             } catch (e: HttpException) {
 
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't load product data"))
+                emit(Resource.Error("Couldn't load products data"))
                 null
 
             }
@@ -136,12 +127,13 @@ class ProductRepositoryImpl @Inject constructor(
 
                 Log.d("PRODUCTS:", it.toString())
                 emit(Resource.Success(remoteProduct.toProduct()))
+
             }
 
             emit(Resource.Loading(false))
         }
-
     }
+
 
     override suspend fun deleteProduct(product: Product) {
         TODO("Not yet implemented")

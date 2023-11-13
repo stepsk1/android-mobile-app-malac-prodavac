@@ -293,36 +293,6 @@ fun CartDetailsScreen(navController: NavController) {
                 }
             }
         }
-
-        BottomNavigationMenu(navController = navController,
-            items = listOf(
-                BottomNavigationMenuContent(
-                    title = "Početna",
-                    graphicID = Icons.Default.Home,
-                    screen = Screen.HomeScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle,
-                    screen = Screen.HomeScreen,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Moj Profil",
-                    graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.HomeScreen,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Korpa",
-                    graphicID = Icons.Default.ShoppingCart,
-                    screen = Screen.CartScreen,
-                    isActive = false
-                )
-            ), modifier = Modifier.
-            align(Alignment.BottomCenter)
-        )
     }
 }
 
