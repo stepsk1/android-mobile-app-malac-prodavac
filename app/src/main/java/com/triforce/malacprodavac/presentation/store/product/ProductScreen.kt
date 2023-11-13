@@ -53,27 +53,29 @@ fun ProductScreen(
 
     val state = viewModel.state
 
-    val products: List<Product>? = state.products
-    var product = Product(
-        id = 1,
-        available = true,
-        price = 19.99,
-        unitOfMeasurement = "RSD",
-        rating = 4.5,
-        availableAtLatitude = 40.7128,
-        availableAtLongitude = -74.0060,
-        availableFromHours = 9.0,
-        availableTillHours = 18.0,
-        currency = "RSD",
-        shopId = 101,
-        title = "Example Product",
-        desc = "This is an example product description.",
-        ratingsCount = 100.0,
-        availableAt = "New York, NY",
-        categoryId = 5,
-        createdAt = "2023-01-01T12:00:00",
-        updatedAt = "2023-11-13T15:30:00"
-    )
+    val products: List<Product> = state.products
+    Log.d("PRODUCT:::", products.toString())
+    val product: Product? = if (products.isNotEmpty()) products[0] else null
+//        Product(
+//            id = 1,
+//            available = true,
+//            price = 19.99,
+//            unitOfMeasurement = "RSD",
+//            rating = 4.5,
+//            availableAtLatitude = 40.7128,
+//            availableAtLongitude = -74.0060,
+//            availableFromHours = 9.0,
+//            availableTillHours = 18.0,
+//            currency = "RSD",
+//            shopId = 101,
+//            title = "Example Product",
+//            desc = "This is an example product description.",
+//            ratingsCount = 100.0,
+//            availableAt = "New York, NY",
+//            categoryId = 5,
+//            createdAt = "2023-01-01T12:00:00",
+//            updatedAt = "2023-11-13T15:30:00"
+//        )
 
     var colorBackground = MP_Orange_Dark
     var colorForeground = MP_Orange
@@ -87,7 +89,6 @@ fun ProductScreen(
             colorForeground = MP_Pink
         }
     }
-
 
     Box(
         modifier = Modifier
@@ -151,7 +152,7 @@ fun HeroImage(
 @Composable
 fun ProductDetails(
     product: Product
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -170,7 +171,7 @@ fun ProductDetails(
                 .padding(
                     bottom = 20.dp
                 )
-        ){
+        ) {
             Text(
                 text = product.title,
                 style = MaterialTheme.typography.h5,
@@ -199,7 +200,7 @@ fun ShowHighlightSection(
     product1: Product,
     product2: Product,
     title: String
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -215,7 +216,7 @@ fun ShowHighlightSection(
                     start = 20.dp,
                     end = 20.dp
                 )
-        ){
+        ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.body1,
@@ -242,7 +243,7 @@ fun ShowHighlightSection(
 @Composable
 fun ShowFavouriteAddToCart(
     navController: NavController
-){
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
@@ -265,7 +266,7 @@ fun ShowFavouriteAddToCart(
                 vertical = 10.dp,
                 horizontal = 20.dp
             )
-    ){
+    ) {
         Icon(
             imageVector = Icons.Outlined.FavoriteBorder,
             contentDescription = "FavoriteBorder",

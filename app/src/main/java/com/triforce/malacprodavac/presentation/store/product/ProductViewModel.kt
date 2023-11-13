@@ -32,7 +32,7 @@ class ProductViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
-
+            Log.d("PRODUCTID", productId.toString())
             getProducts(true, productId);
         }
 
@@ -54,12 +54,12 @@ class ProductViewModel @Inject constructor(
                 )
             )
 
-            repository.getProducts(productId, fetchFromRemote, query).collect({ result ->
+            repository.getProducts(productId, fetchFromRemote, query).collect{ result ->
+                Log.d("RESULT", result.toString())
                 when (result) {
                     is Resource.Success -> {
-                        if (result.data is List<Product>) {
-                            println(result.data)
-                            state = state.copy(products = result.data)
+                        result.data?.let{
+                            state = state.copy(products = it)
                         }
                     }
                     is Resource.Error -> {
@@ -71,7 +71,7 @@ class ProductViewModel @Inject constructor(
                         )
                     }
                 }
-            })
+            }
         }
     }
 

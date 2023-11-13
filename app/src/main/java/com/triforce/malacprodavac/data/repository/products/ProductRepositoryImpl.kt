@@ -37,7 +37,7 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun getProducts(
         categoryId: Int,
         fetchFromRemote: Boolean,
-        @QueryMap() query: MutableMap<String, String>
+        queryMap: MutableMap<String, String>
     ): Flow<Resource<List<Product>>> {
 
         return flow {
@@ -46,7 +46,10 @@ class ProductRepositoryImpl @Inject constructor(
 
             val localProducts = dao.getProducts()
 
-            emit(Resource.Success(data = localProducts.map { it.toProduct() }))
+            if(localProducts.isNotEmpty()){
+                emit(Resource.Success(data = localProducts.map { it.toProduct() }))
+            }
+
 
             val isDbEmpty = localProducts.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
@@ -57,9 +60,7 @@ class ProductRepositoryImpl @Inject constructor(
             }
 
             val remoteProducts = try {
-
-                api.getProducts(query)
-
+                api.getProducts(queryMap)
             } catch (e: IOException) {
 
                 e.printStackTrace()

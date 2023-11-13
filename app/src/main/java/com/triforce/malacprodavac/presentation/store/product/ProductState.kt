@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 data class ProductState (
 
-    val products: List<Product>? = emptyList(),
+    val products: List<Product> = emptyList(),
     val isLoading: Boolean = false,
 )

@@ -9,7 +9,7 @@ interface ProductRepository {
     suspend fun getProducts(
         categoryId: Int,
         fetchFromRemote: Boolean,
-        @QueryMap() queryMap: MutableMap<String, String>
+        queryMap: MutableMap<String, String>
     ): Flow<Resource<List<Product>>>
 
     suspend fun deleteProduct(product: Product)
