@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,7 +39,7 @@ fun CategoriesSection(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(start = 15.dp, top = 30.dp, bottom = 5.dp)
+                    .padding(start = 15.dp, top = 20.dp, bottom = 5.dp)
                     .shadow(
                         elevation = 5.dp,
                         spotColor = MP_Black,
@@ -70,7 +71,7 @@ fun CategoriesSection(
                     .padding(15.dp)
             )
             {
-                Text(text = categories[it], color = MP_White)
+                Text(text = categories[it], color = MP_White, style = MaterialTheme.typography.body1)
             }
         }
     }
