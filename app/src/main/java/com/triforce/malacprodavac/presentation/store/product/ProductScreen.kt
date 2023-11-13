@@ -54,7 +54,12 @@ fun ProductScreen(
     val state = viewModel.state
 
     val products: List<Product>? = state.products
-    var product = Product(
+
+    Log.d("PRODUCTS_PAGE_LIST", products.toString())
+
+    var product = products?.get(0)
+
+    var product2 = Product(
         id = 1,
         available = true,
         price = 19.99,
