@@ -53,9 +53,7 @@ fun ProductScreen(
 
     val state = viewModel.state
 
-    val products: List<Product> = state.products
-    Log.d("PRODUCT:::", products.toString())
-    val product: Product? = if (products.isNotEmpty()) products[0] else null
+    val product = state.product
 //        Product(
 //            id = 1,
 //            available = true,

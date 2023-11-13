@@ -11,7 +11,10 @@ interface ProductRepository {
         fetchFromRemote: Boolean,
         queryMap: MutableMap<String, String>
     ): Flow<Resource<List<Product>>>
-
+    suspend fun  getProduct(
+        id: Int,
+        fetchFromRemote: Boolean,
+    ):Flow<Resource<Product>>
     suspend fun deleteProduct(product: Product)
     suspend fun insertProduct(product: Product)
 

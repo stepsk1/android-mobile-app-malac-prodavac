@@ -87,6 +87,53 @@ class ProductRepositoryImpl @Inject constructor(
 
     }
 
+    override suspend fun getProduct(id: Int, fetchFromRemote: Boolean):Flow<Resource<Product>> {
+        return flow {
+
+            emit(Resource.Loading(isLoading = true))
+
+            val localProducts = dao.getProductForId(id)
+
+            if(localProducts.isNotEmpty()){
+                emit(Resource.Success(data = localProducts.first().toProduct()))
+            }
+
+
+            val isDbEmpty = localProducts.isEmpty()
+            val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
+
+            if (shouldJustLoadFromCache) {
+                emit(Resource.Loading(false))
+                return@flow
+            }
+
+            val remoteProduct = try {
+                api.getProduct(id)
+            } catch (e: IOException) {
+
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load products"))
+                null
+
+            } catch (e: HttpException) {
+
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't load products data"))
+                null
+
+            }
+
+            remoteProduct?.let {
+
+                Log.d("PRODUCTS:", it.toString())
+                emit(Resource.Success(remoteProduct.toProduct()))
+
+            }
+
+            emit(Resource.Loading(false))
+        }
+    }
+
 
     override suspend fun deleteProduct(product: Product) {
         TODO("Not yet implemented")

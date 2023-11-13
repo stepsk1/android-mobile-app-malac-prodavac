@@ -32,34 +32,19 @@ class ProductViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
-            Log.d("PRODUCTID", productId.toString())
-            getProducts(true, productId);
+            getProduct(true, productId);
         }
 
     }
 
-    private fun getProducts(fetchFromRemote: Boolean, productId: Int) {
+    private fun getProduct(fetchFromRemote: Boolean, productId: Int) {
 
         viewModelScope.launch {
-
-            val query = FilterBuilder.buildFilterQueryMap(
-                Filter(
-                    filter = listOf(
-                        SingleFilter(
-                            "id",
-                            FilterOperation.Eq,
-                            productId
-                        )
-                    ), order = null, limit = null, offset = null
-                )
-            )
-
-            repository.getProducts(productId, fetchFromRemote, query).collect{ result ->
-                Log.d("RESULT", result.toString())
+            repository.getProduct(productId, fetchFromRemote).collect{ result ->
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let{
-                            state = state.copy(products = it)
+                            state = state.copy(product = it)
                         }
                     }
                     is Resource.Error -> {

@@ -12,6 +12,9 @@ interface ProductsApi {
     @GET(ROUTE)
     suspend fun getProducts(@QueryMap() queryMap: MutableMap<String, String>): PaginationResponse<ProductEntity>
 
+    @GET("${ROUTE}/{id}")
+    suspend fun  getProduct(@Path("id") id: Int): ProductEntity
+
     companion object {
         const val ROUTE = "/products"
     }
