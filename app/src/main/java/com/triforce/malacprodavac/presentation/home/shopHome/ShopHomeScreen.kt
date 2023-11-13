@@ -64,6 +64,7 @@ fun ShopHomeScreen(navController: NavController) {
                 navController = navController,
                 features = listOf(
                     Feature(
+                        id = -1,
                         title = "Moji proizvodi",
                         graphicID = Icons.Default.AddCircle,
                         color1 = MP_Green,
@@ -71,6 +72,7 @@ fun ShopHomeScreen(navController: NavController) {
                         screen = Screen.StoreScreen
                     ),
                     Feature(
+                        id = -1,
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Orange,
@@ -78,6 +80,7 @@ fun ShopHomeScreen(navController: NavController) {
                         screen = Screen.ProfileCustomer
                     ),
                     Feature(
+                        id = -1,
                         title = "Omiljeno",
                         graphicID = Icons.Default.Favorite,
                         color1 = MP_Orange,
@@ -85,6 +88,7 @@ fun ShopHomeScreen(navController: NavController) {
                         screen = Screen.HomeScreen
                     ),
                     Feature(
+                        id = -1,
                         title = "Moji proizvodi",
                         graphicID = Icons.Default.ShoppingCart,
                         color1 = MP_Green,
@@ -92,6 +96,7 @@ fun ShopHomeScreen(navController: NavController) {
                         screen = Screen.CartScreen
                     ),
                     Feature(
+                        id = -1,
                         title = "Moji proizvodi",
                         graphicID = Icons.Default.AddCircle,
                         color1 = MP_Green,
@@ -99,6 +104,7 @@ fun ShopHomeScreen(navController: NavController) {
                         screen = Screen.StoreScreen
                     ),
                     Feature(
+                        id = -1,
                         title = "Moj Profil",
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Orange,
