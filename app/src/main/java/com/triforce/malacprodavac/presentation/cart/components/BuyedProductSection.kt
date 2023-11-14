@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 
 
@@ -37,10 +36,10 @@ fun BuyedProductSection(
         ) {
             items(buyedProducts.size) {// how many items do we have
                 // define one of items
-                BuyedProductItem(
-                    buyedProduct = buyedProducts[it],
-                    viewModel = viewModel
-                )
+                    BuyedProductItem(
+                        buyedProduct = buyedProducts[it],
+                        viewModel = viewModel
+                    )
             }
         }
     }

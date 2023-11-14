@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
-import com.triforce.malacprodavac.presentation.cart.CartDetails.DetailsOrderScreen
+import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.higlightDetailed.HighlightDetailed
 import com.triforce.malacprodavac.presentation.login.LoginScreen
