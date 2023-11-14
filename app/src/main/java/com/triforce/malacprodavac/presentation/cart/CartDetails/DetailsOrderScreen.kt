@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.cart.components
+package com.triforce.malacprodavac.presentation.cart.CartDetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
