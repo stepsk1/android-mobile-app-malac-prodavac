@@ -110,7 +110,7 @@ fun StoreScreen(navController: NavController)
             .background(MP_White)
             .fillMaxSize()
     ){
-        LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark )
+        LinearGradient(color1 = MP_GreenDark, color2 = MP_GreenLight)
         Surface (
             color = MP_White,
             modifier = Modifier

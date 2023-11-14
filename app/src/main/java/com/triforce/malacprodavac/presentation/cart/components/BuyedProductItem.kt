@@ -3,9 +3,12 @@ package com.triforce.malacprodavac.presentation.cart.components
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
@@ -15,6 +18,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -26,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,10 +38,11 @@ import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.CartEvent
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
-import com.triforce.malacprodavac.presentation.store.product.ProductEvent
+import com.triforce.malacprodavac.presentation.product.ProductEvent
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 
@@ -72,14 +78,31 @@ fun BuyedProductItem(
                 .padding(15.dp)
         ) {
 
-            Text(
-                text = buyedProduct.product.title,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.h6,
-                color = MP_Black,
+            Row(
                 modifier = Modifier
-                    .align(Alignment.TopStart)
-            )
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+
+            ) {
+                Text(
+                    text = buyedProduct.product.title,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.h6,
+                    color = MP_Black
+                )
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = "Delete one",
+                    tint = MP_Pink,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {
+                            viewModel.onEvent(CartEvent.DeleteFromCart)
+                            removeFromBuyedProducts(buyedProduct)
+                            amount = 0
+                        }
+                )
+            }
 
             Text(
                 text = productTotalPrice.toString() + " rsd",
@@ -98,18 +121,17 @@ fun BuyedProductItem(
 
             Box(
                 modifier = Modifier
-                    .padding(7.5.dp)
                     .align(Alignment.BottomEnd)
-                    .requiredWidth(100.dp)
-                    .requiredHeight(90.dp)
+                    .requiredWidth(130.dp)
+                    .requiredHeight(50.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.AddCircle,
                     contentDescription = "Add",
                     tint = MP_Green,
                     modifier = Modifier
-                        .size(30.dp)
-                        .align(Alignment.BottomStart)
+                        .size(35.dp)
+                        .align(Alignment.BottomCenter)
                         .clickable {
                             amount++
                             productTotalPrice = amount * buyedProduct.product.price
@@ -119,29 +141,15 @@ fun BuyedProductItem(
                 Icon(
                     painter = painterResource(id = R.drawable.round_remove_circle_24),
                     contentDescription = "Remove one",
-                    tint = MP_Pink,
+                    tint = MP_Orange_Dark,
                     modifier = Modifier
-                        .size(30.dp)
-                        .align(Alignment.BottomCenter)
+                        .size(35.dp)
+                        .align(Alignment.BottomEnd)
                         .clickable {
                             if (amount > 1) {
                                 amount--
                                 productTotalPrice = amount * buyedProduct.product.price
                             }
-                        }
-                )
-
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete one",
-                    tint = MP_Orange_Dark,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .align(Alignment.BottomEnd)
-                        .clickable {
-                            viewModel.onEvent(CartEvent.DeleteFromCart)
-                            removeFromBuyedProducts(buyedProduct)
-                            amount = 0
                         }
                 )
             }

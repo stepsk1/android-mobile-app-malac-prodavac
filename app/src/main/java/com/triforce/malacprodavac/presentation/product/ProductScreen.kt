@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.store.product
+package com.triforce.malacprodavac.presentation.product
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,7 +34,7 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
-import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray

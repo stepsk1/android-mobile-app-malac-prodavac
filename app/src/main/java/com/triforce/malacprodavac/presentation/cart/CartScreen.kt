@@ -26,6 +26,7 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.components.BuyedProductSection
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
+import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -87,7 +88,7 @@ fun CartScreen(navController: NavController)
                     onClick = {
                         navController.navigate(Screen.CartDetailsScreen.route)
                     },
-                    colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
+                    colors = ButtonDefaults.buttonColors(MP_Green)
                 ) {
                     Text(
                         text = "Nastavi sa plaćanjem",

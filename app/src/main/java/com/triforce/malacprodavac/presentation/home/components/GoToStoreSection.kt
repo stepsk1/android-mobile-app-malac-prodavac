@@ -43,7 +43,7 @@ fun GoToStoreSection(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .padding(14.dp)
+            .padding(horizontal = 14.dp)
             .shadow(
                 elevation = 5.dp,
                 spotColor = MP_Black,

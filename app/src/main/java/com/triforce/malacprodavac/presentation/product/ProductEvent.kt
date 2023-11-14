@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.store.product
+package com.triforce.malacprodavac.presentation.product
 
 sealed class ProductEvent {
     object ToggleFavouriteProduct: ProductEvent()

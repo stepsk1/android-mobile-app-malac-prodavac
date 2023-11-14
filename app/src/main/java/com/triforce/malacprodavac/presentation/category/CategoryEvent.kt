@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.store.category
+package com.triforce.malacprodavac.presentation.category
 
 sealed class CategoryEvent {
 

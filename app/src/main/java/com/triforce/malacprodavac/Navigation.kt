@@ -17,8 +17,8 @@ import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.profiles.ProfileCustomerScreen
 import com.triforce.malacprodavac.presentation.profiles.ProfileShopScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
-import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
-import com.triforce.malacprodavac.presentation.store.product.ProductScreen
+import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
+import com.triforce.malacprodavac.presentation.product.ProductScreen
 
 @Composable
 fun Navigation() {

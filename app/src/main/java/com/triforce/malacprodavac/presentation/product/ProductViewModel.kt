@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.store.product
+package com.triforce.malacprodavac.presentation.product
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
