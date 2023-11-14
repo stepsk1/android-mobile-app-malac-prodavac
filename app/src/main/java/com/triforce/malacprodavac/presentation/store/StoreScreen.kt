@@ -50,6 +50,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -111,16 +112,9 @@ fun StoreScreen(navController: NavController)
             .fillMaxSize()
     ){
         LinearGradient(color1 = MP_GreenDark, color2 = MP_GreenLight)
-        Surface (
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 67.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ){
 
-        }
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
+
         Column {
             GoBackComp("Malac prodavnica", navController)
             TitleTextContentSection(

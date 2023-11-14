@@ -30,6 +30,7 @@ import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.home.components.CategoriesSection
 import com.triforce.malacprodavac.presentation.home.components.GoToStoreSection
 import com.triforce.malacprodavac.presentation.home.components.GreetingSection
@@ -48,16 +49,9 @@ fun HomeScreen(navController: NavController) {
             .fillMaxSize()
     ) {
         LinearGradient(color1 = MP_GreenDark, color2 = MP_GreenLight)
-        Surface (
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 100.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(color = MP_Pink)
-        ){
 
-        }
+        RoundedBackgroundComp(top = 100.dp, color = MP_White)
+
         Column {
             GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac")
 

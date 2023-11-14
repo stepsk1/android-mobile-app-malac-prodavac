@@ -51,8 +51,6 @@ fun LoginScreen(navController: NavController) {
         isRefreshing = state.isLoading
     )
 
-
-
     val context = LocalContext.current
     val annotatedString = buildAnnotatedString {
         val text = "Nemaš nalog? Registruj se!"

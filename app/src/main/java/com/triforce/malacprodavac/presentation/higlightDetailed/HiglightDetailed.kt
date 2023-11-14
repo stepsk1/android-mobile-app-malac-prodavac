@@ -27,6 +27,8 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.TitleDescComp
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -43,102 +45,22 @@ fun HighlightDetailed(navController: NavController) {
             .fillMaxSize()
     ) {
         LinearGradient(color1 = MP_Pink, color2 = MP_Pink_Dark)
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(top = 65.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ) {
 
-        }
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
+
         Column {
             GoBackComp("Više od prodavca", navController)
-            BriefDescription(
+            TitleDescComp(
                 title = "Sveži sokovi za Vaš užitak!",
-                description = "Domaćinstvo Perun se generacijama bavi domaćom proizvodnjom sokova i sirupa od različitog voća koje se hladno cedi, zatim..."
+                description = "Domaćinstvo Perun se generacijama bavi domaćom proizvodnjom sokova i sirupa od različitog voća koje se hladno cedi, zatim...",
+                colorTitle = MP_Black,
+                colorDesc = Color.DarkGray
             )
             FilterSortComp(navController)
             ShowcaseProducts(
                 products = listOf(
-//                    Product(
-//                        title = "Sok od višnje 0,2l",
-//                        imageID = Icons.Filled.AccountBox,
-//                        price = 99.0F,
-//                        saved = true,
-//                        desc = ""
-//                    ),
-//                    Product(
-//                        title = "Sok od jagode 0,2l",
-//                        imageID = Icons.Filled.AccountBox,
-//                        price = 199.0F,
-//                        saved = false,
-//                        desc = ""
-//                    ),
-//                    Product(
-//                        title = "Sirup od jagode 1l",
-//                        imageID = Icons.Filled.AccountBox,
-//                        price = 590.0F,
-//                        saved = false,
-//                        desc = ""
-//                    ),
-//                    Product(
-//                        title = "Sirup od aronije 1l",
-//                        imageID = Icons.Filled.AccountBox,
-//                        price = 520.0F,
-//                        saved = true,
-//                        desc = ""
-//                    ),
-//                    Product(
-//                        title = "Sok od ribizle",
-//                        imageID = Icons.Filled.AccountBox,
-//                        price = 890.0F,
-//                        saved = false,
-//                        desc = ""
-//                    ),
-//                    Product(
-//                        title = "Sirup od drena",
-//                        imageID = Icons.Filled.AccountBox,
-//                        price = 199.0F,
-//                        saved = false,
-//                        desc = ""
-//                    ),
                 ), navController
             )
         }
-    }
-}
-
-@Composable
-fun BriefDescription(
-    title: String,
-    description: String
-){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
-            .fillMaxWidth(1F)
-            .height(
-                height = 200.dp
-            )
-            .padding(
-                horizontal = 30.dp
-            )
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.h5,
-            color = MP_Black,
-            fontWeight = FontWeight.W400,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = description,
-            style = androidx.compose.material.MaterialTheme.typography.body1,
-            color = Color.Gray,
-            fontWeight = FontWeight.W300,
-            textAlign = TextAlign.Center
-        )
     }
 }

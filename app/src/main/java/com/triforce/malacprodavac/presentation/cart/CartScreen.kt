@@ -25,6 +25,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.components.BuyedProductSection
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Orange
@@ -47,16 +48,9 @@ fun CartScreen(navController: NavController)
             .fillMaxSize()
     ){
         LinearGradient(color1 = MP_Orange, color2 = MP_Orange_Dark )
-        Surface (
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 67.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ){
 
-        }
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
+
         Column {
             GoBackComp("Moja korpa", navController)
             BuyedProductSection(

@@ -40,6 +40,7 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -83,16 +84,9 @@ fun StoreCategoryScreen(
             .fillMaxSize()
     ){
         LinearGradient(color1 = colorBackground, color2 = colorForeground )
-        Surface (
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 250.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ){
 
-        }
+        RoundedBackgroundComp(top = 250.dp, color = MP_White)
+
         Column {
             GoBackComp("Malac Pijaca", navController)
             CategorySectionHeader(titleState.title, "Podržite zajednicu, podržavajte lokalno preduzetništvo. Vaša podrška čini razliku!", colorBackground)

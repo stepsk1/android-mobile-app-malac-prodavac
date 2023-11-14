@@ -35,6 +35,7 @@ import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
@@ -55,26 +56,6 @@ fun ProductScreen(
     var state = viewModel.state
 
     val product = state.product
-//        Product(
-//            id = 1,
-//            available = true,
-//            price = 19.99,
-//            unitOfMeasurement = "RSD",
-//            rating = 4.5,
-//            availableAtLatitude = 40.7128,
-//            availableAtLongitude = -74.0060,
-//            availableFromHours = 9.0,
-//            availableTillHours = 18.0,
-//            currency = "RSD",
-//            shopId = 101,
-//            title = "Example Product",
-//            desc = "This is an example product description.",
-//            ratingsCount = 100.0,
-//            availableAt = "New York, NY",
-//            categoryId = 5,
-//            createdAt = "2023-01-01T12:00:00",
-//            updatedAt = "2023-11-13T15:30:00"
-//        )
 
     var colorBackground = MP_White
     var colorForeground = MP_White
@@ -98,16 +79,9 @@ fun ProductScreen(
             .fillMaxSize()
     ) {
         LinearGradient(color1 = colorForeground, color2 = colorBackground)
-        Surface(
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 250.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ) {
 
-        }
+        RoundedBackgroundComp(top = 250.dp, color = MP_White)
+
         Column {
             GoBackComp("Malac Pijaca", navController)
             HeroImage()
