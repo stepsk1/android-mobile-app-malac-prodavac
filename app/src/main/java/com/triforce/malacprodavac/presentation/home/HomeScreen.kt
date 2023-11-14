@@ -3,6 +3,7 @@ package com.triforce.malacprodavac.presentation.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,12 +47,12 @@ fun HomeScreen(navController: NavController) {
             .background(MP_White)
             .fillMaxSize()
     ) {
-        LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark)
+        LinearGradient(color1 = MP_GreenDark, color2 = MP_GreenLight)
         Surface (
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(1F)
-                .padding(top = 90.dp)
+                .padding(top = 100.dp)
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
                 .background(color = MP_Pink)
         ){
@@ -59,8 +60,13 @@ fun HomeScreen(navController: NavController) {
         }
         Column {
             GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac")
-            CategoriesSection(categories = listOf("Pijaca", "Profil", "Porudžbine", "Korpa", "Prodavnica"))
+
+            Spacer(modifier = Modifier.padding(14.dp))
+
             GoToStoreSection(navController)
+
+            Spacer(modifier = Modifier.padding(14.dp))
+
             RecommendedFeaturesSection(
                 navController = navController,
                 features = listOf(

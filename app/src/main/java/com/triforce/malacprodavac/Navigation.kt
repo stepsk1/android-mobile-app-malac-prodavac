@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.triforce.malacprodavac.presentation.cart.components.CartDetailsScreen
-import com.triforce.malacprodavac.presentation.cart.components.DetailsOrderScreen
+import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
+import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.higlightDetailed.HighlightDetailed
 import com.triforce.malacprodavac.presentation.login.LoginScreen
@@ -17,8 +17,8 @@ import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.profiles.ProfileCustomerScreen
 import com.triforce.malacprodavac.presentation.profiles.ProfileShopScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
-import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
-import com.triforce.malacprodavac.presentation.store.product.ProductScreen
+import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
+import com.triforce.malacprodavac.presentation.product.ProductScreen
 
 @Composable
 fun Navigation() {

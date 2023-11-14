@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.store.category
+package com.triforce.malacprodavac.presentation.category
 
 import android.util.Log
 import androidx.compose.material.Colors
@@ -36,11 +36,13 @@ class CategoryViewModel @Inject constructor(
 
     var state by mutableStateOf(CategoryState())
 
-    private val _categoryTitle = mutableStateOf(CategoryState(
+    private val _categoryTitle = mutableStateOf(
+        CategoryState(
 
         title = "Category title..."
 
-    ))
+    )
+    )
     val categoryTitle: State<CategoryState> = _categoryTitle
 
     var currentCategoryId: Int? = null

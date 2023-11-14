@@ -1,20 +1,12 @@
-package com.triforce.malacprodavac.presentation.store.product
+package com.triforce.malacprodavac.presentation.product
 
-import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.data.services.filter.Filter
-import com.triforce.malacprodavac.data.services.filter.FilterBuilder
-import com.triforce.malacprodavac.data.services.filter.FilterOperation
-import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.repository.ProductRepository
-import com.triforce.malacprodavac.presentation.store.category.CategoryState
 import com.triforce.malacprodavac.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -29,6 +21,17 @@ class ProductViewModel @Inject constructor(
 ): ViewModel() {
 
     var state by mutableStateOf(ProductState())
+
+    fun onEvent(event: ProductEvent) {
+        when(event) {
+            is ProductEvent.buyProduct -> {
+                state = state.copy(isBuyed = true)
+            }
+            is ProductEvent.ToggleFavouriteProduct -> {
+                state = state.copy(isBuyed = true)
+            }
+        }
+    }
 
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->

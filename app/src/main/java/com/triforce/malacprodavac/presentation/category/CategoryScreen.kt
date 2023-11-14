@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.store.category
+package com.triforce.malacprodavac.presentation.category
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background

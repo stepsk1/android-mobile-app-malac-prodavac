@@ -1,6 +1,6 @@
-package com.triforce.malacprodavac.presentation.store.product
+package com.triforce.malacprodavac.presentation.product
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,16 +17,17 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,7 +35,10 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
+import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.login.LoginViewModel
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
@@ -52,7 +56,7 @@ fun ProductScreen(
     viewModel: ProductViewModel = hiltViewModel()
 ) {
 
-    val state = viewModel.state
+    var state = viewModel.state
 
     val product = state.product
 //        Product(
@@ -114,7 +118,8 @@ fun ProductScreen(
             if (product != null) {
                 ProductDetails(product = product)
                 ShowFavouriteAddToCart(
-                    navController = navController
+                    navController = navController,
+                    viewModel = viewModel
                 )
                 ShowHighlightSection(
                     navController = navController,
@@ -243,8 +248,15 @@ fun ShowHighlightSection(
 
 @Composable
 fun ShowFavouriteAddToCart(
-    navController: NavController
+    navController: NavController,
+    viewModel: ProductViewModel
 ) {
+    fun addToBuyedProducts(item: ProductAmount) {
+        BuyedProducts.listOfBuyedProducts.add(item)
+    }
+
+    val context = LocalContext.current
+
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
@@ -275,6 +287,7 @@ fun ShowFavouriteAddToCart(
             modifier = Modifier
                 .size(50.dp)
         )
+
         Text(
             text = "Dodaj u korpu",
             style = MaterialTheme.typography.h5,
@@ -282,6 +295,24 @@ fun ShowFavouriteAddToCart(
             fontWeight = FontWeight.W500,
             modifier = Modifier
                 .clickable {
+                    if (viewModel.state.isBuyed == false) {
+                        viewModel.onEvent(ProductEvent.buyProduct)
+                        viewModel.state.product?.let { addToBuyedProducts(ProductAmount(it)) }
+
+                        Toast.makeText(
+                            context,
+                            "Uspešno dodat proizvod u korpu",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    else
+                    {
+                        Toast.makeText(
+                            context,
+                            "Proizvod se već nalazi u korpi",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
                 .clip(RoundedCornerShape(10.dp))
                 .background(MP_Pink)
