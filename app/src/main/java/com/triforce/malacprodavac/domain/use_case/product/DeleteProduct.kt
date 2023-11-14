@@ -11,7 +11,7 @@ class DeleteProduct (
 
     suspend operator fun invoke(product: Product){
 
-        repository.deleteProduct(product)
+        repository.deleteProduct(product.id)
 
     }
 

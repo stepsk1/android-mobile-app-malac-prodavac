@@ -1,30 +1,27 @@
-package com.triforce.malacprodavac.presentation.cart.components
+package com.triforce.malacprodavac.presentation.cart.CartDetails
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
@@ -38,41 +35,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.cart.BuyedProduct
-import com.triforce.malacprodavac.presentation.cart.TotalPrice
-import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
-import org.w3c.dom.Text
 
 @Composable
 fun CartDetailsScreen(navController: NavController) {
 
-    val buyedProducts = listOf(
-        BuyedProduct(
-            name = "Pršuta 100g",
-            price = 590.00
-        ),
-        BuyedProduct(
-            name = "Kajmak 100g",
-            price = 670.00
-        ),
-        BuyedProduct(
-            name = "Jabuke 1kg",
-            price = 75.00
-        ),
-        BuyedProduct(
-            name = "Domaće mleko 2l",
-            price = 210.99
-        )
-
-    )
+    val buyedProducts = BuyedProducts.listOfBuyedProducts
 
     val typeOfPaymentOptions = listOf("Paypal", "Lično/Pouzećem")
     var selectedTypeOfPayment by remember { mutableStateOf(typeOfPaymentOptions[0]) }
@@ -102,8 +79,12 @@ fun CartDetailsScreen(navController: NavController) {
         ) {
 
         }
+
         Column {
+
             HeaderSectionTitleWithoutIcon("Detalji plaćanja", navController)
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = "Način plaćanja",
@@ -119,6 +100,7 @@ fun CartDetailsScreen(navController: NavController) {
                 Box(
                     contentAlignment = Alignment.CenterStart,
                     modifier = Modifier
+                        .padding(start = 7.dp, end = 7.dp, bottom = 3.dp, top = 3.dp)
                         .fillMaxWidth()
                         .shadow(
                             elevation = 5.dp,
@@ -126,7 +108,8 @@ fun CartDetailsScreen(navController: NavController) {
                             shape = RoundedCornerShape(7.5.dp)
                         )
                         .clip(RoundedCornerShape(10.dp))
-                        .padding(vertical = 20.dp, horizontal = 20.dp)
+                        .background(MP_Gray)
+                        .padding(vertical = 7.dp, horizontal = 7.dp)
                 ){
                     Column(
                         modifier = Modifier.padding(2.dp),
@@ -151,6 +134,8 @@ fun CartDetailsScreen(navController: NavController) {
                 }
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
+
             Row(verticalAlignment = Alignment.CenterVertically){
                 Text(
                     text = "Podaci za slanje",
@@ -164,10 +149,10 @@ fun CartDetailsScreen(navController: NavController) {
                     style = MaterialTheme.typography.h6,
                     color = MP_White,
                     modifier = Modifier
-                        .padding(start = 80.dp, top = 5.dp)
+                        .padding(start = 80.dp, top = 5.dp, bottom = 5.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(MP_Pink)
-                        .padding(7.5.dp)
+                        .padding(start = 7.5.dp, end = 7.5.dp, top = 2.dp, bottom = 2.dp)
                 )
             }
             Column(
@@ -177,6 +162,7 @@ fun CartDetailsScreen(navController: NavController) {
                 Box(
                     contentAlignment = Alignment.CenterStart,
                     modifier = Modifier
+                        .padding(start = 7.dp, end = 7.dp, bottom = 3.dp, top = 3.dp)
                         .fillMaxWidth()
                         .shadow(
                             elevation = 5.dp,
@@ -184,7 +170,8 @@ fun CartDetailsScreen(navController: NavController) {
                             shape = RoundedCornerShape(7.5.dp)
                         )
                         .clip(RoundedCornerShape(10.dp))
-                        .padding(vertical = 20.dp, horizontal = 20.dp)
+                        .background(MP_Gray)
+                        .padding(vertical = 7.dp, horizontal = 7.dp)
                 ){
                     Column(
                         modifier = Modifier
@@ -210,6 +197,9 @@ fun CartDetailsScreen(navController: NavController) {
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = "Način slanja",
                 style = MaterialTheme.typography.h5,
@@ -224,6 +214,7 @@ fun CartDetailsScreen(navController: NavController) {
                 Box(
                     contentAlignment = Alignment.CenterStart,
                     modifier = Modifier
+                        .padding(start = 7.dp, end = 7.dp, bottom = 3.dp, top = 3.dp)
                         .fillMaxWidth()
                         .shadow(
                             elevation = 5.dp,
@@ -231,7 +222,8 @@ fun CartDetailsScreen(navController: NavController) {
                             shape = RoundedCornerShape(7.5.dp)
                         )
                         .clip(RoundedCornerShape(10.dp))
-                        .padding(vertical = 20.dp, horizontal = 20.dp)
+                        .background(MP_Gray)
+                        .padding(vertical = 7.dp, horizontal = 7.dp)
                 ){
                     Column(
                         modifier = Modifier
@@ -283,7 +275,7 @@ fun CartDetailsScreen(navController: NavController) {
                     onClick = {
                         navController.navigate(Screen.DetailsOrderScreen.route)
                     },
-                    modifier = Modifier
+                    colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
                 ) {
                     Text(
                         text = "Izvrši porudžbinu",
