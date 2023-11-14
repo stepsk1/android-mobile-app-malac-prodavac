@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.presentation.cart
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,12 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
-import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.components.BuyedProductSection
-import com.triforce.malacprodavac.presentation.cart.components.CartState
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Orange
@@ -37,9 +35,10 @@ fun CartScreen(navController: NavController)
 {
 
     var buyedProducts = BuyedProducts.listOfBuyedProducts
-    val buyedProductsSet: MutableSet<Product> = buyedProducts.toMutableSet()
+    val buyedProductsSet = buyedProducts.toMutableSet()
     buyedProducts = buyedProductsSet.toMutableList()
-    var state = CartState()
+    val viewModel: CartViewModel = hiltViewModel()
+    val state = viewModel.state
 
     Box(
         modifier = Modifier
@@ -60,7 +59,8 @@ fun CartScreen(navController: NavController)
         Column {
             GoBackComp("Moja korpa", navController)
             BuyedProductSection(
-                buyedProducts = buyedProducts
+                buyedProducts = buyedProducts,
+                viewModel = viewModel
             )
         }
 

@@ -33,6 +33,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -246,7 +247,7 @@ fun ShowFavouriteAddToCart(
     navController: NavController,
     viewModel: ProductViewModel
 ) {
-    fun addToBuyedProducts(item: Product) {
+    fun addToBuyedProducts(item: ProductAmount) {
         BuyedProducts.listOfBuyedProducts.add(item)
     }
 
@@ -290,7 +291,7 @@ fun ShowFavouriteAddToCart(
                 .clickable {
                     if(viewModel.state.isBuyed == false){
                         viewModel.onEvent(ProductEvent.buyProduct)
-                        viewModel.state.product?.let { addToBuyedProducts(it) }
+                        viewModel.state.product?.let { addToBuyedProducts(ProductAmount(it)) }
                     }
                 }
                 .clip(RoundedCornerShape(10.dp))

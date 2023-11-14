@@ -18,11 +18,11 @@ import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.ui.theme.MP_Black
 
 @Composable
-fun TotalPrice(buyedProducts: MutableList<Product>) {
+fun TotalPrice(buyedProducts: MutableList<ProductAmount>) {
 
     var totalPrice: Double = 0.00
     for (buyedProduct in buyedProducts) {
-        totalPrice += buyedProduct.price
+        totalPrice += buyedProduct.totalPrice
     }
 
     Row(

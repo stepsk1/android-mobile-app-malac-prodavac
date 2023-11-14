@@ -11,12 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 
 
 @Composable
 fun BuyedProductSection(
-    buyedProducts: MutableList<Product>,
-
+    buyedProducts: MutableList<ProductAmount>,
+    viewModel: CartViewModel
 ) {
 
     Column(
@@ -37,7 +38,8 @@ fun BuyedProductSection(
             items(buyedProducts.size) {// how many items do we have
                 // define one of items
                 BuyedProductItem(
-                    buyedProduct = buyedProducts[it]
+                    buyedProduct = buyedProducts[it],
+                    viewModel = viewModel
                 )
             }
         }
