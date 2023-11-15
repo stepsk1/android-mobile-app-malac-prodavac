@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.SessionManager
+import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.validate.ValidateEmail
 import com.triforce.malacprodavac.domain.use_case.validate.ValidatePassword
-import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -52,29 +52,34 @@ class LoginViewModel @Inject constructor(
         val emailResult = validateEmail.execute(state.email)
         state = state.copy(emailError = emailResult.errorMessage)
         val passwordResult = validatePassword.execute(state.password)
-        state = state.copy(emailError = passwordResult.errorMessage)
-        viewModelScope.launch {
-            loginUseCase.loginUser(state.email, state.password)
-                .collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            state = state.copy(
-                                isSuccessful = true
-                            )
-                        }
+        state = state.copy(passwordError = passwordResult.errorMessage)
 
-                        is Resource.Error -> {
-                            state = state.copy(isSuccessful = false)
-                        }
+        val hasError = listOf(emailResult, passwordResult).any { !it.successful }
 
-                        is Resource.Loading -> {
-                            state = state.copy(
-                                isLoading = result.isLoading
-                            )
+        if (!hasError)
+            viewModelScope.launch {
+                loginUseCase.loginUser(state.email, state.password)
+                    .collect { result ->
+                        when (result) {
+                            is Resource.Success -> {
+                                state = state.copy(
+                                    isSuccessful = true
+                                )
+                            }
+
+                            is Resource.Error -> {
+                                state =
+                                    state.copy(isSuccessful = false, errorMessage = result.message)
+                            }
+
+                            is Resource.Loading -> {
+                                state = state.copy(
+                                    isLoading = result.isLoading
+                                )
+                            }
                         }
                     }
-                }
-        }
+            }
     }
 
     private fun getMe() {

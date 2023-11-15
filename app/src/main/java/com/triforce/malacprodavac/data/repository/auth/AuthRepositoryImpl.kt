@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -33,7 +34,12 @@ class AuthRepositoryImpl @Inject constructor(
                 null
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't login user."))
+                if (e.code() == HttpURLConnection.HTTP_NOT_FOUND)
+                    emit(Resource.Error("Email adresa nije pronađena!"))
+                else if (e.code() == HttpURLConnection.HTTP_UNAUTHORIZED)
+                    emit(Resource.Error("Pogrešna lozinka!"))
+                else
+                    emit(Resource.Error("Kombinacija adrese i lozinke je neispravna!"))
                 null
             }
             user?.let {

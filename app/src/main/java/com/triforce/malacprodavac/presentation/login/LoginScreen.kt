@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.presentation.login
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -140,12 +139,17 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-
+                if (!state.errorMessage.isNullOrBlank()) {
+                    Text(
+                        text = state.errorMessage.toString(),
+                        color = MP_Pink,
+                        modifier = Modifier.align(Alignment.End)
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        viewModel.onEvent(LoginFormEvent.Submit).let {
-                            navController.navigate(Screen.HomeScreen.route)
-                        }
+                        viewModel.onEvent(LoginFormEvent.Submit)
                     },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
