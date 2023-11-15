@@ -25,14 +25,16 @@ import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.Calendar
 
 @Composable
 fun Confirmation() {
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = Modifier
-            .padding(20.dp)
+            .padding(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 5.dp)
             .fillMaxWidth()
             .shadow(
                 elevation = 5.dp,
@@ -98,10 +100,17 @@ fun Confirmation() {
                     .align(Alignment.CenterHorizontally)
             )
 
-            val currentDate = LocalDateTime.now()
+            val calender = Calendar.getInstance()
+
+            val year = calender.get(Calendar.YEAR)
+            val month = calender.get(Calendar.MONTH) + 1
+            val day = calender.get(Calendar.DAY_OF_MONTH)
+            val hour = calender.get(Calendar.HOUR)
+            val min = calender.get(Calendar.MINUTE)
+            val date = "$day-$month-$year $hour:$min"
 
             Text(
-                text = currentDate.toString(),
+                text = date,
                 style = MaterialTheme.typography.h5,
                 color = MP_Pink,
                 modifier = Modifier
