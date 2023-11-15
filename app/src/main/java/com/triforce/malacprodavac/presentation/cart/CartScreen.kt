@@ -39,7 +39,6 @@ fun CartScreen(navController: NavController)
     val buyedProductsSet = buyedProducts.toMutableSet()
     buyedProducts = buyedProductsSet.toMutableList()
     val viewModel: CartViewModel = hiltViewModel()
-    val state = viewModel.state
 
     Box(
         modifier = Modifier
@@ -61,7 +60,8 @@ fun CartScreen(navController: NavController)
             GoBackComp("Moja korpa", navController)
             BuyedProductSection(
                 buyedProducts = buyedProducts,
-                viewModel = viewModel
+                viewModel = viewModel,
+
             )
         }
 
