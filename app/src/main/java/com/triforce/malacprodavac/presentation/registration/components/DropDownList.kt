@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.registration.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -12,58 +13,58 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.triforce.malacprodavac.presentation.registration.RegistrationFormEvent
-import com.triforce.malacprodavac.presentation.registration.RegistrationViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDownList(viewModel: RegistrationViewModel) : String {
-    val rolesList = listOf(
-        "KUPAC",
-        "DOSTAVLJAČ",
-        "PRODAVAC"
-    )
-    var expanded by remember { mutableStateOf(false) }
-    var selectedRole by remember { mutableStateOf(rolesList[0]) }
+fun DropDownList(
+    entries: List<Any> = emptyList(),
+    handleSelect: (Any) -> Unit
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    var selectedEntry by remember { mutableStateOf(entries.first().toString()) }
 
     // menu box
     ExposedDropdownMenuBox(
-        expanded = expanded,
+        expanded = isExpanded,
         onExpandedChange = {
-            expanded = !expanded
-        }
+            isExpanded = it
+        },
+        modifier = Modifier.fillMaxWidth()
     ) {
         TextField(
+            value = selectedEntry,
             modifier = Modifier
+                .fillMaxWidth()
                 .menuAnchor(), // menuAnchor modifier must be passed to the text field for correctness.
             readOnly = true,
-            value = selectedRole,
-            onValueChange = {
-                viewModel.onEvent(RegistrationFormEvent.RoleChanged(it))
-            },
-            label = { Text("Uloga") },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            onValueChange = { },
+            label = { Text("Tip naloga") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
         )
         // menu
         ExposedDropdownMenu(
-            expanded = expanded,
+            expanded = isExpanded,
             onDismissRequest = {
-                expanded = false
-            },
+                isExpanded = false
+            }, modifier = Modifier.fillMaxWidth()
         ) {
-            rolesList.forEach { selectionOption ->
+            entries.forEach { entry ->
                 DropdownMenuItem(
-                    text = { Text(selectionOption) },
-                    onClick = {
-                        selectedRole = selectionOption
-                        expanded = false
+                    text = {
+                        Text(
+                            entry.toString()
+                        )
                     },
+                    onClick = {
+                        selectedEntry = entry.toString()
+                        isExpanded = false
+                        handleSelect(entry)
+                    }, modifier = Modifier.fillMaxWidth(),
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                 )
             }
         }
     }
-    return selectedRole
 }

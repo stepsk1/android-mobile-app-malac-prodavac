@@ -8,5 +8,7 @@ fun CategoryEntity.toCategory(): Category = Category(
     name = name,
     parentCategoryId = parentCategoryId,
     updatedAt = updatedAt,
-    createdAt = createdAt
+    createdAt = createdAt,
+    parentCategory = null,
+    subCategories = null
 )

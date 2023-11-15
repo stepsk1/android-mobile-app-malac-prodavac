@@ -5,11 +5,13 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.triforce.malacprodavac.data.local.user.UserEntity
 
-@Entity(foreignKeys = [ForeignKey(
-    entity = UserEntity::class,
-    parentColumns = arrayOf("id"),
-    childColumns = arrayOf("userId")
-)])
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = UserEntity::class,
+        parentColumns = arrayOf("id"),
+        childColumns = arrayOf("userId")
+    )]
+)
 data class ShopEntity(
     @PrimaryKey
     val id: Int,

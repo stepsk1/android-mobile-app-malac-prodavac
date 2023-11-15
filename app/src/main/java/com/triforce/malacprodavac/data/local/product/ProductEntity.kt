@@ -4,17 +4,18 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.triforce.malacprodavac.data.local.category.CategoryEntity
-import com.triforce.malacprodavac.data.local.user.UserEntity
 
-@Entity(foreignKeys = [ForeignKey(
-    entity = CategoryEntity::class,
-    parentColumns = arrayOf("id"),
-    childColumns = arrayOf("categoryId")
-)])
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = CategoryEntity::class,
+        parentColumns = arrayOf("id"),
+        childColumns = arrayOf("categoryId")
+    )]
+)
 data class ProductEntity(
     @PrimaryKey
-    val id: Int,
-    val available: Boolean,
+    val id: Int = 0,
+    val available: Boolean = false,
     val price: Double,
     val unitOfMeasurement: String, //Convert to enum
     val rating: Double?,
@@ -29,6 +30,6 @@ data class ProductEntity(
     val ratingsCount: Double?,
     val availableAt: String?,
     val categoryId: Int,
-    val createdAt: String?,
-    val updatedAt: String?
+    val createdAt: String,
+    val updatedAt: String
 )

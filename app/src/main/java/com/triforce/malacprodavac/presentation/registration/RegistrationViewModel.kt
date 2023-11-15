@@ -12,17 +12,15 @@ import com.triforce.malacprodavac.domain.model.CreateShop
 import com.triforce.malacprodavac.domain.model.CreateUser
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.Shop
-import com.triforce.malacprodavac.domain.repository.CourierRepository
-import com.triforce.malacprodavac.domain.repository.CustomerRepository
-import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.use_case.ValidateEmail
 import com.triforce.malacprodavac.domain.use_case.ValidateFirstName
 import com.triforce.malacprodavac.domain.use_case.ValidateLastName
 import com.triforce.malacprodavac.domain.use_case.ValidatePassword
 import com.triforce.malacprodavac.domain.use_case.ValidateRepeatedPassword
 import com.triforce.malacprodavac.domain.use_case.ValidateTerms
-import com.triforce.malacprodavac.util.AuthResult
-import com.triforce.malacprodavac.util.Resource
+import com.triforce.malacprodavac.domain.use_case.registration.Registration
+import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.domain.util.enum.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -31,10 +29,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
-    //private val savedStateHandle: SavedStateHandle,
-    private val customersRepository: CustomerRepository,
-    private val couriersRepository: CourierRepository,
-    private val shopsRepository: ShopRepository,
+    private val registration: Registration
 ) : ViewModel() {
 
     private val valiStringFirstName: ValidateFirstName = ValidateFirstName()
@@ -118,9 +113,9 @@ class RegistrationViewModel @Inject constructor(
 
         if (!hasError) {
             when (state.role) {
-                "KUPAC" -> registerCustomer(CreateCustomer(createUser))
-                "DOSTAVLJAČ" -> registerCourier(CreateCourier(createUser, 0.0))
-                else -> registerShop(CreateShop(createUser, ""))
+                UserRole.Customer -> registerCustomer(CreateCustomer(createUser))
+                UserRole.Courier -> registerCourier(CreateCourier(createUser))
+                UserRole.Shop -> registerShop(CreateShop(createUser))
             }
         }
 
@@ -151,18 +146,13 @@ class RegistrationViewModel @Inject constructor(
 
     private fun registerCustomer(createCustomer: CreateCustomer) {
         viewModelScope.launch {
-            customersRepository.registerCustomer(createCustomer)
+            registration.createCustomer(createCustomer)
                 .collect { result ->
                     when (result) {
                         is Resource.Success -> {
-                            if (result.data !is Customer) {
-                                state = state.copy(
-                                    status = AuthResult.Unauthorized()
-                                )
-                            }
                             if (result.data is Customer) {
                                 state = state.copy(
-                                    status = AuthResult.Authorized(state.email)
+                                    successful = true
                                 )
                             }
                         }
@@ -183,18 +173,13 @@ class RegistrationViewModel @Inject constructor(
 
     private fun registerCourier(createCourier: CreateCourier) {
         viewModelScope.launch {
-            couriersRepository.registerCourier(createCourier)
+            registration.createCourier(createCourier)
                 .collect { result ->
                     when (result) {
                         is Resource.Success -> {
-                            if (result.data !is Courier) {
-                                state = state.copy(
-                                    status = AuthResult.Unauthorized()
-                                )
-                            }
                             if (result.data is Courier) {
                                 state = state.copy(
-                                    status = AuthResult.Authorized(state.email)
+                                    successful = true
                                 )
                             }
                         }
@@ -215,18 +200,13 @@ class RegistrationViewModel @Inject constructor(
 
     private fun registerShop(createShop: CreateShop) {
         viewModelScope.launch {
-            shopsRepository.registerShop(createShop)
+            registration.createShop(createShop)
                 .collect { result ->
                     when (result) {
                         is Resource.Success -> {
-                            if (result.data !is Shop) {
-                                state = state.copy(
-                                    status = AuthResult.Unauthorized()
-                                )
-                            }
                             if (result.data is Shop) {
                                 state = state.copy(
-                                    status = AuthResult.Authorized(state.email)
+                                    successful = true
                                 )
                             }
                         }

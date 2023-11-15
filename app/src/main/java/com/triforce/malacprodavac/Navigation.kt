@@ -1,7 +1,8 @@
 package com.triforce.malacprodavac
+
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
-
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -9,22 +10,20 @@ import androidx.navigation.navArgument
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
+import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
 import com.triforce.malacprodavac.presentation.higlightDetailed.HighlightDetailed
-import com.triforce.malacprodavac.presentation.login.LoginScreen
-import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
-import com.triforce.malacprodavac.presentation.profiles.ProfileCustomerScreen
-import com.triforce.malacprodavac.presentation.profiles.ProfileShopScreen
-import com.triforce.malacprodavac.presentation.store.StoreScreen
-import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
+import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
+import com.triforce.malacprodavac.presentation.profile.ProfileScreen
+import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
+import com.triforce.malacprodavac.presentation.store.StoreScreen
 
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
     val startDestination = Screen.LoginScreen.route
-
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -55,12 +54,12 @@ fun Navigation() {
         }
 
         composable(
-            route = Screen.StoreCategoryScreen.route+ "?categoryId={categoryId}&title={title}",
+            route = Screen.StoreCategoryScreen.route + "?categoryId={categoryId}&title={title}",
             arguments = listOf(
 
                 navArgument(
                     name = "categoryId"
-                ){
+                ) {
                     type = NavType.IntType
                     defaultValue = -1
                 },
@@ -88,11 +87,11 @@ fun Navigation() {
         }
 
         composable(
-            route = Screen.ProductScreen.route+ "?productId={productId}",
+            route = Screen.ProductScreen.route + "?productId={productId}",
             arguments = listOf(
                 navArgument(
                     name = "productId"
-                ){
+                ) {
                     type = NavType.IntType
                     defaultValue = -1
                 }
@@ -105,16 +104,14 @@ fun Navigation() {
             HighlightDetailed(navController = navController)
         }
 
-        composable(route = Screen.ProfileCustomer.route) {
-            ProfileCustomerScreen(navController = navController)
+        composable(route = Screen.Profile.route) {
+            ProfileScreen(navController = navController)
         }
-        
+
         composable(route = Screen.ShopHomeScreen.route) {
             ShopHomeScreen(navController = navController)
         }
 
-        composable(route = Screen.ProfileShopScreen.route) {
-            ProfileShopScreen(navController = navController)
-        }
+
     }
 }

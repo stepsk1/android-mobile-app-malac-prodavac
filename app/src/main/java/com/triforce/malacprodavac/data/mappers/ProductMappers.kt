@@ -21,5 +21,7 @@ fun ProductEntity.toProduct(): Product = Product(
     availableAt = availableAt,
     categoryId = categoryId,
     createdAt = createdAt,
-    updatedAt = updatedAt
+    updatedAt = updatedAt,
+    shop = null,
+    category = null
 )

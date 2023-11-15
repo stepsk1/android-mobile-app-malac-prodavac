@@ -10,5 +10,6 @@ fun ShopEntity.toShop(): Shop = Shop(
     createdAt = createdAt,
     updatedAt = updatedAt,
 
-    user = null
+    user = null,
+    products = null
 )
