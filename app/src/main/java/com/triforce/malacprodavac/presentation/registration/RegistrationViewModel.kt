@@ -12,17 +12,16 @@ import com.triforce.malacprodavac.domain.model.CreateShop
 import com.triforce.malacprodavac.domain.model.CreateUser
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.Shop
-import com.triforce.malacprodavac.domain.repository.CourierRepository
-import com.triforce.malacprodavac.domain.repository.CustomerRepository
-import com.triforce.malacprodavac.domain.repository.ShopRepository
-import com.triforce.malacprodavac.domain.use_case.ValidateEmail
-import com.triforce.malacprodavac.domain.use_case.ValidateFirstName
-import com.triforce.malacprodavac.domain.use_case.ValidateLastName
-import com.triforce.malacprodavac.domain.use_case.ValidatePassword
-import com.triforce.malacprodavac.domain.use_case.ValidateRepeatedPassword
-import com.triforce.malacprodavac.domain.use_case.ValidateTerms
-import com.triforce.malacprodavac.util.AuthResult
-import com.triforce.malacprodavac.util.Resource
+import com.triforce.malacprodavac.domain.use_case.validate.ValidateEmail
+import com.triforce.malacprodavac.domain.use_case.validate.ValidateFirstName
+import com.triforce.malacprodavac.domain.use_case.validate.ValidateLastName
+import com.triforce.malacprodavac.domain.use_case.validate.ValidatePassword
+import com.triforce.malacprodavac.domain.use_case.validate.ValidateRepeatedPassword
+import com.triforce.malacprodavac.domain.use_case.validate.ValidateTerms
+import com.triforce.malacprodavac.domain.use_case.registration.Registration
+import com.triforce.malacprodavac.domain.use_case.validate.ValidatePhoneNumber
+import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.domain.util.enum.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -31,19 +30,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
-    //private val savedStateHandle: SavedStateHandle,
-    private val customersRepository: CustomerRepository,
-    private val couriersRepository: CourierRepository,
-    private val shopsRepository: ShopRepository,
+    private val registration: Registration
 ) : ViewModel() {
 
-    private val valiStringFirstName: ValidateFirstName = ValidateFirstName()
-    private val valiStringLastName: ValidateLastName = ValidateLastName()
-    private val valiStringEmail: ValidateEmail = ValidateEmail()
-    private val valiStringPassword: ValidatePassword = ValidatePassword()
-    private val valiStringRepeatedPassword: ValidateRepeatedPassword =
+    private val validateStringFirstName = ValidateFirstName()
+    private val validateStringLastName = ValidateLastName()
+    private val validateStringEmail = ValidateEmail()
+    private val validateStringPassword = ValidatePassword()
+    private val validateStringRepeatedPassword =
         ValidateRepeatedPassword()
-    private val valiStringTerms: ValidateTerms = ValidateTerms()
+    private val validateStringTerms = ValidateTerms()
+
+
     var state by mutableStateOf(RegistrationFormState())
 
     private val validationEventChannel = Channel<ValidationEvent>()
@@ -87,14 +85,15 @@ class RegistrationViewModel @Inject constructor(
     }
 
     private fun submitData() {
-        val firstNameResult = valiStringFirstName.execute(state.firstName)
-        val lastNameResult = valiStringLastName.execute(state.lastName)
-        val emailResult = valiStringEmail.execute(state.email)
-        val passwordResult = valiStringPassword.execute(state.password)
-        val repeatedPasswordResult = valiStringRepeatedPassword.execute(
+        val firstNameResult = validateStringFirstName.execute(state.firstName)
+        val lastNameResult = validateStringLastName.execute(state.lastName)
+        val emailResult = validateStringEmail.execute(state.email)
+        val passwordResult = validateStringPassword.execute(state.password)
+        val repeatedPasswordResult = validateStringRepeatedPassword.execute(
             state.password, state.repeatedPassword
         )
-        val termsResult = valiStringTerms.execute(state.acceptedTerms)
+        val termsResult = validateStringTerms.execute(state.acceptedTerms)
+
         val firstName = state.firstName
         val lastName = state.lastName
         val email = state.email
@@ -118,9 +117,9 @@ class RegistrationViewModel @Inject constructor(
 
         if (!hasError) {
             when (state.role) {
-                "KUPAC" -> registerCustomer(CreateCustomer(createUser))
-                "DOSTAVLJAČ" -> registerCourier(CreateCourier(createUser, 0.0))
-                else -> registerShop(CreateShop(createUser, ""))
+                UserRole.Customer -> registerCustomer(CreateCustomer(createUser))
+                UserRole.Courier -> registerCourier(CreateCourier(createUser))
+                UserRole.Shop -> registerShop(CreateShop(createUser))
             }
         }
 
@@ -151,24 +150,20 @@ class RegistrationViewModel @Inject constructor(
 
     private fun registerCustomer(createCustomer: CreateCustomer) {
         viewModelScope.launch {
-            customersRepository.registerCustomer(createCustomer)
+            registration.createCustomer(createCustomer)
                 .collect { result ->
                     when (result) {
                         is Resource.Success -> {
-                            if (result.data !is Customer) {
-                                state = state.copy(
-                                    status = AuthResult.Unauthorized()
-                                )
-                            }
                             if (result.data is Customer) {
                                 state = state.copy(
-                                    status = AuthResult.Authorized(state.email)
+                                    successful = true
                                 )
                             }
                         }
 
                         is Resource.Error -> {
-                            Unit
+
+                            state
                         }
 
                         is Resource.Loading -> {
@@ -183,18 +178,13 @@ class RegistrationViewModel @Inject constructor(
 
     private fun registerCourier(createCourier: CreateCourier) {
         viewModelScope.launch {
-            couriersRepository.registerCourier(createCourier)
+            registration.createCourier(createCourier)
                 .collect { result ->
                     when (result) {
                         is Resource.Success -> {
-                            if (result.data !is Courier) {
-                                state = state.copy(
-                                    status = AuthResult.Unauthorized()
-                                )
-                            }
                             if (result.data is Courier) {
                                 state = state.copy(
-                                    status = AuthResult.Authorized(state.email)
+                                    successful = true
                                 )
                             }
                         }
@@ -215,24 +205,19 @@ class RegistrationViewModel @Inject constructor(
 
     private fun registerShop(createShop: CreateShop) {
         viewModelScope.launch {
-            shopsRepository.registerShop(createShop)
+            registration.createShop(createShop)
                 .collect { result ->
                     when (result) {
                         is Resource.Success -> {
-                            if (result.data !is Shop) {
-                                state = state.copy(
-                                    status = AuthResult.Unauthorized()
-                                )
-                            }
                             if (result.data is Shop) {
                                 state = state.copy(
-                                    status = AuthResult.Authorized(state.email)
+                                    successful = true
                                 )
                             }
                         }
 
                         is Resource.Error -> {
-                            Unit
+                            result.data
                         }
 
                         is Resource.Loading -> {
@@ -243,6 +228,11 @@ class RegistrationViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+
+    private fun handleRegistrationError() {
+
     }
 
     sealed class ValidationEvent {

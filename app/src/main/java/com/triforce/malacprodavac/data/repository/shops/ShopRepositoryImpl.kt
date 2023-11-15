@@ -6,7 +6,7 @@ import com.triforce.malacprodavac.data.remote.shops.dto.CreateShopDto
 import com.triforce.malacprodavac.domain.model.CreateShop
 import com.triforce.malacprodavac.domain.model.Shop
 import com.triforce.malacprodavac.domain.repository.ShopRepository
-import com.triforce.malacprodavac.util.Resource
+import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

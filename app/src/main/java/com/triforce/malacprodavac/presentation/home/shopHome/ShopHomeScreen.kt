@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
@@ -27,9 +26,7 @@ import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
-import com.triforce.malacprodavac.presentation.home.components.CategoriesSection
 import com.triforce.malacprodavac.presentation.home.components.GoToShopProducts
-import com.triforce.malacprodavac.presentation.home.components.GoToStoreSection
 import com.triforce.malacprodavac.presentation.home.components.GreetingSection
 import com.triforce.malacprodavac.presentation.home.components.RecommendedFeaturesSection
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -47,14 +44,14 @@ fun ShopHomeScreen(navController: NavController) {
             .fillMaxSize()
     ) {
         LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark)
-        Surface (
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(1F)
                 .padding(top = 90.dp)
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
                 .background(color = MP_Pink)
-        ){
+        ) {
 
         }
         Column {
@@ -77,7 +74,7 @@ fun ShopHomeScreen(navController: NavController) {
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Orange,
                         color2 = MP_Orange,
-                        screen = Screen.ProfileCustomer
+                        screen = Screen.Profile
                     ),
                     Feature(
                         id = -1,
@@ -132,7 +129,7 @@ fun ShopHomeScreen(navController: NavController) {
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.ProfileShopScreen,
+                    screen = Screen.Profile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(

@@ -153,7 +153,7 @@ fun StoreScreen(navController: NavController)
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.ProfileCustomer,
+                    screen = Screen.Profile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(

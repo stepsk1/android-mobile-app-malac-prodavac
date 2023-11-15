@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.profiles
+package com.triforce.malacprodavac.presentation.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,9 +20,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -38,12 +36,12 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
-import com.triforce.malacprodavac.presentation.profiles.components.ShowData
+import com.triforce.malacprodavac.presentation.profile.components.ShowData
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun ProfileShopScreen(navController: NavController) {
+fun ProfileCustomerScreen(navController: NavController) {
 
     Box(
         modifier = Modifier
@@ -93,8 +91,8 @@ fun ProfileShopScreen(navController: NavController) {
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)),
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally
+                verticalArrangement = Arrangement.SpaceAround,
+                horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = "Odjavi se",
@@ -145,10 +143,10 @@ fun ProfileShopScreen(navController: NavController) {
             )
 
             ShowData(
-                title = "Naziv preduzeća",
-                data = "",
-                contentDescription = "company",
-                icon = Icons.Default.Info
+                title = "Način plaćanja",
+                data = "Paypal",
+                contentDescription = "payment method",
+                icon = Icons.Default.ShoppingCart
             )
         }
 
@@ -159,7 +157,7 @@ fun ProfileShopScreen(navController: NavController) {
                     title = "Početna",
                     graphicID = Icons.Default.Home,
                     screen = Screen.HomeScreen,
-                    isActive = true
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
@@ -170,8 +168,8 @@ fun ProfileShopScreen(navController: NavController) {
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.ProfileCustomer,
-                    isActive = false
+                    screen = Screen.Profile,
+                    isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",
@@ -179,8 +177,7 @@ fun ProfileShopScreen(navController: NavController) {
                     screen = Screen.CartScreen,
                     isActive = false
                 )
-            ), modifier = Modifier
-                .align(Alignment.BottomCenter)
+            ), modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 }

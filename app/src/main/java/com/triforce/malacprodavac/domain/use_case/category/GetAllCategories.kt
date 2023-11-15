@@ -2,7 +2,7 @@ package com.triforce.malacprodavac.domain.use_case.category
 
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.domain.repository.CategoryRepository
-import com.triforce.malacprodavac.util.Resource
+import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 class GetAllCategories(

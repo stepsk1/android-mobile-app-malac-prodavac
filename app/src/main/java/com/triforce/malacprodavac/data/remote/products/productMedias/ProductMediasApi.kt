@@ -17,12 +17,6 @@ interface ProductMediasApi {
     @GET(ROUTE)
     suspend fun getProductMedias(@Path("id") id: Int): List<ProductMediaEntity>
 
-    @GET("${ROUTE}/{mediaId}")
-    suspend fun getProductMedias(
-        @Path("id") id: Int,
-        @Path("mediaId") mediaId: Int
-    ): ProductMediaEntity
-
 
     companion object {
         const val ROUTE = "${ProductsApi.ROUTE}/{id}/medias"

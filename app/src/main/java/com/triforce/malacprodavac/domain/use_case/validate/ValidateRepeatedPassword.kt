@@ -1,8 +1,8 @@
-package com.triforce.malacprodavac.domain.use_case
+package com.triforce.malacprodavac.domain.use_case.validate
 
 class ValidateRepeatedPassword {
-    fun execute(password: String, repeatedPassword: String):ValidationResult {
-        if(password != repeatedPassword) {
+    fun execute(password: String, repeatedPassword: String): ValidationResult {
+        if (password != repeatedPassword) {
             return ValidationResult(
                 successful = false,
                 errorMessage = "Lozinka se ne poklapa"

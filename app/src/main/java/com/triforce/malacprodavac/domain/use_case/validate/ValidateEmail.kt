@@ -1,17 +1,16 @@
-package com.triforce.malacprodavac.domain.use_case
+package com.triforce.malacprodavac.domain.use_case.validate
 
-import android.util.Patterns as Patterns
+import android.util.Patterns
 
 class ValidateEmail {
-
-    fun execute(email: String):ValidationResult {
-        if(email.isBlank()) {
+    fun execute(email: String): ValidationResult {
+        if (email.isBlank()) {
             return ValidationResult(
                 successful = false,
                 errorMessage = "Email adresa ne može biti prazna"
             )
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return ValidationResult(
                 successful = false,
                 errorMessage = "To nije važeća email adresa"

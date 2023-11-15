@@ -6,7 +6,7 @@ import com.triforce.malacprodavac.data.remote.customers.dto.CreateCustomerDto
 import com.triforce.malacprodavac.domain.model.CreateCustomer
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
-import com.triforce.malacprodavac.util.Resource
+import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

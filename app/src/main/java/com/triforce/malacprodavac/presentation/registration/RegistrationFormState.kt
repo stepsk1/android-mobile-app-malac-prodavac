@@ -1,8 +1,8 @@
 package com.triforce.malacprodavac.presentation.registration
 
-import com.triforce.malacprodavac.util.AuthResult
+import com.triforce.malacprodavac.domain.util.enum.UserRole
 
-data class RegistrationFormState (
+data class RegistrationFormState(
     val firstName: String = "",
     val firstNameError: String? = null,
     val lastName: String = "",
@@ -13,9 +13,9 @@ data class RegistrationFormState (
     val passwordError: String? = null,
     val repeatedPassword: String = "",
     val repeatedPasswordError: String? = null,
-    var role: String = "",
+    var role: UserRole = UserRole.Customer,
     val isLoading: Boolean = false,
     val acceptedTerms: Boolean = false,
     val termsError: String? = null,
-    val status: AuthResult<String> = AuthResult.Unauthorized()
+    val successful: Boolean = false
 )
