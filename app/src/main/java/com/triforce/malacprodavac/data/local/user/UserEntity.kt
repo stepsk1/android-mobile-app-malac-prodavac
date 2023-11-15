@@ -1,7 +1,9 @@
 package com.triforce.malacprodavac.data.local.user
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.triforce.malacprodavac.domain.model.UserMedia
 
 @Entity
 data class UserEntity(

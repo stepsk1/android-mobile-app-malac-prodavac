@@ -33,18 +33,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.profile.components.ShowData
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
-import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hiltViewModel()) {
@@ -73,23 +75,16 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
         )
         {
             Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = "Profil",
-                style = MaterialTheme.typography.h5,
-                lineHeight = 15.sp,
-                color = MP_White
-            )
-
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = "ProfilePicture",
-                tint = MP_White,
-                modifier = Modifier
-                    .size(100.dp)
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("http://softeng.pmf.kg.ac.rs:10010/users/3/medias/2")
+                    .build(),
+                    modifier = Modifier.
+                    .size(100.dp),
+                contentDescription = "Profilna Slika"
             )
             Text(
-                text = "Uroš Petronijević",
+                text = "${state.currentUser?.firstName}  ${state.currentUser?.lastName}",
                 style = MaterialTheme.typography.h4,
                 lineHeight = 15.sp,
                 fontWeight = FontWeight.Bold,
@@ -133,28 +128,28 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
 
             ShowData(
                 title = "Email",
-                data = "test@gmail.com",
+                data = state.currentUser?.email ?: "",
                 contentDescription = "email",
                 icon = Icons.Default.Email
             )
 
             ShowData(
                 title = "Adresa",
-                data = "Gavrila Principa, Kragujevac",
+                data = state.currentUser?.address ?: "",
                 contentDescription = "location",
                 icon = Icons.Default.LocationOn
             )
 
             ShowData(
                 title = "Kontakt telefon",
-                data = "+381 61726814",
+                data = state.currentUser?.phoneNumber ?: "",
                 contentDescription = "phoneNumber",
                 icon = Icons.Default.Phone
             )
 
             ShowData(
                 title = "Naziv preduzeća",
-                data = "",
+                data = state.currentUser?.address ?: "",
                 contentDescription = "company",
                 icon = Icons.Default.Info
             )

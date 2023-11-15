@@ -76,17 +76,13 @@ fun RegistrationScreen(
             end
         )
     }
-    LaunchedEffect(key1 = true) {
-        viewModel.validationEvents.collect { event ->
-            when (event) {
-                is RegistrationViewModel.ValidationEvent.Success -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = "Uspešna registracija!"
-                    )
-                }
-            }
+
+    if (state.successful) {
+        LaunchedEffect(true) {
+            navController.navigate(Screen.LoginScreen.route)
         }
     }
+
     SwipeRefresh(state = swipeRefreshState, onRefresh = {}) {
         Box(
             modifier = Modifier
@@ -263,8 +259,6 @@ fun RegistrationScreen(
                 Button(
                     onClick = {
                         viewModel.onEvent(RegistrationFormEvent.Submit)
-                        if (!viewModel.hasError)
-                            navController.navigate(Screen.LoginScreen.route)
                     },
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
