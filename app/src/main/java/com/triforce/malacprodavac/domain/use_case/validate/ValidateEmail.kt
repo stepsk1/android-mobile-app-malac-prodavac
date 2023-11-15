@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.domain.use_case
+package com.triforce.malacprodavac.domain.use_case.validate
 
 import android.util.Patterns
 

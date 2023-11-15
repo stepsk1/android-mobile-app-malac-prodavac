@@ -1,14 +1,13 @@
 package com.triforce.malacprodavac.presentation.login
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.SessionManager
-import com.triforce.malacprodavac.domain.use_case.ValidateEmail
-import com.triforce.malacprodavac.domain.use_case.ValidatePassword
+import com.triforce.malacprodavac.domain.use_case.validate.ValidateEmail
+import com.triforce.malacprodavac.domain.use_case.validate.ValidatePassword
 import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,12 +25,11 @@ class LoginViewModel @Inject constructor(
     var state by mutableStateOf(LoginFormState())
 
     init {
-        if (isUserAuthenticated())
-            getMe()
+        getMe()
     }
 
     fun isUserAuthenticated(): Boolean {
-        return state.isSuccessful || sessionManager.getAccessToken().toBoolean()
+        return !sessionManager.getAccessToken().isNullOrEmpty()
     }
 
     fun onEvent(event: LoginFormEvent) {
@@ -55,12 +53,9 @@ class LoginViewModel @Inject constructor(
         state = state.copy(emailError = emailResult.errorMessage)
         val passwordResult = validatePassword.execute(state.password)
         state = state.copy(emailError = passwordResult.errorMessage)
-        Log.d("1", "1111")
         viewModelScope.launch {
-            Log.d("2", "2222")
             loginUseCase.loginUser(state.email, state.password)
                 .collect { result ->
-                    Log.d("3", "3333")
                     when (result) {
                         is Resource.Success -> {
                             state = state.copy(
@@ -69,7 +64,7 @@ class LoginViewModel @Inject constructor(
                         }
 
                         is Resource.Error -> {
-                            Unit
+                            state = state.copy(isSuccessful = false)
                         }
 
                         is Resource.Loading -> {
@@ -93,7 +88,9 @@ class LoginViewModel @Inject constructor(
                     }
 
                     is Resource.Error -> {
-
+                        state = state.copy(
+                            isSuccessful = false
+                        )
                     }
 
                     is Resource.Loading -> {

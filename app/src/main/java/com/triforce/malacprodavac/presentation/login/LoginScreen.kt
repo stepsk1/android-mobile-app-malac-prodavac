@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -153,11 +154,11 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                     Text(text = "Prijavi se")
                 }
 
-                Column(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(32.dp),
-                    verticalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     ClickableText(text = annotatedString, onClick = {
                         navController.navigate(Screen.RegistrationScreen.route)

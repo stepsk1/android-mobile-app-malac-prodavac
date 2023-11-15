@@ -18,13 +18,13 @@ class AuthInterceptorImpl @Inject constructor(
 
         if (
             (request.url.pathSegments.contains("login") && response.isSuccessful)
-            ||
-            (request.url.pathSegments.contains("logout") && response.code == HttpURLConnection.HTTP_NO_CONTENT)
         ) {
             val cookie = response.header("Set-Cookie", null)
             val jwt = cookie!!.split(";")[0]
             refreshToken(jwt)
-        } else if (response.code == HttpURLConnection.HTTP_UNAUTHORIZED) {
+        } else if ((request.url.pathSegments.contains("logout") && response.code == HttpURLConnection.HTTP_NO_CONTENT)
+            || response.code == HttpURLConnection.HTTP_UNAUTHORIZED
+        ) {
             sessionManager.logout()
         }
 

@@ -241,7 +241,8 @@ fun RegistrationScreen(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
                 ) {
                     Checkbox(
                         checked = state.acceptedTerms,
@@ -272,11 +273,11 @@ fun RegistrationScreen(
                     Text(text = "Registruj se")
                 }
 
-                Column(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(32.dp),
-                    verticalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     ClickableText(
                         text = annotatedString,
