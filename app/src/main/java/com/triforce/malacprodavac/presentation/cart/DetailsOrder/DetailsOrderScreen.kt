@@ -40,6 +40,8 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 @Composable
 fun DetailsOrderScreen(navController: NavController) {
 
+    val totalPrice: Double = TotalPrice(buyedProducts = BuyedProducts.listOfBuyedProducts)
+
     Box(
         modifier = Modifier
             .background(MP_White)
@@ -70,7 +72,7 @@ fun DetailsOrderScreen(navController: NavController) {
                 Box(
                     contentAlignment = Alignment.CenterStart,
                     modifier = Modifier
-                        .padding(7.dp)
+                        .padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
                         .fillMaxWidth()
                         .shadow(
                             elevation = 5.dp,
@@ -79,11 +81,11 @@ fun DetailsOrderScreen(navController: NavController) {
                         )
                         .clip(RoundedCornerShape(10.dp))
                         .background(MP_White)
-                        .padding(vertical = 10.dp, horizontal = 20.dp)
+                        .padding(vertical = 20.dp, horizontal = 20.dp)
                 ){
                     Column(
                         modifier = Modifier.padding(2.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
 
                         Text(
@@ -109,51 +111,49 @@ fun DetailsOrderScreen(navController: NavController) {
                             style = MaterialTheme.typography.h6,
                             color = MP_Black,
                             modifier = Modifier
-                                .padding(start = 4.dp)
+                                .padding(start = 10.dp)
                                 .align(Alignment.Start)
                         )
 
-                        val totalPrice: Double = TotalPrice(buyedProducts = BuyedProducts.listOfBuyedProducts)
-
                         Text(
-                            text = "Ukupan iznos: " + totalPrice.toString(),
+                            text = "Ukupan iznos: $totalPrice",
                             style = MaterialTheme.typography.h6,
                             color = MP_Black,
                             modifier = Modifier
-                                .padding(start = 4.dp)
+                                .padding(start = 10.dp)
                                 .align(Alignment.Start)
                         )
                     }
+                }
 
-                    Row(
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(25.dp))
+                        .padding(
+                            start = 5.dp,
+                            top = 1.dp, //663.dp,
+                            end = 5.dp,
+                            bottom = 40.dp
+                        )
+                ){
+                    Column (
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(25.dp))
-                            .padding(
-                                start = 5.dp,
-                                top = 100.dp, //663.dp,
-                                end = 5.dp,
-                                bottom = 40.dp
-                            )
-                    ){
-                        Column (
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
+                    ) {
+                        Button(
+                            onClick = {
+                                navController.navigate(Screen.HomeScreen.route)
+                            },
+                            colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
                         ) {
-                            Button(
-                                onClick = {
-                                    navController.navigate(Screen.HomeScreen.route)
-                                },
-                                colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
-                            ) {
-                                Text(
-                                    text = "Vrati se na naslovnu",
-                                    color = MP_White,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                            Text(
+                                text = "Vrati se na naslovnu",
+                                color = MP_White,
+                                fontWeight = FontWeight.Bold
+                            )
                         }
                     }
                 }
