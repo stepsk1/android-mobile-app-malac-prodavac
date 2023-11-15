@@ -97,6 +97,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.2.0")
+
 
     var room_version = "2.5.0"
     // Room

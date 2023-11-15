@@ -1,25 +1,22 @@
 package com.triforce.malacprodavac.presentation.registration
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.domain.model.Courier
 import com.triforce.malacprodavac.domain.model.CreateCourier
 import com.triforce.malacprodavac.domain.model.CreateCustomer
 import com.triforce.malacprodavac.domain.model.CreateShop
 import com.triforce.malacprodavac.domain.model.CreateUser
-import com.triforce.malacprodavac.domain.model.Customer
-import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.use_case.registration.Registration
 import com.triforce.malacprodavac.domain.use_case.validate.ValidateEmail
 import com.triforce.malacprodavac.domain.use_case.validate.ValidateFirstName
 import com.triforce.malacprodavac.domain.use_case.validate.ValidateLastName
 import com.triforce.malacprodavac.domain.use_case.validate.ValidatePassword
 import com.triforce.malacprodavac.domain.use_case.validate.ValidateRepeatedPassword
 import com.triforce.malacprodavac.domain.use_case.validate.ValidateTerms
-import com.triforce.malacprodavac.domain.use_case.registration.Registration
-import com.triforce.malacprodavac.domain.use_case.validate.ValidatePhoneNumber
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.domain.util.enum.UserRole
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -116,11 +113,7 @@ class RegistrationViewModel @Inject constructor(
 
 
         if (!hasError) {
-            when (state.role) {
-                UserRole.Customer -> registerCustomer(CreateCustomer(createUser))
-                UserRole.Courier -> registerCourier(CreateCourier(createUser))
-                UserRole.Shop -> registerShop(CreateShop(createUser))
-            }
+            registerUser(createUser, state.role)
         }
 
         if (hasError) {
@@ -148,85 +141,29 @@ class RegistrationViewModel @Inject constructor(
         }
     }
 
-    private fun registerCustomer(createCustomer: CreateCustomer) {
+    private fun registerUser(createUser: CreateUser, role: UserRole) {
         viewModelScope.launch {
-            registration.createCustomer(createCustomer)
-                .collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            if (result.data is Customer) {
-                                state = state.copy(
-                                    successful = true
-                                )
-                            }
-                        }
+            when (role) {
+                UserRole.Customer -> registration.createCustomer(CreateCustomer(createUser))
+                UserRole.Courier -> registration.createCourier(CreateCourier(createUser))
+                UserRole.Shop -> registration.createShop(CreateShop(createUser))
+            }.collect { result ->
+                when (result) {
+                    is Resource.Error -> {
+                        state = state.copy(successful = false, emailError = result.message)
+                    }
 
-                        is Resource.Error -> {
+                    is Resource.Loading -> {
+                        state = state.copy(isLoading = result.isLoading)
+                    }
 
-                            state
-                        }
-
-                        is Resource.Loading -> {
-                            state = state.copy(
-                                isLoading = result.isLoading
-                            )
-                        }
+                    is Resource.Success -> {
+                        Log.d("DSF","SDFSDf")
+                        state = state.copy(successful = true)
                     }
                 }
-        }
-    }
 
-    private fun registerCourier(createCourier: CreateCourier) {
-        viewModelScope.launch {
-            registration.createCourier(createCourier)
-                .collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            if (result.data is Courier) {
-                                state = state.copy(
-                                    successful = true
-                                )
-                            }
-                        }
-
-                        is Resource.Error -> {
-                            Unit
-                        }
-
-                        is Resource.Loading -> {
-                            state = state.copy(
-                                isLoading = result.isLoading
-                            )
-                        }
-                    }
-                }
-        }
-    }
-
-    private fun registerShop(createShop: CreateShop) {
-        viewModelScope.launch {
-            registration.createShop(createShop)
-                .collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            if (result.data is Shop) {
-                                state = state.copy(
-                                    successful = true
-                                )
-                            }
-                        }
-
-                        is Resource.Error -> {
-                            result.data
-                        }
-
-                        is Resource.Loading -> {
-                            state = state.copy(
-                                isLoading = result.isLoading
-                            )
-                        }
-                    }
-                }
+            }
         }
     }
 

@@ -17,7 +17,6 @@ fun UserEntity.toUser(): User = User(
     currency = currency,
     createdAt = createdAt,
     updatedAt = updatedAt,
-
     customer = null,
     courier = null,
     shop = null

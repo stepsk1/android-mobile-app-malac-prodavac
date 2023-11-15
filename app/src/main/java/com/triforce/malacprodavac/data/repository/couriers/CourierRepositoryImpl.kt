@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 class CourierRepositoryImpl @Inject constructor(
     private val api: CouriersApi,
     private val db: MalacProdavacDatabase
-):CourierRepository {
+) : CourierRepository {
     override suspend fun registerCourier(
         createCourier: CreateCourier
     ): Flow<Resource<Courier>> {
@@ -26,7 +27,7 @@ class CourierRepositoryImpl @Inject constructor(
             emit(Resource.Loading(isLoading = true))
             val courier = try {
                 api.registerCouriers(
-                    CreateCourierDto(createCourier.user,  createCourier.pricePerKilometer)
+                    CreateCourierDto(createCourier.user, createCourier.pricePerKilometer)
                 )
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -34,7 +35,11 @@ class CourierRepositoryImpl @Inject constructor(
                 null
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't register user."))
+                if (e.code() == HttpURLConnection.HTTP_CONFLICT) {
+                    emit(Resource.Error("Email je zauzet!"))
+                } else {
+                    emit(Resource.Error("Nije moguće napraviti nalog!"))
+                }
                 null
             }
             courier?.let {

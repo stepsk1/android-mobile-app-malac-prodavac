@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,14 +19,15 @@ import javax.inject.Singleton
 class CustomerRepositoryImpl @Inject constructor(
     private val api: CustomersApi,
     private val db: MalacProdavacDatabase
-):CustomerRepository {
+) : CustomerRepository {
     override suspend fun registerCustomer(
         createCustomer: CreateCustomer
     ): Flow<Resource<Customer>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
             val customer = try {
-                api.registerCustomer(CreateCustomerDto(createCustomer.user)
+                api.registerCustomer(
+                    CreateCustomerDto(createCustomer.user)
                 )
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -33,13 +35,17 @@ class CustomerRepositoryImpl @Inject constructor(
                 null
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error("Couldn't register user."))
+                if (e.code() == HttpURLConnection.HTTP_CONFLICT) {
+                    emit(Resource.Error("Email je zauzet!"))
+                } else {
+                    emit(Resource.Error("Nije moguće napraviti nalog!"))
+                }
                 null
             }
             customer?.let {
 //                authenticateUser(it)
 //                dao.insertUser(listOf(it.user.toUserEntity()))
-                 emit(Resource.Success(data = it))
+                emit(Resource.Success(data = it))
             }
             emit(Resource.Loading(isLoading = false))
         }

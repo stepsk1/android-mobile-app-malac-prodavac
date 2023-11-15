@@ -23,9 +23,12 @@ import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
+import com.triforce.malacprodavac.domain.use_case.GetToken
 import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
+import com.triforce.malacprodavac.domain.use_case.profile.Logout
+import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCourier
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCustomer
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterShop
@@ -178,8 +181,23 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideLogoutUseCase(repository: AuthRepository) =
+        Logout(repository)
+
+    @Provides
+    @Singleton
     fun provideLoginUseCase(loginUser: LoginUser, me: Me) =
         Login(loginUser, me)
+
+    @Provides
+    @Singleton
+    fun provideGetToke(sessionManager: SessionManager) =
+        GetToken(sessionManager)
+
+    @Provides
+    @Singleton
+    fun provideProfileUseCase(logout: Logout, me: Me, getToken: GetToken) =
+        Profile(me, logout, getToken)
 
 
     @Provides
