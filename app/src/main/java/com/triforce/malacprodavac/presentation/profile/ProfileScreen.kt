@@ -44,6 +44,7 @@ import coil.request.ImageRequest
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.EditState
 import com.triforce.malacprodavac.presentation.profile.components.ShowData
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -126,12 +127,23 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            ShowData(
-                title = "Email",
-                data = state.currentUser?.email ?: "",
-                contentDescription = "email",
-                icon = Icons.Default.Email
-            )
+            if(state.email == null)
+            {
+                ShowData(
+                    title = "Email",
+                    data = state.currentUser?.email ?: "",
+                    contentDescription = "email",
+                    icon = Icons.Default.Email
+                )
+            }
+            else {
+                ShowData(
+                    title = "Email",
+                    data = state.email,
+                    contentDescription = "email",
+                    icon = Icons.Default.Email
+                )
+            }
 
             ShowData(
                 title = "Adresa",
@@ -153,6 +165,8 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
                 contentDescription = "company",
                 icon = Icons.Default.Info
             )
+
+            EditState(viewModel = viewModel)
         }
 
         BottomNavigationMenu(
@@ -185,5 +199,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
             ), modifier = Modifier
                 .align(Alignment.BottomCenter)
         )
+//        EditStatePopupDemo(viewModel)
+
     }
 }
