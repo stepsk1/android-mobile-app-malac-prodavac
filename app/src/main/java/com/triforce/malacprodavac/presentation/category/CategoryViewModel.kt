@@ -47,8 +47,8 @@ class CategoryViewModel @Inject constructor(
     val isSearching = _isSearching.asStateFlow()
 
     private val _products = MutableStateFlow(state.products)
-    @OptIn(FlowPreview::class)
 
+    @OptIn(FlowPreview::class)
     val products = searchText
         .debounce(500L) // dodaje delay, da ne bi slao api zahteve stalno, tako da kada prestane da kuca, onda šalje
         .onEach { _isSearching.update { true } }
