@@ -23,6 +23,9 @@ interface ProductsApi {
     @GET("${ROUTE}/{id}")
     suspend fun getProduct(@Path("id") id: Int): ProductEntity
 
+    @GET("${ROUTE}/{title}")
+    suspend fun getProducts(@Path("title") title: String): PaginationResponse<ProductEntity>
+
     @PATCH("${ROUTE}/{id}")
     suspend fun update(
         @Path("id") id: Int,

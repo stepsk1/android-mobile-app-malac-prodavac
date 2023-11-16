@@ -1,6 +1,9 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.triforce.malacprodavac.presentation.category
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,10 +13,12 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -25,16 +30,26 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
@@ -62,7 +77,12 @@ fun StoreCategoryScreen(
 ) {
     val state = viewModel.state
 
-    val productsList: List<Product>? = state.products
+    val searchText by viewModel.searchText.collectAsState() // updates when state flow changes
+    val isSearching by viewModel.isSearching.collectAsState()
+
+    //val products by viewModel.products.collectAsState()
+
+    val products: List<Product>? = state.products
 
     val titleState = viewModel.categoryTitle.value
 
@@ -91,10 +111,51 @@ fun StoreCategoryScreen(
             GoBackComp("Malac Pijaca", navController)
             CategorySectionHeader(titleState.title, "Podržite zajednicu, podržavajte lokalno preduzetništvo. Vaša podrška čini razliku!", colorBackground)
             FilterSortComp(navController)
-            ShowcaseProducts(
-                products = productsList,
-                navController
+            
+            /*TextField(
+                value = searchText,
+                onValueChange = viewModel::onSearchTextChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
+                placeholder = { Text(text = "Pretražite") }
+            )*/
+            OutlinedTextField(
+                value = searchText,
+                onValueChange = viewModel::onSearchTextChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
+                placeholder = {
+                    Text(
+                        text = "Pretražite",
+                        color = colorBackground
+                    )
+                },
+                trailingIcon = {
+                    Icon(Icons.Filled.Search, "", tint = colorBackground)
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = colorBackground,
+                    containerColor = MP_White,
+                    focusedIndicatorColor = colorBackground
+                ),
+                singleLine = true,
+                shape = RoundedCornerShape(10.dp)
             )
+
+            if ( isSearching ) {
+
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+
+            } else {
+                ShowcaseProducts(
+                    products = products,
+                    navController
+                )
+            }
         }
     }
 }
@@ -191,7 +252,7 @@ fun StoreCategoryProduct (
             .background(MP_White)
             .clickable {
                 if (product != null) {
-                    navController.navigate(Screen.ProductScreen.route+ "?productId=${product.id}")
+                    navController.navigate(Screen.ProductScreen.route + "?productId=${product.id}")
                 }
             }
     ) {
