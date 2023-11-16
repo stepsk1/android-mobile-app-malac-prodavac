@@ -1,10 +1,9 @@
 package com.triforce.malacprodavac.domain.repository
 
-import com.triforce.malacprodavac.data.remote.products.dto.CreateProductDto
 import com.triforce.malacprodavac.domain.model.CreateProduct
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.model.UpdateProduct
-import com.triforce.malacprodavac.util.Resource
+import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface ProductRepository {

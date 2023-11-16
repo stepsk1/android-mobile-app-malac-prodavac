@@ -1,11 +1,9 @@
 package com.triforce.malacprodavac.presentation.login
 
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,8 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -25,47 +22,40 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_GreenDark
-import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Pink
-import com.triforce.malacprodavac.ui.theme.MP_White
 import com.triforce.malacprodavac.ui.theme.SpaceLarge
 import com.triforce.malacprodavac.ui.theme.SpaceMedium
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
-
-    val viewModel: LoginViewModel = hiltViewModel()
-
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
     val state = viewModel.state
-
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = state.isLoading
     )
 
-    val context = LocalContext.current
+    if (viewModel.isUserAuthenticated()) {
+        LaunchedEffect(Unit) {
+            navController.navigate(Screen.HomeScreen.route)
+        }
+    }
+
+
+    val scaffoldState = rememberScaffoldState()
 
     val annotatedString = buildAnnotatedString {
         val text = "Nemaš nalog? Registruj se!"
@@ -75,59 +65,29 @@ fun LoginScreen(navController: NavController) {
         val end = start + "Registruj se!".length
         addStyle(
             SpanStyle(
-                fontWeight = FontWeight.Bold,
-                color = MP_White
-                ),
-            start,
-            end
+                color = MP_Green, textDecoration = TextDecoration.Underline
+            ), start, end
         )
         addStringAnnotation(
-            "registration",
-            "Screen.LoginScreen",
-            start,
-            end
+            "registration", "Screen.LoginScreen", start, end
         )
-    }
-
-    LaunchedEffect(key1 = context) {
-        viewModel.validationEvents.collect { event ->
-            when (event) {
-                is LoginViewModel.ValidationEvent.Success -> {
-                    Toast.makeText(
-                        context,
-                        "Uspešna prijava",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    Log.d("", "ULOGA")
-                    Log.d("", viewModel.role)
-                    if (viewModel.role == "Shop")
-                        navController.navigate(Screen.ShopHomeScreen.route)
-                    else if(viewModel.role == "Customer")
-                        navController.navigate(Screen.StoreScreen.route)
-
-                }
-            }
-        }
     }
 
     SwipeRefresh(state = swipeRefreshState, onRefresh = {}) {
-        LinearGradient(color1 = MP_Green, color2 = MP_GreenDark)
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    start = SpaceLarge,
-                    end = SpaceLarge,
-                    top = SpaceLarge,
-                    bottom = SpaceLarge
+                    start = SpaceLarge, end = SpaceLarge, top = SpaceLarge, bottom = SpaceLarge
                 )
                 .verticalScroll(rememberScrollState())
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxSize()
+                    .padding(SpaceMedium)
                     .align(Alignment.Center),
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally
+                verticalArrangement = Arrangement.SpaceAround
             ) {
                 TextField(
                     value = state.email,
@@ -137,33 +97,24 @@ fun LoginScreen(navController: NavController) {
                     isError = state.emailError != null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(35.dp)),
+                        .clip(RoundedCornerShape(15.dp)),
                     placeholder = {
-                        Text(
-                            text = "Email adresa",
-                            color = MP_White
-                        )
+                        Text(text = "Email")
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email
                     )
                 )
-
                 if (state.emailError != null) {
                     Text(
                         text = state.emailError,
-                        color = MP_White,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(top = 5.dp),
-                        style = MaterialTheme.typography.body2
+                        color = MP_Pink,
+                        modifier = Modifier.align(Alignment.End)
                     )
                 }
-
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextField(
-                    textStyle = MaterialTheme.typography.body2,
                     value = state.password,
                     onValueChange = {
                         viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
@@ -171,12 +122,9 @@ fun LoginScreen(navController: NavController) {
                     isError = state.passwordError != null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(35.dp)),
+                        .clip(RoundedCornerShape(15.dp)),
                     placeholder = {
-                        Text(
-                            text = "Lozinka",
-                            color = MP_White
-                        )
+                        Text(text = "Lozinka")
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
@@ -186,50 +134,40 @@ fun LoginScreen(navController: NavController) {
                 if (state.passwordError != null) {
                     Text(
                         text = state.passwordError,
-                        color = MP_White,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(top = 5.dp),
-                        style = MaterialTheme.typography.body2,
+                        color = MP_Pink,
+                        modifier = Modifier.align(Alignment.End)
                     )
                 }
-
                 Spacer(modifier = Modifier.height(16.dp))
-
+                if (!state.errorMessage.isNullOrBlank()) {
+                    Text(
+                        text = state.errorMessage.toString(),
+                        color = MP_Pink,
+                        modifier = Modifier.align(Alignment.End)
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
                         viewModel.onEvent(LoginFormEvent.Submit)
-                            .let {
-                                navController.navigate(Screen.HomeScreen.route)
-                            }
                     },
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                        containerColor = MP_White,
-                        contentColor = MP_Black
-                    ),
-
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-
-
+                        .clip(RoundedCornerShape(10.dp))
                 ) {
                     Text(text = "Prijavi se")
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                ClickableText(
-                    text = annotatedString,
-                    onClick = { offset ->
-                        val uri = annotatedString.getStringAnnotations(
-                            "registration",
-                            offset, offset
-                        ).firstOrNull()?.item
-                        if (uri != null)
-                            navController.navigate(Screen.RegistrationScreen.route)
-                    }
-                )
-
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    ClickableText(text = annotatedString, onClick = {
+                        navController.navigate(Screen.RegistrationScreen.route)
+                    })
+                }
             }
         }
     }

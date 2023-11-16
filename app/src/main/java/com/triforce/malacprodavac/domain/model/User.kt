@@ -15,6 +15,7 @@ data class User(
     val updatedAt: String,
     val createdAt: String,
 
+
     val customer: Customer?,
     val shop: Shop?,
     val courier: Courier?,

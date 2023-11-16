@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.repository.ProductRepository
-import com.triforce.malacprodavac.util.Resource
+import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,15 +18,16 @@ class ProductViewModel @Inject constructor(
     private val repository: ProductRepository,
     savedStateHandle: SavedStateHandle
 
-): ViewModel() {
+) : ViewModel() {
 
     var state by mutableStateOf(ProductState())
 
     fun onEvent(event: ProductEvent) {
-        when(event) {
+        when (event) {
             is ProductEvent.buyProduct -> {
                 state = state.copy(isBuyed = true)
             }
+
             is ProductEvent.ToggleFavouriteProduct -> {
                 state = state.copy(isBuyed = true)
             }
@@ -35,7 +36,7 @@ class ProductViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
-            getProduct(true, productId);
+            getProduct(true, productId)
         }
 
     }
@@ -43,16 +44,18 @@ class ProductViewModel @Inject constructor(
     private fun getProduct(fetchFromRemote: Boolean, productId: Int) {
 
         viewModelScope.launch {
-            repository.getProduct(productId, fetchFromRemote).collect{ result ->
+            repository.getProduct(productId, fetchFromRemote).collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        result.data?.let{
+                        result.data?.let {
                             state = state.copy(product = it)
                         }
                     }
+
                     is Resource.Error -> {
                         Unit
                     }
+
                     is Resource.Loading -> {
                         state = state.copy(
                             isLoading = result.isLoading

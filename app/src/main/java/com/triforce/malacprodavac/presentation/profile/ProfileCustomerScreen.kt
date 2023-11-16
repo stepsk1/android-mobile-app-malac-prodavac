@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.profiles
+package com.triforce.malacprodavac.presentation.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Phone
@@ -37,7 +36,7 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
-import com.triforce.malacprodavac.presentation.profiles.components.ShowData
+import com.triforce.malacprodavac.presentation.profile.components.ShowData
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -169,7 +168,7 @@ fun ProfileCustomerScreen(navController: NavController) {
                 BottomNavigationMenuContent(
                     title = "Moj Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.ProfileCustomer,
+                    screen = Screen.Profile,
                     isActive = true
                 ),
                 BottomNavigationMenuContent(

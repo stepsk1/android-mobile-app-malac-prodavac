@@ -7,7 +7,7 @@ import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.domain.repository.CategoryRepository
-import com.triforce.malacprodavac.util.Resource
+import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
