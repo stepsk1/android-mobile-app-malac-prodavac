@@ -23,9 +23,4 @@ data class Product(
     val shop: Shop?,
     val category: Category?
 ){
-    fun doesMatchSearchQuery(query: String): Boolean{
-
-        return title.contains(query, ignoreCase = true)
-
-    }
 }

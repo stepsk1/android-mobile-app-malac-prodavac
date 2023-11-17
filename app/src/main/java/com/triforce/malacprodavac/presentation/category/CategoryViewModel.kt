@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.category
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -45,24 +46,19 @@ class CategoryViewModel @Inject constructor(
 
     private val _isSearching = MutableStateFlow(false)
     val isSearching = _isSearching.asStateFlow()
-
+/*
     private val _products = MutableStateFlow(state.products)
 
     @OptIn(FlowPreview::class)
     val products = searchText
-        .debounce(500L) // dodaje delay, da ne bi slao api zahteve stalno, tako da kada prestane da kuca, onda šalje
+        .debounce(500L)
         .onEach { _isSearching.update { true } }
         .combine(_products) { text, products ->
 
             if(text.isBlank()) {
                 products
             } else {
-                products?.filter {
-
-                    delay(2000L) // simulation
-
-                    it.doesMatchSearchQuery(text)
-                }
+                onEvent(CategoryEvent.SearchQueryChange(text))
             }
         }
         .onEach { _isSearching.update { false } }
@@ -70,10 +66,11 @@ class CategoryViewModel @Inject constructor(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
             _products.value
-        ) // kešira, čuva poslednje podatke
-
+        ) // cache
+*/
     fun onSearchTextChange(text: String){
         _searchText.value = text
+        currentCategoryId?.let { getProducts(true, it, text) }
     }
 
     private val _categoryTitle = mutableStateOf(
@@ -93,6 +90,8 @@ class CategoryViewModel @Inject constructor(
             currentCategoryId = categoryId
 
             getProducts(true, categoryId)
+
+            Log.d("CURRENT_CAT_ID", currentCategoryId.toString())
         }
 
         savedStateHandle.get<String>("title")?.let { title ->
@@ -100,7 +99,7 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    private fun getProducts(fetchFromRemote: Boolean, categoryId: Int) {
+    private fun getProducts(fetchFromRemote: Boolean, categoryId: Int, searchText: String = "") {
 
         viewModelScope.launch {
 
@@ -111,6 +110,11 @@ class CategoryViewModel @Inject constructor(
                             "categoryId",
                             FilterOperation.Eq,
                             categoryId
+                        ),
+                        SingleFilter(
+                            "title",
+                            FilterOperation.IContains,
+                            searchText
                         )
                     ), order = null, limit = null, offset = null
                 )
@@ -120,7 +124,6 @@ class CategoryViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Product>) {
-                            println(result.data)
                             state = state.copy(products = result.data)
                         }
                     }
@@ -138,4 +141,22 @@ class CategoryViewModel @Inject constructor(
             }
         }
     }
+/*
+    fun onEvent(event: CategoryEvent){
+
+        when ( event ){
+
+            is CategoryEvent.SearchQueryChange -> {
+                Log.d("STANJE_QUERY", event.query)
+
+                state.categoryId?.let {
+                    getProducts(true, categoryId = it, searchText = event.query)
+                }
+            }
+
+            CategoryEvent.ToggleFavouriteProduct -> TODO()
+        }
+    }
+
+ */
 }

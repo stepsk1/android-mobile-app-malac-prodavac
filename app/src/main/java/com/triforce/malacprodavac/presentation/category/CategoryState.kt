@@ -4,9 +4,12 @@ import com.triforce.malacprodavac.domain.model.Product
 
 data class CategoryState (
     val id: Int = -1,
+    val categoryId: Int? = null,
 
     val title: String = "",
     val color: String = "",
+
+    val searchQuery: String = "",
 
     val products: List<Product>? = emptyList(),
     val isLoading: Boolean = false,

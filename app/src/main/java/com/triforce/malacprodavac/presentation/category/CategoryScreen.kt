@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class
+)
 
 package com.triforce.malacprodavac.presentation.category
 
@@ -77,25 +79,28 @@ fun StoreCategoryScreen(
 ) {
     val state = viewModel.state
 
-    val searchText by viewModel.searchText.collectAsState() // updates when state flow changes
+    val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
-
-    //val products by viewModel.products.collectAsState()
+    //val productsAsState by viewModel.products.collectAsState()
 
     val products: List<Product>? = state.products
 
     val titleState = viewModel.categoryTitle.value
 
-    var colorBackground = MP_Orange_Dark
-    var colorForeground = MP_Orange
+    var colorBackground = MP_White
+    var colorForeground = MP_White
 
-    if ( viewModel.currentCategoryId!! % 3 == 1 ) {
-        colorBackground = MP_GreenDark
-        colorForeground = MP_Green
-    }
-    else if ( viewModel.currentCategoryId!! % 3 == 2 ) {
-        colorBackground = MP_Pink_Dark
-        colorForeground = MP_Pink
+    if (viewModel.currentCategoryId != null) {
+        if (viewModel.currentCategoryId!! % 3 == 1) {
+            colorBackground = MP_GreenDark
+            colorForeground = MP_Green
+        } else if (viewModel.currentCategoryId!! % 3 == 2) {
+            colorBackground = MP_Pink_Dark
+            colorForeground = MP_Pink
+        } else {
+            colorBackground = MP_Orange_Dark
+            colorForeground = MP_Orange
+        }
     }
 
     Box(
@@ -111,21 +116,13 @@ fun StoreCategoryScreen(
             GoBackComp("Malac Pijaca", navController)
             CategorySectionHeader(titleState.title, "Podržite zajednicu, podržavajte lokalno preduzetništvo. Vaša podrška čini razliku!", colorBackground)
             FilterSortComp(navController)
-            
-            /*TextField(
-                value = searchText,
-                onValueChange = viewModel::onSearchTextChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp),
-                placeholder = { Text(text = "Pretražite") }
-            )*/
+
             OutlinedTextField(
                 value = searchText,
                 onValueChange = viewModel::onSearchTextChange,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(15.dp),
+                    .padding(horizontal = 20.dp, vertical = 15.dp),
                 placeholder = {
                     Text(
                         text = "Pretražite",
@@ -184,9 +181,10 @@ fun CategorySectionHeader(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h6,
                 fontWeight = FontWeight.Bold,
                 color = MP_White,
+                maxLines = 1,
                 modifier = Modifier
                     .padding(bottom = 10.dp)
                     .fillMaxWidth(0.5F)
@@ -195,6 +193,7 @@ fun CategorySectionHeader(
                 text = sub,
                 style = MaterialTheme.typography.body2,
                 color = MP_White,
+                maxLines = 4,
                 modifier = Modifier
                     .fillMaxWidth(0.6F)
             )
