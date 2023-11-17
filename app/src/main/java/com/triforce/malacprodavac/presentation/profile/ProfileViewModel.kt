@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.profile
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val profile: Profile
+    private val profile: Profile,
+    private val repository: Profile
 ) : ViewModel() {
     var state by mutableStateOf(ProfileState())
 
@@ -28,6 +30,9 @@ class ProfileViewModel @Inject constructor(
             when (event) {
                 is ProfileEvent.Logout -> {
                     logout()
+                }
+                is ProfileEvent.onAddMediaButtonPress -> {
+                    state.newImage = true
                 }
             }
         }
@@ -81,6 +86,13 @@ class ProfileViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun pickMedia(mediaUris: List<Uri>) {
+        viewModelScope.launch {
+            state = state.copy(mediaUris = mediaUris)
+            Log.d("PICKED_MEDIA", mediaUris.first().path.toString())
         }
     }
 }
