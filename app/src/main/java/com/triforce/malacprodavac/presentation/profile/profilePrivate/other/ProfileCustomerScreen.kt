@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.profile
+package com.triforce.malacprodavac.presentation.profile.profilePrivate.other
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -157,7 +157,7 @@ fun ProfileCustomerScreen(navController: NavController) {
                     title = "Početna",
                     graphicID = Icons.Default.Home,
                     screen = Screen.HomeScreen,
-                    isActive = false
+                    isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
@@ -166,10 +166,16 @@ fun ProfileCustomerScreen(navController: NavController) {
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Moj Profil",
+                    title = "Public",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.Profile,
-                    isActive = true
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Private",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",

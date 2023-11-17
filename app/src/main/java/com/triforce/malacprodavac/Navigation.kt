@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,12 +10,13 @@ import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScree
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
-import com.triforce.malacprodavac.presentation.higlightDetailed.HighlightDetailed
+import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
-import com.triforce.malacprodavac.presentation.profile.ProfileScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
 
@@ -90,6 +90,12 @@ fun Navigation() {
             route = Screen.ProductScreen.route + "?productId={productId}",
             arguments = listOf(
                 navArgument(
+                    name = "categoryId"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument(
                     name = "productId"
                 ) {
                     type = NavType.IntType
@@ -100,18 +106,21 @@ fun Navigation() {
             ProductScreen(navController = navController)
         }
 
-        composable(route = Screen.HighlightDetailed.route) {
-            HighlightDetailed(navController = navController)
+        composable(route = Screen.PrivateProfile.route) {
+            ProfilePrivateScreen(navController = navController)
         }
 
-        composable(route = Screen.Profile.route) {
-            ProfileScreen(navController = navController)
+        composable(route = Screen.PublicProfile.route) {
+            ProfilePublicScreen(navController = navController)
         }
 
         composable(route = Screen.ShopHomeScreen.route) {
             ShopHomeScreen(navController = navController)
         }
 
+        composable(route = Screen.HighlightSection.route) {
+            HighlightSection(navController = navController)
+        }
 
     }
 }

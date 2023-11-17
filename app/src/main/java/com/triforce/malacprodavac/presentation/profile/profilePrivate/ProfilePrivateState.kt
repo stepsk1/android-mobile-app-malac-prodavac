@@ -1,8 +1,8 @@
-package com.triforce.malacprodavac.presentation.profile
+package com.triforce.malacprodavac.presentation.profile.profilePrivate
 
 import com.triforce.malacprodavac.domain.model.User
 
-data class ProfileState(
+data class ProfilePrivateState(
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = true,
     val currentUser: User? = null,

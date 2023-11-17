@@ -7,12 +7,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -29,6 +34,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -38,6 +44,7 @@ import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.login.LoginViewModel
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
@@ -77,38 +84,53 @@ fun ProductScreen(
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
+            .verticalScroll(state = scrollState)
             .background(MP_White)
-            .fillMaxSize()
+            .height(800.dp)
     ) {
         LinearGradient(color1 = colorForeground, color2 = colorBackground)
-        Surface(
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 250.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ) {
+        RoundedBackgroundComp(top = 250.dp, color = MP_White)
 
-        }
         Column {
             GoBackComp("Malac Pijaca", navController)
-            HeroImage()
+            ProductHeroImage()
             if (product != null) {
+
+                Spacer(modifier = Modifier.padding(16.dp))
+
                 ProductDetails(product = product)
-                ShowFavouriteAddToCart(
+
+                Spacer(modifier = Modifier.padding(16.dp))
+
+                ShowHighlightSectionComp(
                     navController = navController,
-                    viewModel = viewModel
+                    products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
+                    title = "Više proizvoda od prodavca",
+                    route = Screen.HighlightSection.route
                 )
+
+                Box(
+                    contentAlignment = Alignment.BottomCenter,
+                    modifier = Modifier
+                        //.background(MP_Pink)
+                        .fillMaxSize()
+                ){
+                    ShowFavouriteAddToCart(
+                        navController = navController,
+                        viewModel = viewModel
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun HeroImage(
+fun ProductHeroImage(
 
 ) {
     Row(
@@ -138,8 +160,6 @@ fun ProductDetails(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 50.dp,
-                bottom = 10.dp,
                 start = 20.dp,
                 end = 20.dp
             )
@@ -166,7 +186,7 @@ fun ProductDetails(
         }
         Text(
             text = product.desc,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.body2,
             color = Color.Gray,
             softWrap = true
         )
@@ -190,21 +210,19 @@ fun ShowFavouriteAddToCart(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
+                bottom = 25.dp,
                 start = 5.dp,
                 end = 5.dp
             )
             .shadow(
                 elevation = 10.dp,
                 spotColor = MP_Black,
-                shape = RoundedCornerShape(7.5.dp)
+                shape = RoundedCornerShape(20.dp)
             )
-            .clip(RoundedCornerShape(15.dp))
+            .clip(RoundedCornerShape(20.dp))
             .background(MP_White)
             .padding(
                 vertical = 10.dp,
-                horizontal = 20.dp
             )
     ) {
         Icon(
@@ -219,7 +237,8 @@ fun ShowFavouriteAddToCart(
             text = "Dodaj u korpu",
             style = MaterialTheme.typography.h5,
             color = MP_White,
-            fontWeight = FontWeight.W500,
+            fontWeight = FontWeight.W400,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .clickable {
                     if (viewModel.state.isBuyed == false) {
@@ -243,9 +262,10 @@ fun ShowFavouriteAddToCart(
                             .show()
                     }
                 }
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(MP_Pink)
-                .padding(vertical = 6.dp, horizontal = 15.dp)
+                .width(width = 250.dp)
+                .padding(vertical = 10.dp)
         )
     }
 }
