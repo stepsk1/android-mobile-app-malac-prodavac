@@ -62,7 +62,7 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
                     navController = navController,
                     products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
                     title = "Najpopularniji Proizvodi",
-                    route = Screen.HighlightDetailed.route
+                    route = Screen.HighlightSection.route
                 )
 
                 Spacer(modifier = Modifier.padding(5.dp))
@@ -75,7 +75,7 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
                     navController = navController,
                     products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
                     title = "Najnoviji Proizvodi",
-                    route = Screen.HighlightDetailed.route
+                    route = Screen.HighlightSection.route
                 )
 
                 Spacer(modifier = Modifier.padding(10.dp))

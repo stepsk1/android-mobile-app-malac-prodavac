@@ -110,7 +110,7 @@ fun ProductScreen(
                     navController = navController,
                     products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
                     title = "Više proizvoda od prodavca",
-                    route = Screen.HighlightDetailed.route
+                    route = Screen.HighlightSection.route
                 )
 
                 Box(
