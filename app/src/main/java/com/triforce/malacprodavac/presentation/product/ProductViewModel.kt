@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.product
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -34,11 +35,11 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
             getProduct(true, productId)
         }
-
     }
 
     private fun getProduct(fetchFromRemote: Boolean, productId: Int) {

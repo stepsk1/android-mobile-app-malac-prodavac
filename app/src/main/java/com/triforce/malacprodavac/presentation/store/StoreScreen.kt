@@ -72,10 +72,27 @@ fun StoreScreen(navController: NavController)
     var flagNumber: Int = 0
 
     Categories.forEach {
-        if(it.parentCategoryId == null)
-        {
+        if (it.parentCategoryId == null) {
             flagNumber++
-            if(flagNumber%3==0){
+            if (it.id % 3 == 1) {
+                features += Feature(
+                    id = it.id,
+                    title = it.name,
+                    graphicID = Icons.Default.Star,
+                    color1 = MP_Green,
+                    color2 = MP_Green,
+                    screen = Screen.StoreScreen
+                )
+            } else if (it.id % 3 == 2) {
+                features += Feature(
+                    id = it.id,
+                    title = it.name,
+                    graphicID = Icons.Default.Star,
+                    color1 = MP_Pink,
+                    color2 = MP_Pink,
+                    screen = Screen.StoreScreen
+                )
+            } else {
                 features += Feature(
                     id = it.id,
                     title = it.name,
@@ -85,25 +102,6 @@ fun StoreScreen(navController: NavController)
                     screen = Screen.StoreScreen
                 )
             }
-            else if(flagNumber%3==1){
-                features += Feature(
-                    id = it.id,
-                    title = it.name,
-                    graphicID = Icons.Default.Star,
-                    color1 = MP_Green,
-                    color2 = MP_Green,
-                    screen = Screen.StoreScreen
-                )
-            }else{
-            features += Feature(
-                id = it.id,
-                title = it.name,
-                graphicID = Icons.Default.Star,
-                color1 = MP_Pink,
-                color2 = MP_Pink,
-                screen = Screen.StoreScreen
-            )
-        }
         }
     }
     Box(

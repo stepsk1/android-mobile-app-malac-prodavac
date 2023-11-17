@@ -10,7 +10,6 @@ import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScree
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
-import com.triforce.malacprodavac.presentation.higlightDetailed.HighlightDetailed
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
@@ -90,6 +89,12 @@ fun Navigation() {
             route = Screen.ProductScreen.route + "?productId={productId}",
             arguments = listOf(
                 navArgument(
+                    name = "categoryId"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument(
                     name = "productId"
                 ) {
                     type = NavType.IntType
@@ -98,10 +103,6 @@ fun Navigation() {
             )
         ) {
             ProductScreen(navController = navController)
-        }
-
-        composable(route = Screen.HighlightDetailed.route) {
-            HighlightDetailed(navController = navController)
         }
 
         composable(route = Screen.PrivateProfile.route) {
@@ -115,7 +116,6 @@ fun Navigation() {
         composable(route = Screen.ShopHomeScreen.route) {
             ShopHomeScreen(navController = navController)
         }
-
 
     }
 }

@@ -29,6 +29,7 @@ import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.home.components.GoToStoreSection
 import com.triforce.malacprodavac.presentation.home.components.GreetingSection
 import com.triforce.malacprodavac.presentation.home.components.RecommendedFeaturesSection
@@ -48,26 +49,14 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
             .background(MP_White)
             .fillMaxSize()
     ) {
-        LinearGradient(color1 = MP_GreenDark, color2 = MP_GreenLight)
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 100.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(color = MP_Pink)
-        ) {
-
-        }
+        LinearGradient(color1 = MP_Green, color2 = MP_Green)
+        RoundedBackgroundComp(top = 100.dp, color = MP_White)
         Column {
             GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac")
 
-            Spacer(modifier = Modifier.padding(14.dp))
-
+            Spacer(modifier = Modifier.padding(10.dp))
             GoToStoreSection(navController)
-
-            Spacer(modifier = Modifier.padding(14.dp))
-
+            Spacer(modifier = Modifier.padding(10.dp))
             RecommendedFeaturesSection(
                 navController = navController,
                 features = listOf(
