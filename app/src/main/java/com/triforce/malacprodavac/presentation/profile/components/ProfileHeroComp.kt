@@ -144,14 +144,16 @@ fun ProfileHeroComp(
                                         .size(35.dp)
                                         .clickable {  }
                                 )
-                                Icon(
-                                    imageVector = Icons.Rounded.AddCircle,
-                                    contentDescription = "Dodaj",
-                                    tint = MP_White,
-                                    modifier = Modifier
-                                        .size(35.dp)
-                                        .clickable {  }
-                                )
+                                if (user.roles.first().equals("Shop", ignoreCase = true)) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.AddCircle,
+                                        contentDescription = "Dodaj",
+                                        tint = MP_White,
+                                        modifier = Modifier
+                                            .size(35.dp)
+                                            .clickable {  }
+                                    )
+                                }
                             }else {
                                 if (user.roles.first().equals("Shop", ignoreCase = true)) {
                                     Icon(
