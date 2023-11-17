@@ -62,13 +62,5 @@ fun ShowData(
                 .padding(start = 15.dp)
                 .align(Alignment.BottomCenter)
         )
-
-        Icon(
-            imageVector = Icons.Default.Edit,
-            contentDescription = "Edit",
-            tint = MP_Black,
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-        )
     }
 }
