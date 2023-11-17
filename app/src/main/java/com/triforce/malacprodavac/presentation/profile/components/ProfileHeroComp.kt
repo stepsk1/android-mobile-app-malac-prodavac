@@ -52,7 +52,7 @@ fun ProfileHeroComp(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 50.dp, start = 20.dp, end = 20.dp)
+                .padding(start = 20.dp, end = 20.dp)
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,

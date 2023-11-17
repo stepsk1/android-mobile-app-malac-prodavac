@@ -44,9 +44,12 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.product.ShowHighlightSection
 import com.triforce.malacprodavac.presentation.profile.components.ProfileHeroComp
+import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
 import com.triforce.malacprodavac.presentation.profile.components.ShowData
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -70,11 +73,34 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
             .background(MP_Pink)
             .fillMaxSize()
     ){
+
         LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark)
         GoBackComp(msg = "Profil", navController = navController)
-        Spacer(modifier = Modifier.padding(100.dp))
-        ProfileHeroComp(state.currentUser)
-        RoundedBackgroundComp(top = 250.dp, color = MP_White)
+        RoundedBackgroundComp(top = 265.dp, color = MP_White)
+
+        Column {
+            Spacer(modifier = Modifier.padding(30.dp))
+            ProfileHeroComp(state.currentUser)
+
+            if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
+                Spacer(modifier = Modifier.padding(25.dp))
+                ShopDescComp(state.currentUser)
+
+                ShowHighlightSection(
+                    navController = navController,
+                    product1 = Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null),
+                    product2 = Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null),
+                    title = "Najpopularniji Proizvodi"
+                )
+
+                ShowHighlightSection(
+                    navController = navController,
+                    product1 = Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null),
+                    product2 = Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null),
+                    title = "Najnoviji Proizvodi"
+                )
+            }
+        }
     }
 
 }
