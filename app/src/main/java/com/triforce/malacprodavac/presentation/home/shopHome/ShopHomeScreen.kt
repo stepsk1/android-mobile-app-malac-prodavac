@@ -69,12 +69,20 @@ fun ShopHomeScreen(navController: NavController) {
                         screen = Screen.StoreScreen
                     ),
                     Feature(
-                        id = -1,
-                        title = "Moj Profil",
+                        id = 1,
+                        title = "Public",
                         graphicID = Icons.Default.AccountCircle,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange,
-                        screen = Screen.Profile
+                        color1 = MP_Green,
+                        color2 = MP_Green,
+                        screen = Screen.PublicProfile
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "Private",
+                        graphicID = Icons.Default.AccountCircle,
+                        color1 = MP_Green,
+                        color2 = MP_Green,
+                        screen = Screen.PrivateProfile
                     ),
                     Feature(
                         id = -1,
@@ -121,25 +129,30 @@ fun ShopHomeScreen(navController: NavController) {
                     isActive = true
                 ),
                 BottomNavigationMenuContent(
-                    title = "Proizvodi",
+                    title = "Prodavnica",
                     graphicID = Icons.Default.AddCircle,
                     screen = Screen.StoreScreen,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Moj Profil",
+                    title = "Public",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.Profile,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Private",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",
-                    graphicID = Icons.Default.AddCircle,
+                    graphicID = Icons.Default.ShoppingCart,
                     screen = Screen.CartScreen,
                     isActive = false
                 )
-            ), modifier = Modifier
-                .align(Alignment.BottomCenter)
+            ), modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 }

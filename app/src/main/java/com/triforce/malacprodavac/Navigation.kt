@@ -16,6 +16,7 @@ import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
 
@@ -103,8 +104,12 @@ fun Navigation() {
             HighlightDetailed(navController = navController)
         }
 
-        composable(route = Screen.Profile.route) {
+        composable(route = Screen.PrivateProfile.route) {
             ProfilePrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.PublicProfile.route) {
+            ProfilePublicScreen(navController = navController)
         }
 
         composable(route = Screen.ShopHomeScreen.route) {

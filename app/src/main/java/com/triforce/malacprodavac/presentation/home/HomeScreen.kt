@@ -97,11 +97,19 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                     ),
                     Feature(
                         id = 1,
-                        title = "Moj Profil",
+                        title = "Public",
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Green,
                         color2 = MP_Green,
-                        screen = Screen.Profile
+                        screen = Screen.PublicProfile
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "Private",
+                        graphicID = Icons.Default.AccountCircle,
+                        color1 = MP_Green,
+                        color2 = MP_Green,
+                        screen = Screen.PrivateProfile
                     )
                 )
             )
@@ -122,9 +130,15 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Moj Profil",
+                    title = "Public",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.Profile,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Private",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(

@@ -136,18 +136,24 @@ fun StoreScreen(navController: NavController)
                     title = "Početna",
                     graphicID = Icons.Default.Home,
                     screen = Screen.HomeScreen,
-                    isActive = false
+                    isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Prodavnica",
                     graphicID = Icons.Default.AddCircle,
                     screen = Screen.StoreScreen,
-                    isActive = true
+                    isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Moj Profil",
+                    title = "Public",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.Profile,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Private",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
