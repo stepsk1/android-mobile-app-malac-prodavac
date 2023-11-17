@@ -48,7 +48,7 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
             modifier = Modifier
                 .height(1400.dp)
         ){
-            ProfileHeroComp(state.currentUser, navController)
+            ProfileHeroComp(state.currentUser, navController, false)
 
             if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
 

@@ -47,7 +47,7 @@ fun ProfilePrivateScreen(navController: NavController, viewModel: ProfilePrivate
             modifier = Modifier
                 .height(1400.dp)
         ){
-            ProfileHeroComp(state.currentUser, navController)
+            ProfileHeroComp(state.currentUser, navController, true)
 
             if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
 
@@ -63,10 +63,6 @@ fun ProfilePrivateScreen(navController: NavController, viewModel: ProfilePrivate
                     title = "Najpopularniji Proizvodi",
                     route = Screen.HighlightDetailed.route
                 )
-
-                Spacer(modifier = Modifier.padding(5.dp))
-
-                CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
 
                 Spacer(modifier = Modifier.padding(10.dp))
 

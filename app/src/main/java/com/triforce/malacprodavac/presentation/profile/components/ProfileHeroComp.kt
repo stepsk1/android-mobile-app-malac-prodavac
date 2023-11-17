@@ -3,6 +3,7 @@ package com.triforce.malacprodavac.presentation.profile.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +20,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material.icons.rounded.AddCircle
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,14 +41,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
+import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
+import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun ProfileHeroComp(
     user: User?,
-    navController: NavController
+    navController: NavController,
+    private: Boolean
 ) {
     if (user != null) {
         Column(
@@ -50,14 +61,25 @@ fun ProfileHeroComp(
                 modifier = Modifier
                     .clip(RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp))
                     .background(
-                        Brush.linearGradient(
+                        if ( !private ) {
+                            Brush.linearGradient(
 
-                            0.0f to MP_GreenLight,
-                            500.0f to MP_GreenDark,
+                                0.0f to MP_GreenDark,
+                                500.0f to MP_GreenLight,
 
-                            start = Offset.Zero,
-                            end = Offset.Infinite
-                        )
+                                start = Offset.Zero,
+                                end = Offset.Infinite
+                            )
+                        } else {
+                            Brush.linearGradient(
+
+                                0.0f to MP_Orange_Dark,
+                                500.0f to MP_Orange,
+
+                                start = Offset.Zero,
+                                end = Offset.Infinite
+                            )
+                        }
                     )
             ) {
                 GoBackComp(msg = "Profil", navController = navController)
@@ -109,35 +131,48 @@ fun ProfileHeroComp(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             modifier = Modifier
                                 .width(
-                                    if ( user.roles.first().equals("Shop", ignoreCase = true)) 120.dp
+                                    if ( user.roles.first().equals("Shop", ignoreCase = true) && private ) 120.dp
                                     else 75.dp
                                 )
                         ) {
-                            Icon(
-                                imageVector = Icons.Rounded.AccountCircle,
-                                contentDescription = "Izmeni",
-                                tint = MP_White,
-                                modifier = Modifier
-                                    .size(35.dp)
-                            )
-                            Icon(
-                                imageVector = Icons.Rounded.Info,
-                                contentDescription = "Izmeni",
-                                tint = MP_White,
-                                modifier = Modifier
-                                    .size(35.dp)
-                            )
-
-                            if ( user.roles.first().equals("Shop", ignoreCase = true))
-                            {
+                            if ( private ) {
                                 Icon(
-                                    imageVector = Icons.Outlined.FavoriteBorder,
-                                    contentDescription = "Omiljen",
+                                    imageVector = Icons.Rounded.AccountCircle,
+                                    contentDescription = "Izmeni",
                                     tint = MP_White,
                                     modifier = Modifier
                                         .size(35.dp)
+                                        .clickable {  }
                                 )
+                                Icon(
+                                    imageVector = Icons.Rounded.AddCircle,
+                                    contentDescription = "Dodaj",
+                                    tint = MP_White,
+                                    modifier = Modifier
+                                        .size(35.dp)
+                                        .clickable {  }
+                                )
+                            }else {
+                                if (user.roles.first().equals("Shop", ignoreCase = true)) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.FavoriteBorder,
+                                        contentDescription = "Omiljen",
+                                        tint = MP_White,
+                                        modifier = Modifier
+                                            .size(35.dp)
+                                            .clickable {  }
+                                    )
+                                }
                             }
+
+                            Icon(
+                                imageVector = Icons.Rounded.Email,
+                                contentDescription = "Poruka",
+                                tint = MP_White,
+                                modifier = Modifier
+                                    .size(35.dp)
+                                    .clickable {  }
+                            )
                         }
 
                     }
