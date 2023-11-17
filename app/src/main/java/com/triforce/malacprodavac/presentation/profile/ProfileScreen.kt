@@ -98,7 +98,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
                     route = Screen.HighlightDetailed.route
                 )
 
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
 
                 CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
 
