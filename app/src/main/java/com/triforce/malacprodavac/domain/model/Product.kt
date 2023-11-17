@@ -22,4 +22,5 @@ data class Product(
 
     val shop: Shop?,
     val category: Category?
-)
+){
+}

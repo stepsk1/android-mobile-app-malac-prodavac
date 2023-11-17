@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -39,13 +40,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+//import coil.compose.AsyncImage
+//import coil.request.ImageRequest
 import com.triforce.malacprodavac.BottomNavigationMenuContent
+import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.CallToActionFavourite
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.ShowCommentsSection
+import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
+import com.triforce.malacprodavac.presentation.components.ShowShopDetailsSection
+import com.triforce.malacprodavac.presentation.profile.components.ProfileHeroComp
+import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
 import com.triforce.malacprodavac.presentation.profile.components.ShowData
+import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_GreenLight
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -57,133 +71,54 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
         }
 
     val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     Box(
         modifier = Modifier
+            .verticalScroll(state = scrollState)
             .background(MP_White)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.TopCenter)
-                .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
-                .background(MP_Green),
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally
-        )
-        {
-            Spacer(modifier = Modifier.height(20.dp))
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data("http://softeng.pmf.kg.ac.rs:10010/users/3/medias/2")
-                    .build(),
-                modifier = Modifier
-                    .size(100.dp),
-                contentDescription = "Profilna Slika"
-            )
-            Text(
-                text = "${state.currentUser?.firstName}  ${state.currentUser?.lastName}",
-                style = MaterialTheme.typography.h4,
-                lineHeight = 15.sp,
-                fontWeight = FontWeight.Bold,
-                color = MP_White
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-        }
+    ){
 
         Column(
             modifier = Modifier
-                .align(Alignment.TopEnd)
-                .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)),
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            IconButton(
-                onClick = { viewModel.onEvent(ProfileEvent.Logout) },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ExitToApp,
-                    contentDescription = "logout",
-                    tint = Color.Red,
-                    modifier = Modifier
-                        .size(40.dp)
+                .height(1400.dp)
+        ){
+            ProfileHeroComp(state.currentUser, navController)
+
+            if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
+
+                Spacer(modifier = Modifier.padding(15.dp))
+
+                ShopDescComp(state.currentUser)
+
+                Spacer(modifier = Modifier.padding(15.dp))
+
+                ShowHighlightSectionComp(
+                    navController = navController,
+                    products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
+                    title = "Najpopularniji Proizvodi",
+                    route = Screen.HighlightDetailed.route
                 )
+
+                Spacer(modifier = Modifier.padding(15.dp))
+
+                CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
+
+                Spacer(modifier = Modifier.padding(15.dp))
+
+                ShowHighlightSectionComp(
+                    navController = navController,
+                    products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
+                    title = "Najnoviji Proizvodi",
+                    route = Screen.HighlightDetailed.route
+                )
+
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                //ShowCommentsSection()
+                ShowShopDetailsSection(state.currentUser)
             }
-
-
         }
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.TopCenter)
-                .padding(top = 200.dp)
-                .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp)),
-            verticalArrangement = Arrangement.SpaceAround,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            ShowData(
-                title = "Email",
-                data = state.currentUser?.email ?: "",
-                contentDescription = "email",
-                icon = Icons.Default.Email
-            )
-
-            ShowData(
-                title = "Adresa",
-                data = state.currentUser?.address ?: "",
-                contentDescription = "location",
-                icon = Icons.Default.LocationOn
-            )
-
-            ShowData(
-                title = "Kontakt telefon",
-                data = state.currentUser?.phoneNumber ?: "",
-                contentDescription = "phoneNumber",
-                icon = Icons.Default.Phone
-            )
-
-            ShowData(
-                title = "Naziv preduzeća",
-                data = state.currentUser?.address ?: "",
-                contentDescription = "company",
-                icon = Icons.Default.Info
-            )
-        }
-
-        BottomNavigationMenu(
-            navController = navController,
-            items = listOf(
-                BottomNavigationMenuContent(
-                    title = "Početna",
-                    graphicID = Icons.Default.Home,
-                    screen = Screen.HomeScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle,
-                    screen = Screen.StoreScreen,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Moj Profil",
-                    graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.Profile,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Korpa",
-                    graphicID = Icons.Default.ShoppingCart,
-                    screen = Screen.CartScreen,
-                    isActive = false
-                )
-            ), modifier = Modifier
-                .align(Alignment.BottomCenter)
-        )
     }
+
 }

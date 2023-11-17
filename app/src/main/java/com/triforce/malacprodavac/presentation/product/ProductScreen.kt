@@ -38,6 +38,7 @@ import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.login.LoginViewModel
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -59,26 +60,6 @@ fun ProductScreen(
     var state = viewModel.state
 
     val product = state.product
-//        Product(
-//            id = 1,
-//            available = true,
-//            price = 19.99,
-//            unitOfMeasurement = "RSD",
-//            rating = 4.5,
-//            availableAtLatitude = 40.7128,
-//            availableAtLongitude = -74.0060,
-//            availableFromHours = 9.0,
-//            availableTillHours = 18.0,
-//            currency = "RSD",
-//            shopId = 101,
-//            title = "Example Product",
-//            desc = "This is an example product description.",
-//            ratingsCount = 100.0,
-//            availableAt = "New York, NY",
-//            categoryId = 5,
-//            createdAt = "2023-01-01T12:00:00",
-//            updatedAt = "2023-11-13T15:30:00"
-//        )
 
     var colorBackground = MP_White
     var colorForeground = MP_White
@@ -120,12 +101,6 @@ fun ProductScreen(
                 ShowFavouriteAddToCart(
                     navController = navController,
                     viewModel = viewModel
-                )
-                ShowHighlightSection(
-                    navController = navController,
-                    product1 = product,
-                    product2 = product,
-                    title = "Više proizvoda od prodavca"
                 )
             }
         }
@@ -199,54 +174,6 @@ fun ProductDetails(
 }
 
 @Composable
-fun ShowHighlightSection(
-    navController: NavController,
-    product1: Product,
-    product2: Product,
-    title: String
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 15.dp,
-                    bottom = 15.dp,
-                    start = 20.dp,
-                    end = 20.dp
-                )
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.body1,
-                color = MP_Black,
-                fontWeight = FontWeight.W500
-            )
-            androidx.compose.material3.Text(
-                text = "Vidi više",
-                style = MaterialTheme.typography.caption,
-                color = MP_White,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(Screen.HighlightDetailed.route)
-                    }
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MP_Pink)
-                    .padding(vertical = 6.dp, horizontal = 15.dp)
-            )
-        }
-
-        ShowcaseProducts(products = listOf(product1,product2), navController = navController)
-    }
-}
-
-@Composable
 fun ShowFavouriteAddToCart(
     navController: NavController,
     viewModel: ProductViewModel
@@ -299,19 +226,21 @@ fun ShowFavouriteAddToCart(
                         viewModel.onEvent(ProductEvent.buyProduct)
                         viewModel.state.product?.let { addToBuyedProducts(ProductAmount(it)) }
 
-                        Toast.makeText(
-                            context,
-                            "Uspešno dodat proizvod u korpu",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    else
-                    {
-                        Toast.makeText(
-                            context,
-                            "Proizvod se već nalazi u korpi",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast
+                            .makeText(
+                                context,
+                                "Uspešno dodat proizvod u korpu",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    } else {
+                        Toast
+                            .makeText(
+                                context,
+                                "Proizvod se već nalazi u korpi",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
                     }
                 }
                 .clip(RoundedCornerShape(10.dp))
