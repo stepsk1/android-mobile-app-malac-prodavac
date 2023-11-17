@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -46,8 +47,9 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.CallToActionFavourite
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
-import com.triforce.malacprodavac.presentation.product.ShowHighlightSection
+import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.profile.components.ProfileHeroComp
 import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
 import com.triforce.malacprodavac.presentation.profile.components.ShowData
@@ -67,38 +69,41 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
         }
 
     val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     Box(
         modifier = Modifier
-            .background(MP_Pink)
-            .fillMaxSize()
+            .verticalScroll(state = scrollState)
+            .background(MP_White)
     ){
 
-        LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark)
-        GoBackComp(msg = "Profil", navController = navController)
-        RoundedBackgroundComp(top = 265.dp, color = MP_White)
-
-        Column {
-            Spacer(modifier = Modifier.padding(30.dp))
-            ProfileHeroComp(state.currentUser)
+        Column(
+            modifier = Modifier
+                .height(1000.dp)
+        ){
+            ProfileHeroComp(state.currentUser, navController)
 
             if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
-                Spacer(modifier = Modifier.padding(25.dp))
+
+                Spacer(modifier = Modifier.padding(15.dp))
+
                 ShopDescComp(state.currentUser)
 
-                ShowHighlightSection(
+                Spacer(modifier = Modifier.padding(15.dp))
+
+                ShowHighlightSectionComp(
                     navController = navController,
-                    product1 = Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null),
-                    product2 = Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null),
-                    title = "Najpopularniji Proizvodi"
+                    products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
+                    title = "Najpopularniji Proizvodi",
+                    route = Screen.HighlightDetailed.route
                 )
 
-                ShowHighlightSection(
-                    navController = navController,
-                    product1 = Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null),
-                    product2 = Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null),
-                    title = "Najnoviji Proizvodi"
-                )
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
+
+
+                Spacer(modifier = Modifier.padding(10.dp))
             }
         }
     }

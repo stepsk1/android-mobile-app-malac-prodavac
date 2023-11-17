@@ -5,16 +5,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -30,98 +34,126 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.domain.model.User
+import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun ProfileHeroComp(
-    user: User?
-){
-    if ( user != null ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp)
+    user: User?,
+    navController: NavController
+) {
+    if (user != null) {
+        Column(
         ) {
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween,
+            Box(
                 modifier = Modifier
-                    .height(160.dp)
+                    .clip(RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp))
+                    .background(
+                        Brush.linearGradient(
+
+                            0.0f to MP_GreenLight,
+                            500.0f to MP_GreenDark,
+
+                            start = Offset.Zero,
+                            end = Offset.Infinite
+                        )
+                    )
             ) {
-
-                Column {
-                    Text(
-                        text = "Malac ${user.roles.first()}",
-                        style = MaterialTheme.typography.body1,
-                        color = MP_White,
-                        fontWeight = FontWeight.W500
-                    )
-                    Text(
-                        text = "${user.firstName} ${user.lastName[0]}.",
-                        style = MaterialTheme.typography.h4,
-                        color = MP_White,
-                        fontWeight = FontWeight.Black
-                    )
-                }
-
-                Column {
-                    Text(
-                        text = "Jagodina, Srbija",
-                        style = MaterialTheme.typography.body2,
-                        color = MP_White,
-                        fontWeight = FontWeight.W500,
-                    )
-                    Text(
-                        text = "Ocena 9.8",
-                        style = MaterialTheme.typography.body2,
-                        color = MP_White,
-                        fontWeight = FontWeight.W500
-                    )
-                }
+                GoBackComp(msg = "Profil", navController = navController)
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .width(75.dp)
-                ){
-                    Icon(
-                        imageVector = Icons.Rounded.AccountCircle,
-                        contentDescription = "Izmeni",
-                        tint = MP_White,
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, top = 60.dp, bottom = 30.dp)
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
-                            .size(35.dp)
-                    )
-                    Icon(
-                        imageVector = Icons.Rounded.Info,
-                        contentDescription = "Izmeni",
-                        tint = MP_White,
+                            .height(160.dp)
+                    ) {
+
+                        Column {
+                            Text(
+                                text = "Malac ${user.roles.first()}",
+                                style = MaterialTheme.typography.body1,
+                                color = MP_White,
+                                fontWeight = FontWeight.W500
+                            )
+                            Text(
+                                text = "${user.firstName} ${user.lastName[0]}.",
+                                style = MaterialTheme.typography.h4,
+                                color = MP_White,
+                                fontWeight = FontWeight.Black
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = "Jagodina, Srbija",
+                                style = MaterialTheme.typography.body2,
+                                color = MP_White,
+                                fontWeight = FontWeight.W500,
+                            )
+                            Text(
+                                text = "Ocena 9.8",
+                                style = MaterialTheme.typography.body2,
+                                color = MP_White,
+                                fontWeight = FontWeight.W500
+                            )
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .width(75.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.AccountCircle,
+                                contentDescription = "Izmeni",
+                                tint = MP_White,
+                                modifier = Modifier
+                                    .size(35.dp)
+                            )
+                            Icon(
+                                imageVector = Icons.Rounded.Info,
+                                contentDescription = "Izmeni",
+                                tint = MP_White,
+                                modifier = Modifier
+                                    .size(35.dp)
+                            )
+                        }
+
+                    }
+
+                    Image(
+                        painter = painterResource(androidx.customview.R.drawable.notify_panel_notification_icon_bg),
+                        contentDescription = "Round Image",
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(35.dp)
+                            .size(175.dp)
+                            .clip(CircleShape)
+                            .border(3.dp, MP_White, CircleShape)
                     )
                 }
-
             }
-
-            Image(
-                painter = painterResource(androidx.customview.R.drawable.notify_panel_notification_icon_bg),
-                contentDescription = "Round Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(175.dp)
-                    .clip(CircleShape)
-                    .border(3.dp, MP_White, CircleShape)
-            )
         }
     }
 }

@@ -43,7 +43,8 @@ fun ShopDescComp(
                 text = "Domaćinstvo Perun se generacijama bavi domaćom proizvodnjom sokova i sirupa od različitog voća koje se hladno cedi, zatim...",
                 style = MaterialTheme.typography.body2,
                 color = Color.Gray,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.W300,
+                maxLines = 3
             )
         }
     }
