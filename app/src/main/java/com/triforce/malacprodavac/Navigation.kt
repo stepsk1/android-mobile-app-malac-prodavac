@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,7 +15,7 @@ import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
-import com.triforce.malacprodavac.presentation.profile.ProfileScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
 
@@ -105,7 +104,7 @@ fun Navigation() {
         }
 
         composable(route = Screen.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfilePrivateScreen(navController = navController)
         }
 
         composable(route = Screen.ShopHomeScreen.route) {

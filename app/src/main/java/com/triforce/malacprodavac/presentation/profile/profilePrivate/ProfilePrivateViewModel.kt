@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.profile
+package com.triforce.malacprodavac.presentation.profile.profilePrivate
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -13,20 +13,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
+class ProfilePrivateViewModel @Inject constructor(
     private val profile: Profile
 ) : ViewModel() {
-    var state by mutableStateOf(ProfileState())
+    var state by mutableStateOf(ProfilePrivateState())
 
     init {
         me()
         getToken()
     }
 
-    fun onEvent(event: ProfileEvent) {
+    fun onEvent(event: ProfilePrivateEvent) {
         viewModelScope.launch {
             when (event) {
-                is ProfileEvent.Logout -> {
+                is ProfilePrivateEvent.Logout -> {
                     logout()
                 }
             }

@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.profile
+package com.triforce.malacprodavac.presentation.profile.profilePrivate.other
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
