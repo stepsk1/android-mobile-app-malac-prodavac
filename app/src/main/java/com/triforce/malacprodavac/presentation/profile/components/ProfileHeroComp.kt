@@ -123,7 +123,10 @@ fun ProfileHeroComp(
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             modifier = Modifier
-                                .width(75.dp)
+                                .width(
+                                    if ( user.roles.first().equals("Shop", ignoreCase = true)) 120.dp
+                                    else 75.dp
+                                )
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.AccountCircle,
@@ -139,6 +142,17 @@ fun ProfileHeroComp(
                                 modifier = Modifier
                                     .size(35.dp)
                             )
+
+                            if ( user.roles.first().equals("Shop", ignoreCase = true))
+                            {
+                                Icon(
+                                    imageVector = Icons.Outlined.FavoriteBorder,
+                                    contentDescription = "Omiljen",
+                                    tint = MP_White,
+                                    modifier = Modifier
+                                        .size(35.dp)
+                                )
+                            }
                         }
 
                     }

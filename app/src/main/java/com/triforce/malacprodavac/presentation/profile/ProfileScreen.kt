@@ -49,7 +49,9 @@ import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.CallToActionFavourite
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.ShowCommentsSection
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
+import com.triforce.malacprodavac.presentation.components.ShowShopDetailsSection
 import com.triforce.malacprodavac.presentation.profile.components.ProfileHeroComp
 import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
 import com.triforce.malacprodavac.presentation.profile.components.ShowData
@@ -79,7 +81,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
 
         Column(
             modifier = Modifier
-                .height(1000.dp)
+                .height(1400.dp)
         ){
             ProfileHeroComp(state.currentUser, navController)
 
@@ -98,12 +100,23 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
                     route = Screen.HighlightDetailed.route
                 )
 
-                Spacer(modifier = Modifier.padding(5.dp))
+                Spacer(modifier = Modifier.padding(15.dp))
 
                 CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
 
+                Spacer(modifier = Modifier.padding(15.dp))
+
+                ShowHighlightSectionComp(
+                    navController = navController,
+                    products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
+                    title = "Najnoviji Proizvodi",
+                    route = Screen.HighlightDetailed.route
+                )
 
                 Spacer(modifier = Modifier.padding(10.dp))
+
+                //ShowCommentsSection()
+                ShowShopDetailsSection(state.currentUser)
             }
         }
     }
