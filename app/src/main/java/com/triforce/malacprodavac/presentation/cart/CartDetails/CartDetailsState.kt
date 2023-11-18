@@ -9,5 +9,6 @@ data class CartDetailsState(
     val listOfProducts: List<ProductAmount> = emptyList(),
     val shippingMethod: String = "",
     val currentUser: User? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val isSuccesful: Boolean = false
 )

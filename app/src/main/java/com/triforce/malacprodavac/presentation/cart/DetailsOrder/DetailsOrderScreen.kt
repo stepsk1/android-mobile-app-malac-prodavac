@@ -87,7 +87,7 @@ fun DetailsOrderScreen(navController: NavController) {
                     ) {
 
                         Text(
-                            text = "Način plaćanja: Paypal",
+                            text = "Način plaćanja: " + BuyedProducts.paymentMethod,
                             style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
@@ -96,7 +96,7 @@ fun DetailsOrderScreen(navController: NavController) {
                         )
 
                         Text(
-                            text = "Podaci za slanje: Gavrila Principa, Kragujevac, 066/251-102",
+                            text = "Podaci za slanje: " + BuyedProducts.address,
                             style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
@@ -105,7 +105,7 @@ fun DetailsOrderScreen(navController: NavController) {
                         )
 
                         Text(
-                            text = "Način slanja: Lično preuzimanje",
+                            text = "Način slanja: " + BuyedProducts.deliveryMethod,
                             style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier

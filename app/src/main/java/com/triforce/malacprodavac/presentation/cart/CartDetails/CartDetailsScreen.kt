@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.cart.CartDetails
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
@@ -40,11 +42,13 @@ import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
+import com.triforce.malacprodavac.util.enum.DeliveryMethod
+import com.triforce.malacprodavac.util.enum.PaymentMethod
 
 @Composable
-fun CartDetailsScreen(navController: NavController) {
+fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewModel = hiltViewModel()) {
 
-    val buyedProducts = BuyedProducts.listOfBuyedProducts
+    val orderProducts = BuyedProducts
 
     val typeOfPaymentOptions = listOf("Paypal", "Lično/Pouzećem")
     var selectedTypeOfPayment by remember { mutableStateOf(typeOfPaymentOptions[0]) }
@@ -52,6 +56,7 @@ fun CartDetailsScreen(navController: NavController) {
     val addressesOptions = listOf(
         "Gavrila Principa, Kragujevac, 066/251-102"
     )
+
     var selectedAddress by remember { mutableStateOf(addressesOptions[0]) }
 
     val typeOfSendingOptions = listOf("Lično preuzimanje", "Kurirska dostava")
@@ -237,8 +242,7 @@ fun CartDetailsScreen(navController: NavController) {
             }
         }
 
-        TotalPrice(buyedProducts = buyedProducts)
-
+        TotalPrice(buyedProducts = orderProducts.listOfBuyedProducts)
 
         Row(
             modifier = Modifier
@@ -259,7 +263,16 @@ fun CartDetailsScreen(navController: NavController) {
             ) {
                 Button(
                     onClick = {
-
+                        if (selectedTypeOfPayment == "Paypal")
+                            orderProducts.paymentMethod = PaymentMethod.PayPal
+                        else
+                            orderProducts.paymentMethod = PaymentMethod.OnDelivery
+                        orderProducts.address = selectedAddress
+                        if (selectedTypeOfSending == "Lično preuzimanje")
+                            orderProducts.deliveryMethod = DeliveryMethod.SelfPickup
+                        else
+                            orderProducts.deliveryMethod = DeliveryMethod.ByCourier
+                        viewModel.onEvent(CartDetailsEvent.order)
                         navController.navigate(Screen.DetailsOrderScreen.route)
                     },
                     colors = ButtonDefaults.buttonColors(MP_Orange_Dark)

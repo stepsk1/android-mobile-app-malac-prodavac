@@ -14,6 +14,7 @@ import com.triforce.malacprodavac.data.remote.auth.interceptors.AuthInterceptorI
 import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
 import com.triforce.malacprodavac.data.remote.couriers.CouriersApi
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
+import com.triforce.malacprodavac.data.remote.orders.OrderApi
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.users.UsersApi
@@ -27,6 +28,11 @@ import com.triforce.malacprodavac.domain.use_case.GetToken
 import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
+import com.triforce.malacprodavac.domain.use_case.order.Order
+import com.triforce.malacprodavac.domain.use_case.order.AddOrder
+import com.triforce.malacprodavac.domain.use_case.order.DeleteOrder
+import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
+import com.triforce.malacprodavac.domain.use_case.order.GetOrderForId
 import com.triforce.malacprodavac.domain.use_case.profile.Logout
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCourier
@@ -102,6 +108,10 @@ object ApplicationModule {
     fun provideShopsApi(retrofit: Retrofit): ShopsApi =
         retrofit.create()
 
+    @Provides
+    @Singleton
+    fun provideOrderApi(retrofit: Retrofit): OrderApi =
+        retrofit.create()
 
     @Provides
     @Singleton
@@ -198,6 +208,11 @@ object ApplicationModule {
     @Singleton
     fun provideProfileUseCase(logout: Logout, me: Me, getToken: GetToken) =
         Profile(me, logout, getToken)
+
+    @Provides
+    @Singleton
+    fun provideOrderUseCase(addOrder: AddOrder, deleteOrder: DeleteOrder, getAllOrders: GetAllOrders, getOrderForId: GetOrderForId) =
+        Order(getAllOrders, getOrderForId, addOrder, deleteOrder)
 
 
     @Provides
