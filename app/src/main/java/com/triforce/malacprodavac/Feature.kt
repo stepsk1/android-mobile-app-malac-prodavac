@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac
 
-import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 

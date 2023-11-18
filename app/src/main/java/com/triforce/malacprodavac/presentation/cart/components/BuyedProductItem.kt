@@ -52,7 +52,9 @@ fun BuyedProductItem(
     fun removeFromBuyedProducts(item: ProductAmount) {
         BuyedProducts.listOfBuyedProducts.remove(item)
     }
+
     val buyedProduct by remember { mutableStateOf(buyedProduct) }
+
 
     BoxWithConstraints(
         modifier = Modifier

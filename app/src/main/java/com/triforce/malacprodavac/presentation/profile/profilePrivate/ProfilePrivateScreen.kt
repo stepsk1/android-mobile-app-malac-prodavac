@@ -19,10 +19,10 @@ import androidx.navigation.NavController
 //import coil.request.ImageRequest
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.presentation.components.CallToActionFavourite
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.components.ShowShopDetailsSection
 import com.triforce.malacprodavac.presentation.profile.components.ProfileHeroComp
+import com.triforce.malacprodavac.presentation.profile.components.ProfilePrivateHeroComp
 import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -47,7 +47,7 @@ fun ProfilePrivateScreen(navController: NavController, viewModel: ProfilePrivate
             modifier = Modifier
                 .height(1400.dp)
         ){
-            ProfileHeroComp(state.currentUser, navController, true)
+            ProfilePrivateHeroComp(state.currentUser, navController, viewModel, true)
 
             if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
 

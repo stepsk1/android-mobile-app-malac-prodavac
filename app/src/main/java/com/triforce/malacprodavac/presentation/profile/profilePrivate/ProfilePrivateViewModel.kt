@@ -29,6 +29,11 @@ class ProfilePrivateViewModel @Inject constructor(
                 is ProfilePrivateEvent.Logout -> {
                     logout()
                 }
+                is ProfilePrivateEvent.onAddMediaButtonPress -> {
+                    state = state.copy(newImage = true)
+                }
+
+                else -> {}
             }
         }
     }
@@ -62,6 +67,8 @@ class ProfilePrivateViewModel @Inject constructor(
                             currentUser = result.data
                         )
                     }
+
+                    else -> {}
                 }
             }
         }
@@ -79,6 +86,8 @@ class ProfilePrivateViewModel @Inject constructor(
                     is Resource.Loading -> {
                         state = state.copy(isLoading = result.isLoading)
                     }
+
+                    else -> {}
                 }
             }
         }
