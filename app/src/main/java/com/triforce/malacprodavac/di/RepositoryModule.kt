@@ -4,6 +4,7 @@ import com.triforce.malacprodavac.data.repository.auth.AuthRepositoryImpl
 import com.triforce.malacprodavac.data.repository.categories.CategoryRepositoryImpl
 import com.triforce.malacprodavac.data.repository.couriers.CourierRepositoryImpl
 import com.triforce.malacprodavac.data.repository.customers.CustomerRepositoryImpl
+import com.triforce.malacprodavac.data.repository.orders.OrderRepositoryImpl
 import com.triforce.malacprodavac.data.repository.products.ProductRepositoryImpl
 import com.triforce.malacprodavac.data.repository.shops.ShopRepositoryImpl
 import com.triforce.malacprodavac.data.repository.users.UserRepositoryImpl
@@ -11,6 +12,7 @@ import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.repository.CategoryRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
+import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.UserRepository
@@ -64,5 +66,11 @@ abstract class RepositoryModule {
     abstract fun bindsProductRepository(
         productRepositoryImpl: ProductRepositoryImpl
     ): ProductRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsOrderRepository(
+        orderRepositoryImpl: OrderRepositoryImpl
+    ): OrderRepository
 
 }
