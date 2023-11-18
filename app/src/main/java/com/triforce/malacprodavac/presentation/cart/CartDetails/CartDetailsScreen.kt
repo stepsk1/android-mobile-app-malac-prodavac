@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -261,6 +259,7 @@ fun CartDetailsScreen(navController: NavController) {
             ) {
                 Button(
                     onClick = {
+
                         navController.navigate(Screen.DetailsOrderScreen.route)
                     },
                     colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
