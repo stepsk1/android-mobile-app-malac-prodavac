@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -28,9 +30,10 @@ import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
-import com.triforce.malacprodavac.presentation.cart.CartDetails.HeaderSectionTitleWithoutIcon
+import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
 import com.triforce.malacprodavac.presentation.cart.components.Confirmation
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
@@ -42,24 +45,19 @@ fun DetailsOrderScreen(navController: NavController) {
 
     val totalPrice: Double = TotalPrice(buyedProducts = BuyedProducts.listOfBuyedProducts)
 
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
+            .verticalScroll(state = scrollState)
     ) {
         LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark )
-        Surface(
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 67.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ) {
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
-        }
         Column {
-            HeaderSectionTitleWithoutIcon("Detalji porudžbine", navController)
+            GoBackNoSearch("Detalji porudžbine", navController)
 
             Spacer(modifier = Modifier.height(7.dp))
 
@@ -90,7 +88,7 @@ fun DetailsOrderScreen(navController: NavController) {
 
                         Text(
                             text = "Način plaćanja: Paypal",
-                            style = MaterialTheme.typography.h6,
+                            style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
                                 .padding(start = 10.dp)
@@ -99,7 +97,7 @@ fun DetailsOrderScreen(navController: NavController) {
 
                         Text(
                             text = "Podaci za slanje: Gavrila Principa, Kragujevac, 066/251-102",
-                            style = MaterialTheme.typography.h6,
+                            style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
                                 .padding(start = 10.dp)
@@ -108,7 +106,7 @@ fun DetailsOrderScreen(navController: NavController) {
 
                         Text(
                             text = "Način slanja: Lično preuzimanje",
-                            style = MaterialTheme.typography.h6,
+                            style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
                                 .padding(start = 10.dp)
@@ -117,7 +115,7 @@ fun DetailsOrderScreen(navController: NavController) {
 
                         Text(
                             text = "Ukupan iznos: $totalPrice",
-                            style = MaterialTheme.typography.h6,
+                            style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
                                 .padding(start = 10.dp)
