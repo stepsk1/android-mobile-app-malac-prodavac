@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.triforce.malacprodavac.presentation.add_edit_product.AddEditProductScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
@@ -90,12 +91,6 @@ fun Navigation() {
             route = Screen.ProductScreen.route + "?productId={productId}",
             arguments = listOf(
                 navArgument(
-                    name = "categoryId"
-                ) {
-                    type = NavType.IntType
-                    defaultValue = -1
-                },
-                navArgument(
                     name = "productId"
                 ) {
                     type = NavType.IntType
@@ -122,5 +117,18 @@ fun Navigation() {
             HighlightSection(navController = navController)
         }
 
+        composable(
+            route = Screen.AddEditProduct.route + "?productId={productId}",
+            arguments = listOf(
+                navArgument(
+                    name = "productId"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
+            AddEditProductScreen(navController = navController)
+        }
     }
 }
