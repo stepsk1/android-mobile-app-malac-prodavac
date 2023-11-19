@@ -98,6 +98,14 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                         color1 = MP_Green,
                         color2 = MP_Green,
                         screen = Screen.PrivateProfile
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "AddEdit",
+                        graphicID = Icons.Default.AccountCircle,
+                        color1 = MP_Green,
+                        color2 = MP_Green,
+                        screen = Screen.AddEditProduct
                     )
                 )
             )

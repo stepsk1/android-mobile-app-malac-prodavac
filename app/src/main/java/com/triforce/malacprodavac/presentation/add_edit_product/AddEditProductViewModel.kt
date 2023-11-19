@@ -21,39 +21,46 @@ class AddEditProductViewModel @Inject constructor(
 
     private val repository: ProductRepository,
     savedStateHandle: SavedStateHandle
-):ViewModel(){
+):ViewModel() {
 
     var state by mutableStateOf(AddEditProductState())
 
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
-            getProduct(true, productId)
+            if (productId != -1) {
+                getProduct(true, productId)
+            }
         }
     }
 
-    fun onEvent(event: AddEditProductEvent){
-        when(event){
+    fun onEvent(event: AddEditProductEvent) {
+        when (event) {
             is AddEditProductEvent.CategoryIdChanged -> {
                 state = state.copy(categoryId = event.categoryId)
             }
+
             is AddEditProductEvent.CurrencyChanged -> {
                 state = state.copy(currency = event.currency)
             }
+
             is AddEditProductEvent.DescChanged -> {
                 state = state.copy(desc = event.desc)
             }
+
             is AddEditProductEvent.PriceChanged -> {
                 state = state.copy(price = event.price)
             }
+
             is AddEditProductEvent.TitleChanged -> {
                 state = state.copy(title = event.title)
             }
+
             is AddEditProductEvent.UnitOfMeasurementChanged -> {
                 state = state.copy(unitOfMeasurement = event.unitOfMeasurement)
             }
+
             is AddEditProductEvent.Submit -> {
-                if ( state.productId == -1 )
-                {
+                if (state.productId == -1) {
                     val createProduct = CreateProductDto(
                         unitOfMeasurement = state.unitOfMeasurement,
                         currency = state.currency,
@@ -88,7 +95,11 @@ class AddEditProductViewModel @Inject constructor(
         }
     }
 
-    private fun updateProduct(productId:Int, updateProduct: UpdateProduct, fetchFromRemote: Boolean){
+    private fun updateProduct(
+        productId: Int,
+        updateProduct: UpdateProduct,
+        fetchFromRemote: Boolean
+    ) {
         viewModelScope.launch {
             repository.updateProduct(productId, updateProduct).collect { result ->
                 when (result) {
@@ -112,7 +123,7 @@ class AddEditProductViewModel @Inject constructor(
         }
     }
 
-    private fun insertProduct(createProduct: CreateProduct, fetchFromRemote: Boolean){
+    private fun insertProduct(createProduct: CreateProduct, fetchFromRemote: Boolean) {
         viewModelScope.launch {
             repository.insertProduct(createProduct).collect { result ->
                 when (result) {

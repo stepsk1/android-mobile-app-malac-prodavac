@@ -8,6 +8,7 @@ data class AddEditProductState(
     val productId: Int? = -1,
     val product: Product? = null,
     val isLoading: Boolean = false,
+    val successful: Boolean = false,
 
     val unitOfMeasurement: UnitOfMeasurement = UnitOfMeasurement.KG,
     val currency: Currency = Currency.RSD,

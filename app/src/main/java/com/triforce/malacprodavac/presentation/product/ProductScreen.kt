@@ -85,7 +85,7 @@ fun ProductScreen(
         modifier = Modifier
             .verticalScroll(state = scrollState)
             .background(MP_White)
-            .height(800.dp)
+            .height(850.dp)
     ) {
         LinearGradient(color1 = colorForeground, color2 = colorBackground)
         RoundedBackgroundComp(top = 250.dp, color = MP_White)
@@ -108,6 +108,8 @@ fun ProductScreen(
                     route = Screen.HighlightSection.route
                 )
 
+                ShopProductOptions(product,navController)
+
                 Box(
                     contentAlignment = Alignment.BottomCenter,
                     modifier = Modifier
@@ -121,6 +123,32 @@ fun ProductScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ShopProductOptions(
+    product: Product?,
+    navController: NavController
+){
+    Row(){
+        Text(
+            text = "Izmeni",
+            style = MaterialTheme.typography.body1,
+            color = MP_White,
+            fontWeight = FontWeight.W400,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .clickable {
+                    if (product != null) {
+                        navController.navigate(Screen.AddEditProduct.route + "?productId=${product.id}")
+                    }
+                }
+                .clip(RoundedCornerShape(20.dp))
+                .background(MP_Pink)
+                .width(width = 50.dp)
+                .padding(vertical = 10.dp)
+        )
     }
 }
 
