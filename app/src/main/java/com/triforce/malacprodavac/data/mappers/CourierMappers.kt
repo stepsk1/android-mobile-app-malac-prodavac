@@ -6,10 +6,10 @@ import com.triforce.malacprodavac.domain.model.Courier
 fun CourierEntity.toCourier(): Courier = Courier(
     id = id,
     userId = userId,
-    pricePerKilometer = pricePerKilometer,
-    currentLocationLatitude = currentLocationLatitude,
-    currentLocationLongitude = currentLocationLongitude,
-    currentLocation = currentLocation,
+    routeStartLatitude = routeStartLatitude,
+    routeStartLongitude = routeStartLongitude,
+    routeEndLatitude = routeEndLatitude,
+    routeEndLongitude = routeEndLongitude,
     createdAt = createdAt,
     updatedAt = updatedAt,
 

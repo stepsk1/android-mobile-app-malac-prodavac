@@ -14,10 +14,10 @@ data class CourierEntity(
     @PrimaryKey
     val id: Int,
     val userId: Int,
-    val pricePerKilometer: Double?,
-    val currentLocationLatitude: Double?,
-    val currentLocationLongitude: Double?,
-    val currentLocation: String,
-    val createdAt: String,
+    val routeStartLatitude: Double?,
+    val routeStartLongitude: Double?,
+    val routeEndLatitude: Double?,
+    val routeEndLongitude: Double?,
     val updatedAt: String,
+    val createdAt: String,
 )
