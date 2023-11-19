@@ -4,7 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -21,18 +25,25 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.util.enum.UserRole
+import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditDropDownList
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditTextField
 import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.product.ProductHeroImage
 import com.triforce.malacprodavac.presentation.product.ProductViewModel
+import com.triforce.malacprodavac.presentation.registration.RegistrationFormEvent
+import com.triforce.malacprodavac.presentation.registration.components.DropDownList
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 import com.triforce.malacprodavac.ui.theme.SpaceMedium
+import com.triforce.malacprodavac.util.enum.Currency
+import com.triforce.malacprodavac.util.enum.UnitOfMeasurement
 
 
 @Composable
@@ -82,45 +93,91 @@ fun AddEditProductScreen(
                 {
                     GoBackNoSearch("Izmeni proizvod", navController)
                     ProductHeroImage()
+                    Spacer(modifier = Modifier.padding(20.dp))
                     Column(
-                        verticalArrangement = Arrangement.SpaceEvenly
+                        verticalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier
+                            .fillMaxHeight(1F)
                     ) {
                         AddEditTextField(
+                            label = "Naziv proizvoda",
                             text = state.title,
                             onTextValueChange = {
                                 viewModel.onEvent(AddEditProductEvent.TitleChanged(it))
                             },
-                            placeholder = product.title
+                            placeholder = product.title,
+                            colorBackground = colorBackground,
+                            colorForeground = colorForeground
                         )
                         AddEditTextField(
+                            label = "Opis proizvoda",
                             text = state.desc,
                             onTextValueChange = {
                                 viewModel.onEvent(AddEditProductEvent.DescChanged(it))
                             },
-                            placeholder = product.desc
+                            placeholder = product.desc,
+                            colorBackground = colorBackground,
+                            colorForeground = colorForeground
                         )
                     }
                 }
                 else {
                     GoBackNoSearch(msg = "Dodaj proizvod", navController = navController)
                     ProductHeroImage()
+                    Spacer(modifier = Modifier.padding(10.dp))
                     Column(
-                        verticalArrangement = Arrangement.SpaceEvenly
+                        verticalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier
+                            .fillMaxHeight(1F)
                     ) {
                         AddEditTextField(
+                            label = "Naziv proizvoda",
                             text = state.title,
                             onTextValueChange = {
                                 viewModel.onEvent(AddEditProductEvent.TitleChanged(it))
                             },
-                            placeholder = "Naziv proizvoda"
+                            placeholder = "Unesite naziv proizvoda...",
+                            colorBackground = colorBackground,
+                            colorForeground = colorForeground
                         )
                         AddEditTextField(
+                            label = "Opis proizvoda",
                             text = state.desc,
                             onTextValueChange = {
                                 viewModel.onEvent(AddEditProductEvent.DescChanged(it))
                             },
-                            placeholder = "Opis proizvoda"
+                            placeholder = "Unesite opis proizvoda...",
+                            colorBackground = colorBackground,
+                            colorForeground = colorForeground
                         )
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                        ) {
+                            AddEditDropDownList(
+                                entries = enumValues<UnitOfMeasurement>().toList(),
+                                handleSelect = { unit ->
+                                    viewModel.onEvent(
+                                        AddEditProductEvent.UnitOfMeasurementChanged(
+                                            unit as UnitOfMeasurement
+                                        )
+                                    )
+                                },
+                                label = "Mera"
+                            )
+                            AddEditDropDownList(
+                                entries = enumValues<Currency>().toList(),
+                                handleSelect = { currency ->
+                                    viewModel.onEvent(
+                                        AddEditProductEvent.CurrencyChanged(
+                                            currency as Currency)
+                                    )
+                                },
+                                label = "Valuta"
+                            )
+                        }
                     }
                 }
             }
