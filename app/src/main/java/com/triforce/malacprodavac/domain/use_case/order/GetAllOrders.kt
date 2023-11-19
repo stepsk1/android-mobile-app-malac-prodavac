@@ -13,6 +13,6 @@ class GetAllOrders(
         fetchFromRemote: Boolean,
         @QueryMap() query: MutableMap<String, String>
     ): Flow<Resource<List<Order>>> {
-        return repository.getOrders(fetchFromRemote, query)
+        return repository.getOrders(fetchFromRemote)
     }
 }

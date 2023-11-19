@@ -14,6 +14,7 @@ import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
+import com.triforce.malacprodavac.presentation.orders.OrderScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateScreen
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicScreen
@@ -120,6 +121,10 @@ fun Navigation() {
 
         composable(route = Screen.HighlightSection.route) {
             HighlightSection(navController = navController)
+        }
+
+        composable(route = Screen.OrderScreen.route) {
+            OrderScreen(navController = navController)
         }
 
     }
