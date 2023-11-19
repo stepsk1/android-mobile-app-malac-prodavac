@@ -18,7 +18,7 @@ interface OrderApi {
     suspend fun create(@Body() createPostDto: CreateOrderDto): OrderEntity
 
     @GET(ROUTE)
-    suspend fun getOrders(@QueryMap() queryMap: MutableMap<String, String>): PaginationResponse<OrderEntity>
+    suspend fun getOrders(): PaginationResponse<OrderEntity>
 
     @GET("${ROUTE}/{id}")
     suspend fun getOrder(@Path("id") id: Int): OrderEntity
