@@ -28,7 +28,7 @@ data class OrderEntity(
     @PrimaryKey
     val id: Int,
     val productId: Int,
-    val quantity: Int,
+    val quantity: Double,
     val paymentMethod: String, //convert to enum
     val orderStatus: String, //convert to enum
     val deliveryMethod: String, //convert to enum

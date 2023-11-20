@@ -97,6 +97,14 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                         color1 = MP_Green,
                         color2 = MP_Green,
                         screen = Screen.AddEditProduct
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "Moje porudžbine",
+                        graphicID = ImageVector.vectorResource(R.drawable.round_featured_play_list_24),
+                        color1 = MP_Pink,
+                        color2 = MP_Pink,
+                        screen = Screen.OrderScreen
                     )
                 )
             )

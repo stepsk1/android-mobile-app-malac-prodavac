@@ -44,9 +44,7 @@ fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltVi
             .background(MP_GreenDark)
             .fillMaxSize()
     ){
-        LinearGradient(color1 = MP_Green, color2 = MP_GreenDark )
-
-        //RoundedBackgroundComp(top = 600.dp, color = MP_White)
+        LinearGradient(color1 = MP_Green, color2 = MP_Green)
 
         Column {
             GoBackComp("Moje narudžbine", navController)

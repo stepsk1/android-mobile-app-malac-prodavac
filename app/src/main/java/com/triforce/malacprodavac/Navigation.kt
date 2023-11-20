@@ -131,5 +131,9 @@ fun Navigation() {
         ) {
             AddEditProductScreen(navController = navController)
         }
+
+        composable(route = Screen.OrderScreen.route) {
+            OrderScreen(navController = navController)
+        }
     }
 }

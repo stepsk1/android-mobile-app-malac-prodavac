@@ -30,6 +30,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import androidx.compose.runtime.Composable
+import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun OrderProductItem(
@@ -48,7 +49,7 @@ fun OrderProductItem(
         orderStatus = "U isporuci"
     else if(orderStatus == "Received")
         orderStatus = "Primljeno"
-    else if(orderStatus == "Returned")
+    else
         orderStatus = "Vraćeno"
 
     if ( orderDeliveryMethod == "ByCourier")
@@ -64,44 +65,30 @@ fun OrderProductItem(
                     spotColor = MP_Black,
                     shape = RoundedCornerShape(3.5.dp)
                 )
-                .clip(RoundedCornerShape(5.dp))
-                .background(MP_Gray)
+                .clip(RoundedCornerShape(10.dp))
+                .background(MP_White)
+                .fillMaxWidth()
                 .requiredHeight(130.dp)
         ) {
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(15.dp)
+                    .padding(20.dp)
             ) {
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-
-                    ) {
-                        Text(
+                    Text(
                             text = orderStatus,
                             fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.h6,
-                            color = MP_Pink
+                            style = MaterialTheme.typography.body1,
+                            color = MP_Pink,
+                            modifier = Modifier
+                            .align(Alignment.TopStart)
                         )
-//                        Icon(
-//                            imageVector = Icons.Default.Clear,
-//                            contentDescription = "Delete one",
-//                            tint = MP_Pink,
-//                            modifier = Modifier
-//                                .size(40.dp)
-//                                .clickable {
-//
-//                                }
-//                        )
-                    }
 
                     Text(
                         text = "Pršuta 100g " + order.quantity.toString() + "X" ,
-                        style = MaterialTheme.typography.h6,
+                        style = MaterialTheme.typography.body1,
                         color = MP_Black,
                         modifier = Modifier
                             .align(Alignment.CenterStart)
@@ -109,7 +96,7 @@ fun OrderProductItem(
 
                     Text(
                         text = orderDeliveryMethod,
-                        style = MaterialTheme.typography.h6,
+                        style = MaterialTheme.typography.body1,
                         color = MP_Black,
                         modifier = Modifier
                             .align(Alignment.BottomStart)
@@ -117,7 +104,7 @@ fun OrderProductItem(
 
                     Box(
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
+                            .align(Alignment.CenterEnd)
                             .requiredWidth(130.dp)
                             .requiredHeight(50.dp)
                     ) {
@@ -126,8 +113,8 @@ fun OrderProductItem(
                             contentDescription = "Add",
                             tint = MP_Pink,
                             modifier = Modifier
-                                .size(35.dp)
-                                .align(Alignment.BottomCenter)
+                                .align(Alignment.CenterEnd)
+                                .size(30.dp)
                                 .clickable {
 
                                 }
