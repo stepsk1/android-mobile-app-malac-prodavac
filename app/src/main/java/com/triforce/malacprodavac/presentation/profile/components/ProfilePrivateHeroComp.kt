@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.presentation.profile.PhotoUrl
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateEvent
@@ -121,7 +122,7 @@ fun ProfilePrivateHeroComp(
                             )
                             Text(
                                 text = "${user.firstName} ${user.lastName[0]}.",
-                                style = MaterialTheme.typography.h4,
+                                style = MaterialTheme.typography.h5,
                                 color = MP_White,
                                 fontWeight = FontWeight.Black
                             )
@@ -150,8 +151,7 @@ fun ProfilePrivateHeroComp(
                                     else 75.dp
                                 )
                         ) {
-                            if ( private ) {
-
+                            if (private) {
                                 Icon(
                                     imageVector = Icons.Rounded.AccountCircle,
                                     contentDescription = "Izmeni",
@@ -168,18 +168,9 @@ fun ProfilePrivateHeroComp(
                                         tint = MP_White,
                                         modifier = Modifier
                                             .size(35.dp)
-                                            .clickable { }
-                                    )
-                                }
-                            }else {
-                                if (user.roles.first().equals("Shop", ignoreCase = true)) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.FavoriteBorder,
-                                        contentDescription = "Omiljen",
-                                        tint = MP_White,
-                                        modifier = Modifier
-                                            .size(35.dp)
-                                            .clickable { }
+                                            .clickable {
+                                                navController.navigate(Screen.AddEditProduct.route)
+                                            }
                                     )
                                 }
                             }
@@ -193,7 +184,6 @@ fun ProfilePrivateHeroComp(
                                     .clickable {  }
                             )
                         }
-
                     }
 
                     var imageUri by remember { mutableStateOf<Uri?>(null) }

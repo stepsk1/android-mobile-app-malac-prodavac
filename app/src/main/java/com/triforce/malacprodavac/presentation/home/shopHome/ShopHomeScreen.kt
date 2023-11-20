@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -126,22 +127,22 @@ fun ShopHomeScreen(navController: NavController) {
                     title = "Početna",
                     graphicID = Icons.Default.Home,
                     screen = Screen.HomeScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle,
-                    screen = Screen.StoreScreen,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Public",
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
+                    screen = Screen.StoreScreen,
+                    isActive = true
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.PublicProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Private",
+                    title = "Privatni",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.PrivateProfile,
                     isActive = false

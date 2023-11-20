@@ -7,6 +7,7 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.getValue
@@ -16,21 +17,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.BottomNavigationMenuContent
+import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Gray
+import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
+import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 
 @Composable
 fun BottomNavigationMenu(
     navController: NavController,
     items: List<BottomNavigationMenuContent>,
     modifier: Modifier = Modifier,
-    selectedColor: Color = MP_GreenLight,
-    selectedTextColor: Color = MP_White,
-    nonActiveTextColor: Color = MP_GreenLight,
+    selectedColor: Color = MP_Orange_Dark,
+    selectedTextColor: Color = MP_Orange_Dark,
+    nonActiveTextColor: Color = MP_Green,
     initSelectedItemID: Int = 0 // select first item by default
 ) {
     var selectedItemID by remember {
@@ -41,16 +49,14 @@ fun BottomNavigationMenu(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-            .background(
-                Brush.linearGradient(
-                    0.0f to Color.Black,
-                    1.0f to Color.Black,
-                    start = Offset.Zero,
-                    end = Offset.Infinite
-                )
+            .shadow(
+                elevation = 2.dp,
+                spotColor = MP_Black,
+                ambientColor = MP_Green
             )
+            .padding(top = 5.dp)
+            .fillMaxWidth()
+            .background(MP_White)
             .padding(vertical = 10.dp)
     ) {
         items.forEachIndexed { index, item ->

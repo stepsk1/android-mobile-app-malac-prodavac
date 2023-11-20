@@ -37,7 +37,7 @@ fun CallToActionFavourite (
     ) {
         Text(
             text = content,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.subtitle1,
             color = MP_White,
             fontWeight = FontWeight.W500,
             modifier = Modifier

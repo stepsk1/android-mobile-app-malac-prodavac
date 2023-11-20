@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun DropDownList(
     entries: List<Any> = emptyList(),
-    handleSelect: (Any) -> Unit
+    handleSelect: (Any) -> Unit,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     var selectedEntry by remember { mutableStateOf(entries.first().toString()) }
