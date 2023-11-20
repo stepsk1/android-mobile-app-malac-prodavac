@@ -102,7 +102,7 @@ fun ProfileHeroComp(
                             )
                             Text(
                                 text = "${user.firstName} ${user.lastName[0]}.",
-                                style = MaterialTheme.typography.h4,
+                                style = MaterialTheme.typography.h5,
                                 color = MP_White,
                                 fontWeight = FontWeight.Black
                             )

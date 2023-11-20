@@ -2,6 +2,7 @@ package com.triforce.malacprodavac.presentation.home.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Feature
@@ -28,12 +30,23 @@ fun RecommendedFeaturesSection(
         Text(
             text = "Podržite lokalnu ekonomiju",
             style = MaterialTheme.typography.h5,
+            fontWeight = FontWeight.W400,
             color = MP_Black,
             modifier = Modifier
-                .padding(start = 15.dp, bottom = 15.dp)
+                .padding(start = 15.dp)
         )
+        Text(
+            text = "Napravi razliku",
+            style = MaterialTheme.typography.body1,
+            fontWeight = FontWeight.W400,
+            color = MP_Black,
+            modifier = Modifier
+                .padding(start = 15.dp)
+        )
+        Spacer(modifier = Modifier.padding(6.dp))
+
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Fixed(1),
             contentPadding = PaddingValues(
                 start = 7.5.dp,
                 end = 7.5.dp,

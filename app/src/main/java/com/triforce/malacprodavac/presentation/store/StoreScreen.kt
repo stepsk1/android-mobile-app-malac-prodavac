@@ -129,22 +129,22 @@ fun StoreScreen(navController: NavController)
                     title = "Početna",
                     graphicID = Icons.Default.Home,
                     screen = Screen.HomeScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle,
-                    screen = Screen.StoreScreen,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Public",
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
+                    screen = Screen.StoreScreen,
+                    isActive = true
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.PublicProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Private",
+                    title = "Privatni",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.PrivateProfile,
                     isActive = false

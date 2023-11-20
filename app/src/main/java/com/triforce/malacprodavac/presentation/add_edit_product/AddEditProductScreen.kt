@@ -34,6 +34,7 @@ import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBac
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.product.ProductHeroImage
 import com.triforce.malacprodavac.presentation.product.ProductViewModel
+import com.triforce.malacprodavac.presentation.profile.components.ProfileHeroComp
 import com.triforce.malacprodavac.presentation.registration.RegistrationFormEvent
 import com.triforce.malacprodavac.presentation.registration.components.DropDownList
 import com.triforce.malacprodavac.presentation.store.StoreViewModel
@@ -64,7 +65,10 @@ fun AddEditProductScreen(
     var colorBackground = MP_White
     var colorForeground = MP_White
 
+    var heightScreen = 1050.dp
+
     if ( product == null ){
+        heightScreen = 980.dp
         colorBackground = MP_GreenDark
         colorForeground = MP_Green
     } else {
@@ -90,7 +94,7 @@ fun AddEditProductScreen(
             modifier = Modifier
                 .verticalScroll(state = scrollState)
                 .background(MP_White)
-                .height(950.dp)
+                .height(heightScreen)
         ){
             LinearGradient(color1 = colorForeground, color2 = colorBackground)
             RoundedBackgroundComp(top = 250.dp, color = MP_White)
@@ -104,7 +108,7 @@ fun AddEditProductScreen(
                     Column(
                         verticalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
-                            .height(550.dp)
+                            .height(600.dp)
                     ) {
                         AddEditTextField(
                             label = "Naziv proizvoda",
@@ -194,7 +198,7 @@ fun AddEditProductScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
-                            .height(550.dp)
+                            .height(600.dp)
                     ) {
                         AddEditTextField(
                             label = "Naziv proizvoda",

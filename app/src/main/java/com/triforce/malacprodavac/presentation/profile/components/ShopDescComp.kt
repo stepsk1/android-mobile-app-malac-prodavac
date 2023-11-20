@@ -31,7 +31,7 @@ fun ShopDescComp(
                 .height(100.dp)
         ) {
             Text(
-                text = "+381 (66) 123-123 ${user.phoneNumber.toString()}",
+                text = "${user.phoneNumber.toString()}",
                 style = MaterialTheme.typography.h5,
                 color = MP_Black,
                 fontWeight = FontWeight.W600

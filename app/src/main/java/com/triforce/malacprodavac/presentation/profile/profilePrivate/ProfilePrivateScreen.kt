@@ -21,6 +21,7 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.components.ShowShopDetailsSection
+import com.triforce.malacprodavac.presentation.product.ProductOptions
 import com.triforce.malacprodavac.presentation.profile.components.ProfileHeroComp
 import com.triforce.malacprodavac.presentation.profile.components.ProfilePrivateHeroComp
 import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
@@ -51,11 +52,15 @@ fun ProfilePrivateScreen(navController: NavController, viewModel: ProfilePrivate
 
             if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
 
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
+
+                ProductOptions(null,navController, false)
+
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 ShopDescComp(state.currentUser)
 
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 ShowHighlightSectionComp(
                     navController = navController,
@@ -64,7 +69,7 @@ fun ProfilePrivateScreen(navController: NavController, viewModel: ProfilePrivate
                     route = Screen.HighlightSection.route
                 )
 
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 ShowHighlightSectionComp(
                     navController = navController,
@@ -73,7 +78,7 @@ fun ProfilePrivateScreen(navController: NavController, viewModel: ProfilePrivate
                     route = Screen.HighlightSection.route
                 )
 
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 //ShowCommentsSection()
                 ShowShopDetailsSection(state.currentUser)

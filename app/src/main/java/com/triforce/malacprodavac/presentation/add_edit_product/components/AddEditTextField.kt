@@ -42,7 +42,7 @@ fun AddEditTextField(
         Text(
             text = label,
             style = MaterialTheme.typography.h6,
-            color = MP_Pink_Dark,
+            color = MP_Black,
             fontWeight = FontWeight.W400,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -64,7 +64,7 @@ fun AddEditTextField(
             },
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             colors = TextFieldDefaults.textFieldColors(
-                textColor = MP_Pink_Dark,
+                textColor = MP_Black,
                 containerColor = MP_White,
                 focusedIndicatorColor = MP_Pink_Dark
             ),

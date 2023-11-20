@@ -21,6 +21,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -85,7 +88,7 @@ fun ProductScreen(
         modifier = Modifier
             .verticalScroll(state = scrollState)
             .background(MP_White)
-            .height(850.dp)
+            .height(950.dp)
     ) {
         LinearGradient(color1 = colorForeground, color2 = colorBackground)
         RoundedBackgroundComp(top = 250.dp, color = MP_White)
@@ -101,15 +104,16 @@ fun ProductScreen(
 
                 Spacer(modifier = Modifier.padding(16.dp))
 
+                ProductOptions(product,navController, true)
+
+                Spacer(modifier = Modifier.padding(16.dp))
+
                 ShowHighlightSectionComp(
                     navController = navController,
                     products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
                     title = "Više proizvoda od prodavca",
                     route = Screen.HighlightSection.route
                 )
-
-                ShopProductOptions(product,navController)
-
                 Box(
                     contentAlignment = Alignment.BottomCenter,
                     modifier = Modifier
@@ -127,14 +131,44 @@ fun ProductScreen(
 }
 
 @Composable
-fun ShopProductOptions(
+fun ProductOptions(
     product: Product?,
-    navController: NavController
+    navController: NavController,
+    isEdit: Boolean
 ){
-    Row(){
+    val colorTint = if ( isEdit ) { MP_Orange_Dark } else { MP_Green }
+    val msg = if ( isEdit ) { "Izmeni proizvod" } else { "Dodaj novi proizvod" }
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(
+                start = 20.dp,
+                end = 20.dp
+            )
+            .shadow(
+                elevation = 10.dp,
+                spotColor = MP_Black,
+                shape = RoundedCornerShape(20.dp)
+            )
+            .clip(RoundedCornerShape(20.dp))
+            .background(MP_White)
+            .padding(
+                vertical = 10.dp,
+                horizontal = 16.dp
+            )
+    ){
+        Icon(
+            imageVector = if ( isEdit ) { Icons.Outlined.Edit } else { Icons.Outlined.Add },
+            contentDescription = "FavoriteBorder",
+            tint = colorTint,
+            modifier = Modifier
+                .size(35.dp)
+        )
         Text(
-            text = "Izmeni",
-            style = MaterialTheme.typography.body1,
+            text = msg,
+            style = MaterialTheme.typography.body2,
             color = MP_White,
             fontWeight = FontWeight.W400,
             textAlign = TextAlign.Center,
@@ -142,11 +176,13 @@ fun ShopProductOptions(
                 .clickable {
                     if (product != null) {
                         navController.navigate(Screen.AddEditProduct.route + "?productId=${product.id}")
+                    } else {
+                        navController.navigate(Screen.AddEditProduct.route)
                     }
                 }
-                .clip(RoundedCornerShape(20.dp))
-                .background(MP_Pink)
-                .width(width = 50.dp)
+                .clip(RoundedCornerShape(15.dp))
+                .background(colorTint)
+                .width(width = 200.dp)
                 .padding(vertical = 10.dp)
         )
     }

@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +39,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -51,18 +55,16 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
         LinearGradient(color1 = MP_Green, color2 = MP_Green)
         RoundedBackgroundComp(top = 100.dp, color = MP_White)
         Column {
-            GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac")
-
-            Spacer(modifier = Modifier.padding(10.dp))
-            GoToStoreSection(navController)
-            Spacer(modifier = Modifier.padding(10.dp))
+            GreetingSection(msg = "Malac Prodavac", subMsg = "Od sirupa do sira")
+            //GoToStoreSection(navController)
+            Spacer(modifier = Modifier.padding(16.dp))
             RecommendedFeaturesSection(
                 navController = navController,
                 features = listOf(
                     Feature(
                         id = 1,
-                        title = "Prodavnica",
-                        graphicID = Icons.Default.Menu,
+                        title = "Market",
+                        graphicID = Icons.Default.Star,
                         color1 = MP_Green,
                         color2 = MP_Green,
                         screen = Screen.StoreScreen
@@ -71,21 +73,13 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                         id = 1,
                         title = "Korpa",
                         graphicID = Icons.Default.ShoppingCart,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange,
+                        color1 = MP_Pink,
+                        color2 = MP_Pink,
                         screen = Screen.CartScreen
                     ),
                     Feature(
                         id = 1,
-                        title = "Prodavnica",
-                        graphicID = Icons.Default.Search,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange,
-                        screen = Screen.StoreScreen
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Public",
+                        title = "Javan profil",
                         graphicID = Icons.Default.AccountCircle,
                         color1 = MP_Green,
                         color2 = MP_Green,
@@ -93,16 +87,16 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                     ),
                     Feature(
                         id = 1,
-                        title = "Private",
-                        graphicID = Icons.Default.AccountCircle,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
+                        title = "Privatan profil",
+                        graphicID = Icons.Default.AccountBox,
+                        color1 = MP_Orange_Dark,
+                        color2 = MP_Orange_Dark,
                         screen = Screen.PrivateProfile
                     ),
                     Feature(
                         id = 1,
-                        title = "AddEdit",
-                        graphicID = Icons.Default.AccountCircle,
+                        title = "Dodaj novi proizvod",
+                        graphicID = Icons.Default.Check,
                         color1 = MP_Green,
                         color2 = MP_Green,
                         screen = Screen.AddEditProduct
@@ -120,19 +114,19 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                     isActive = true
                 ),
                 BottomNavigationMenuContent(
-                    title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle,
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
                     screen = Screen.StoreScreen,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Public",
+                    title = "Profil",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.PublicProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Private",
+                    title = "Privatni",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.PrivateProfile,
                     isActive = false

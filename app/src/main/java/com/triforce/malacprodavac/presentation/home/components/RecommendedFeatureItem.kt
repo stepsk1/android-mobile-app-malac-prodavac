@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -43,7 +44,7 @@ fun RecommendedFeatureItem(
                 shape = RoundedCornerShape(7.5.dp)
             )
             .padding(1.5.dp)
-            .aspectRatio(1F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
+            .aspectRatio(5F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
             .clip(RoundedCornerShape(10.dp))
             .background(
                 Brush.linearGradient(
@@ -69,16 +70,17 @@ fun RecommendedFeatureItem(
                 contentDescription = feature.title,
                 tint = MP_White,
                 modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .size(100.dp)
+                    .align(Alignment.CenterStart)
+                    .size(50.dp)
             )
             Text(
                 text = feature.title,
                 style = MaterialTheme.typography.h6,
-                lineHeight = 26.sp,
+                lineHeight = 25.sp,
+                textAlign = TextAlign.Center,
                 color = MP_White,
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)
+                    .align(Alignment.CenterEnd)
             )
         }
     }

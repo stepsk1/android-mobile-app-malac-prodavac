@@ -52,11 +52,11 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
 
             if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
 
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 ShopDescComp(state.currentUser)
 
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 ShowHighlightSectionComp(
                     navController = navController,
@@ -65,11 +65,11 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
                     route = Screen.HighlightSection.route
                 )
 
-                Spacer(modifier = Modifier.padding(5.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
 
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 ShowHighlightSectionComp(
                     navController = navController,
@@ -78,7 +78,7 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
                     route = Screen.HighlightSection.route
                 )
 
-                Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 //ShowCommentsSection()
                 ShowShopDetailsSection(state.currentUser)
