@@ -25,8 +25,10 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.domain.util.enum.UserRole
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditDropDownList
+import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditSubmitButton
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditTextField
 import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
@@ -34,6 +36,7 @@ import com.triforce.malacprodavac.presentation.product.ProductHeroImage
 import com.triforce.malacprodavac.presentation.product.ProductViewModel
 import com.triforce.malacprodavac.presentation.registration.RegistrationFormEvent
 import com.triforce.malacprodavac.presentation.registration.components.DropDownList
+import com.triforce.malacprodavac.presentation.store.StoreViewModel
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
@@ -51,6 +54,10 @@ fun AddEditProductScreen(
     navController: NavController,
     viewModel: AddEditProductViewModel = hiltViewModel()
 ) {
+    val storeViewModel: StoreViewModel = hiltViewModel()
+    val storeState = storeViewModel.state
+    val categories: List<Category> = storeState.categories
+
     var state = viewModel.state
     val product = state.product
 
@@ -83,7 +90,7 @@ fun AddEditProductScreen(
             modifier = Modifier
                 .verticalScroll(state = scrollState)
                 .background(MP_White)
-                .height(800.dp)
+                .height(1000.dp)
         ){
             LinearGradient(color1 = colorForeground, color2 = colorBackground)
             RoundedBackgroundComp(top = 250.dp, color = MP_White)
@@ -97,7 +104,7 @@ fun AddEditProductScreen(
                     Column(
                         verticalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
-                            .fillMaxHeight(1F)
+                            .height(550.dp)
                     ) {
                         AddEditTextField(
                             label = "Naziv proizvoda",
@@ -120,15 +127,18 @@ fun AddEditProductScreen(
                             colorForeground = colorForeground
                         )
                     }
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    AddEditSubmitButton(navController = navController, viewModel = viewModel, isEdit = true)
                 }
                 else {
                     GoBackNoSearch(msg = "Dodaj proizvod", navController = navController)
                     ProductHeroImage()
                     Spacer(modifier = Modifier.padding(10.dp))
                     Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
-                            .fillMaxHeight(1F)
+                            .height(600.dp)
                     ) {
                         AddEditTextField(
                             label = "Naziv proizvoda",
@@ -140,6 +150,7 @@ fun AddEditProductScreen(
                             colorBackground = colorBackground,
                             colorForeground = colorForeground
                         )
+
                         AddEditTextField(
                             label = "Opis proizvoda",
                             text = state.desc,
@@ -150,6 +161,7 @@ fun AddEditProductScreen(
                             colorBackground = colorBackground,
                             colorForeground = colorForeground
                         )
+
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             modifier = Modifier
@@ -165,8 +177,10 @@ fun AddEditProductScreen(
                                         )
                                     )
                                 },
-                                label = "Mera"
+                                label = "Mera",
+                                fill = false
                             )
+
                             AddEditDropDownList(
                                 entries = enumValues<Currency>().toList(),
                                 handleSelect = { currency ->
@@ -175,10 +189,36 @@ fun AddEditProductScreen(
                                             currency as Currency)
                                     )
                                 },
-                                label = "Valuta"
+                                label = "Valuta",
+                                fill = false
                             )
                         }
+
+                        AddEditTextField(
+                            label = "Cena",
+                            text = state.price.toString(),
+                            onTextValueChange = {
+                                viewModel.onEvent(AddEditProductEvent.PriceChanged(it.toDouble()))
+                            },
+                            placeholder = "Cena...",
+                            colorBackground = colorBackground,
+                            colorForeground = colorForeground
+                        )
+
+                        AddEditDropDownList(
+                            entries = enumValues<Currency>().toList(),
+                            handleSelect = { categoryId ->
+                                viewModel.onEvent(
+                                    AddEditProductEvent.CurrencyChanged(
+                                        categoryId as Currency)
+                                )
+                            },
+                            label = "Kategorija",
+                            fill = true
+                        )
                     }
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    AddEditSubmitButton(navController = navController, viewModel = viewModel, isEdit = false)
                 }
             }
         }

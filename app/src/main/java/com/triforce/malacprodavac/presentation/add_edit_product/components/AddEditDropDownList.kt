@@ -2,9 +2,11 @@ package com.triforce.malacprodavac.presentation.add_edit_product.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,14 +36,18 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 fun AddEditDropDownList(
     entries: List<Any> = emptyList(),
     handleSelect: (Any) -> Unit,
-    label: String
+    label: String,
+    fill: Boolean
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     var selectedEntry by remember { mutableStateOf(entries.first().toString()) }
 
     Column (
-        modifier = Modifier
-            .width(150.dp)
+        modifier = if ( fill ) {
+            Modifier.fillMaxWidth().padding(horizontal = 20.dp).clip(RoundedCornerShape(10.dp))
+        } else {
+            Modifier.width(150.dp)
+        }
     ){
         Text(
             text = label,
@@ -57,15 +64,14 @@ fun AddEditDropDownList(
             expanded = isExpanded,
             onExpandedChange = {
                 isExpanded = it
-            },
-            modifier = Modifier.background(MP_Pink_Dark)
+            }
         ) {
             TextField(
                 value = selectedEntry,
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor()
-                    .background(MP_Pink), // menuAnchor modifier must be passed to the text field for correctness.
+                    .clip(RoundedCornerShape(10.dp)), // menuAnchor modifier must be passed to the text field for correctness.
                 readOnly = true,
                 onValueChange = { },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) },
