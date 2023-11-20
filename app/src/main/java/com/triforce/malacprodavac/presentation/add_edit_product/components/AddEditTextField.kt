@@ -55,6 +55,7 @@ fun AddEditTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
+            maxLines = 3,
             placeholder = {
                 Text(
                     text = placeholder,
@@ -63,7 +64,7 @@ fun AddEditTextField(
             },
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             colors = TextFieldDefaults.textFieldColors(
-                textColor = MP_Pink,
+                textColor = MP_Pink_Dark,
                 containerColor = MP_White,
                 focusedIndicatorColor = MP_Pink_Dark
             ),

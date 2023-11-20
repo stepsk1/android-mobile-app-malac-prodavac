@@ -90,7 +90,7 @@ fun AddEditProductScreen(
             modifier = Modifier
                 .verticalScroll(state = scrollState)
                 .background(MP_White)
-                .height(1000.dp)
+                .height(950.dp)
         ){
             LinearGradient(color1 = colorForeground, color2 = colorBackground)
             RoundedBackgroundComp(top = 250.dp, color = MP_White)
@@ -116,6 +116,7 @@ fun AddEditProductScreen(
                             colorBackground = colorBackground,
                             colorForeground = colorForeground
                         )
+
                         AddEditTextField(
                             label = "Opis proizvoda",
                             text = state.desc,
@@ -125,6 +126,61 @@ fun AddEditProductScreen(
                             placeholder = product.desc,
                             colorBackground = colorBackground,
                             colorForeground = colorForeground
+                        )
+
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                        ) {
+                            AddEditDropDownList(
+                                entries = enumValues<UnitOfMeasurement>().toList(),
+                                handleSelect = { unit ->
+                                    viewModel.onEvent(
+                                        AddEditProductEvent.UnitOfMeasurementChanged(
+                                            unit as UnitOfMeasurement
+                                        )
+                                    )
+                                },
+                                label = "Mera",
+                                fill = false
+                            )
+
+                            AddEditDropDownList(
+                                entries = enumValues<Currency>().toList(),
+                                handleSelect = { currency ->
+                                    viewModel.onEvent(
+                                        AddEditProductEvent.CurrencyChanged(
+                                            currency as Currency)
+                                    )
+                                },
+                                label = "Valuta",
+                                fill = false
+                            )
+                        }
+
+                        AddEditTextField(
+                            label = "Cena",
+                            text = state.price.toString(),
+                            onTextValueChange = {
+                                viewModel.onEvent(AddEditProductEvent.PriceChanged(it.toDouble()))
+                            },
+                            placeholder = product.price.toString(),
+                            colorBackground = colorBackground,
+                            colorForeground = colorForeground
+                        )
+
+                        AddEditDropDownList(
+                            entries = enumValues<Currency>().toList(),
+                            handleSelect = { categoryId ->
+                                viewModel.onEvent(
+                                    AddEditProductEvent.CurrencyChanged(
+                                        categoryId as Currency)
+                                )
+                            },
+                            label = "Kategorija",
+                            fill = true
                         )
                     }
                     Spacer(modifier = Modifier.padding(10.dp))
@@ -138,7 +194,7 @@ fun AddEditProductScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
-                            .height(600.dp)
+                            .height(550.dp)
                     ) {
                         AddEditTextField(
                             label = "Naziv proizvoda",

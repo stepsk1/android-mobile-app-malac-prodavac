@@ -15,10 +15,10 @@ data class AddEditProductState(
     val title: String = "",
     val desc: String = "",
     val price: Double = 0.0,
-    val categoryId: Int = 0,
+    val categoryId: Int = 1,
     val availableAt: String = "",
     val availableAtLatitude: Double = 90.0,
     val availableAtLongitude: Double = 90.0,
-    val availableFromHours: Int = 0,
-    val availableTillHours: Int = 0
+    val availableFromHours: Int = 7,
+    val availableTillHours: Int = 15
 )
