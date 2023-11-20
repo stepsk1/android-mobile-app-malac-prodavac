@@ -39,11 +39,25 @@ import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
+import com.triforce.malacprodavac.util.enum.DeliveryMethod
+import com.triforce.malacprodavac.util.enum.PaymentMethod
 
 @Composable
 fun DetailsOrderScreen(navController: NavController) {
 
     val totalPrice: Double = TotalPrice(buyedProducts = BuyedProducts.listOfBuyedProducts)
+
+    var paymentMethod: String
+    var deliveryMethod: String
+    if (BuyedProducts.paymentMethod == PaymentMethod.OnDelivery)
+        paymentMethod = "Lično/Pouzećem"
+    else
+        paymentMethod = "PayPal"
+
+    if(BuyedProducts.deliveryMethod == DeliveryMethod.ByCourier)
+        deliveryMethod = "Kurirska dostava"
+    else
+        deliveryMethod = "Lično preuzimanje"
 
     val scrollState = rememberScrollState()
 
@@ -87,7 +101,7 @@ fun DetailsOrderScreen(navController: NavController) {
                     ) {
 
                         Text(
-                            text = "Način plaćanja: " + BuyedProducts.paymentMethod,
+                            text = "Način plaćanja: " + paymentMethod,
                             style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
@@ -105,7 +119,7 @@ fun DetailsOrderScreen(navController: NavController) {
                         )
 
                         Text(
-                            text = "Način slanja: " + BuyedProducts.deliveryMethod,
+                            text = "Način slanja: " + deliveryMethod,
                             style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier

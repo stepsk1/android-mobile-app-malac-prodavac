@@ -35,7 +35,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -60,7 +59,7 @@ fun StoreScreen(navController: NavController)
 {
     val viewModel: StoreViewModel = hiltViewModel()
     val state = viewModel.state
-    val context = LocalContext.current
+    //val context = LocalContext.current
 
     val Categories: List<Category> = state.categories
     var features : List<Feature> = listOf()

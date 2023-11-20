@@ -26,7 +26,7 @@ class OrderRepositoryImpl @Inject constructor(
 
     override suspend fun getOrders(
         fetchFromRemote: Boolean,
-        queryMap: MutableMap<String, String>
+        //queryMap: MutableMap<String, String>
     ): Flow<Resource<List<Order>>> {
         return flow {
 
@@ -48,7 +48,7 @@ class OrderRepositoryImpl @Inject constructor(
             }
 
             val remoteOrders = try {
-                api.getOrders(queryMap)
+                api.getOrders()
             } catch (e: IOException) {
 
                 e.printStackTrace()
