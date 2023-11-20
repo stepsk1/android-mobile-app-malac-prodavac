@@ -84,6 +84,23 @@ fun AddEditSubmitButton(
             modifier = Modifier
                 .clickable {
                     viewModel.onEvent(AddEditProductEvent.Submit)
+                    if (isEdit) {
+                        Toast
+                            .makeText(
+                                context,
+                                "Uspešno ste izmenili proizvod",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    } else {
+                        Toast
+                            .makeText(
+                                context,
+                                "Uspešno je kreiran novi proizvod",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    }
                 }
                 .clip(RoundedCornerShape(20.dp))
                 .background(tintColor)

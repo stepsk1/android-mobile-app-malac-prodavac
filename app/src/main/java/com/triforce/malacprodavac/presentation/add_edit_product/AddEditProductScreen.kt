@@ -81,7 +81,7 @@ fun AddEditProductScreen(
 
     if ( state.successful ) {
         LaunchedEffect(key1 = true){
-            navController.navigateUp()
+            navController.navigate(Screen.PrivateProfile.route)
         }
     }
 

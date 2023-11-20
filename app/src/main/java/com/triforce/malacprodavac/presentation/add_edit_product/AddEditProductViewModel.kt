@@ -12,7 +12,10 @@ import com.triforce.malacprodavac.domain.model.CreateProduct
 import com.triforce.malacprodavac.domain.model.UpdateProduct
 import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.presentation.registration.RegistrationViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -75,6 +78,7 @@ class AddEditProductViewModel @Inject constructor(
                         availableTillHours = state.availableTillHours
                     )
                     insertProduct(createProduct, true)
+                    state = state.copy(successful = true)
                 } else {
                     val updateProduct = UpdateProductDto(
                         unitOfMeasurement = state.unitOfMeasurement,
@@ -90,6 +94,7 @@ class AddEditProductViewModel @Inject constructor(
                         availableTillHours = state.availableTillHours
                     )
                     updateProduct(state.productId!!, updateProduct, true)
+                    state = state.copy(successful = true)
                 }
             }
         }
