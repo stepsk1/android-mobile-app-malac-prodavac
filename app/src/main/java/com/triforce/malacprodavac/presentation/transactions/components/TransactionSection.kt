@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.orders.components
+package com.triforce.malacprodavac.presentation.transactions.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,16 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.domain.model.Order
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.presentation.orders.OrderViewModel
+import com.triforce.malacprodavac.presentation.transactions.TransactionViewModel
 
 @Composable
-fun OrderProductSection(
-    orders: List<Order>,
-    viewModel: OrderViewModel
+fun TransactionSection(
+    transactions: List<Order>,
+    viewModel: TransactionViewModel
 ) {
-    var product: Product? = null
-    var products: List<Product> = viewModel.listOfProducts
 
     Column(
         modifier = Modifier
@@ -37,14 +34,13 @@ fun OrderProductSection(
                 .requiredHeight(530.dp)
                 .padding(top = 20.dp)
         ) {
-            items(orders.size) {// how many items do we have
+            items(transactions.size) {// how many items do we have
                 // define one of items
-                product = viewModel.getProduct(true, orders[it].productId)
 
-                OrderProductItem(
-                    order = orders[it],
+                TransactionItem(
+                    transaction = transactions[it],
                     viewModel = viewModel,
-                    title = product?.title
+                    numberTransaction = it + 1
                 )
             }
         }

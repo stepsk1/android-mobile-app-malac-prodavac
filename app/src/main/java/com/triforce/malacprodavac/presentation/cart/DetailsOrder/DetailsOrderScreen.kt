@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,9 +25,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsEvent
+import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsViewModel
 import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
 import com.triforce.malacprodavac.presentation.cart.components.Confirmation
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
@@ -45,7 +46,10 @@ import com.triforce.malacprodavac.util.enum.PaymentMethod
 @Composable
 fun DetailsOrderScreen(navController: NavController) {
 
-    val totalPrice: Double = TotalPrice(buyedProducts = BuyedProducts.listOfBuyedProducts)
+    val viewModel: CartDetailsViewModel = hiltViewModel()
+    val state = viewModel.state
+//    val totalPrice: Double = state.totalPrice
+    val totalPrice: Double = TotalPrice()
 
     var paymentMethod: String
     var deliveryMethod: String
@@ -158,6 +162,7 @@ fun DetailsOrderScreen(navController: NavController) {
                         Button(
                             onClick = {
                                 navController.navigate(Screen.HomeScreen.route)
+                                viewModel.onEvent(CartDetailsEvent.order)
                             },
                             colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
                         ) {

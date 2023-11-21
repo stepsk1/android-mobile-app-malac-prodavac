@@ -34,6 +34,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -48,6 +49,7 @@ import com.triforce.malacprodavac.util.enum.PaymentMethod
 @Composable
 fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewModel = hiltViewModel()) {
 
+    var viewModelCart: CartViewModel = hiltViewModel()
     val orderProducts = BuyedProducts
 
     val typeOfPaymentOptions = listOf("Paypal", "Lično/Pouzećem")
@@ -242,7 +244,7 @@ fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewMo
             }
         }
 
-        TotalPrice(buyedProducts = orderProducts.listOfBuyedProducts)
+        TotalPrice(viewModel = viewModelCart)
 
         Row(
             modifier = Modifier
@@ -272,7 +274,6 @@ fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewMo
                             orderProducts.deliveryMethod = DeliveryMethod.SelfPickup
                         else
                             orderProducts.deliveryMethod = DeliveryMethod.ByCourier
-                        viewModel.onEvent(CartDetailsEvent.order)
                         navController.navigate(Screen.DetailsOrderScreen.route)
                     },
                     colors = ButtonDefaults.buttonColors(MP_Orange_Dark)

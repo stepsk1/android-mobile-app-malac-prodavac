@@ -21,6 +21,7 @@ import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePri
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
+import com.triforce.malacprodavac.presentation.transactions.TransactionScreen
 
 @Composable
 fun Navigation() {
@@ -134,6 +135,10 @@ fun Navigation() {
 
         composable(route = Screen.OrderScreen.route) {
             OrderScreen(navController = navController)
+        }
+        
+        composable(route = Screen.TransactionScreen.route) {
+            TransactionScreen(navController = navController)
         }
     }
 }

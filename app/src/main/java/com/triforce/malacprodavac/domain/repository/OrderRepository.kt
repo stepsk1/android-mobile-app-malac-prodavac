@@ -14,7 +14,6 @@ interface OrderRepository {
 //        queryMap: MutableMap<String, String>
     ): Flow<Resource<List<Order>>>
 
-
 //    suspend fun getOrdersByCustomer(
 //        customerId: Int,
 //        fetchFromRemote: Boolean,
