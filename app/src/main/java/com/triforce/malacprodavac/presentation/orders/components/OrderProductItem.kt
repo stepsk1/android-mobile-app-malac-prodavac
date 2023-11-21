@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.presentation.orders.OrderEvent
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -127,7 +128,8 @@ fun OrderProductItem(
 
                                 }
                         )
-                        if (profileState.currentUser?.roles?.first().equals("Courier", ignoreCase = true)){
+                        if (profileState.currentUser?.roles?.first().equals("Courier", ignoreCase = true) ||
+                            profileState.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
                             Icon(
                                 imageVector = Icons.Default.CheckCircle,
                                 contentDescription = "Check",
@@ -136,7 +138,7 @@ fun OrderProductItem(
                                     .align(Alignment.CenterEnd)
                                     .size(30.dp)
                                     .clickable {
-
+                                        viewModel.onEvent(OrderEvent.changeStatusOfOrder)
                                     }
                             )
                         }

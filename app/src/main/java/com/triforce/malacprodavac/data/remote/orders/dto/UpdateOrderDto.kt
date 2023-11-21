@@ -4,6 +4,6 @@ import com.triforce.malacprodavac.domain.model.UpdateOrder
 import com.triforce.malacprodavac.util.enum.OrderStatus
 
 data class UpdateOrderDto (
-    override val orderStatus: OrderStatus?,
+    override val orderStatus: String?,
     override val accepted: Boolean?
 ): UpdateOrder
