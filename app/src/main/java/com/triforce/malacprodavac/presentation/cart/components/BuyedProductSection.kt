@@ -19,6 +19,8 @@ fun BuyedProductSection(
     viewModel: CartViewModel
 ) {
 
+    var totalPriceOfAllOrders: Double = 0.00
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,11 +36,19 @@ fun BuyedProductSection(
                 .requiredHeight(530.dp)
                 .padding(top = 20.dp)
         ) {
+
+            for (order in buyedProducts) {
+                totalPriceOfAllOrders += order.totalPrice
+                println("TOTAL PRICE")
+                println(totalPriceOfAllOrders)
+            }
+
             items(buyedProducts.size) {// how many items do we have
                 // define one of items
                     BuyedProductItem(
                         buyedProduct = buyedProducts[it],
-                        viewModel = viewModel
+                        viewModel = viewModel,
+                        totalPrice = totalPriceOfAllOrders
                     )
             }
         }

@@ -25,9 +25,9 @@ class CartViewModel @Inject constructor(
                 state = state.copy(isDeleted = true)
             }
             is CartEvent.getTotalPrice -> {
+                state = state.copy(totalPrice = event.totalPrice)
                 countTotalPrice()
             }
-            else -> { }
         }
     }
 

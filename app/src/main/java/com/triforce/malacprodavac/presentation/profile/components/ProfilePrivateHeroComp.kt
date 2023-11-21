@@ -25,7 +25,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Email
@@ -53,7 +52,6 @@ import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.presentation.profile.PhotoUrl
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateEvent
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateViewModel
-import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
@@ -68,7 +66,7 @@ fun ProfilePrivateHeroComp(
     viewModel: ProfilePrivateViewModel = hiltViewModel(),
     private: Boolean
 ) {
-    val state = viewModel.state
+//    val state = viewModel.state
 
     if (user != null) {
         Column(
@@ -98,7 +96,7 @@ fun ProfilePrivateHeroComp(
                         }
                     )
             ) {
-                GoBackComp(msg = "Profil", navController = navController)
+                GoBackCompLogout(msg = "Profil", navController = navController, viewModel = viewModel)
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
