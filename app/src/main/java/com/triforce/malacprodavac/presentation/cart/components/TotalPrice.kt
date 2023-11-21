@@ -10,20 +10,31 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 
 @Composable
-fun TotalPrice(buyedProducts: MutableList<ProductAmount>): Double {
+fun TotalPrice(viewModel: CartViewModel = hiltViewModel()): Double {
 
     var totalPrice: Double = 0.00
-    for (buyedProduct in buyedProducts) {
-        totalPrice += buyedProduct.totalPrice
+    for (order in BuyedProducts.listOfBuyedProducts) {
+        totalPrice += order.totalPrice
+        println("CENA PORUDZINE")
+        println(totalPrice)
     }
+
+    var state by remember { mutableStateOf(viewModel.state) }
 
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
@@ -50,7 +61,8 @@ fun TotalPrice(buyedProducts: MutableList<ProductAmount>): Double {
             )
             {
                 Text(
-                    text = "Ukupno: ${totalPrice.toString()} rsd",
+                    text = "Ukupno: $totalPrice rsd",
+//                    text = "Ukupno: ${state.totalPrice} rsd",
                     style = MaterialTheme.typography.h5,
                     color = MP_Black
                 )

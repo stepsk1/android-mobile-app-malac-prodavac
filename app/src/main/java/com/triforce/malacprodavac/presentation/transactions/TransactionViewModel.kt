@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.orders
+package com.triforce.malacprodavac.presentation.transactions
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,28 +8,27 @@ import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.model.Order
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.repository.OrderRepository
-import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.presentation.orders.OrderState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class OrderViewModel @Inject constructor(
-    private val repository: OrderRepository,
-    private val repositoryProduct: ProductRepository,
-) : ViewModel() {
 
+@HiltViewModel
+class TransactionViewModel @Inject constructor(
+    private val repository: OrderRepository,
+) : ViewModel() {
     var state by mutableStateOf(OrderState())
     var listOfProducts: MutableList<Product> = mutableListOf()
     var product: Product? = null
     private var isCoroutineRunning = false
 
     init {
-        getAcceptedOrders(true)
+        getOrders(true)
     }
 
-    private fun getAcceptedOrders(fetchFromRemote: Boolean) {
+    private fun getOrders(fetchFromRemote: Boolean) {
         viewModelScope.launch {
             repository.getOrders(fetchFromRemote).collect { result ->
                 when (result) {
@@ -53,34 +52,5 @@ class OrderViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    public fun getProduct(fetchFromRemote: Boolean, productId: Int): Product? {
-        if (!isCoroutineRunning){
-            viewModelScope.launch {
-                repositoryProduct.getProduct(productId, fetchFromRemote).collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            if (result.data is Product) {
-                                listOfProducts.add(result.data)
-                                state = state.copy(product = result.data)
-                            }
-                        }
-
-                        is Resource.Error -> {
-                            Unit
-                        }
-
-                        is Resource.Loading -> {
-                            state = state.copy(
-                                isLoading = result.isLoading
-                            )
-                        }
-                    }
-                }
-            }
-            isCoroutineRunning = true
-        }
-        return state.product
     }
 }

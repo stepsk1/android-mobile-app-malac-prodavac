@@ -4,4 +4,5 @@ sealed class CartEvent {
     data class AddToCart(val totalPrice: Double): CartEvent()
     data class RemoveFromCart(val totalPrice: Double): CartEvent()
     object DeleteFromCart: CartEvent()
+    object getTotalPrice: CartEvent()
 }

@@ -17,37 +17,47 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Order
-import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.orders.components.OrderProductSection
+import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicViewModel
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
-import com.triforce.malacprodavac.ui.theme.MP_Orange
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltViewModel()) {
 
+    var profileViewModel: ProfilePublicViewModel = hiltViewModel()
+    val profileState = profileViewModel.state
     val state = viewModel.state
 
     val orders: List<Order> = state.orders
+    var color: Color
+
+    if (profileState.currentUser?.roles?.first().equals("Courier", ignoreCase = true)){
+        color = MP_Pink
+    }
+    else
+        color = MP_Green
+
 
     Box(
         modifier = Modifier
             .background(MP_GreenDark)
             .fillMaxSize()
     ){
-        LinearGradient(color1 = MP_Green, color2 = MP_Green)
+        LinearGradient(color1 = color, color2 = color)
 
         Column {
-            GoBackComp("Moje narudžbine", navController)
+            GoBackComp("Porudžbine", navController)
 
             OrderProductSection(
                 orders = orders,
@@ -73,13 +83,13 @@ fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltVi
             ) {
                 Button(
                     onClick = {
-                        navController.navigate(Screen.CartDetailsScreen.route)
+                        navController.navigate(Screen.TransactionScreen.route)
                     },
                     colors = ButtonDefaults.buttonColors(MP_White)
                 ) {
                     Text(
                         text = "Otvori istoriju transakcija",
-                        color = MP_Green,
+                        color = color,
                         style = MaterialTheme.typography.body1
                     )
                 }

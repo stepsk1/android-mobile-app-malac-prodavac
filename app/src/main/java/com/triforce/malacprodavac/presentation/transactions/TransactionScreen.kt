@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.cart
+package com.triforce.malacprodavac.presentation.transactions
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,42 +22,36 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.cart.components.BuyedProductSection
-import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
-import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.domain.model.Order
+import com.triforce.malacprodavac.presentation.orders.components.OrderProductSection
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
+import com.triforce.malacprodavac.presentation.transactions.components.TransactionSection
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_Orange
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
-@Composable
-fun CartScreen(navController: NavController)
-{
 
-    var buyedProducts = BuyedProducts.listOfBuyedProducts
-    val buyedProductsSet = buyedProducts.toMutableSet()
-    buyedProducts = buyedProductsSet.toMutableList()
-    val viewModel: CartViewModel = hiltViewModel()
+@Composable
+fun TransactionScreen(navController: NavController, viewModel: TransactionViewModel = hiltViewModel()) {
+
+    val state = viewModel.state
+
+    val transactions: List<Order> = state.orders
 
     Box(
         modifier = Modifier
-            .background(MP_White)
+            .background(MP_GreenDark)
             .fillMaxSize()
     ){
-        LinearGradient(color1 = MP_Orange, color2 = MP_Orange_Dark )
-
-        RoundedBackgroundComp(top = 65.dp, color = MP_White)
+        LinearGradient(color1 = MP_Green, color2 = MP_Green)
 
         Column {
-            GoBackComp("Moja korpa", navController)
-            BuyedProductSection(
-                buyedProducts = buyedProducts,
-                viewModel = viewModel,
-            )
-        }
+            GoBackComp("Moje transakcije", navController)
 
-        TotalPrice(viewModel)
+            TransactionSection(
+                transactions = transactions,
+                viewModel = viewModel)
+        }
 
         Row(
             modifier = Modifier
@@ -76,16 +70,19 @@ fun CartScreen(navController: NavController)
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
+
+                Text(text = "Broj ostvarenih paketa: 17", color = MP_White)
+
                 Button(
                     onClick = {
-                        navController.navigate(Screen.CartDetailsScreen.route)
+                        navController.navigate(Screen.HomeScreen.route)
                     },
-                    colors = ButtonDefaults.buttonColors(MP_Green)
+                    colors = ButtonDefaults.buttonColors(MP_White)
                 ) {
                     Text(
-                        text = "Nastavi sa plaćanjem",
-                        color = MP_White,
-                        style = androidx.compose.material.MaterialTheme.typography.body1
+                        text = "Vrati se na početnu stranu",
+                        color = MP_Green,
+                        style = MaterialTheme.typography.body1
                     )
                 }
             }

@@ -35,6 +35,7 @@ import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.CartEvent
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
+import com.triforce.malacprodavac.presentation.product.ProductEvent
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -96,6 +97,7 @@ fun BuyedProductItem(
                         modifier = Modifier
                             .size(40.dp)
                             .clickable {
+                                viewModel.onEvent(CartEvent.getTotalPrice)
                                 viewModel.onEvent(CartEvent.DeleteFromCart)
                                 removeFromBuyedProducts(buyedProduct)
                                 buyedProduct.amount = 0
@@ -134,6 +136,7 @@ fun BuyedProductItem(
                             .align(Alignment.BottomCenter)
                             .clickable {
                                 amount++
+                                viewModel.onEvent(CartEvent.getTotalPrice)
                                 buyedProduct.amount++
                                 buyedProduct.totalPrice = buyedProduct.amount * buyedProduct.product.price
                                 productTotalPrice = amount * buyedProduct.product.price
@@ -149,6 +152,7 @@ fun BuyedProductItem(
                             .align(Alignment.BottomEnd)
                             .clickable {
                                 if (amount > 1) {
+                                    viewModel.onEvent(CartEvent.getTotalPrice)
                                     amount--
                                     buyedProduct.amount--
                                     buyedProduct.totalPrice = buyedProduct.amount * buyedProduct.product.price
