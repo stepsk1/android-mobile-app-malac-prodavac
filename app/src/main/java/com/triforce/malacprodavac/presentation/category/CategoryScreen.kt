@@ -25,11 +25,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -47,9 +49,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
@@ -147,6 +151,41 @@ fun StoreCategoryScreen(
                 )
             }
         }
+        BottomNavigationMenu(
+            navController = navController,
+            items = listOf(
+                BottomNavigationMenuContent(
+                    title = "Početna",
+                    graphicID = Icons.Default.Home,
+                    screen = Screen.HomeScreen,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
+                    screen = Screen.StoreScreen,
+                    isActive = true
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Privatni",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Korpa",
+                    graphicID = Icons.Default.ShoppingCart,
+                    screen = Screen.CartScreen,
+                    isActive = false
+                )
+            ), modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 
