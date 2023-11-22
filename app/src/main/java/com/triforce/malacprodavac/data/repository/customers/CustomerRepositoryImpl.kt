@@ -1,10 +1,13 @@
 package com.triforce.malacprodavac.data.repository.customers
 
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
+import com.triforce.malacprodavac.data.remote.auth.AuthApi
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
 import com.triforce.malacprodavac.data.remote.customers.dto.CreateCustomerDto
+import com.triforce.malacprodavac.data.remote.customers.dto.CreateFavoriteProductDto
 import com.triforce.malacprodavac.domain.model.CreateCustomer
 import com.triforce.malacprodavac.domain.model.Customer
+import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class CustomerRepositoryImpl @Inject constructor(
     private val api: CustomersApi,
+    private val apiAuth: AuthApi,
     private val db: MalacProdavacDatabase
 ) : CustomerRepository {
     override suspend fun registerCustomer(
@@ -45,6 +49,92 @@ class CustomerRepositoryImpl @Inject constructor(
             customer?.let {
 //                authenticateUser(it)
 //                dao.insertUser(listOf(it.user.toUserEntity()))
+                emit(Resource.Success(data = it))
+            }
+            emit(Resource.Loading(isLoading = false))
+        }
+    }
+
+    override suspend fun getFavoriteProducts(
+        customerId: Int,
+        fetchFromRemote: Boolean
+    ): Flow<Resource<List<FavoriteProduct>>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val favoriteProducts = try {
+                api.getFavoriteProducts(
+                    customerId
+                )
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't add favorite product."))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                if (e.code() == HttpURLConnection.HTTP_CONFLICT) {
+                    emit(Resource.Error("Favorite  product is't exist!"))
+                } else {
+                    emit(Resource.Error("Couldn't add favorite product."))
+                }
+                null
+            }
+            favoriteProducts?.let {
+                emit(Resource.Success(data = it.data))
+            }
+            emit(Resource.Loading(isLoading = false))
+        }
+    }
+
+    override suspend fun insertFavoriteProduct(
+        id: Int,
+        createFavoriteProductDto: CreateFavoriteProductDto
+    ): Flow<Resource<FavoriteProduct>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val favoriteProduct = try {
+                api.createFavoriteProduct(id, createFavoriteProductDto)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't add favorite product."))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                if (e.code() == HttpURLConnection.HTTP_CONFLICT) {
+                    emit(Resource.Error("Favorite  product is't exist!"))
+                } else {
+                    emit(Resource.Error("Couldn't add favorite product."))
+                }
+                null
+            }
+            favoriteProduct?.let {
+                emit(Resource.Success(data = it))
+            }
+            emit(Resource.Loading(isLoading = false))
+        }
+    }
+
+    override suspend fun deleteFavoriteProduct(
+        id: Int,
+        favoriteProductId: Int
+    ): Flow<Resource<FavoriteProduct>> {
+        return flow {
+            emit(Resource.Loading(isLoading = true))
+            val favoriteProduct = try {
+                api.deleteFavoriteProduct(id, favoriteProductId)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't add favorite product."))
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                if (e.code() == HttpURLConnection.HTTP_CONFLICT) {
+                    emit(Resource.Error("Favorite  product is't exist!"))
+                } else {
+                    emit(Resource.Error("Couldn't add favorite product."))
+                }
+                null
+            }
+            favoriteProduct?.let {
                 emit(Resource.Success(data = it))
             }
             emit(Resource.Loading(isLoading = false))
