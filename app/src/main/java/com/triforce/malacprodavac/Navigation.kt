@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteScreen
 import com.triforce.malacprodavac.presentation.add_edit_product.AddEditProductScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
@@ -139,6 +140,10 @@ fun Navigation() {
         
         composable(route = Screen.TransactionScreen.route) {
             TransactionScreen(navController = navController)
+        }
+
+        composable(route = Screen.FavoriteProductsScreen.route) {
+            FavoriteScreen(navController = navController)
         }
     }
 }

@@ -25,6 +25,10 @@ import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.use_case.GetToken
+import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
+import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
+import com.triforce.malacprodavac.domain.use_case.favoriteProduct.FavoriteProduct
+import com.triforce.malacprodavac.domain.use_case.favoriteProduct.GetFavProducts
 import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
@@ -214,6 +218,10 @@ object ApplicationModule {
     fun provideOrderUseCase(addOrder: AddOrder, deleteOrder: DeleteOrder, getAllOrders: GetAllOrders, getOrderForId: GetOrderForId) =
         Order(getAllOrders, getOrderForId, addOrder, deleteOrder)
 
+    @Provides
+    @Singleton
+    fun provideFavProductUseCase(addFavProduct: AddFavProduct, deleteFavProduct: DeleteFavProduct, getFavProducts: GetFavProducts) =
+        FavoriteProduct(getFavProducts, deleteFavProduct, addFavProduct)
 
     @Provides
     @Singleton

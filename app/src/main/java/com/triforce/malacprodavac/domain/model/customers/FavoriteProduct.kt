@@ -10,7 +10,6 @@ data class FavoriteProduct(
     val id: Int,
     val customerId: Int,
     val productId: Int,
-    val updatedAt: Date,
-    val createdAt: Date,
-    val product: Product?
+    val updatedAt: String,
+    val createdAt: String
 )
