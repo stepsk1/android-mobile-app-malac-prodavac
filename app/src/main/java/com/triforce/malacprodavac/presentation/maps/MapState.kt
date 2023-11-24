@@ -1,6 +1,8 @@
 package com.triforce.malacprodavac.presentation.maps
 
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.MapProperties
+import com.triforce.malacprodavac.presentation.maps.styles.MapStyle
 
 data class MapState(
     val properties: MapProperties = MapProperties(),

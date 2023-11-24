@@ -23,18 +23,20 @@ fun MapScreen(
     viewModel: MapsViewModel = hiltViewModel()
 
 ) {
-    val state = viewModel.state
+    val scaffoldState = rememberScaffoldState()
+
     val uiSettings = remember{
         MapUiSettings(zoomControlsEnabled = false)
     }
 
-    val scaffoldState = rememberScaffoldState()
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = {
+                viewModel.onEvent(MapEvent.ToggleSpecialMap)
+            }) {
                 Icon(
-                    imageVector = if (state.isSpecialMap) {
+                    imageVector = if (viewModel.state.isSpecialMap) {
                         Icons.Outlined.Clear } else { Icons.Outlined.LocationOn },
                     contentDescription = "Toggle Special map"
                 )
@@ -42,17 +44,12 @@ fun MapScreen(
         }
     ) {
         GoogleMap(
-            properties = state.properties,
+            properties = viewModel.state.properties,
             uiSettings = uiSettings,
             modifier = Modifier
                 .fillMaxSize(),
             onMapLongClick = {
-
             }
-        ) {
-
-        }
+        )
     }
-
-
 }
