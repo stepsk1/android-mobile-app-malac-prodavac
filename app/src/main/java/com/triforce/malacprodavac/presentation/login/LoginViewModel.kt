@@ -2,6 +2,7 @@ package com.triforce.malacprodavac.presentation.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.validate.ValidateEmail
 import com.triforce.malacprodavac.domain.use_case.validate.ValidatePassword
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
