@@ -12,7 +12,6 @@ interface ShopRepository {
     ): Flow<Resource<Shop>>
 
     suspend fun getShops(
-        categoryId: Int,
         fetchFromRemote: Boolean,
         queryMap: MutableMap<String, String>
     ): Flow<Resource<List<Shop>>>
