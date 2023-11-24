@@ -22,8 +22,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +42,8 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
@@ -56,13 +59,16 @@ import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
+
 @Composable
 fun ProductScreen(
     navController: NavController,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
 
-    var state = viewModel.state
+    val viewModelFavProduct: FavoriteViewModel = hiltViewModel()
+
+    val state = viewModel.state
 
     val product = state.product
 
@@ -122,7 +128,8 @@ fun ProductScreen(
                 ){
                     ShowFavouriteAddToCart(
                         navController = navController,
-                        viewModel = viewModel
+                        viewModel = viewModel,
+                        viewModelFavourite = viewModelFavProduct
                     )
                 }
             }
@@ -255,8 +262,17 @@ fun ProductDetails(
 @Composable
 fun ShowFavouriteAddToCart(
     navController: NavController,
-    viewModel: ProductViewModel
+    viewModel: ProductViewModel,
+    viewModelFavourite: FavoriteViewModel
 ) {
+
+    val imageVector: ImageVector
+
+    if(viewModel.state.isFavorite == true)
+        imageVector = Icons.Outlined.Favorite
+    else
+        imageVector = Icons.Outlined.FavoriteBorder
+
     fun addToBuyedProducts(item: ProductAmount) {
         BuyedProducts.listOfBuyedProducts.add(item)
     }
@@ -285,11 +301,36 @@ fun ShowFavouriteAddToCart(
             )
     ) {
         Icon(
-            imageVector = Icons.Outlined.FavoriteBorder,
+            imageVector = imageVector,
             contentDescription = "FavoriteBorder",
             tint = MP_Pink,
             modifier = Modifier
                 .size(50.dp)
+                .clickable {
+                    if (viewModel.state.isFavorite == false) {
+                        viewModel.onEvent(ProductEvent.favoriteProduct)
+                        viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct)
+
+                        Toast
+                            .makeText(
+                                context,
+                                "Uspešno dodat proizvod u listu omiljenih proizvoda",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    } else {
+
+                        viewModel.onEvent(ProductEvent.removeFavoriteProduct)
+                        viewModelFavourite.onEvent(FavoriteEvent.DeleteFavProduct)
+                        Toast
+                            .makeText(
+                                context,
+                                "Proizvod se već nalazi u listi omiljenih proizvoda",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    }
+                }
         )
 
         Text(

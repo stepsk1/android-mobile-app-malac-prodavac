@@ -5,6 +5,7 @@ import com.triforce.malacprodavac.domain.model.CreateCustomer
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import kotlinx.coroutines.flow.Flow
 
 interface CustomerRepository {
