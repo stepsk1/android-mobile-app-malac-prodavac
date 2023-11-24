@@ -1,7 +1,7 @@
 package com.triforce.malacprodavac.presentation.maps.styles
 
 object MapStyle {
-    val json = """"
+    val json = """
         [
             {
                 "featureType": "water",
