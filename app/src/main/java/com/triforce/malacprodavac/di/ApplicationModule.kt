@@ -89,18 +89,15 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideCustomersApi(retrofit: Retrofit): CustomersApi =
-        retrofit.create()
+    fun provideCustomersApi(retrofit: Retrofit): CustomersApi = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi =
-        retrofit.create()
+    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideProductsApi(retrofit: Retrofit): ProductsApi =
-        retrofit.create()
+    fun provideProductsApi(retrofit: Retrofit): ProductsApi = retrofit.create()
 
     @Provides
     @Singleton
@@ -109,13 +106,11 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideShopsApi(retrofit: Retrofit): ShopsApi =
-        retrofit.create()
+    fun provideShopsApi(retrofit: Retrofit): ShopsApi = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideOrderApi(retrofit: Retrofit): OrderApi =
-        retrofit.create()
+    fun provideOrderApi(retrofit: Retrofit): OrderApi = retrofit.create()
 
     @Provides
     @Singleton
