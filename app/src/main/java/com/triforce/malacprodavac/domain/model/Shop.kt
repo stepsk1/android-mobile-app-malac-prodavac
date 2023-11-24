@@ -3,11 +3,25 @@ package com.triforce.malacprodavac.domain.model
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.triforce.malacprodavac.domain.util.enum.DaysOfTheWeek
 
 data class Shop(
     val id: Int,
     val userId: Int,
-    val businessName: String?,
+
+    val openFromDays: DaysOfTheWeek,
+    val openTillDays: DaysOfTheWeek,
+
+    val availableAtLatitude: Double,
+    val availableAtLongitude: Double,
+
+    val businessName: String,
+
+    val openFrom: String,
+    val openTill: String,
+
+    val availableAt: String,
+
     val updatedAt: String,
     val createdAt: String,
 
