@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.maps
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -34,6 +35,7 @@ class MapsViewModel @Inject constructor(
 
     init {
         getShops(true)
+        Log.d("SHOPS33", state.shops.toString())
     }
 
     fun onEvent(event: MapEvent){
@@ -68,11 +70,7 @@ class MapsViewModel @Inject constructor(
         viewModelScope.launch {
 
             val query = FilterBuilder.buildFilterQueryMap(
-                Filter(
-                    filter = listOf(
-
-                    ), order = null, limit = null, offset = null
-                )
+                Filter(filter = null, order = null, limit = null, offset = null )
             )
 
             repository.getShops(fetchFromRemote, query).collectLatest { result ->

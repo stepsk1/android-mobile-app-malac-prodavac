@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.maps
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
@@ -32,7 +33,7 @@ fun MapScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
-    val uiSettings = remember{
+    val uiSettings = remember {
         MapUiSettings(zoomControlsEnabled = false)
     }
 
@@ -44,40 +45,56 @@ fun MapScreen(
             }) {
                 Icon(
                     imageVector = if (viewModel.state.isSpecialMap) {
-                        Icons.Outlined.Clear } else { Icons.Outlined.LocationOn },
+                        Icons.Outlined.Clear
+                    } else {
+                        Icons.Outlined.LocationOn
+                    },
                     contentDescription = "Toggle Special map"
                 )
             }
-        }
-    ) {
-        GoogleMap(
-            properties = viewModel.state.properties,
-            uiSettings = uiSettings,
-            modifier = Modifier
-                .fillMaxSize(),
-            onMapLongClick = {
-                viewModel.onEvent(MapEvent.OnMapLongClick(it))
-            }
-        ){
-            viewModel.state.shops.forEach { shop ->
-                Marker(
-                    position = LatLng(shop.availableAtLatitude, shop.availableAtLongitude),
-                    title = shop.businessName,
-                    snippet = shop.user.firstName + " " + shop.user.lastName,
-                    onInfoWindowLongClick = {
-                        viewModel.onEvent(
-                            MapEvent.OnInfoWindowLongClick(shop)
+        },
+        content = { padding ->
+            GoogleMap(
+                properties = viewModel.state.properties,
+                uiSettings = uiSettings,
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
+                onMapLongClick = {
+                    viewModel.onEvent(MapEvent.OnMapLongClick(it))
+                }
+            ) {
+                Log.d("SHOPS2", viewModel.state.shops.toString())
+
+                viewModel.state.shops!!.forEach { shop ->
+                    if ( shop.availableAtLatitude != null && shop.availableAtLongitude != null ) {
+                        Log.d(
+                            "MARKER",
+                            "LAT ${shop.availableAtLatitude}, LONG ${shop.availableAtLongitude} ID ${shop.id}"
                         )
-                    },
-                    onClick = {
-                        it.showInfoWindow()
-                        true
-                    },
-                    icon = BitmapDescriptorFactory.defaultMarker(
-                        BitmapDescriptorFactory.HUE_GREEN
-                    )
-                )
+                        Marker(
+                            position = LatLng(
+                                shop.availableAtLatitude,
+                                shop.availableAtLongitude
+                            ),
+                            title = shop.businessName,
+                            snippet = if ( shop.user != null ) {shop.user.firstName + " " + shop.user.lastName } else { "" },
+                            onInfoWindowLongClick = {
+                                viewModel.onEvent(
+                                    MapEvent.OnInfoWindowLongClick(shop)
+                                )
+                            },
+                            onClick = {
+                                it.showInfoWindow()
+                                true
+                            },
+                            icon = BitmapDescriptorFactory.defaultMarker(
+                                BitmapDescriptorFactory.HUE_GREEN
+                            )
+                        )
+                    }
+                }
             }
         }
-    }
+    )
 }

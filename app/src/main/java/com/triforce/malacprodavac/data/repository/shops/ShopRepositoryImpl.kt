@@ -49,16 +49,13 @@ class ShopRepositoryImpl @Inject constructor(
                 null
             }
             shop?.let {
-//                authenticateUser(it)
-//                dao.insertUser(listOf(it.user.toUserEntity()))
-                emit(Resource.Success(data = it))
+                emit(Resource.Success(data = it.toShop()))
             }
             emit(Resource.Loading(isLoading = false))
         }
     }
 
     override suspend fun getShops(
-        categoryId: Int,
         fetchFromRemote: Boolean,
         queryMap: MutableMap<String, String>
     ): Flow<Resource<List<Shop>>> {
@@ -71,7 +68,6 @@ class ShopRepositoryImpl @Inject constructor(
             if (localShops.isNotEmpty()) {
                 emit(Resource.Success(data = localShops.map { it.toShop() }))
             }
-
 
             val isDbEmpty = localShops.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
@@ -119,7 +115,6 @@ class ShopRepositoryImpl @Inject constructor(
                 emit(Resource.Success(data = localProducts.first().toShop()))
             }
 
-
             val isDbEmpty = localProducts.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
 
@@ -154,5 +149,4 @@ class ShopRepositoryImpl @Inject constructor(
             emit(Resource.Loading(false))
         }
     }
-
 }

@@ -10,5 +10,5 @@ interface ShopDao {
     suspend fun getShops(): List<ShopEntity>
 
     @Query("SELECT * FROM ShopEntity WHERE id = :id")
-    suspend fun getShop(id: Int):List<ShopEntity>
+    suspend fun getShop(id: Int): List<ShopEntity>
 }
