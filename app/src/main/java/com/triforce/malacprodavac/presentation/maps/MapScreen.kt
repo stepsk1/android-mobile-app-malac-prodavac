@@ -37,6 +37,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.presentation.maps.components.BottomMapShopDetails
 
 @Composable
 fun MapScreen(
@@ -126,6 +127,7 @@ fun MapScreen(
                     }
                 }
             }
+            BottomMapShopDetails()
         }
     )
 }
