@@ -18,7 +18,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
@@ -55,6 +57,14 @@ fun MapScreen(
         },
         content = { padding ->
             GoogleMap(
+                cameraPositionState = CameraPositionState(
+                    position = CameraPosition(
+                        LatLng(44.01667, 20.91667),
+                        12.0f,
+                        0.0f,
+                        0.0f
+                    )
+                ),
                 properties = viewModel.state.properties,
                 uiSettings = uiSettings,
                 modifier = Modifier
