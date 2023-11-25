@@ -20,6 +20,8 @@ import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.users.UsersApi
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
 import com.triforce.malacprodavac.data.services.SessionManager
+import com.triforce.malacprodavac.domain.model.SchedulePickup
+import com.triforce.malacprodavac.domain.model.UpdateScheduledPickup
 import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
@@ -43,6 +45,10 @@ import com.triforce.malacprodavac.domain.use_case.registration.RegisterCourier
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCustomer
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterShop
 import com.triforce.malacprodavac.domain.use_case.registration.Registration
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.AddSchedulePickup
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.GetAllScheduledPickups
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.GetSchedulePickupForId
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.SchedulePickupUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -222,6 +228,11 @@ object ApplicationModule {
     @Singleton
     fun provideFavProductUseCase(addFavProduct: AddFavProduct, deleteFavProduct: DeleteFavProduct, getFavProducts: GetFavProducts) =
         FavoriteProduct(getFavProducts, deleteFavProduct, addFavProduct)
+
+    @Provides
+    @Singleton
+    fun provideSchedulePickupUseCase(addSchedulePickup: AddSchedulePickup, getAllScheduledPickups: GetAllScheduledPickups, getSchedulePickupForId: GetSchedulePickupForId, updateSchedulePickup: com.triforce.malacprodavac.domain.use_case.schedulePickup.UpdateScheduledPickup) =
+        SchedulePickupUseCase(getAllScheduledPickups, getSchedulePickupForId, addSchedulePickup, updateSchedulePickup)
 
     @Provides
     @Singleton
