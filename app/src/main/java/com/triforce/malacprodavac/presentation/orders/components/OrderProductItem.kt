@@ -96,7 +96,7 @@ fun OrderProductItem(
 
 
                     Text(
-                        text = title + order.quantity.toString() + "X" ,
+                        text = title + "  " + order.quantity.toInt().toString() + "X" ,
                         style = MaterialTheme.typography.body1,
                         color = MP_Black,
                         modifier = Modifier

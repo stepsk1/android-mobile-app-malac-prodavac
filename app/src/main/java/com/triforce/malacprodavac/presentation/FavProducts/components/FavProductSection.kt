@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.favProducts.components
+package com.triforce.malacprodavac.presentation.FavProducts.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

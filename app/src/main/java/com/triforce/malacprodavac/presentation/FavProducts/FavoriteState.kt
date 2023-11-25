@@ -6,5 +6,5 @@ data class FavoriteState(
     val favProducts: List<FavoriteProduct> = emptyList(),
     val isLoading: Boolean = false,
     val favProduct: FavoriteProduct? = null,
-    val customerId: Int = 1
+    val customerId: Int? = null
 )

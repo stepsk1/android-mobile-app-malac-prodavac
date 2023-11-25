@@ -144,16 +144,16 @@ fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewMo
                     modifier = Modifier
                         .padding(start = 10.dp)
                 )
-                Text(
-                    text = "Izmeni",
-                    style = MaterialTheme.typography.h6,
-                    color = MP_White,
-                    modifier = Modifier
-                        .padding(start = 80.dp, top = 5.dp, bottom = 5.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(MP_Pink)
-                        .padding(start = 7.5.dp, end = 7.5.dp, top = 2.dp, bottom = 2.dp)
-                )
+//                Text(
+//                    text = "Izmeni",
+//                    style = MaterialTheme.typography.h6,
+//                    color = MP_White,
+//                    modifier = Modifier
+//                        .padding(start = 80.dp, top = 5.dp, bottom = 5.dp)
+//                        .clip(RoundedCornerShape(20.dp))
+//                        .background(MP_Pink)
+//                        .padding(start = 7.5.dp, end = 7.5.dp, top = 2.dp, bottom = 2.dp)
+//                )
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -281,8 +281,11 @@ fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewMo
                             orderProducts.deliveryMethod = DeliveryMethod.SelfPickup
                         else
                             orderProducts.deliveryMethod = DeliveryMethod.ByCourier
-                        navController.navigate(Screen.DetailsOrderScreen.route)
-                    },
+                        if (orderProducts.deliveryMethod == DeliveryMethod.ByCourier)
+                            navController.navigate(Screen.DetailsOrderScreen.route)
+                        else
+                            navController.navigate(Screen.DetailsOrderScreen.route)
+                        },
                     colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
                 ) {
                     Text(
