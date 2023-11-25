@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.FavProducts
+package com.triforce.malacprodavac.presentation.cart.scheduling
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,18 +18,18 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
-import com.triforce.malacprodavac.presentation.FavProducts.components.FavProductSection
+import com.triforce.malacprodavac.presentation.cart.components.ChooseDateAndTime
+import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
@@ -38,11 +38,10 @@ import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
-@Composable
-fun FavoriteScreen(navController: NavController, viewModel: FavoriteViewModel = hiltViewModel()) {
 
-    val state = viewModel.state
-    val favProducts: List<FavoriteProduct> = state.favProducts
+@Composable
+fun ScheduleScreen(navController: NavController, viewModel: ScheduleViewModel = hiltViewModel()) {
+
 
     Box(
         modifier = Modifier
@@ -54,10 +53,8 @@ fun FavoriteScreen(navController: NavController, viewModel: FavoriteViewModel = 
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
         Column {
-            GoBackComp("Moji omiljeni proizvodi", navController)
-            FavProductSection(
-                favoriteProducts = favProducts,
-                viewModel = viewModel)
+            GoBackComp("Zakazivanje porudžbine", navController)
+            ChooseDateAndTime()
         }
 
         Row(
@@ -79,16 +76,17 @@ fun FavoriteScreen(navController: NavController, viewModel: FavoriteViewModel = 
             ) {
                 Button(
                     onClick = {
-                        navController.navigate(Screen.HomeScreen.route)
+                        navController.navigate(Screen.DetailsOrderScreen.route)
                     },
                     colors = ButtonDefaults.buttonColors(MP_Green)
                 ) {
                     Text(
-                        text = "Vrati se na početnu stranu",
+                        text = "Zakaži porudžbinu",
                         color = MP_White,
                         style = MaterialTheme.typography.body1
                     )
                 }
+                TotalPrice()
             }
         }
 

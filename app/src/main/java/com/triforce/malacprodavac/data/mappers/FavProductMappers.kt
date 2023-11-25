@@ -8,5 +8,7 @@ fun FavouriteProductEntity.toFavProduct(): FavoriteProduct = FavoriteProduct(
     customerId = customerId,
     productId = productId,
     createdAt = createdAt,
-    updatedAt = updatedAt
+    updatedAt = updatedAt,
+
+    product = null
 )

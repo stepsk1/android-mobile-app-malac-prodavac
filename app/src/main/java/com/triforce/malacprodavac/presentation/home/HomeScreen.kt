@@ -19,6 +19,9 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,13 +34,12 @@ import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
-import com.triforce.malacprodavac.presentation.home.components.GoToStoreSection
 import com.triforce.malacprodavac.presentation.home.components.GreetingSection
 import com.triforce.malacprodavac.presentation.home.components.RecommendedFeaturesSection
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -45,6 +47,8 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
 //    val state = viewModel.state
+    var viewModelFavProducts: FavoriteViewModel = hiltViewModel()
+    val stateFav by remember { mutableStateOf(viewModelFavProducts.state) }
 
     Box(
         modifier = Modifier

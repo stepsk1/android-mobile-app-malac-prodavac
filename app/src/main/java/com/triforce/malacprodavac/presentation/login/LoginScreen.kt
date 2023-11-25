@@ -43,6 +43,7 @@ import com.triforce.malacprodavac.ui.theme.SpaceMedium
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
+
     val state = viewModel.state
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = state.isLoading

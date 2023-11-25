@@ -31,6 +31,14 @@ class ProductViewModel @Inject constructor(
             is ProductEvent.ToggleFavouriteProduct -> {
                 state = state.copy(isBuyed = true)
             }
+
+            is ProductEvent.favoriteProduct -> {
+                state = state.copy(isFavorite = true)
+            }
+
+            is ProductEvent.removeFavoriteProduct -> {
+                state = state.copy(isFavorite = false)
+            }
         }
     }
 
@@ -38,6 +46,9 @@ class ProductViewModel @Inject constructor(
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
             getProduct(true, productId)
+            FavouriteProduct.favouriteProductId = productId
+            FavouriteProduct.favouriteProduct = state.product
+            FavouriteProduct.favProducts.add(state.product)
         }
     }
 
