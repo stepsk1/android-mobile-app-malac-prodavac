@@ -39,10 +39,6 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 @Composable
 fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicViewModel = hiltViewModel()) {
     val state = viewModel.state
-    if (!viewModel.isLoggedIn())
-        LaunchedEffect(Unit) {
-            navController.navigate(Screen.LoginScreen.route)
-        }
 
     val scrollState = rememberScrollState()
 

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -35,6 +36,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 
 @Composable
 fun MapScreen(
@@ -103,17 +105,17 @@ fun MapScreen(
                             "MARKER",
                             "LAT ${shop.availableAtLatitude}, LONG ${shop.availableAtLongitude} ID ${shop.id}"
                         )
+
                         Marker(
                             position = LatLng(
                                 shop.availableAtLatitude,
                                 shop.availableAtLongitude
                             ),
-                            title = shop.businessName,
+                            title = shop.businessName + "user id " + shop.user?.id + " shop id " + shop.id,
                             snippet = if ( shop.user != null ) {shop.user.firstName + " " + shop.user.lastName } else { "" },
                             onInfoWindowLongClick = {
-                                viewModel.onEvent(
-                                    MapEvent.OnInfoWindowLongClick(shop)
-                                )
+                                    navController.navigate(Screen.PublicProfile.route + "?id=${shop.id}")
+                                //viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
                             },
                             onClick = {
                                 it.showInfoWindow()

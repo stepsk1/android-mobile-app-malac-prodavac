@@ -110,7 +110,17 @@ fun Navigation() {
             ProfilePrivateScreen(navController = navController)
         }
 
-        composable(route = Screen.PublicProfile.route) {
+        composable(
+            route = Screen.PublicProfile.route + "?id={id}",
+            arguments = listOf(
+                navArgument(
+                    name = "id"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
             ProfilePublicScreen(navController = navController)
         }
 
