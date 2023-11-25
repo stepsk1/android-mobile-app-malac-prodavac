@@ -26,12 +26,13 @@ import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.Calendar
 
 @Composable
 fun Confirmation() {
+
+    val codeForPaying = generateRandomString(11)
+
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = Modifier
@@ -83,7 +84,7 @@ fun Confirmation() {
             )
 
             Text(
-                text = "0001000012F",
+                text = codeForPaying,
                 style = MaterialTheme.typography.h6,
                 color = MP_Pink,
                 modifier = Modifier

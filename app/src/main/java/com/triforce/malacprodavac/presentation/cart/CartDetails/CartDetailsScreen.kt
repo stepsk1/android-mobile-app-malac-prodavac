@@ -48,7 +48,6 @@ import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
-import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 import com.triforce.malacprodavac.util.enum.DeliveryMethod
 import com.triforce.malacprodavac.util.enum.PaymentMethod
@@ -284,7 +283,7 @@ fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewMo
                         if (orderProducts.deliveryMethod == DeliveryMethod.ByCourier)
                             navController.navigate(Screen.DetailsOrderScreen.route)
                         else
-                            navController.navigate(Screen.DetailsOrderScreen.route)
+                            navController.navigate(Screen.SchedulingScreen.route)
                         },
                     colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
                 ) {

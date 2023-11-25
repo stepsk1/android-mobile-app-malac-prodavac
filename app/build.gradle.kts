@@ -108,4 +108,6 @@ dependencies {
 
     // Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+
+    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
 }
