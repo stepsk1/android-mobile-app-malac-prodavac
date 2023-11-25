@@ -46,28 +46,7 @@ class CategoryViewModel @Inject constructor(
 
     private val _isSearching = MutableStateFlow(false)
     val isSearching = _isSearching.asStateFlow()
-/*
-    private val _products = MutableStateFlow(state.products)
 
-    @OptIn(FlowPreview::class)
-    val products = searchText
-        .debounce(500L)
-        .onEach { _isSearching.update { true } }
-        .combine(_products) { text, products ->
-
-            if(text.isBlank()) {
-                products
-            } else {
-                onEvent(CategoryEvent.SearchQueryChange(text))
-            }
-        }
-        .onEach { _isSearching.update { false } }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            _products.value
-        ) // cache
-*/
     fun onSearchTextChange(text: String){
         _searchText.value = text
         currentCategoryId?.let { getProducts(true, it, text) }
@@ -141,22 +120,4 @@ class CategoryViewModel @Inject constructor(
             }
         }
     }
-/*
-    fun onEvent(event: CategoryEvent){
-
-        when ( event ){
-
-            is CategoryEvent.SearchQueryChange -> {
-                Log.d("STANJE_QUERY", event.query)
-
-                state.categoryId?.let {
-                    getProducts(true, categoryId = it, searchText = event.query)
-                }
-            }
-
-            CategoryEvent.ToggleFavouriteProduct -> TODO()
-        }
-    }
-
- */
 }

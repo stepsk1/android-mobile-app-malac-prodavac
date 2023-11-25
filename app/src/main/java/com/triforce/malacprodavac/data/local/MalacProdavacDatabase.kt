@@ -13,6 +13,8 @@ import com.triforce.malacprodavac.data.local.order.OrderDao
 import com.triforce.malacprodavac.data.local.order.OrderEntity
 import com.triforce.malacprodavac.data.local.product.ProductDao
 import com.triforce.malacprodavac.data.local.product.ProductEntity
+import com.triforce.malacprodavac.data.local.shops.ShopEntity
+import com.triforce.malacprodavac.data.local.shops.ShopDao
 import com.triforce.malacprodavac.data.local.user.UserDao
 import com.triforce.malacprodavac.data.local.user.UserEntity
 
@@ -24,7 +26,8 @@ import com.triforce.malacprodavac.data.local.user.UserEntity
         OrderEntity::class,
         CustomerEntity::class,
         CourierEntity::class,
-        FavouriteProductEntity::class
+        FavouriteProductEntity::class,
+        ShopEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -37,4 +40,5 @@ abstract class MalacProdavacDatabase: RoomDatabase() {
     abstract val productDao: ProductDao
     abstract val orderDao: OrderDao
     abstract val favoriteProduct: FavouriteProductDao
+    abstract val shopDao: ShopDao
 }

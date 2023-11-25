@@ -9,9 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -75,6 +79,14 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                         color1 = MP_Pink,
                         color2 = MP_Pink,
                         screen = Screen.CartScreen
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "Mape",
+                        graphicID = Icons.Default.LocationOn,
+                        color1 = MP_Green,
+                        color2 = MP_Green,
+                        screen = Screen.MapScreen
                     ),
                     Feature(
                         id = 1,
