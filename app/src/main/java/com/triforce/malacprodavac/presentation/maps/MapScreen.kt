@@ -1,6 +1,11 @@
 package com.triforce.malacprodavac.presentation.maps
 
+import android.app.PendingIntent.getActivity
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
@@ -13,7 +18,12 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -24,7 +34,7 @@ import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
-import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.R
 
 @Composable
 fun MapScreen(
@@ -35,8 +45,19 @@ fun MapScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
+    val shopIconVector: ImageVector = ImageVector.vectorResource(id = R.drawable.shop_icon)
+
     val uiSettings = remember {
         MapUiSettings(zoomControlsEnabled = false)
+    }
+
+    fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
+        return ContextCompat.getDrawable(context, vectorResId)?.run {
+            setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+            val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+            draw(Canvas(bitmap))
+            BitmapDescriptorFactory.fromBitmap(bitmap)
+        }
     }
 
     Scaffold(
@@ -57,14 +78,14 @@ fun MapScreen(
         },
         content = { padding ->
             GoogleMap(
-                cameraPositionState = CameraPositionState(
+                /*cameraPositionState = CameraPositionState(
                     position = CameraPosition(
                         LatLng(44.01667, 20.91667),
                         12.0f,
                         0.0f,
                         0.0f
                     )
-                ),
+                ),*/
                 properties = viewModel.state.properties,
                 uiSettings = uiSettings,
                 modifier = Modifier
@@ -98,9 +119,7 @@ fun MapScreen(
                                 it.showInfoWindow()
                                 true
                             },
-                            icon = BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_GREEN
-                            )
+                            icon = bitmapDescriptorFromVector(LocalContext.current, R.drawable.shop_icon)
                         )
                     }
                 }
