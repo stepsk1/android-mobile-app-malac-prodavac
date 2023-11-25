@@ -19,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,6 +43,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 import com.triforce.malacprodavac.util.enum.DeliveryMethod
 import com.triforce.malacprodavac.util.enum.PaymentMethod
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun DetailsOrderScreen(navController: NavController) {
@@ -50,6 +52,10 @@ fun DetailsOrderScreen(navController: NavController) {
     val state = viewModel.state
 //    val totalPrice: Double = state.totalPrice
     val totalPrice: Double = TotalPrice()
+
+    val year = BuyedProducts.localDate.split("-")[0]
+    val month = BuyedProducts.localDate.split("-")[1]
+    val day = BuyedProducts.localDate.split("-")[2]
 
     var paymentMethod: String
     var deliveryMethod: String
@@ -139,6 +145,17 @@ fun DetailsOrderScreen(navController: NavController) {
                                 .padding(start = 10.dp)
                                 .align(Alignment.Start)
                         )
+
+                        if(deliveryMethod == "Lično preuzimanje"){
+                            Text(
+                                text = "Vreme preuzimanja paketa: $day.$month.$year ${BuyedProducts.localTime}",
+                                style = MaterialTheme.typography.body1,
+                                color = MP_Black,
+                                modifier = Modifier
+                                    .padding(start = 10.dp)
+                                    .align(Alignment.Start)
+                            )
+                        }
                     }
                 }
 
