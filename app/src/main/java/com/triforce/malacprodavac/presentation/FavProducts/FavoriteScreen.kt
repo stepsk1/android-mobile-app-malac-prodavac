@@ -29,7 +29,7 @@ import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
-import com.triforce.malacprodavac.presentation.favProducts.components.FavProductSection
+import com.triforce.malacprodavac.presentation.FavProducts.components.FavProductSection
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp

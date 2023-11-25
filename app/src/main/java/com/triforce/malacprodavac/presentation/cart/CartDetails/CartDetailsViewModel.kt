@@ -10,7 +10,6 @@ import com.triforce.malacprodavac.data.remote.orders.dto.CreateOrderDto
 import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
-import com.triforce.malacprodavac.presentation.cart.CartState
 import com.triforce.malacprodavac.util.enum.DeliveryMethod
 import com.triforce.malacprodavac.util.enum.PaymentMethod
 import dagger.hilt.android.lifecycle.HiltViewModel

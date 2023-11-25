@@ -11,6 +11,7 @@ import com.triforce.malacprodavac.presentation.add_edit_product.AddEditProductSc
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
+import com.triforce.malacprodavac.presentation.cart.scheduling.ScheduleScreen
 import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
 import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen
@@ -144,6 +145,10 @@ fun Navigation() {
 
         composable(route = Screen.FavoriteProductsScreen.route) {
             FavoriteScreen(navController = navController)
+        }
+
+        composable(route = Screen.SchedulingScreen.route) {
+            ScheduleScreen(navController = navController)
         }
     }
 }

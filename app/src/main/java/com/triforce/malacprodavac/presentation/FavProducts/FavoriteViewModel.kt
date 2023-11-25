@@ -12,6 +12,7 @@ import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.product.FavouriteProduct
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,23 +28,24 @@ class FavoriteViewModel @Inject constructor(
     var orderStatus: String = ""
 
     init {
-        getFavProducts(state.customerId, true)
+        me()
+//        getFavProducts(state.customerId!!, true)
     }
 
     fun onEvent(event: FavoriteEvent) {
         when(event) {
             is FavoriteEvent.AddFavProduct -> {
-                addFavProduct(state.customerId, CreateFavoriteProductDto(productId = FavouriteProduct.favouriteProductId))
+                addFavProduct(state.customerId!!, CreateFavoriteProductDto(productId = FavouriteProduct.favouriteProductId))
             }
-            is FavoriteEvent.GetUser -> {
-                me()
-            }
+//            is FavoriteEvent.GetUser -> {
+//                me()
+//            }
             is FavoriteEvent.GetFavProducts -> {
-                getFavProducts(state.customerId, true)
+                getFavProducts(state.customerId!!, true)
             }
 
             is FavoriteEvent.DeleteFavProduct -> {
-                deleteFavProduct(state.customerId, FavouriteProduct.favouriteProductId)
+                deleteFavProduct(state.customerId!!, FavouriteProduct.favouriteProductId)
             }
         }
     }
@@ -133,15 +135,20 @@ class FavoriteViewModel @Inject constructor(
             }
         }
     }
+
     private fun me(){
         viewModelScope.launch {
             profile.getMe().collect { result ->
                 when (result) {
                     is Resource.Success -> {
+                        if(result.data != null) {
+                            state = state.copy(
+                                customerId = result.data!!.customer!!.id
+                            )
+                            getFavProducts(state.customerId!!, true)
+                        }
                         println("REZULTAT")
-                        state = state.copy(
-                            customerId = result.data!!.id
-                        )
+                        println(state.customerId)
                     }
                     is Resource.Error -> Unit
 

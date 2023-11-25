@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.favProducts.components
+package com.triforce.malacprodavac.presentation.FavProducts.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
@@ -74,7 +75,7 @@ fun FavProductItem(
                     modifier = Modifier
                         .size(40.dp)
                         .clickable {
-
+                            viewModel.onEvent(FavoriteEvent.DeleteFavProduct)
                         }
                 )
             }
