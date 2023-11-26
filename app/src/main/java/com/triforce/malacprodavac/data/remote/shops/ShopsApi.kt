@@ -3,6 +3,8 @@ package com.triforce.malacprodavac.data.remote.shops
 import com.triforce.malacprodavac.data.local.shops.ShopEntity
 import com.triforce.malacprodavac.data.remote.dto.PaginationResponse
 import com.triforce.malacprodavac.data.remote.shops.dto.CreateShopDto
+import com.triforce.malacprodavac.domain.model.PaginationResponse
+import com.triforce.malacprodavac.domain.model.SchedulePickup
 import com.triforce.malacprodavac.domain.model.Shop
 import retrofit2.http.Body
 import retrofit2.http.GET
