@@ -42,6 +42,14 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
 
     val scrollState = rememberScrollState()
 
+    var heightWindow = 900.dp
+
+    if ( state.products?.isEmpty() == false ) {
+        if (state.products.size > 2) heightWindow = 1400.dp
+        else heightWindow = 1200.dp
+    }
+
+
     Box(
         modifier = Modifier
             .background(MP_White)
@@ -50,26 +58,33 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
 
         Column(
             modifier = Modifier
-                .height(1400.dp)
+                .height(heightWindow)
         ) {
             ProfileHeroComp(state.currentUser, navController, false)
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            ShopDescComp(state.currentUser,state.currentShop)
+            ShopDescComp(state.currentUser, state.currentShop)
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            ShowHighlightSectionComp(
-                navController = navController,
-                products = state.currentShop?.products,
-                title = "Naši Proizvodi",
-                route = Screen.HighlightSection.route
-            )
+            if (state.products?.isEmpty() == false) {
+                ShowHighlightSectionComp(
+                    navController = navController,
+                    products = state.products.subList(
+                        0, if (state.products.size > 3) {
+                            3
+                        } else {
+                            state.products.size
+                        }
+                    ),
+                    title = "Naši najnoviji Proizvodi",
+                    route = Screen.HighlightSection.route
+                )
+                Spacer(modifier = Modifier.padding(16.dp))
+            }
 
-            Spacer(modifier = Modifier.padding(16.dp))
-
-            CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
+            CallToActionFavourite("Ukoliko želite da pratite naš rad, kako bi znali kada smo u Vašoj okolini:")
 
             Spacer(modifier = Modifier.padding(16.dp))
 
@@ -77,5 +92,4 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
             ShowShopDetailsSection(state.currentUser)
         }
     }
-
 }

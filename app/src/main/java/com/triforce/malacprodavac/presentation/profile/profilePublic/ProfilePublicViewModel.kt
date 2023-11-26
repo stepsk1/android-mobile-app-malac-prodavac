@@ -8,6 +8,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.triforce.malacprodavac.data.services.filter.Filter
+import com.triforce.malacprodavac.data.services.filter.FilterBuilder
+import com.triforce.malacprodavac.data.services.filter.FilterOperation
+import com.triforce.malacprodavac.data.services.filter.SingleFilter
+import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.UserRepository
@@ -23,6 +28,7 @@ class ProfilePublicViewModel @Inject constructor(
     private val profile: Profile,
     private val repositoryShop: ShopRepository,
     private val repositoryUser: UserRepository,
+    private val repositoryProduct: ProductRepository,
 
     savedStateHandle: SavedStateHandle
 
@@ -53,10 +59,12 @@ class ProfilePublicViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let {shop ->
+
                             state = state.copy(currentShop = shop)
-                            shop.userId?.let { userId ->
-                                getUser(userId)
-                            }
+
+                            getUser(shop.userId)
+
+                            getProducts(true, shop.id)
 
                         }
                     }
@@ -97,4 +105,48 @@ class ProfilePublicViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getProducts(fetchFromRemote: Boolean, shopId: Int, searchText: String = "") {
+
+        viewModelScope.launch {
+
+            val query = FilterBuilder.buildFilterQueryMap(
+                Filter(
+                    filter = listOf(
+                        SingleFilter(
+                            "categoryId",
+                            FilterOperation.Eq,
+                            shopId
+                        ),
+                        SingleFilter(
+                            "title",
+                            FilterOperation.IContains,
+                            searchText
+                        )
+                    ), order = null, limit = null, offset = null
+                )
+            )
+
+            repositoryProduct.getProducts(shopId, fetchFromRemote, query).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        if (result.data is List<Product>) {
+                            state = state.copy(products = result.data)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        Unit
+                    }
+
+                    is Resource.Loading -> {
+                        state = state.copy(
+                            isLoading = result.isLoading
+                        )
+                    }
+                }
+            }
+        }
+    }
+
 }

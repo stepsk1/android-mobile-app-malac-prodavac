@@ -19,7 +19,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Black
 @Composable
 fun ShopDescComp(
     user: User?,
-    shop: Shop?
+    shop: Shop? = null
 ) {
     if (user != null) {
         Column(

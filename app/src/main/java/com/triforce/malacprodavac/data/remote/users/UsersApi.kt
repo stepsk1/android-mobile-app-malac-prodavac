@@ -14,10 +14,10 @@ interface UsersApi {
     suspend fun getUsers(@QueryMap queryMap: MutableMap<String, String>): List<User>
 
     @GET("${ROUTE}/{id}")
-    suspend fun getUser(@Path("id") id: Int): UserEntity
+    suspend fun getUser(@Path("id") id: Int): User
 
     @DELETE("${ROUTE}/{id}")
-    suspend fun deleteUser(@Query("id") id: Int): UserEntity
+    suspend fun deleteUser(@Query("id") id: Int): User
 
 
     companion object {
