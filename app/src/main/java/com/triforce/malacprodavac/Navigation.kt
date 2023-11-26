@@ -110,7 +110,23 @@ fun Navigation() {
             ProfilePrivateScreen(navController = navController)
         }
 
-        composable(route = Screen.PublicProfile.route) {
+        composable(
+            route = Screen.PublicProfile.route + "?id={id}&role={role}",
+            arguments = listOf(
+                navArgument(
+                    name = "id"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument(
+                    name = "role"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
             ProfilePublicScreen(navController = navController)
         }
 
@@ -118,7 +134,15 @@ fun Navigation() {
             ShopHomeScreen(navController = navController)
         }
 
-        composable(route = Screen.HighlightSection.route) {
+        composable(route = Screen.HighlightSection.route + "?id={id}",
+            arguments = listOf(
+                navArgument(
+                    name = "id"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )) {
             HighlightSection(navController = navController)
         }
 

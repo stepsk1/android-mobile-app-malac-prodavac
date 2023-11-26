@@ -110,13 +110,13 @@ fun ProfileHeroComp(
 
                         Column {
                             Text(
-                                text = "Jagodina, Srbija",
+                                text = user.address.toString(),
                                 style = MaterialTheme.typography.body2,
                                 color = MP_White,
                                 fontWeight = FontWeight.W500,
                             )
                             Text(
-                                text = "Ocena 9.8",
+                                text = user.email,
                                 style = MaterialTheme.typography.body2,
                                 color = MP_White,
                                 fontWeight = FontWeight.W500

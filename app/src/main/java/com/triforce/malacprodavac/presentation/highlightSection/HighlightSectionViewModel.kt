@@ -1,5 +1,4 @@
-package com.triforce.malacprodavac.presentation.profile.profilePublic
-
+package com.triforce.malacprodavac.presentation.highlightSection
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -18,12 +17,15 @@ import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.UserRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfilePublicViewModel @Inject constructor(
+class HighlightSectionViewModel @Inject constructor(
 
     private val profile: Profile,
     private val repositoryShop: ShopRepository,
@@ -33,25 +35,32 @@ class ProfilePublicViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 
 ) : ViewModel() {
+
     var state by mutableStateOf(ProfilePublicState())
 
-    init {
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
 
-        savedStateHandle.get<Int>("id")?.let { id ->
-            if ( id != -1 ) {
-                savedStateHandle.get<Int>("role")?.let { role ->
-                    if ( role == 1 ){
-                        getShop(id)
-                    }
-                }
+    private val _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
+
+    var currentShopId: Int? = null
+    fun onSearchTextChange(text: String){
+        _searchText.value = text
+        currentShopId?.let { getProducts(true, currentShopId!!, text) }
+    }
+
+    init {
+        savedStateHandle.get<Int>("id")?.let { shopId ->
+
+            Log.d("SHOPID222", shopId.toString())
+            if ( shopId != -1 ) {
+
+                currentShopId = shopId
+                getShop(shopId)
             }
         }
     }
-
-    fun onEvent(event: ProfilePublicEvent) {
-
-    }
-
 
     private fun getShop(id: Int) {
         viewModelScope.launch {
@@ -62,33 +71,7 @@ class ProfilePublicViewModel @Inject constructor(
 
                             state = state.copy(currentShop = shop)
 
-                            getUser(shop.userId)
-
                             getProducts(true, shop.id)
-
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
-                }
-            }
-        }
-    }
-    private fun getUser(id: Int) {
-        viewModelScope.launch {
-            repositoryUser.getUser(id).collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        result.data?.let { user ->
-                            state = state.copy(currentUser = user)
                         }
                     }
 
