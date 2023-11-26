@@ -19,6 +19,8 @@ import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,16 +38,29 @@ class HighlightSectionViewModel @Inject constructor(
 
     var state by mutableStateOf(ProfilePublicState())
 
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
+
+    private val _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
+
+    var currentShopId: Int? = null
+    fun onSearchTextChange(text: String){
+        _searchText.value = text
+        currentShopId?.let { getProducts(true, currentShopId!!, text) }
+    }
+
     init {
         savedStateHandle.get<Int>("id")?.let { shopId ->
 
             Log.d("SHOPID222", shopId.toString())
             if ( shopId != -1 ) {
+
+                currentShopId = shopId
                 getShop(shopId)
             }
         }
     }
-
 
     private fun getShop(id: Int) {
         viewModelScope.launch {

@@ -29,7 +29,7 @@ fun TitleDescComp(
         modifier = Modifier
             .fillMaxWidth(1F)
             .height(
-                height = 200.dp
+                height = 150.dp
             )
             .padding(
                 horizontal = 30.dp
