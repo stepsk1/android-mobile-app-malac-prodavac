@@ -85,7 +85,6 @@ fun ProfilePublicScreen(
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            //ShowCommentsSection()
             ShowShopDetailsSection(state.currentUser)
         }
     }

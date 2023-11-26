@@ -115,7 +115,7 @@ fun BottomMapShopDetails(
                         navController = navController,
                         products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
                         title = "Najpopularniji Proizvodi",
-                        route = Screen.HighlightSection.route
+                        route = Screen.HighlightSection.route + "?id=${selectedShop.id}"
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -156,6 +156,10 @@ fun ShopHighlightProduct(
     title: String,
     route: String
 ) {
+    val subProducts = if ( products != null ) {
+        products.subList(0, if (products.size <= 2) { products.size } else { 2 })
+    } else null
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -187,6 +191,6 @@ fun ShopHighlightProduct(
             )
         }
 
-        ShowHighlightedProducts(products, navController)
+        ShowHighlightedProducts(subProducts, navController)
     }
 }

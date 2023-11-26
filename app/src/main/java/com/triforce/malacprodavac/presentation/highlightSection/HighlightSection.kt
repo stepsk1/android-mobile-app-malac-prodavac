@@ -75,7 +75,7 @@ fun HighlightSection(
                     .padding(horizontal = 20.dp, vertical = 15.dp),
                 placeholder = {
                     Text(
-                        text = "Pretražite",
+                        text = "Pretražite ${state.currentShop?.businessName}",
                         color = MP_Black
                     )
                 },
@@ -85,7 +85,7 @@ fun HighlightSection(
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = MP_Green,
                     containerColor = MP_White,
-                    focusedIndicatorColor = MP_GreenDark
+                    focusedIndicatorColor = MP_Green
                 ),
                 singleLine = true,
                 shape = RoundedCornerShape(10.dp)

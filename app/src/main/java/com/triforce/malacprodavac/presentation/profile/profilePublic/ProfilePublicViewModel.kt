@@ -148,5 +148,4 @@ class ProfilePublicViewModel @Inject constructor(
             }
         }
     }
-
 }
