@@ -98,15 +98,8 @@ fun MapScreen(
                     viewModel.onEvent(MapEvent.OnMapLongClick(it))
                 }
             ) {
-                Log.d("SHOPS2", viewModel.state.shops.toString())
-
                 viewModel.state.shops!!.forEach { shop ->
                     if ( shop.availableAtLatitude != null && shop.availableAtLongitude != null ) {
-                        Log.d(
-                            "MARKER",
-                            "LAT ${shop.availableAtLatitude}, LONG ${shop.availableAtLongitude} ID ${shop.id}"
-                        )
-
                         Marker(
                             position = LatLng(
                                 shop.availableAtLatitude,
@@ -115,10 +108,10 @@ fun MapScreen(
                             title = shop.businessName + "user id " + shop.user?.id + " shop id " + shop.id,
                             snippet = if ( shop.user != null ) {shop.user.firstName + " " + shop.user.lastName } else { "" },
                             onInfoWindowLongClick = {
-                                    navController.navigate(Screen.PublicProfile.route + "?id=${shop.id}")
-                                //viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
+                                viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
                             },
                             onClick = {
+                                viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
                                 it.showInfoWindow()
                                 true
                             },
@@ -127,7 +120,9 @@ fun MapScreen(
                     }
                 }
             }
-            BottomMapShopDetails()
+            viewModel.state.selectedShop?.let { selectedShop ->
+                BottomMapShopDetails(selectedShop, viewModel.state.showShopDetails)
+            }
         }
     )
 }

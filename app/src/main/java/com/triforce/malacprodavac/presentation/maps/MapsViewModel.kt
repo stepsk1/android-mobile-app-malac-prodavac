@@ -35,7 +35,6 @@ class MapsViewModel @Inject constructor(
 
     init {
         getShops(true)
-        Log.d("SHOPS33", state.shops.toString())
     }
 
     fun onEvent(event: MapEvent){
@@ -54,12 +53,17 @@ class MapsViewModel @Inject constructor(
             }
 
             is MapEvent.OnInfoWindowLongClick -> {
-                viewModelScope.launch {
-
-                }
+                state = state.copy(
+                    selectedShop = event.shop,
+                    showShopDetails = true
+                )
             }
 
             is MapEvent.OnMapLongClick -> {
+                // TODO() Implement event to select shop position
+            }
+
+            is MapEvent.OnMapClick -> {
                 // TODO() Implement event to select shop position
             }
         }
