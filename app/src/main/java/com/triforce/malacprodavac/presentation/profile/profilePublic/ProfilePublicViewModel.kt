@@ -114,7 +114,7 @@ class ProfilePublicViewModel @Inject constructor(
                 Filter(
                     filter = listOf(
                         SingleFilter(
-                            "categoryId",
+                            "shopId",
                             FilterOperation.Eq,
                             shopId
                         ),
