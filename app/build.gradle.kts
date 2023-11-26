@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.triforce.malacprodavac"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.triforce.malacprodavac"

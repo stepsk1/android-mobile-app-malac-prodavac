@@ -6,5 +6,6 @@ import com.triforce.malacprodavac.domain.use_case.login.Me
 class Profile(
     val getMe: Me,
     val logout: Logout,
-    val getToken: GetToken
+    val getToken: GetToken,
+    val setProfilePicture: SetProfilePicture
 )

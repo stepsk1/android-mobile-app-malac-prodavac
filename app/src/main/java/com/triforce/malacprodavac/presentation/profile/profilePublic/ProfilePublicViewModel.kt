@@ -15,7 +15,7 @@ import com.triforce.malacprodavac.data.services.filter.SingleFilter
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
-import com.triforce.malacprodavac.domain.repository.UserRepository
+import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
