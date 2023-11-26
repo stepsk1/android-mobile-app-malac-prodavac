@@ -134,7 +134,15 @@ fun Navigation() {
             ShopHomeScreen(navController = navController)
         }
 
-        composable(route = Screen.HighlightSection.route) {
+        composable(route = Screen.HighlightSection.route + "?id={id}",
+            arguments = listOf(
+                navArgument(
+                    name = "id"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )) {
             HighlightSection(navController = navController)
         }
 

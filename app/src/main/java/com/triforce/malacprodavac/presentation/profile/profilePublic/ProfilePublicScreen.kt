@@ -37,7 +37,10 @@ import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicViewModel = hiltViewModel()) {
+fun ProfilePublicScreen(
+    navController: NavController,
+    viewModel: ProfilePublicViewModel = hiltViewModel()
+) {
     val state = viewModel.state
 
     val scrollState = rememberScrollState()
@@ -71,15 +74,9 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
             if (state.products?.isEmpty() == false) {
                 ShowHighlightSectionComp(
                     navController = navController,
-                    products = state.products.subList(
-                        0, if (state.products.size > 3) {
-                            3
-                        } else {
-                            state.products.size
-                        }
-                    ),
+                    products = state.products,
                     title = "Naši najnoviji Proizvodi",
-                    route = Screen.HighlightSection.route
+                    route = Screen.HighlightSection.route + "?id=${state.currentShop!!.id}"
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
             }
