@@ -19,6 +19,7 @@ fun UserEntity.toUser(): User = User(
     updatedAt = updatedAt,
     customer = null,
     courier = null,
-    shop = null
+    shop = null,
+    profilePicture = null
 )
 

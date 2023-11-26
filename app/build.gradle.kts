@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.triforce.malacprodavac"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.triforce.malacprodavac"
@@ -73,16 +73,15 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.8.8")
 
-    implementation("androidx.compose.ui:ui:1.0.0")
-    implementation("androidx.compose.material:material:1.0.0")
+    implementation("androidx.compose.ui:ui:1.5.4")
+    implementation("androidx.compose.material:material:1.5.4")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha04")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
 
-    //Compose Dependencies
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
+
 
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.44")
@@ -97,6 +96,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
+
     // Coil
     implementation("io.coil-kt:coil-compose:2.2.0")
 
@@ -110,4 +110,8 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+    //Accompanist
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.32.0")
+
 }

@@ -1,6 +1,7 @@
 package com.triforce.malacprodavac.data.remote.users.userMedias
 
 import com.triforce.malacprodavac.data.remote.users.UsersApi
+import com.triforce.malacprodavac.domain.model.PaginationResponse
 import com.triforce.malacprodavac.domain.model.UserMedia
 import okhttp3.MultipartBody
 import retrofit2.http.DELETE
@@ -16,13 +17,16 @@ interface UserMediasApi {
 
     @Multipart
     @PUT(ROUTE)
-    suspend fun putMedia(@Path("id") userId: Int, @Part() image: MultipartBody.Part): UserMedia
+    suspend fun putMedia(
+        @Path("id") userId: Int,
+        @Part() image: MultipartBody.Part
+    ): UserMedia
 
     @GET(ROUTE)
     suspend fun getMedias(
         @Path("id") userId: Int,
-        @QueryMap queryMap: MutableMap<String, String>
-    ): List<UserMedia>
+        @QueryMap queryMap: MutableMap<String, String>?
+    ): PaginationResponse<UserMedia>
 
 
     @DELETE("${ROUTE}/{mediaId}")

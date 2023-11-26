@@ -8,9 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.domain.util.compressedFileFromUri
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
+
 
 @HiltViewModel
 class ProfilePrivateViewModel @Inject constructor(
@@ -29,11 +32,14 @@ class ProfilePrivateViewModel @Inject constructor(
                 is ProfilePrivateEvent.Logout -> {
                     logout()
                 }
-                is ProfilePrivateEvent.onAddMediaButtonPress -> {
-                    state = state.copy(newImage = true)
+
+                is ProfilePrivateEvent.ChangeProfilePicture -> {
+                    setProfilePicture(compressedFileFromUri(event.context, event.uri))
                 }
 
-                else -> {}
+                ProfilePrivateEvent.Refresh -> {
+                    me()
+                }
             }
         }
     }
@@ -64,7 +70,9 @@ class ProfilePrivateViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         state = state.copy(
-                            currentUser = result.data
+                            currentUser = result.data,
+                            profileImageUrl = "http://softeng.pmf.kg.ac.rs:10010/users/${result.data?.profilePicture?.userId}/medias/${result.data?.profilePicture?.id}",
+                            profileImageKey = result.data?.profilePicture?.key
                         )
                     }
 
@@ -90,6 +98,31 @@ class ProfilePrivateViewModel @Inject constructor(
                     else -> {}
                 }
             }
+        }
+    }
+
+    private fun setProfilePicture(file: File) {
+        viewModelScope.launch {
+            profile.setProfilePicture(state.currentUser!!.id, file)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Error -> {
+
+                        }
+
+                        is Resource.Loading -> {
+                            state = state.copy(isLoading = result.isLoading)
+                        }
+
+                        is Resource.Success -> {
+                            state =
+                                state.copy(
+                                    profileImageUrl = "http://softeng.pmf.kg.ac.rs:10010/users/${result.data?.userId}/medias/${result.data?.id}",
+                                    profileImageKey = result.data?.key
+                                )
+                        }
+                    }
+                }
         }
     }
 }

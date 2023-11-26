@@ -8,6 +8,7 @@ import com.triforce.malacprodavac.data.repository.orders.OrderRepositoryImpl
 import com.triforce.malacprodavac.data.repository.products.ProductRepositoryImpl
 import com.triforce.malacprodavac.data.repository.shops.ShopRepositoryImpl
 import com.triforce.malacprodavac.data.repository.users.UserRepositoryImpl
+import com.triforce.malacprodavac.data.repository.users.userMedias.UserMediasRepositoryImpl
 import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.repository.CategoryRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
@@ -15,7 +16,8 @@ import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
-import com.triforce.malacprodavac.domain.repository.UserRepository
+import com.triforce.malacprodavac.domain.repository.users.UserRepository
+import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -36,6 +38,12 @@ abstract class RepositoryModule {
     abstract fun bindsUserRepository(
         userRepositoryImpl: UserRepositoryImpl
     ): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsUserMediasRepository(
+        userMediaRepositoryImpl: UserMediasRepositoryImpl
+    ): UserMediasRepository
 
     @Binds
     @Singleton

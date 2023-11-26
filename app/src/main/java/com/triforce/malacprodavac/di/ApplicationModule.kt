@@ -18,12 +18,14 @@ import com.triforce.malacprodavac.data.remote.orders.OrderApi
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.users.UsersApi
+import com.triforce.malacprodavac.data.remote.users.userMedias.UserMediasApi
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
+import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import com.triforce.malacprodavac.domain.use_case.GetToken
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
@@ -32,13 +34,14 @@ import com.triforce.malacprodavac.domain.use_case.favoriteProduct.GetFavProducts
 import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
-import com.triforce.malacprodavac.domain.use_case.order.Order
 import com.triforce.malacprodavac.domain.use_case.order.AddOrder
 import com.triforce.malacprodavac.domain.use_case.order.DeleteOrder
 import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
 import com.triforce.malacprodavac.domain.use_case.order.GetOrderForId
+import com.triforce.malacprodavac.domain.use_case.order.Order
 import com.triforce.malacprodavac.domain.use_case.profile.Logout
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
+import com.triforce.malacprodavac.domain.use_case.profile.SetProfilePicture
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCourier
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCustomer
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterShop
@@ -84,6 +87,11 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideUsersApi(retrofit: Retrofit): UsersApi =
+        retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideUserMediasApi(retrofit: Retrofit): UserMediasApi =
         retrofit.create()
 
 
@@ -210,17 +218,36 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideProfileUseCase(logout: Logout, me: Me, getToken: GetToken) =
-        Profile(me, logout, getToken)
+    fun provideSetProfilePicture(repository: UserMediasRepository) =
+        SetProfilePicture(repository)
 
     @Provides
     @Singleton
-    fun provideOrderUseCase(addOrder: AddOrder, deleteOrder: DeleteOrder, getAllOrders: GetAllOrders, getOrderForId: GetOrderForId) =
+    fun provideProfileUseCase(
+        logout: Logout,
+        me: Me,
+        getToken: GetToken,
+        setProfilePicture: SetProfilePicture
+    ) =
+        Profile(me, logout, getToken, setProfilePicture)
+
+    @Provides
+    @Singleton
+    fun provideOrderUseCase(
+        addOrder: AddOrder,
+        deleteOrder: DeleteOrder,
+        getAllOrders: GetAllOrders,
+        getOrderForId: GetOrderForId
+    ) =
         Order(getAllOrders, getOrderForId, addOrder, deleteOrder)
 
     @Provides
     @Singleton
-    fun provideFavProductUseCase(addFavProduct: AddFavProduct, deleteFavProduct: DeleteFavProduct, getFavProducts: GetFavProducts) =
+    fun provideFavProductUseCase(
+        addFavProduct: AddFavProduct,
+        deleteFavProduct: DeleteFavProduct,
+        getFavProducts: GetFavProducts
+    ) =
         FavoriteProduct(getFavProducts, deleteFavProduct, addFavProduct)
 
     @Provides

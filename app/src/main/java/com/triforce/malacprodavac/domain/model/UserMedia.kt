@@ -1,7 +1,5 @@
 package com.triforce.malacprodavac.domain.model
 
-import java.util.Date
-
 data class UserMedia(
     val id: Int,
     val userId: Int,
@@ -9,6 +7,6 @@ data class UserMedia(
     val key: String,
     val originalName: String,
     val name: String?,
-    val updatedAt: Date,
-    val createdAt: Date
+    val updatedAt: String,
+    val createdAt: String
 )

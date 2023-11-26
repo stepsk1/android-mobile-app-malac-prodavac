@@ -1,13 +1,8 @@
 package com.triforce.malacprodavac.presentation.profile.components
 
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -30,35 +26,39 @@ import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.AsyncImage
+import coil.imageLoader
+import coil.memory.MemoryCache
+import coil.request.CachePolicy
+import coil.request.ImageRequest
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.User
-import com.triforce.malacprodavac.presentation.profile.PhotoUrl
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateEvent
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateViewModel
-import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
+import kotlinx.coroutines.Dispatchers
 
+@OptIn(
+    ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class,
+    ExperimentalCoilApi::class
+)
 @Composable
 fun ProfilePrivateHeroComp(
     user: User?,
@@ -66,11 +66,10 @@ fun ProfilePrivateHeroComp(
     viewModel: ProfilePrivateViewModel = hiltViewModel(),
     private: Boolean
 ) {
-//    val state = viewModel.state
+    val state = viewModel.state
 
     if (user != null) {
-        Column(
-        ) {
+        Column {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp))
@@ -78,25 +77,23 @@ fun ProfilePrivateHeroComp(
                         if (!private) {
                             Brush.linearGradient(
 
-                                0.0f to MP_GreenDark,
-                                500.0f to MP_GreenLight,
+                                0.0f to MP_GreenDark, 500.0f to MP_GreenLight,
 
-                                start = Offset.Zero,
-                                end = Offset.Infinite
+                                start = Offset.Zero, end = Offset.Infinite
                             )
                         } else {
                             Brush.linearGradient(
 
-                                0.0f to MP_Orange_Dark,
-                                500.0f to MP_Orange,
+                                0.0f to MP_Orange_Dark, 500.0f to MP_Orange,
 
-                                start = Offset.Zero,
-                                end = Offset.Infinite
+                                start = Offset.Zero, end = Offset.Infinite
                             )
                         }
                     )
             ) {
-                GoBackCompLogout(msg = "Profil", navController = navController, viewModel = viewModel)
+                GoBackCompLogout(
+                    msg = "Profil", navController = navController, viewModel = viewModel
+                )
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -107,8 +104,7 @@ fun ProfilePrivateHeroComp(
                 ) {
                     Column(
                         verticalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .height(160.dp)
+                        modifier = Modifier.height(160.dp)
                     ) {
 
                         Column {
@@ -143,102 +139,88 @@ fun ProfilePrivateHeroComp(
 
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                .width(
-                                    if ( user.roles.first().equals("Shop", ignoreCase = true) && private ) 120.dp
-                                    else 75.dp
-                                )
+                            modifier = Modifier.width(
+                                if (user.roles.first()
+                                        .equals("Shop", ignoreCase = true) && private
+                                ) 120.dp
+                                else 75.dp
+                            )
                         ) {
                             if (private) {
-                                Icon(
-                                    imageVector = Icons.Rounded.AccountCircle,
+                                Icon(imageVector = Icons.Rounded.AccountCircle,
                                     contentDescription = "Izmeni",
                                     tint = MP_White,
                                     modifier = Modifier
                                         .size(35.dp)
-                                        .clickable { }
-                                )
+                                        .clickable { })
 
                                 if (user.roles.first().equals("Shop", ignoreCase = true)) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.AddCircle,
+                                    Icon(imageVector = Icons.Rounded.AddCircle,
                                         contentDescription = "Dodaj",
                                         tint = MP_White,
                                         modifier = Modifier
                                             .size(35.dp)
                                             .clickable {
                                                 navController.navigate(Screen.AddEditProduct.route)
-                                            }
-                                    )
+                                            })
                                 }
                             }
 
-                            Icon(
-                                imageVector = Icons.Rounded.Email,
+                            Icon(imageVector = Icons.Rounded.Email,
                                 contentDescription = "Poruka",
                                 tint = MP_White,
                                 modifier = Modifier
                                     .size(35.dp)
-                                    .clickable {  }
-                            )
+                                    .clickable { })
                         }
                     }
 
-                    var imageUri by remember { mutableStateOf<Uri?>(null) }
-                    val context = LocalContext.current
-                    val bitmap = remember { mutableStateOf<Bitmap?>(null) }
 
-                    val launcher = rememberLauncherForActivityResult(
-                        contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
-                        imageUri = uri
-                    }
-
-                    imageUri?.let {
-                        if(Build.VERSION.SDK_INT < 28){
-                            bitmap.value = MediaStore.Images
-                                .Media.getBitmap(context.contentResolver, it)
-                        }else {
-                            val source = ImageDecoder.createSource(context.contentResolver, it)
-                            bitmap.value = ImageDecoder.decodeBitmap(source)
-                        }
-
-                        bitmap.value?.let { btm ->
-
-                                PhotoUrl.photoBitMap = btm.asImageBitmap()
+                    val launcher = LocalContext.current.let { it ->
+                        rememberLauncherForActivityResult(
+                            contract = ActivityResultContracts.PickVisualMedia()
+                        ) { uri ->
+                            if (uri != null) {
+                                viewModel.onEvent(
+                                    ProfilePrivateEvent.ChangeProfilePicture(
+                                        uri, it
+                                    )
+                                )
+                                if (state.profileImageKey != null) {
+                                    it.imageLoader.memoryCache?.remove(MemoryCache.Key(state.profileImageKey))
+                                }
+                            }
                         }
                     }
 
-                    if (private == true && PhotoUrl.changed == true){
 
-                        Box(
-                            modifier = Modifier.clickable { launcher.launch("image/*") }
-                        ){
-                            Image(
-                                bitmap = PhotoUrl.photoBitMap,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(175.dp)
-                                    .clip(CircleShape)
-                                    .background(MP_Black)
-                                    .border(3.dp, MP_White, CircleShape)
-                            )
-                        }
-                    }
+                    val placeholder = coil.base.R.drawable.notify_panel_notification_icon_bg
+                    val imageRequest = ImageRequest.Builder(LocalContext.current)
+                        .data(state.profileImageUrl)
+                        .dispatcher(Dispatchers.IO)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
+                        .memoryCacheKey(state.profileImageKey)
+                        .placeholder(placeholder)
+                        .error(placeholder)
+                        .fallback(placeholder)
+                        .build()
 
-                    if (private == true && PhotoUrl.changed == false)
-                    {
-                        Image(
-                            painter = painterResource(androidx.customview.R.drawable.notify_panel_notification_icon_bg),
-                            contentDescription = "Round Image",
+
+                    if (private) {
+                        AsyncImage(
+                            model = imageRequest,
+                            contentDescription = "Profile Picture",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .size(175.dp)
                                 .clip(CircleShape)
                                 .border(3.dp, MP_White, CircleShape)
                                 .clickable {
-                                    launcher.launch("image/*")
-                                    PhotoUrl.changed = true
-                                    viewModel.onEvent(ProfilePrivateEvent.onAddMediaButtonPress)
+                                    launcher.launch(
+                                        PickVisualMediaRequest(
+                                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                                        )
+                                    )
                                 }
                         )
                     }
