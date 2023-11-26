@@ -55,7 +55,7 @@ class MapsViewModel @Inject constructor(
             is MapEvent.OnInfoWindowLongClick -> {
                 state = state.copy(
                     selectedShop = event.shop,
-                    showShopDetails = true
+                    showShopDetails = !state.showShopDetails
                 )
             }
 

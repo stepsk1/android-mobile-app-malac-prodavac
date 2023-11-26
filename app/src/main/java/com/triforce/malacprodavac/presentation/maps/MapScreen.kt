@@ -57,7 +57,8 @@ fun MapScreen(
     fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
         return ContextCompat.getDrawable(context, vectorResId)?.run {
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-            val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val bitmap =
+                Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
             draw(Canvas(bitmap))
             BitmapDescriptorFactory.fromBitmap(bitmap)
         }
@@ -99,29 +100,36 @@ fun MapScreen(
                 }
             ) {
                 viewModel.state.shops!!.forEach { shop ->
-                    if ( shop.availableAtLatitude != null && shop.availableAtLongitude != null ) {
+                    if (shop.availableAtLatitude != null && shop.availableAtLongitude != null) {
                         Marker(
                             position = LatLng(
                                 shop.availableAtLatitude,
                                 shop.availableAtLongitude
                             ),
                             title = shop.businessName + "user id " + shop.user?.id + " shop id " + shop.id,
-                            snippet = if ( shop.user != null ) {shop.user.firstName + " " + shop.user.lastName } else { "" },
-                            onInfoWindowLongClick = {
-                                viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
+                            snippet = if (shop.user != null) {
+                                shop.user.firstName + " " + shop.user.lastName
+                            } else {
+                                ""
                             },
+                            /*onInfoWindowLongClick = {
+                                viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
+                            },*/
                             onClick = {
                                 viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
-                                it.showInfoWindow()
+                                //it.showInfoWindow()
                                 true
                             },
-                            icon = bitmapDescriptorFromVector(LocalContext.current, R.drawable.shop_icon)
+                            icon = bitmapDescriptorFromVector(
+                                LocalContext.current,
+                                R.drawable.shop_icon
+                            )
                         )
                     }
                 }
             }
             viewModel.state.selectedShop?.let { selectedShop ->
-                BottomMapShopDetails(selectedShop, viewModel.state.showShopDetails)
+                BottomMapShopDetails(selectedShop, viewModel.state.showShopDetails, navController)
             }
         }
     )

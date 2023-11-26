@@ -1,5 +1,7 @@
 package com.triforce.malacprodavac.presentation.maps.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -27,18 +30,26 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.presentation.components.CallToActionFavourite
+import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
+import com.triforce.malacprodavac.presentation.components.ShowHighlightedProducts
 import com.triforce.malacprodavac.presentation.maps.MapState
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 import kotlinx.coroutines.launch
 
@@ -46,15 +57,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 fun BottomMapShopDetails(
     selectedShop: Shop?,
-    showShopDetails: Boolean
+    showShopDetails: Boolean,
+    navController: NavController
 ) {
-    if (selectedShop != null) {
+    if (selectedShop != null && showShopDetails) {
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Expanded)
 
-        if (showShopDetails) {
-            LaunchedEffect(Unit) {
+        LaunchedEffect(Unit) {
                 sheetState.show()
-            }
         }
 
         ModalBottomSheetLayout(
@@ -99,6 +109,17 @@ fun BottomMapShopDetails(
 
                     ShopDetailItem("Lat", selectedShop.availableAtLatitude.toString())
                     ShopDetailItem("Long", selectedShop.availableAtLongitude.toString())
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    ShopHighlightProduct(
+                        navController = navController,
+                        products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
+                        title = "Najpopularniji Proizvodi",
+                        route = Screen.HighlightSection.route
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    GoToShopProfileButton(navController = navController, shop = selectedShop)
                     Spacer(modifier = Modifier.height(32.dp))
                 }
             }
@@ -125,5 +146,47 @@ fun ShopDetailItem(label: String, value: String) {
             fontWeight = FontWeight.W500,
             color = MP_Black
         )
+    }
+}
+
+@Composable
+fun ShopHighlightProduct(
+    navController: NavController,
+    products: List<Product>?,
+    title: String,
+    route: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            androidx.compose.material.Text(
+                text = title,
+                style = MaterialTheme.typography.body1,
+                color = MP_Black,
+                fontWeight = FontWeight.W500
+            )
+            androidx.compose.material.Text(
+                text = "Vidi više",
+                style = MaterialTheme.typography.caption,
+                color = MP_White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate(route)
+                    }
+                    .clip(RoundedCornerShape(15.dp))
+                    .background(MP_Pink)
+                    .padding(vertical = 6.dp, horizontal = 15.dp)
+            )
+        }
+
+        ShowHighlightedProducts(products, navController)
     }
 }
