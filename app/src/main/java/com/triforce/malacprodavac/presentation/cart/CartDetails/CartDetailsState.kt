@@ -10,5 +10,6 @@ data class CartDetailsState(
     val shippingMethod: String = "",
     val currentUser: User? = null,
     val isLoading: Boolean = false,
-    val isSuccesful: Boolean = false
+    val isSuccesful: Boolean = false,
+    val orderId: Int = 0
 )
