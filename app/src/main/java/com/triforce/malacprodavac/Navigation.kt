@@ -111,10 +111,16 @@ fun Navigation() {
         }
 
         composable(
-            route = Screen.PublicProfile.route + "?id={id}",
+            route = Screen.PublicProfile.route + "?id={id}&role={role}",
             arguments = listOf(
                 navArgument(
                     name = "id"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument(
+                    name = "role"
                 ) {
                     type = NavType.IntType
                     defaultValue = -1

@@ -46,49 +46,36 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
         modifier = Modifier
             .background(MP_White)
             .verticalScroll(state = scrollState)
-    ){
+    ) {
 
         Column(
             modifier = Modifier
                 .height(1400.dp)
-        ){
-            ProfileHeroComp(state.currentUser, navController,false)
+        ) {
+            ProfileHeroComp(state.currentUser, navController, false)
 
-            if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
+            Spacer(modifier = Modifier.padding(16.dp))
 
-                Spacer(modifier = Modifier.padding(16.dp))
+            ShopDescComp(state.currentUser)
 
-                ShopDescComp(state.currentUser)
+            Spacer(modifier = Modifier.padding(16.dp))
 
-                Spacer(modifier = Modifier.padding(16.dp))
+            ShowHighlightSectionComp(
+                navController = navController,
+                products = state.currentShop?.products,
+                title = "Naši Proizvodi",
+                route = Screen.HighlightSection.route
+            )
 
-                ShowHighlightSectionComp(
-                    navController = navController,
-                    products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
-                    title = "Najpopularniji Proizvodi",
-                    route = Screen.HighlightSection.route
-                )
+            Spacer(modifier = Modifier.padding(16.dp))
 
-                Spacer(modifier = Modifier.padding(16.dp))
+            CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
 
-                CallToActionFavourite("Ukoliko želite da pratite naš blog, kako bi znali kada smo u Vašoj okolini:")
+            Spacer(modifier = Modifier.padding(16.dp))
 
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                ShowHighlightSectionComp(
-                    navController = navController,
-                    products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
-                    title = "Najnoviji Proizvodi",
-                    route = Screen.HighlightSection.route
-                )
-
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                //ShowCommentsSection()
-                ShowShopDetailsSection(state.currentUser)
-            }
+            //ShowCommentsSection()
+            ShowShopDetailsSection(state.currentUser)
         }
-
     }
 
 }

@@ -81,7 +81,7 @@ fun GoToShopProfileButton(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .clickable {
-                    navController.navigate(Screen.PublicProfile.route + "?id=${shop.id}")
+                    navController.navigate(Screen.PublicProfile.route + "?id=${shop.id}&role=1")
                 }
                 .clip(RoundedCornerShape(20.dp))
                 .background(MP_Green)
