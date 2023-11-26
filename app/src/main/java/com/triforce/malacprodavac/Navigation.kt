@@ -17,6 +17,7 @@ import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
+import com.triforce.malacprodavac.presentation.maps.MapScreen
 import com.triforce.malacprodavac.presentation.orders.OrderScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateScreen
@@ -109,7 +110,23 @@ fun Navigation() {
             ProfilePrivateScreen(navController = navController)
         }
 
-        composable(route = Screen.PublicProfile.route) {
+        composable(
+            route = Screen.PublicProfile.route + "?id={id}&role={role}",
+            arguments = listOf(
+                navArgument(
+                    name = "id"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument(
+                    name = "role"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
             ProfilePublicScreen(navController = navController)
         }
 
@@ -117,7 +134,15 @@ fun Navigation() {
             ShopHomeScreen(navController = navController)
         }
 
-        composable(route = Screen.HighlightSection.route) {
+        composable(route = Screen.HighlightSection.route + "?id={id}",
+            arguments = listOf(
+                navArgument(
+                    name = "id"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )) {
             HighlightSection(navController = navController)
         }
 
@@ -138,7 +163,11 @@ fun Navigation() {
         composable(route = Screen.OrderScreen.route) {
             OrderScreen(navController = navController)
         }
-        
+
+        composable(route = Screen.MapScreen.route) {
+            MapScreen(navController = navController)
+        }
+
         composable(route = Screen.TransactionScreen.route) {
             TransactionScreen(navController = navController)
         }

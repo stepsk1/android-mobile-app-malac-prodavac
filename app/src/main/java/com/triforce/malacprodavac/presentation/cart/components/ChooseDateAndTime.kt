@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -18,8 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_White
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
@@ -67,19 +73,41 @@ fun ChooseDateAndTime() {
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = {
-            dateDialogState.show()
-        }) {
-            Text(text = "Izaberi datum preuzimanja")
+                dateDialogState.show()
+            },
+            colors = ButtonDefaults.buttonColors(MP_Orange)
+        ) {
+            Text(
+                text = "Izaberi datum preuzimanja",
+                color = MP_White,
+                style = androidx.compose.material.MaterialTheme.typography.body1,
+                fontWeight = FontWeight.Bold
+            )
+
         }
-        Text(text = formattedDate)
+        Text(
+            text = formattedDate,
+            fontWeight = FontWeight.Bold
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            timeDialogState.show()
-        }) {
-            Text(text = "Izaberi vreme preuzimanja")
+                timeDialogState.show()
+            },
+            colors = ButtonDefaults.buttonColors(MP_Orange)
+        ) {
+            Text(
+                text = "Izaberi vreme preuzimanja",
+                color = MP_White,
+                style = androidx.compose.material.MaterialTheme.typography.body1,
+                fontWeight = FontWeight.Bold
+            )
         }
-        Text(text = formattedTime)
+        Text(
+            text = formattedTime,
+            fontWeight = FontWeight.Bold
+        )
     }
 
     MaterialDialog(
@@ -99,7 +127,7 @@ fun ChooseDateAndTime() {
             initialDate = LocalDate.now(),
             title = "Izaberi datum",
             colors = DatePickerDefaults.colors(
-
+                MP_Black
             )
         ) {
             pickedDate = it

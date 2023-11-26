@@ -10,7 +10,6 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 interface ProductsApi {
@@ -22,9 +21,6 @@ interface ProductsApi {
 
     @GET("${ROUTE}/{id}")
     suspend fun getProduct(@Path("id") id: Int): ProductEntity
-
-    @GET("${ROUTE}/{title}")
-    suspend fun getProducts(@Path("title") title: String): PaginationResponse<ProductEntity>
 
     @PATCH("${ROUTE}/{id}")
     suspend fun update(

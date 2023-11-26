@@ -6,6 +6,7 @@ import com.triforce.malacprodavac.data.repository.couriers.CourierRepositoryImpl
 import com.triforce.malacprodavac.data.repository.customers.CustomerRepositoryImpl
 import com.triforce.malacprodavac.data.repository.orders.OrderRepositoryImpl
 import com.triforce.malacprodavac.data.repository.products.ProductRepositoryImpl
+import com.triforce.malacprodavac.data.repository.scheduledPickups.ScheduledPickupsRepositoryImpl
 import com.triforce.malacprodavac.data.repository.shops.ShopRepositoryImpl
 import com.triforce.malacprodavac.data.repository.users.UserRepositoryImpl
 import com.triforce.malacprodavac.data.repository.users.userMedias.UserMediasRepositoryImpl
@@ -15,6 +16,7 @@ import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ProductRepository
+import com.triforce.malacprodavac.domain.repository.ScheduledPickupRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
@@ -80,5 +82,12 @@ abstract class RepositoryModule {
     abstract fun bindsOrderRepository(
         orderRepositoryImpl: OrderRepositoryImpl
     ): OrderRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsSchedulePickupRepository(
+        scheduledPickupsRepositoryImpl: ScheduledPickupsRepositoryImpl
+    ): ScheduledPickupRepository
+
 
 }

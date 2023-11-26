@@ -44,7 +44,6 @@ class ProfilePrivateViewModel @Inject constructor(
         }
     }
 
-
     fun isLoggedIn(): Boolean {
         return state.isLoggedIn
     }

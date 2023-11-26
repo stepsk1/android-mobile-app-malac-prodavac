@@ -21,6 +21,8 @@ import com.triforce.malacprodavac.data.remote.users.UsersApi
 import com.triforce.malacprodavac.data.remote.users.userMedias.UserMediasApi
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
 import com.triforce.malacprodavac.data.services.SessionManager
+import com.triforce.malacprodavac.domain.model.SchedulePickup
+import com.triforce.malacprodavac.domain.model.UpdateScheduledPickup
 import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
@@ -46,6 +48,10 @@ import com.triforce.malacprodavac.domain.use_case.registration.RegisterCourier
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCustomer
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterShop
 import com.triforce.malacprodavac.domain.use_case.registration.Registration
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.AddSchedulePickup
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.GetAllScheduledPickups
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.GetSchedulePickupForId
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.SchedulePickupUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -97,18 +103,15 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideCustomersApi(retrofit: Retrofit): CustomersApi =
-        retrofit.create()
+    fun provideCustomersApi(retrofit: Retrofit): CustomersApi = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi =
-        retrofit.create()
+    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideProductsApi(retrofit: Retrofit): ProductsApi =
-        retrofit.create()
+    fun provideProductsApi(retrofit: Retrofit): ProductsApi = retrofit.create()
 
     @Provides
     @Singleton
@@ -117,13 +120,11 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideShopsApi(retrofit: Retrofit): ShopsApi =
-        retrofit.create()
+    fun provideShopsApi(retrofit: Retrofit): ShopsApi = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideOrderApi(retrofit: Retrofit): OrderApi =
-        retrofit.create()
+    fun provideOrderApi(retrofit: Retrofit): OrderApi = retrofit.create()
 
     @Provides
     @Singleton
@@ -249,6 +250,11 @@ object ApplicationModule {
         getFavProducts: GetFavProducts
     ) =
         FavoriteProduct(getFavProducts, deleteFavProduct, addFavProduct)
+
+    @Provides
+    @Singleton
+    fun provideSchedulePickupUseCase(addSchedulePickup: AddSchedulePickup, getAllScheduledPickups: GetAllScheduledPickups, getSchedulePickupForId: GetSchedulePickupForId, updateSchedulePickup: com.triforce.malacprodavac.domain.use_case.schedulePickup.UpdateScheduledPickup) =
+        SchedulePickupUseCase(getAllScheduledPickups, getSchedulePickupForId, addSchedulePickup, updateSchedulePickup)
 
     @Provides
     @Singleton
