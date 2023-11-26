@@ -56,7 +56,7 @@ fun ProfilePublicScreen(navController: NavController, viewModel: ProfilePublicVi
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            ShopDescComp(state.currentUser)
+            ShopDescComp(state.currentUser,state.currentShop)
 
             Spacer(modifier = Modifier.padding(16.dp))
 
