@@ -20,6 +20,7 @@ sealed class Screen(val route: String) {
     object FavoriteProductsScreen : Screen("favorite_products")
     object MapScreen : Screen("map_screen")
     object SchedulingScreen : Screen("scheduling_screen")
+    object MyProductsScreen: Screen("my_products_screen")
 
     fun withArgs(vararg args: String): String {
         return buildString {

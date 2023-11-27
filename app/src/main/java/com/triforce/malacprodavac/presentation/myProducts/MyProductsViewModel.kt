@@ -1,9 +1,9 @@
-package com.triforce.malacprodavac.presentation.profile.profilePublic
-
+package com.triforce.malacprodavac.presentation.myProducts
 
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,18 +15,23 @@ import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
 import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.domain.util.compressedFileFromUri
+import com.triforce.malacprodavac.presentation.category.CategoryState
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateEvent
+import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfilePublicViewModel @Inject constructor(
+class MyProductsViewModel @Inject constructor(
 
     private val profile: Profile,
     private val repositoryShop: ShopRepository,
@@ -36,27 +41,30 @@ class ProfilePublicViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 
 ) : ViewModel() {
-    var state by mutableStateOf(ProfilePublicState())
+    var state by mutableStateOf(MyProductsState())
 
-    init {
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
 
-        savedStateHandle.get<Int>("id")?.let { id ->
-            if ( id != -1 ) {
-                savedStateHandle.get<Int>("role")?.let { role ->
-                    if ( role == 1 ){
-                        getShop(id)
-                    }
-                }
-            } else {
-                me()
-                getToken()
-                state.currentUser?.let { getProducts(true, "userId", it.id) }
-            }
+    private val _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
+
+    var currentShopId: Int? = null
+    fun onSearchTextChange(text: String){
+        _searchText.value = text
+        currentShopId?.let {
+            getProducts(
+                fetchFromRemote = true,
+                id = currentShopId!!,
+                filterTag = "shopId",
+                searchText = text
+            )
         }
     }
 
-    fun onEvent(event: ProfilePublicEvent) {
-
+    init {
+        me()
+        getToken()
     }
 
     private fun getToken() {
@@ -66,6 +74,40 @@ class ProfilePublicViewModel @Inject constructor(
         }
     }
 
+
+    fun onEvent(event: MyProductsEvent) {
+        when (event) {
+            MyProductsEvent.Refresh -> {
+                me()
+            }
+        }
+    }
+
+    private fun setProfilePicture(context: Context, uri: Uri) {
+        viewModelScope.launch {
+            val file = compressedFileFromUri(context, uri)
+            profile.setProfilePicture(state.currentUser!!.id, file)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Error -> {
+
+                        }
+
+                        is Resource.Loading -> {
+                            state = state.copy(isLoading = result.isLoading)
+                        }
+
+                        is Resource.Success -> {
+                            state =
+                                state.copy(
+                                    profileImageUrl = "http://softeng.pmf.kg.ac.rs:10010/users/${result.data?.userId}/medias/${result.data?.id}",
+                                    profileImageKey = result.data?.key
+                                )
+                        }
+                    }
+                }
+        }
+    }
     private fun me() {
         viewModelScope.launch {
             profile.getMe().collect { result ->
@@ -84,6 +126,12 @@ class ProfilePublicViewModel @Inject constructor(
                             profileImageUrl = "http://softeng.pmf.kg.ac.rs:10010/users/${result.data?.profilePicture?.userId}/medias/${result.data?.profilePicture?.id}",
                             profileImageKey = result.data?.profilePicture?.key
                         )
+
+                        Log.d("FILIP1", state.currentUser.toString())
+
+                        state.currentUser?.let {
+                            getShop(it.id)
+                        }
                     }
 
                     else -> {}
@@ -92,42 +140,38 @@ class ProfilePublicViewModel @Inject constructor(
         }
     }
 
-    private fun getShop(id: Int) {
+    private fun getShop(userId: Int) {
         viewModelScope.launch {
-            repositoryShop.getShop(id, true).collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        result.data?.let {shop ->
 
-                            state = state.copy(currentShop = shop)
-
-                            getUser(shop.userId)
-
-                            getProducts(true, "shopId", shop.id)
-
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
+            val query = FilterBuilder.buildFilterQueryMap(
+                Filter(
+                    filter = listOf(
+                        SingleFilter(
+                            "userId",
+                            FilterOperation.Eq,
+                            userId
                         )
-                    }
-                }
-            }
-        }
-    }
-    private fun getUser(id: Int) {
-        viewModelScope.launch {
-            repositoryUser.getUser(id).collect { result ->
+                    ), order = null, limit = null, offset = null
+                )
+            )
+
+
+            repositoryShop.getShops(true, query).collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        result.data?.let { user ->
-                            state = state.copy(currentUser = user)
+                        result.data?.let {shops ->
+
+                            state = state.copy(
+                                currentShop = shops.first()
+                            )
+
+                            Log.d("FILIP2", state.currentShop.toString())
+
+                            state.currentShop?.let {
+                                currentShopId = it.id
+                                getProducts(true, "shopId", it.id)
+                            }
+
                         }
                     }
 
@@ -172,6 +216,8 @@ class ProfilePublicViewModel @Inject constructor(
                         if (result.data is List<Product>) {
                             state = state.copy(products = result.data)
                         }
+
+                        Log.d("FILIP3", state.products.toString())
                     }
 
                     is Resource.Error -> {

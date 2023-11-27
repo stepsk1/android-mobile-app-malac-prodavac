@@ -46,8 +46,12 @@ import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel(), viewModelOrder: OrderViewModel = hiltViewModel()) {
-//    val state = viewModel.state
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel(),
+    viewModelOrder: OrderViewModel = hiltViewModel()
+) {
+    val state = viewModel.state
     var viewModelFavProducts: FavoriteViewModel = hiltViewModel()
     val stateFav by remember { mutableStateOf(viewModelFavProducts.state) }
 
@@ -80,6 +84,14 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                         color1 = MP_Pink,
                         color2 = MP_Pink,
                         screen = Screen.CartScreen
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "Moji Proizvodi",
+                        graphicID = ImageVector.vectorResource(R.drawable.logo_green),
+                        color1 = MP_Pink,
+                        color2 = MP_Pink,
+                        screen = Screen.MyProductsScreen
                     ),
                     Feature(
                         id = 1,
@@ -151,12 +163,6 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                     title = "Profil",
                     graphicID = Icons.Default.AccountCircle,
                     screen = Screen.PublicProfile,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Privatni",
-                    graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.PrivateProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(

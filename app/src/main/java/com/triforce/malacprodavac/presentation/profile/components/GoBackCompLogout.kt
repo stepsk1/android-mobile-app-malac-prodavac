@@ -76,7 +76,7 @@ fun GoBackCompLogout(
         Icon(
             imageVector = Icons.Default.ExitToApp,
             contentDescription = "logout",
-            tint = Color.Red,
+            tint = MP_White,
             modifier = Modifier
                 .size(25.dp)
                 .clickable {
