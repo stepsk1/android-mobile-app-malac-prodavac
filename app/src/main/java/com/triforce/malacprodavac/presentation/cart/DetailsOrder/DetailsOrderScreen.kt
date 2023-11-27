@@ -36,6 +36,8 @@ import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBac
 import com.triforce.malacprodavac.presentation.cart.components.Confirmation
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.orders.OrderEvent
+import com.triforce.malacprodavac.presentation.orders.OrderViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight

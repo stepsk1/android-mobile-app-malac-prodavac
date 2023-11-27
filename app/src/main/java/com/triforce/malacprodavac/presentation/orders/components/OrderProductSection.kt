@@ -8,19 +8,27 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.domain.model.Order
 import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.orders.OrderState
 import com.triforce.malacprodavac.presentation.orders.OrderViewModel
+import com.triforce.malacprodavac.presentation.orders.OrderedProducts
 
 @Composable
 fun OrderProductSection(
     orders: List<Order>,
-    viewModel: OrderViewModel
+    viewModel: OrderViewModel,
+    orderedProducts: MutableList<Product>
 ) {
+     var state by remember { mutableStateOf(OrderState()) }
+
     var product: Product? = null
-    var products: List<Product> = viewModel.listOfProducts
 
     Column(
         modifier = Modifier
@@ -38,14 +46,16 @@ fun OrderProductSection(
                 .padding(top = 20.dp)
         ) {
             items(orders.size) {// how many items do we have
-                // define one of items
-                product = viewModel.getProduct(true, orders[it].productId)
+            // define one of items
+                product = orderedProducts.get(orders.size - it - 1)
 
-                OrderProductItem(
-                    order = orders[it],
-                    viewModel = viewModel,
-                    title = product?.title
-                )
+                if(product != null){
+                    OrderProductItem(
+                        order = orders[orders.size - it - 1],
+                        viewModel = viewModel,
+                        product = product!!
+                    )
+                }
             }
         }
     }
