@@ -39,13 +39,14 @@ import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.home.components.GreetingSection
 import com.triforce.malacprodavac.presentation.home.components.RecommendedFeaturesSection
+import com.triforce.malacprodavac.presentation.orders.OrderViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel(), viewModelOrder: OrderViewModel = hiltViewModel()) {
 //    val state = viewModel.state
     var viewModelFavProducts: FavoriteViewModel = hiltViewModel()
     val stateFav by remember { mutableStateOf(viewModelFavProducts.state) }

@@ -38,7 +38,7 @@ fun TransactionSection(
                 // define one of items
 
                 TransactionItem(
-                    transaction = transactions[it],
+                    transaction = transactions[transactions.size - it - 1],
                     viewModel = viewModel,
                     numberTransaction = it + 1
                 )

@@ -13,6 +13,7 @@ import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,10 +25,10 @@ class OrderViewModel @Inject constructor(
 ) : ViewModel() {
 
     var state by mutableStateOf(OrderState())
-    var listOfProducts: MutableList<Product> = mutableListOf()
     var product: Product? = null
     private var isCoroutineRunning = false
     var orderStatus: String = ""
+    var listOfProductsTmp: MutableList<Product> = mutableListOf()
 
     fun onEvent(event: OrderEvent) {
         when(event) {
@@ -40,17 +41,12 @@ class OrderViewModel @Inject constructor(
                     orderStatus = orderStatus,
                     accepted = true
                 )
-
-                updateOrderStatus(1, updateOrderDto)
-                println("PROMENAAAAA")
-                println(state.order?.orderStatus)
             }
         }
     }
 
     init {
         getAcceptedOrders(true)
-
     }
 
     private fun getAcceptedOrders(fetchFromRemote: Boolean) {
@@ -62,6 +58,7 @@ class OrderViewModel @Inject constructor(
                             if (result.data is List<Order>) {
                                 state = state.copy(orders = result.data)
                             }
+                            getProducts(true, state.orders)
                         }
                     }
 
@@ -80,13 +77,12 @@ class OrderViewModel @Inject constructor(
     }
 
     public fun getProduct(fetchFromRemote: Boolean, productId: Int): Product? {
-        if (!isCoroutineRunning){
+
             viewModelScope.launch {
                 repositoryProduct.getProduct(productId, fetchFromRemote).collect { result ->
                     when (result) {
                         is Resource.Success -> {
                             if (result.data is Product) {
-                                listOfProducts.add(result.data)
                                 state = state.copy(product = result.data)
                             }
                         }
@@ -102,10 +98,38 @@ class OrderViewModel @Inject constructor(
                         }
                     }
                 }
-            }
-            isCoroutineRunning = true
         }
+
+
         return state.product
+    }
+
+
+    private fun getProducts(fetchFromRemote: Boolean, orders: List<Order>) {
+
+        viewModelScope.launch {
+            for(order in orders) {
+                repositoryProduct.getProduct(order.productId, fetchFromRemote).collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            if (result.data is Product) {
+                                OrderedProducts.listOfProducts.add(result.data)
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            Unit
+                        }
+
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun updateOrderStatus(

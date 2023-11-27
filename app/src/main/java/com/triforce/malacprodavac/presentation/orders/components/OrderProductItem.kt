@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.orders.OrderEvent
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -39,9 +40,8 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 fun OrderProductItem(
     order: Order,
     viewModel: OrderViewModel,
-    title: String?
+    product: Product
 ){
-//    var state = viewModel.state
 
     var profileViewModel: ProfilePublicViewModel = hiltViewModel()
     val profileState = profileViewModel.state
@@ -96,7 +96,7 @@ fun OrderProductItem(
 
 
                     Text(
-                        text = title + "  " + order.quantity.toInt().toString() + "X" ,
+                        text = product.title + "  " + order.quantity.toInt().toString() + "X" ,
                         style = MaterialTheme.typography.body1,
                         color = MP_Black,
                         modifier = Modifier

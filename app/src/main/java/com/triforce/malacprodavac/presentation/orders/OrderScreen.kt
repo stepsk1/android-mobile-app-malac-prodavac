@@ -30,6 +30,7 @@ import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Order
+import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.orders.components.OrderProductSection
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicViewModel
@@ -43,6 +44,7 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltViewModel()) {
 
     var profileViewModel: ProfilePublicViewModel = hiltViewModel()
+    var orderedProducts = OrderedProducts.listOfProducts
     val profileState = profileViewModel.state
     val state = viewModel.state
 
@@ -68,7 +70,8 @@ fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltVi
 
             OrderProductSection(
                 orders = orders,
-                viewModel = viewModel)
+                viewModel = viewModel,
+                orderedProducts = orderedProducts)
         }
 
         Row(
