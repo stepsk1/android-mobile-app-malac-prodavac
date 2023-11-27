@@ -10,7 +10,7 @@ import com.triforce.malacprodavac.data.remote.orders.dto.UpdateOrderDto
 import com.triforce.malacprodavac.domain.model.Order
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.repository.OrderRepository
-import com.triforce.malacprodavac.domain.repository.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel

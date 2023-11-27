@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.domain.repository
+package com.triforce.malacprodavac.domain.repository.products
 
 import com.triforce.malacprodavac.domain.model.CreateProduct
 import com.triforce.malacprodavac.domain.model.Product

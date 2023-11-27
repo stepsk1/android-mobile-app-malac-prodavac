@@ -6,35 +6,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -42,16 +31,12 @@ import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.model.Shop
-import com.triforce.malacprodavac.presentation.components.CallToActionFavourite
-import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.components.ShowHighlightedProducts
-import com.triforce.malacprodavac.presentation.maps.MapState
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
-import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
@@ -64,7 +49,7 @@ fun BottomMapShopDetails(
         val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Expanded)
 
         LaunchedEffect(Unit) {
-                sheetState.show()
+            sheetState.show()
         }
 
         ModalBottomSheetLayout(
@@ -113,7 +98,54 @@ fun BottomMapShopDetails(
 
                     ShopHighlightProduct(
                         navController = navController,
-                        products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
+                        products = listOf(
+                            Product(
+                                1,
+                                2,
+                                3,
+                                true,
+                                99.0,
+                                "RSD",
+                                9.0,
+                                null,
+                                null,
+                                null,
+                                null,
+                                "RSD",
+                                "Prsuta 100g",
+                                "",
+                                null,
+                                null,
+                                "",
+                                "",
+                                null,
+                                null,
+                                null
+                            ),
+                            Product(
+                                1,
+                                2,
+                                3,
+                                true,
+                                99.0,
+                                "RSD",
+                                9.0,
+                                null,
+                                null,
+                                null,
+                                null,
+                                "RSD",
+                                "Prsuta 100g",
+                                "",
+                                null,
+                                null,
+                                "",
+                                "",
+                                null,
+                                null,
+                                null
+                            )
+                        ),
                         title = "Najpopularniji Proizvodi",
                         route = Screen.HighlightSection.route + "?id=${selectedShop.id}"
                     )
@@ -156,8 +188,14 @@ fun ShopHighlightProduct(
     title: String,
     route: String
 ) {
-    val subProducts = if ( products != null ) {
-        products.subList(0, if (products.size <= 2) { products.size } else { 2 })
+    val subProducts = if (products != null) {
+        products.subList(
+            0, if (products.size <= 2) {
+                products.size
+            } else {
+                2
+            }
+        )
     } else null
 
     Column(

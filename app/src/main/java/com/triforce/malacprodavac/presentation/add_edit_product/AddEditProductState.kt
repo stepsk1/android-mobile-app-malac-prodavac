@@ -10,6 +10,7 @@ data class AddEditProductState(
     val isLoading: Boolean = false,
     val successful: Boolean = false,
 
+
     val unitOfMeasurement: UnitOfMeasurement = UnitOfMeasurement.KG,
     val currency: Currency = Currency.RSD,
     val title: String = "",

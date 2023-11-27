@@ -1,5 +1,7 @@
 package com.triforce.malacprodavac.presentation.add_edit_product
 
+import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,21 +12,20 @@ import com.triforce.malacprodavac.data.remote.products.dto.CreateProductDto
 import com.triforce.malacprodavac.data.remote.products.dto.UpdateProductDto
 import com.triforce.malacprodavac.domain.model.CreateProduct
 import com.triforce.malacprodavac.domain.model.UpdateProduct
-import com.triforce.malacprodavac.domain.repository.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
+import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.presentation.registration.RegistrationViewModel
+import com.triforce.malacprodavac.domain.util.compressedFileFromUri
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditProductViewModel @Inject constructor(
-
+    private val productUseCase: ProductUseCase,
     private val repository: ProductRepository,
     savedStateHandle: SavedStateHandle
-):ViewModel() {
+) : ViewModel() {
 
     var state by mutableStateOf(AddEditProductState())
 
@@ -97,6 +98,31 @@ class AddEditProductViewModel @Inject constructor(
                     state = state.copy(successful = true)
                 }
             }
+
+            is AddEditProductEvent.ChangeProductImages -> {
+                changeProductImages(event.context, event.imageUris)
+            }
+        }
+    }
+
+    private fun changeProductImages(context: Context, uris: List<Uri>) {
+        viewModelScope.launch {
+            val files = uris.map { compressedFileFromUri(context, it) }
+            productUseCase.addProductImages(state.productId!!, files).collect {
+                when (it) {
+                    is Resource.Error -> {
+
+                    }
+
+                    is Resource.Loading -> {
+                        state = state.copy(isLoading = it.isLoading)
+                    }
+
+                    is Resource.Success -> {
+                        getProduct(true, state.productId!!)
+                    }
+                }
+            }
         }
     }
 
@@ -143,9 +169,6 @@ class AddEditProductViewModel @Inject constructor(
                     }
 
                     is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
                     }
                 }
             }

@@ -1,5 +1,7 @@
 package com.triforce.malacprodavac.presentation.profile.profilePrivate
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +13,6 @@ import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.domain.util.compressedFileFromUri
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 
@@ -27,19 +28,17 @@ class ProfilePrivateViewModel @Inject constructor(
     }
 
     fun onEvent(event: ProfilePrivateEvent) {
-        viewModelScope.launch {
-            when (event) {
-                is ProfilePrivateEvent.Logout -> {
-                    logout()
-                }
+        when (event) {
+            is ProfilePrivateEvent.Logout -> {
+                logout()
+            }
 
-                is ProfilePrivateEvent.ChangeProfilePicture -> {
-                    setProfilePicture(compressedFileFromUri(event.context, event.uri))
-                }
+            is ProfilePrivateEvent.ChangeProfilePicture -> {
+                setProfilePicture(event.context, event.uri)
+            }
 
-                ProfilePrivateEvent.Refresh -> {
-                    me()
-                }
+            ProfilePrivateEvent.Refresh -> {
+                me()
             }
         }
     }
@@ -100,8 +99,9 @@ class ProfilePrivateViewModel @Inject constructor(
         }
     }
 
-    private fun setProfilePicture(file: File) {
+    private fun setProfilePicture(context: Context, uri: Uri) {
         viewModelScope.launch {
+            val file = compressedFileFromUri(context, uri)
             profile.setProfilePicture(state.currentUser!!.id, file)
                 .collect { result ->
                     when (result) {

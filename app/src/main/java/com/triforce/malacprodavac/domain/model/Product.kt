@@ -1,5 +1,7 @@
 package com.triforce.malacprodavac.domain.model
 
+import com.triforce.malacprodavac.domain.model.products.productMedias.ProductMedia
+
 data class Product(
     val id: Int,
     val shopId: Int,
@@ -20,7 +22,7 @@ data class Product(
     val createdAt: String,
     val updatedAt: String,
 
+    val productMedias: List<ProductMedia>?,
     val shop: Shop?,
     val category: Category?
-){
-}
+)

@@ -16,17 +16,20 @@ import com.triforce.malacprodavac.data.remote.couriers.CouriersApi
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
 import com.triforce.malacprodavac.data.remote.orders.OrderApi
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
+import com.triforce.malacprodavac.data.remote.products.productMedias.ProductMediasApi
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.users.UsersApi
 import com.triforce.malacprodavac.data.remote.users.userMedias.UserMediasApi
+import com.triforce.malacprodavac.data.repository.products.productMedias.ProductMediasRepositoryImpl
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
 import com.triforce.malacprodavac.data.services.SessionManager
-import com.triforce.malacprodavac.domain.model.SchedulePickup
-import com.triforce.malacprodavac.domain.model.UpdateScheduledPickup
 import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
+import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.produtMedias.ProductMediasRepository
 import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import com.triforce.malacprodavac.domain.use_case.GetToken
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
@@ -41,6 +44,11 @@ import com.triforce.malacprodavac.domain.use_case.order.DeleteOrder
 import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
 import com.triforce.malacprodavac.domain.use_case.order.GetOrderForId
 import com.triforce.malacprodavac.domain.use_case.order.Order
+import com.triforce.malacprodavac.domain.use_case.order.UpdateOrder
+import com.triforce.malacprodavac.domain.use_case.product.AddProductImages
+import com.triforce.malacprodavac.domain.use_case.product.GetAllProducts
+import com.triforce.malacprodavac.domain.use_case.product.GetProductForId
+import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
 import com.triforce.malacprodavac.domain.use_case.profile.Logout
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.use_case.profile.SetProfilePicture
@@ -125,6 +133,10 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideOrderApi(retrofit: Retrofit): OrderApi = retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideProductMediasApi(retrofit: Retrofit): ProductMediasApi = retrofit.create()
 
     @Provides
     @Singleton
@@ -251,10 +263,59 @@ object ApplicationModule {
     ) =
         FavoriteProduct(getFavProducts, deleteFavProduct, addFavProduct)
 
+
     @Provides
     @Singleton
-    fun provideSchedulePickupUseCase(addSchedulePickup: AddSchedulePickup, getAllScheduledPickups: GetAllScheduledPickups, getSchedulePickupForId: GetSchedulePickupForId, updateSchedulePickup: com.triforce.malacprodavac.domain.use_case.schedulePickup.UpdateScheduledPickup) =
-        SchedulePickupUseCase(getAllScheduledPickups, getSchedulePickupForId, addSchedulePickup, updateSchedulePickup)
+    fun provideProductUseCase(
+        getAllProducts: GetAllProducts,
+        addProductImages: AddProductImages,
+        getProductForId: GetProductForId,
+        updateOrder: UpdateOrder,
+    ) = ProductUseCase(getAllProducts, getProductForId, updateOrder, addProductImages)
+
+    @Provides
+    @Singleton
+    fun provideUpdateOrderUseCase(repository: OrderRepository) = UpdateOrder(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetProductUseCase(
+        repository: ProductRepository
+    ) =
+        GetProductForId(repository)
+
+    @Provides
+    @Singleton
+    fun provideSchedulePickupUseCase(
+        addSchedulePickup: AddSchedulePickup,
+        getAllScheduledPickups: GetAllScheduledPickups,
+        getSchedulePickupForId: GetSchedulePickupForId,
+        updateSchedulePickup: com.triforce.malacprodavac.domain.use_case.schedulePickup.UpdateScheduledPickup
+    ) =
+        SchedulePickupUseCase(
+            getAllScheduledPickups,
+            getSchedulePickupForId,
+            addSchedulePickup,
+            updateSchedulePickup
+        )
+
+    @Provides
+    @Singleton
+    fun provideProductMediasRepositoryImpl(
+        api: ProductMediasApi,
+        db: MalacProdavacDatabase,
+        sessionManager: SessionManager
+    ): ProductMediasRepository = ProductMediasRepositoryImpl(api, db, sessionManager)
+
+    @Provides
+    @Singleton
+    fun provideAddProductImagesUseCase(repository: ProductMediasRepository) =
+        AddProductImages(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetProductsUseCase(repository: ProductRepository) =
+        GetAllProducts(repository)
 
     @Provides
     @Singleton

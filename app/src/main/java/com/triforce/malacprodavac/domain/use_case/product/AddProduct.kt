@@ -1,10 +1,8 @@
 package com.triforce.malacprodavac.domain.use_case.product
 
 import com.triforce.malacprodavac.domain.model.CreateProduct
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.repository.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import java.util.InvalidPropertiesFormatException
-import kotlin.jvm.Throws
 
 class AddProduct (
 

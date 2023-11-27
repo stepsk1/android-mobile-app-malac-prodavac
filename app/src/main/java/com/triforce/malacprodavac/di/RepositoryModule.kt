@@ -15,7 +15,7 @@ import com.triforce.malacprodavac.domain.repository.CategoryRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
-import com.triforce.malacprodavac.domain.repository.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ScheduledPickupRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository

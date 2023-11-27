@@ -62,8 +62,7 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun ProductScreen(
-    navController: NavController,
-    viewModel: ProductViewModel = hiltViewModel()
+    navController: NavController, viewModel: ProductViewModel = hiltViewModel()
 ) {
 
     val viewModelFavProduct: FavoriteViewModel = hiltViewModel()
@@ -110,22 +109,64 @@ fun ProductScreen(
 
                 Spacer(modifier = Modifier.padding(16.dp))
 
-                ProductOptions(product,navController, true)
+                ProductOptions(product, navController, true)
 
                 Spacer(modifier = Modifier.padding(16.dp))
 
                 ShowHighlightSectionComp(
-                    navController = navController,
-                    products = listOf( Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null), Product(1,2,3,true,99.0,"RSD",9.0,null,null,null,null,"RSD","Prsuta 100g", "", null, null,"","",null,null)),
-                    title = "Više proizvoda od prodavca",
-                    route = Screen.HighlightSection.route
+                    navController = navController, products = listOf(
+                        Product(
+                            1,
+                            2,
+                            3,
+                            true,
+                            99.0,
+                            "RSD",
+                            9.0,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "RSD",
+                            "Prsuta 100g",
+                            "",
+                            null,
+                            null,
+                            "",
+                            "",
+                            null,
+                            null,
+                            null
+                        ), Product(
+                            1,
+                            2,
+                            3,
+                            true,
+                            99.0,
+                            "RSD",
+                            9.0,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "RSD",
+                            "Prsuta 100g",
+                            "",
+                            null,
+                            null,
+                            "",
+                            "",
+                            null,
+                            null,
+                            null
+                        )
+                    ), title = "Više proizvoda od prodavca", route = Screen.HighlightSection.route
                 )
                 Box(
-                    contentAlignment = Alignment.BottomCenter,
-                    modifier = Modifier
+                    contentAlignment = Alignment.BottomCenter, modifier = Modifier
                         //.background(MP_Pink)
                         .fillMaxSize()
-                ){
+                ) {
                     ShowFavouriteAddToCart(
                         navController = navController,
                         viewModel = viewModel,
@@ -139,42 +180,46 @@ fun ProductScreen(
 
 @Composable
 fun ProductOptions(
-    product: Product?,
-    navController: NavController,
-    isEdit: Boolean
-){
-    val colorTint = if ( isEdit ) { MP_Orange_Dark } else { MP_Green }
-    val msg = if ( isEdit ) { "Izmeni proizvod" } else { "Dodaj novi proizvod" }
+    product: Product?, navController: NavController, isEdit: Boolean
+) {
+    val colorTint = if (isEdit) {
+        MP_Orange_Dark
+    } else {
+        MP_Green
+    }
+    val msg = if (isEdit) {
+        "Izmeni proizvod"
+    } else {
+        "Dodaj novi proizvod"
+    }
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(
-                start = 20.dp,
-                end = 20.dp
+                start = 20.dp, end = 20.dp
             )
             .shadow(
-                elevation = 10.dp,
-                spotColor = MP_Black,
-                shape = RoundedCornerShape(20.dp)
+                elevation = 10.dp, spotColor = MP_Black, shape = RoundedCornerShape(20.dp)
             )
             .clip(RoundedCornerShape(20.dp))
             .background(MP_White)
             .padding(
-                vertical = 10.dp,
-                horizontal = 16.dp
+                vertical = 10.dp, horizontal = 16.dp
             )
-    ){
+    ) {
         Icon(
-            imageVector = if ( isEdit ) { Icons.Outlined.Edit } else { Icons.Outlined.Add },
+            imageVector = if (isEdit) {
+                Icons.Outlined.Edit
+            } else {
+                Icons.Outlined.Add
+            },
             contentDescription = "FavoriteBorder",
             tint = colorTint,
-            modifier = Modifier
-                .size(35.dp)
+            modifier = Modifier.size(35.dp)
         )
-        Text(
-            text = msg,
+        Text(text = msg,
             style = MaterialTheme.typography.body2,
             color = MP_White,
             fontWeight = FontWeight.W400,
@@ -190,19 +235,18 @@ fun ProductOptions(
                 .clip(RoundedCornerShape(15.dp))
                 .background(colorTint)
                 .width(width = 200.dp)
-                .padding(vertical = 10.dp)
-        )
+                .padding(vertical = 10.dp))
     }
 }
 
 @Composable
 fun ProductHeroImage(
-
+    modifier: Modifier = Modifier
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 15.dp, end = 15.dp)
             .background(MP_White, RoundedCornerShape(10.dp))
@@ -212,8 +256,7 @@ fun ProductHeroImage(
             imageVector = Icons.Default.ShoppingCart,
             contentDescription = "Malac Prodavac",
             tint = MP_Gray,
-            modifier = Modifier
-                .size(100.dp)
+            modifier = Modifier.size(100.dp)
         )
     }
 }
@@ -226,8 +269,7 @@ fun ProductDetails(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = 20.dp,
-                end = 20.dp
+                start = 20.dp, end = 20.dp
             )
     ) {
         Column(
@@ -261,17 +303,13 @@ fun ProductDetails(
 
 @Composable
 fun ShowFavouriteAddToCart(
-    navController: NavController,
-    viewModel: ProductViewModel,
-    viewModelFavourite: FavoriteViewModel
+    navController: NavController, viewModel: ProductViewModel, viewModelFavourite: FavoriteViewModel
 ) {
 
     val imageVector: ImageVector
 
-    if(viewModel.state.isFavorite == true)
-        imageVector = Icons.Outlined.Favorite
-    else
-        imageVector = Icons.Outlined.FavoriteBorder
+    if (viewModel.state.isFavorite == true) imageVector = Icons.Outlined.Favorite
+    else imageVector = Icons.Outlined.FavoriteBorder
 
     fun addToBuyedProducts(item: ProductAmount) {
         BuyedProducts.listOfBuyedProducts.add(item)
@@ -285,14 +323,10 @@ fun ShowFavouriteAddToCart(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                bottom = 25.dp,
-                start = 5.dp,
-                end = 5.dp
+                bottom = 25.dp, start = 5.dp, end = 5.dp
             )
             .shadow(
-                elevation = 10.dp,
-                spotColor = MP_Black,
-                shape = RoundedCornerShape(20.dp)
+                elevation = 10.dp, spotColor = MP_Black, shape = RoundedCornerShape(20.dp)
             )
             .clip(RoundedCornerShape(20.dp))
             .background(MP_White)
@@ -300,8 +334,7 @@ fun ShowFavouriteAddToCart(
                 vertical = 10.dp,
             )
     ) {
-        Icon(
-            imageVector = imageVector,
+        Icon(imageVector = imageVector,
             contentDescription = "FavoriteBorder",
             tint = MP_Pink,
             modifier = Modifier
@@ -330,11 +363,9 @@ fun ShowFavouriteAddToCart(
                             )
                             .show()
                     }
-                }
-        )
+                })
 
-        Text(
-            text = "Dodaj u korpu",
+        Text(text = "Dodaj u korpu",
             style = MaterialTheme.typography.h5,
             color = MP_White,
             fontWeight = FontWeight.W400,
@@ -347,17 +378,13 @@ fun ShowFavouriteAddToCart(
 
                         Toast
                             .makeText(
-                                context,
-                                "Uspešno dodat proizvod u korpu",
-                                Toast.LENGTH_LONG
+                                context, "Uspešno dodat proizvod u korpu", Toast.LENGTH_LONG
                             )
                             .show()
                     } else {
                         Toast
                             .makeText(
-                                context,
-                                "Proizvod se već nalazi u korpi",
-                                Toast.LENGTH_LONG
+                                context, "Proizvod se već nalazi u korpi", Toast.LENGTH_LONG
                             )
                             .show()
                     }
@@ -365,7 +392,6 @@ fun ShowFavouriteAddToCart(
                 .clip(RoundedCornerShape(20.dp))
                 .background(MP_Pink)
                 .width(width = 250.dp)
-                .padding(vertical = 10.dp)
-        )
+                .padding(vertical = 10.dp))
     }
 }

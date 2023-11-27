@@ -23,5 +23,6 @@ fun ProductEntity.toProduct(): Product = Product(
     createdAt = createdAt,
     updatedAt = updatedAt,
     shop = null,
+    productMedias = null,
     category = null
 )

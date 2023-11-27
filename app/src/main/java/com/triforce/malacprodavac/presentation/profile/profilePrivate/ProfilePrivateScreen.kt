@@ -88,6 +88,7 @@ fun ProfilePrivateScreen(
                             "",
                             "",
                             null,
+                            null,
                             null
                         ),
                         Product(
@@ -109,6 +110,7 @@ fun ProfilePrivateScreen(
                             null,
                             "",
                             "",
+                            null,
                             null,
                             null
                         )
@@ -142,6 +144,7 @@ fun ProfilePrivateScreen(
                             "",
                             "",
                             null,
+                            null,
                             null
                         ),
                         Product(
@@ -163,6 +166,7 @@ fun ProfilePrivateScreen(
                             null,
                             "",
                             "",
+                            null,
                             null,
                             null
                         )
