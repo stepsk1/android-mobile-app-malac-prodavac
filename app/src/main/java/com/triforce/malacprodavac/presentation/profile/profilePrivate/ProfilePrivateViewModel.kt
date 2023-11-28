@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.domain.util.compressedFileFromUri
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfilePrivateViewModel @Inject constructor(
-    private val profile: Profile
+    private val profile: Profile,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
     var state by mutableStateOf(ProfilePrivateState())
 

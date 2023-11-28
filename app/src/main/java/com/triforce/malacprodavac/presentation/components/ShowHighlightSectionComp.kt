@@ -106,7 +106,7 @@ fun ShowHighlightedProducts(
         if (products != null) {
             items(products.size) {// how many items do we have
                 // define one of items
-                HighlightSectionProduct(product = products?.get(it) ?: null, navController)
+                HighlightSectionProduct(product = products.get(it) ?: null, navController)
             }
         }
     }

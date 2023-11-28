@@ -67,7 +67,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StoreCategoryScreen(
 
@@ -209,8 +209,7 @@ fun CategorySectionHeader(
             .background(colorBackground, RoundedCornerShape(10.dp))
             .padding(15.dp)
     ) {
-        Column (
-        ) {
+        Column {
             Text(
                 text = title,
                 style = MaterialTheme.typography.h6,
@@ -258,7 +257,7 @@ fun ShowcaseProducts(
         if (products != null) {
             items(products.size) {// how many items do we have
                 // define one of items
-                StoreCategoryProduct(product = products?.get(it) ?: null, navController)
+                StoreCategoryProduct(product = products.get(it) ?: null, navController)
             }
         }
     }

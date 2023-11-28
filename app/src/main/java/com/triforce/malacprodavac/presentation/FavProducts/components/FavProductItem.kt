@@ -95,7 +95,7 @@ fun FavProductItem(
             )
 
             Text(
-                text = favoriteProduct.product!!.price.toString() + " " +favoriteProduct.product!!.currency,
+                text = favoriteProduct.product.price.toString() + " " + favoriteProduct.product.currency,
                 style = MaterialTheme.typography.h6,
                 color = MP_Black,
                 modifier = Modifier

@@ -2,7 +2,6 @@ package com.triforce.malacprodavac.data.repository.shops
 
 import android.util.Log
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
-import com.triforce.malacprodavac.data.mappers.toProduct
 import com.triforce.malacprodavac.data.mappers.toShop
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.shops.dto.CreateShopDto

@@ -90,7 +90,7 @@ fun FavShopItem(
             }
 
             Text(
-                text = favoriteShop.shop!!.openFromDays + favoriteShop.shop!!.openTillDays,
+                text = favoriteShop.shop!!.openFromDays + favoriteShop.shop.openTillDays,
                 style = MaterialTheme.typography.body2,
                 color = MP_Green,
                 modifier = Modifier

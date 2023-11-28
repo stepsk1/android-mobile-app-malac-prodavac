@@ -126,7 +126,7 @@ class FavoriteShopViewModel @Inject constructor(
                     is Resource.Success -> {
                         if(result.data != null) {
                             state = state.copy(
-                                customerId = result.data!!.customer!!.id
+                                customerId = result.data.customer!!.id
                             )
                             getFavShops(state.customerId!!, true)
                         }

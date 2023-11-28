@@ -4,6 +4,7 @@ import com.triforce.malacprodavac.data.repository.auth.AuthRepositoryImpl
 import com.triforce.malacprodavac.data.repository.categories.CategoryRepositoryImpl
 import com.triforce.malacprodavac.data.repository.couriers.CourierRepositoryImpl
 import com.triforce.malacprodavac.data.repository.customers.CustomerRepositoryImpl
+import com.triforce.malacprodavac.data.repository.notifications.NotificationsRepositoryImpl
 import com.triforce.malacprodavac.data.repository.orders.OrderRepositoryImpl
 import com.triforce.malacprodavac.data.repository.products.ProductRepositoryImpl
 import com.triforce.malacprodavac.data.repository.scheduledPickups.ScheduledPickupsRepositoryImpl
@@ -18,6 +19,7 @@ import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ScheduledPickupRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
+import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import dagger.Binds
@@ -88,5 +90,11 @@ abstract class RepositoryModule {
     abstract fun bindsSchedulePickupRepository(
         scheduledPickupsRepositoryImpl: ScheduledPickupsRepositoryImpl
     ): ScheduledPickupRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsNotificationsRepository(
+        notificationsRepositoryImpl: NotificationsRepositoryImpl
+    ): NotificationsRepository
 
 }

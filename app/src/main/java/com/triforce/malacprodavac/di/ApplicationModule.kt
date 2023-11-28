@@ -14,6 +14,7 @@ import com.triforce.malacprodavac.data.remote.auth.interceptors.AuthInterceptorI
 import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
 import com.triforce.malacprodavac.data.remote.couriers.CouriersApi
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
+import com.triforce.malacprodavac.data.remote.notifications.NotificationsApi
 import com.triforce.malacprodavac.data.remote.orders.OrderApi
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
 import com.triforce.malacprodavac.data.remote.products.productMedias.ProductMediasApi
@@ -105,6 +106,12 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideNotificationsApi(retrofit: Retrofit): NotificationsApi =
+        retrofit.create()
+
+
+    @Provides
+    @Singleton
     fun provideUsersApi(retrofit: Retrofit): UsersApi =
         retrofit.create()
 
@@ -156,6 +163,7 @@ object ApplicationModule {
     fun provideAuthInterceptorImpl(
         sessionManager: SessionManager
     ): AuthInterceptorImpl = AuthInterceptorImpl(sessionManager)
+
 
     /* SESSION MANAGER DEPENDENCY CHAIN */
     @Singleton

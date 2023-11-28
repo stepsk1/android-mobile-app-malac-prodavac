@@ -51,8 +51,7 @@ fun ProfileHeroComp(
 ) {
 
     if (user != null) {
-        Column(
-        ) {
+        Column {
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp))

@@ -2,7 +2,7 @@ package com.triforce.malacprodavac.data.repository.products
 
 import android.util.Log
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
-import com.triforce.malacprodavac.data.mappers.toProduct
+import com.triforce.malacprodavac.data.mappers.products.toProduct
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
 import com.triforce.malacprodavac.data.remote.products.dto.CreateProductDto
 import com.triforce.malacprodavac.data.remote.products.dto.UpdateProductDto

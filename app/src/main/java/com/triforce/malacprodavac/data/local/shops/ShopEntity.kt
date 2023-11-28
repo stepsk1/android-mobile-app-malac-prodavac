@@ -2,11 +2,10 @@ package com.triforce.malacprodavac.data.local.shops
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.triforce.malacprodavac.data.local.product.ProductEntity
 import com.triforce.malacprodavac.data.local.user.UserEntity
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.model.User
-import com.triforce.malacprodavac.domain.util.enum.DaysOfTheWeek
 
 @Entity(
     foreignKeys = [ForeignKey(
@@ -28,5 +27,13 @@ data class ShopEntity(
     var openTill: String?,
     var availableAt: String?,
     var updatedAt: String?,
-    var createdAt: String?
-)
+    var createdAt: String?,
+) {
+
+
+    @Ignore
+    val user: UserEntity? = null
+
+    @Ignore
+    val products: List<ProductEntity> = listOf()
+}

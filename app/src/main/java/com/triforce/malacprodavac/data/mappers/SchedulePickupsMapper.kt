@@ -1,9 +1,9 @@
 package com.triforce.malacprodavac.data.mappers
 
-import com.triforce.malacprodavac.data.local.schedulePickups.SchedulePickupsEntity
+import com.triforce.malacprodavac.data.local.scheduledPickup.ScheduledPickupEntity
 import com.triforce.malacprodavac.domain.model.SchedulePickup
 
-fun SchedulePickupsEntity.toSchedulePickups(): SchedulePickup = SchedulePickup(
+fun ScheduledPickupEntity.toSchedulePickups(): SchedulePickup = SchedulePickup(
     id = id,
     orderId = orderId,
     timeOfDay = timeOfDay,

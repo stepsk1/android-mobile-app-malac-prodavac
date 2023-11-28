@@ -1,6 +1,8 @@
 package com.triforce.malacprodavac.data.mappers
 
 import com.triforce.malacprodavac.data.local.shops.ShopEntity
+import com.triforce.malacprodavac.data.mappers.products.toProduct
+import com.triforce.malacprodavac.data.mappers.users.toUser
 import com.triforce.malacprodavac.domain.model.Shop
 
 fun ShopEntity.toShop(): Shop = Shop(
@@ -16,6 +18,23 @@ fun ShopEntity.toShop(): Shop = Shop(
     availableAt = availableAt,
     updatedAt = updatedAt,
     createdAt = createdAt,
-    user = null,
-    products = null
+    user = user?.toUser(),
+    products = products.map {
+        it.toProduct()
+    }
+)
+
+fun Shop.toShopEntity(): ShopEntity = ShopEntity(
+    id = id,
+    userId = userId,
+    businessName = businessName,
+    openFromDays = openFromDays,
+    openTillDays = openTillDays,
+    openFrom = openFrom,
+    openTill = openTill,
+    availableAt = availableAt,
+    availableAtLatitude = availableAtLatitude,
+    availableAtLongitude = availableAtLongitude,
+    createdAt = createdAt,
+    updatedAt = updatedAt
 )

@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun isUserAuthenticated(): Boolean {
-        return !sessionManager.getAccessToken().isNullOrEmpty()
+        return sessionManager.isAuthenticated()
     }
 
     fun onEvent(event: LoginFormEvent) {

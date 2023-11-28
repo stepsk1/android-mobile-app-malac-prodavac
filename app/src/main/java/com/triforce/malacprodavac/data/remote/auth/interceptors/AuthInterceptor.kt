@@ -18,6 +18,8 @@ class AuthInterceptorImpl @Inject constructor(
 
         if (
             (request.url.pathSegments.contains("login") && response.isSuccessful)
+            ||
+            (request.url.pathSegments.contains("me") && response.isSuccessful)
         ) {
             val cookie = response.header("Set-Cookie", null)
             val jwt = cookie!!.split(";")[0]

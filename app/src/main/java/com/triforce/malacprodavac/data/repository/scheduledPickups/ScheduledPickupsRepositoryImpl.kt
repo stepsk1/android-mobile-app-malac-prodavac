@@ -2,13 +2,9 @@ package com.triforce.malacprodavac.data.repository.scheduledPickups
 
 import android.util.Log
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
-import com.triforce.malacprodavac.data.mappers.toOrder
 import com.triforce.malacprodavac.data.mappers.toSchedulePickups
-import com.triforce.malacprodavac.data.remote.customers.CustomersApi
 import com.triforce.malacprodavac.data.remote.orders.OrderApi
-import com.triforce.malacprodavac.data.remote.orders.dto.CreateOrderDto
 import com.triforce.malacprodavac.data.remote.orders.dto.CreateSchedulePickupDto
-import com.triforce.malacprodavac.data.remote.orders.dto.UpdateOrderDto
 import com.triforce.malacprodavac.data.remote.orders.dto.UpdateScheduledPickupDto
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.domain.model.CreateSchedulePickup

@@ -76,7 +76,7 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    public fun getProduct(fetchFromRemote: Boolean, productId: Int): Product? {
+    fun getProduct(fetchFromRemote: Boolean, productId: Int): Product? {
 
             viewModelScope.launch {
                 repositoryProduct.getProduct(productId, fetchFromRemote).collect { result ->
