@@ -61,6 +61,8 @@ class MapsViewModel @Inject constructor(
             is MapEvent.OnMapClick -> {
                 // TODO() Implement event to select shop position
             }
+
+            else -> { }
         }
     }
 

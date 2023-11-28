@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.FavProducts
+package com.triforce.malacprodavac.presentation.FavShops
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,18 +18,19 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
+import com.triforce.malacprodavac.domain.model.customers.FavoriteShop
 import com.triforce.malacprodavac.presentation.FavProducts.components.FavProductSection
+import com.triforce.malacprodavac.presentation.FavShops.components.FavShopSection
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
@@ -39,24 +40,24 @@ import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun FavoriteScreen(navController: NavController, viewModel: FavoriteViewModel = hiltViewModel()) {
+fun FavoriteShopScreen(navController: NavController, viewModel: FavoriteShopViewModel = hiltViewModel()){
 
     val state = viewModel.state
-    val favProducts: List<FavoriteProduct> = state.favProducts
+    val favShops: List<FavoriteShop> = state.favShops
 
     Box(
-        modifier = Modifier
-            .background(MP_White)
-            .fillMaxSize()
-    ){
+       modifier = Modifier
+           .background(MP_White)
+           .fillMaxSize()
+    ) {
         LinearGradient(color1 = MP_Orange, color2 = MP_Orange_Dark )
 
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
         Column {
             GoBackComp("Moji omiljeni proizvodi", navController)
-            FavProductSection(
-                favoriteProducts = favProducts,
+            FavShopSection(
+                favoriteShops = favShops,
                 viewModel = viewModel,
                 navController = navController
             )

@@ -89,5 +89,4 @@ abstract class RepositoryModule {
         scheduledPickupsRepositoryImpl: ScheduledPickupsRepositoryImpl
     ): ScheduledPickupRepository
 
-
 }

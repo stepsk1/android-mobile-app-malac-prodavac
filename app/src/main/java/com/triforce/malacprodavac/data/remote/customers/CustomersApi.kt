@@ -3,10 +3,12 @@ package com.triforce.malacprodavac.data.remote.customers
 
 import com.triforce.malacprodavac.data.remote.customers.dto.CreateCustomerDto
 import com.triforce.malacprodavac.data.remote.customers.dto.CreateFavoriteProductDto
+import com.triforce.malacprodavac.data.repository.customers.favoriteShops.dto.CreateFavoriteShopDto
 import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.PaginationResponse
 import com.triforce.malacprodavac.domain.model.SchedulePickup
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
+import com.triforce.malacprodavac.domain.model.customers.FavoriteShop
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -63,6 +65,24 @@ interface CustomersApi {
         @Path("scheduledPickupId") scheduledPickupId: Int
         //@QueryMap queryMap: MutableMap<String, String>
     ): SchedulePickup
+
+    @POST("${ROUTE}/{id}/favoriteShops")
+    suspend fun createFavoriteShop(
+        @Path("id") customerId: Int,
+        @Body() body: CreateFavoriteShopDto
+    ): FavoriteShop
+
+    @GET("${ROUTE}/{id}/favoriteShops")
+    suspend fun getFavoriteShops(
+        @Path("id") customerId: Int,
+        //@QueryMap queryMap: MutableMap<String, String>
+    ): PaginationResponse<FavoriteShop>
+
+    @DELETE("${ROUTE}/{id}/favoriteShops/favoriteProductId/{favoriteShopId}")
+    suspend fun deleteFavoriteShop(
+        @Path("id") customerId: Int,
+        @Path("favoriteShopId") favoriteShopId: Int
+    ): FavoriteShop
 
     companion object {
         const val ROUTE = "/customers"
