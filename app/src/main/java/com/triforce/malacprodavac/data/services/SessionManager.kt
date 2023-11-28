@@ -5,8 +5,8 @@ import javax.inject.Inject
 class SessionManager @Inject constructor(
     private val pref: AppSharedPreferences
 ) {
-    fun isAuthenticated(): Boolean =
-        !getAccessToken().isNullOrEmpty() && getAuthUserId() > 0
+
+    fun isAuthenticated(): Boolean = !getAccessToken().isNullOrEmpty() && getAuthUserId() > 0
 
     fun getAccessToken(): String? = pref.getToken()
 

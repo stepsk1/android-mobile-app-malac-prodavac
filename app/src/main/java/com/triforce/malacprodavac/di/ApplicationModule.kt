@@ -33,6 +33,7 @@ import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.products.produtMedias.ProductMediasRepository
 import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import com.triforce.malacprodavac.domain.use_case.GetToken
+import com.triforce.malacprodavac.domain.use_case.auth.IsAuthenticated
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.FavoriteProduct
@@ -249,13 +250,19 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideIsAuthenticatedUseCase(sessionManager: SessionManager) =
+        IsAuthenticated(sessionManager)
+
+    @Provides
+    @Singleton
     fun provideProfileUseCase(
         logout: Logout,
         me: Me,
         getToken: GetToken,
-        setProfilePicture: SetProfilePicture
+        setProfilePicture: SetProfilePicture,
+        isAuthenticated: IsAuthenticated
     ) =
-        Profile(me, logout, getToken, setProfilePicture)
+        Profile(me, logout, getToken, setProfilePicture, isAuthenticated)
 
     @Provides
     @Singleton

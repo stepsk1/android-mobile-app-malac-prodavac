@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.presentation.home
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,12 +31,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun isLoggedIn(): Boolean {
-        return state.isLoggedIn
+        return profile.isAuthenticated.invoke()
     }
 
     private fun getToken() {
         profile.getToken().let {
-            Log.d("TOKEN", it.toString())
             state = state.copy(token = it)
         }
     }

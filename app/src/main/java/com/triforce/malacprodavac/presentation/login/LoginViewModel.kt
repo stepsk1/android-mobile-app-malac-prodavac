@@ -25,7 +25,8 @@ class LoginViewModel @Inject constructor(
     var state by mutableStateOf(LoginFormState())
 
     init {
-        getMe()
+        if (isUserAuthenticated())
+            getMe()
     }
 
     fun isUserAuthenticated(): Boolean {

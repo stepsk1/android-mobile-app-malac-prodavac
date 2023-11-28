@@ -46,12 +46,11 @@ class ProfilePrivateViewModel @Inject constructor(
     }
 
     fun isLoggedIn(): Boolean {
-        return state.isLoggedIn
+        return sessionManager.isAuthenticated()
     }
 
     private fun getToken() {
         profile.getToken().let {
-            Log.d("TOKEN", it.toString())
             state = state.copy(token = it)
         }
     }

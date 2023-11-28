@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateEvent
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateViewModel
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -81,9 +80,6 @@ fun GoBackCompLogout(
                 .clickable {
                     viewModel
                         .onEvent(ProfilePrivateEvent.Logout)
-                        .let {
-                            navController.navigate(Screen.LoginScreen.route)
-                        }
                 }
         )
     }

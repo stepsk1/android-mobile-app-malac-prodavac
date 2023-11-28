@@ -120,4 +120,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+
+    //Auth0
+    implementation("com.auth0.android:jwtdecode:2.0.2")
 }
