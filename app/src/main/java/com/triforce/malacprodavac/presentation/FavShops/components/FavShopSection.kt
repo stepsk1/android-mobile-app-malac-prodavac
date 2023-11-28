@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.FavProducts.components
+package com.triforce.malacprodavac.presentation.FavShops.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
-import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
+import com.triforce.malacprodavac.domain.model.customers.FavoriteShop
+import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopViewModel
 
 @Composable
-fun FavProductSection(
-    favoriteProducts: List<FavoriteProduct>,
-    viewModel: FavoriteViewModel,
+fun FavShopSection(
+    favoriteShops: List<FavoriteShop>,
+    viewModel: FavoriteShopViewModel,
     navController: NavController
 ) {
 
@@ -37,10 +37,10 @@ fun FavProductSection(
                 .padding(top = 20.dp)
         ) {
 
-            items(favoriteProducts.size) {// how many items do we have
+            items(favoriteShops.size) {// how many items do we have
                 // define one of items
-                FavProductItem(
-                    favoriteProduct = favoriteProducts[it],
+                FavShopItem(
+                    favoriteShop = favoriteShops[it],
                     viewModel = viewModel,
                     navController = navController
                 )

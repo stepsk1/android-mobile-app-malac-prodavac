@@ -36,6 +36,11 @@ import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.FavoriteProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.GetFavProducts
+import com.triforce.malacprodavac.domain.use_case.favoriteShop.AddFavShop
+import com.triforce.malacprodavac.domain.use_case.favoriteShop.DeleteFavShop
+import com.triforce.malacprodavac.domain.use_case.favoriteShop.FavShopUseCase
+import com.triforce.malacprodavac.domain.use_case.favoriteShop.GetFavShop
+
 import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
@@ -316,6 +321,15 @@ object ApplicationModule {
     @Singleton
     fun provideGetProductsUseCase(repository: ProductRepository) =
         GetAllProducts(repository)
+
+    @Provides
+    @Singleton
+    fun provideFavShopUseCase(
+        addFavShop: AddFavShop,
+        deleteFavShop: DeleteFavShop,
+        getFavShop: GetFavShop
+    ) =
+        FavShopUseCase(getFavShop, deleteFavShop, addFavShop)
 
     @Provides
     @Singleton

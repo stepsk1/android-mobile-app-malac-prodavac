@@ -1,8 +1,6 @@
 package com.triforce.malacprodavac.presentation.profile.profilePublic
 
 
-import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +18,6 @@ import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.domain.util.compressedFileFromUri
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,6 +42,8 @@ class ProfilePublicViewModel @Inject constructor(
                 savedStateHandle.get<Int>("role")?.let { role ->
                     if ( role == 1 ){
                         getShop(id)
+                        FavoriteShopObject.favoriteShopId = id
+                        FavoriteShopObject.favoriteShop = state.currentShop
                     }
                 }
             } else {
@@ -56,7 +55,14 @@ class ProfilePublicViewModel @Inject constructor(
     }
 
     fun onEvent(event: ProfilePublicEvent) {
-
+            when (event) {
+                is ProfilePublicEvent.favoriteShop -> {
+                    state = state.copy(isFavorite = true)
+                }
+                is ProfilePublicEvent.removeFavoriteShop -> {
+                    state = state.copy(isFavorite = false)
+                }
+            }
     }
 
     private fun getToken() {

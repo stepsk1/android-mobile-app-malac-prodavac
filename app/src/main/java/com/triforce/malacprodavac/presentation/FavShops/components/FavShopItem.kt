@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.FavProducts.components
+package com.triforce.malacprodavac.presentation.FavShops.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,17 +26,20 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
+import com.triforce.malacprodavac.domain.model.customers.FavoriteShop
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
+import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopEvent
+import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 
 @Composable
-fun FavProductItem(
-    favoriteProduct: FavoriteProduct,
-    viewModel: FavoriteViewModel,
+fun FavShopItem(
+    favoriteShop: FavoriteShop,
+    viewModel: FavoriteShopViewModel,
     navController: NavController
 ) {
 
@@ -58,7 +61,7 @@ fun FavProductItem(
                 .fillMaxSize()
                 .padding(15.dp)
                 .clickable {
-                    navController.navigate(Screen.ProductScreen.route + "?productId=${favoriteProduct.product!!.id}")
+                    navController.navigate(Screen.PublicProfile.route + "?id=${favoriteShop.shopId}&role=1")
                 }
         ) {
 
@@ -69,7 +72,7 @@ fun FavProductItem(
 
             ) {
                 Text(
-                    text = favoriteProduct.product!!.title,
+                    text = favoriteShop.shop!!.businessName!!, //.product!!.title,
                     style = MaterialTheme.typography.h6,
                     color = MP_Black
                 )
@@ -81,26 +84,26 @@ fun FavProductItem(
                     modifier = Modifier
                         .size(40.dp)
                         .clickable {
-                            viewModel.onEvent(FavoriteEvent.DeleteFavProduct)
+                            viewModel.onEvent(FavoriteShopEvent.DeleteFavShop)
                         }
                 )
             }
 
             Text(
-                text = favoriteProduct.product!!.desc,
+                text = favoriteShop.shop!!.openFromDays + favoriteShop.shop!!.openTillDays,
                 style = MaterialTheme.typography.body2,
                 color = MP_Green,
                 modifier = Modifier
                     .align(Alignment.CenterStart)
             )
 
-            Text(
-                text = favoriteProduct.product!!.price.toString() + " " +favoriteProduct.product!!.currency,
-                style = MaterialTheme.typography.h6,
-                color = MP_Black,
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-            )
+//            Text(
+//                text = favoriteProduct.product!!.price.toString() + " " +favoriteProduct.product!!.currency,
+//                style = MaterialTheme.typography.h6,
+//                color = MP_Black,
+//                modifier = Modifier
+//                    .align(Alignment.BottomStart)
+//            )
         }
     }
 }

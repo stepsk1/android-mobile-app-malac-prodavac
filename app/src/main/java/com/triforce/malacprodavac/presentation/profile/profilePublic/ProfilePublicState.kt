@@ -15,5 +15,7 @@ data class ProfilePublicState(
     val profileImageKey: String? = null,
     val token: String? = null,
     var mediaUri: Uri? = null,
-    var newImage: Boolean = false
+    var newImage: Boolean = false,
+
+    val isFavorite: Boolean = false
 )

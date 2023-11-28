@@ -28,6 +28,7 @@ import com.triforce.malacprodavac.BottomNavigationMenuContent
 //import coil.request.ImageRequest
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopViewModel
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.CallToActionFavourite
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
@@ -39,8 +40,10 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 @Composable
 fun ProfilePublicScreen(
     navController: NavController,
-    viewModel: ProfilePublicViewModel = hiltViewModel()
+    viewModel: ProfilePublicViewModel = hiltViewModel(),
 ) {
+    val viewModelFavShop: FavoriteShopViewModel = hiltViewModel()
+
     val state = viewModel.state
 
     val scrollState = rememberScrollState()
@@ -81,7 +84,7 @@ fun ProfilePublicScreen(
                 Spacer(modifier = Modifier.padding(16.dp))
             }
 
-            CallToActionFavourite("Ukoliko želite da pratite naš rad, kako bi znali kada smo u Vašoj okolini:")
+            CallToActionFavourite("Ukoliko želite da pratite naš rad, kako bi znali kada smo u Vašoj okolini:", viewModel, viewModelFavShop)
 
             Spacer(modifier = Modifier.padding(16.dp))
 

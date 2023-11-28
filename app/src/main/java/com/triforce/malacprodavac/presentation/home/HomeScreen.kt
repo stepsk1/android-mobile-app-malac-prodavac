@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
@@ -140,6 +141,14 @@ fun HomeScreen(
                         color1 = MP_Pink,
                         color2 = MP_Pink,
                         screen = Screen.FavoriteProductsScreen
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "Moji omiljeni prodavci",
+                        graphicID = Icons.Default.FavoriteBorder,
+                        color1 = MP_Pink,
+                        color2 = MP_Pink,
+                        screen = Screen.FavoriteShopScreen
                     )
                 )
             )
@@ -162,7 +171,7 @@ fun HomeScreen(
                 BottomNavigationMenuContent(
                     title = "Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.PublicProfile,
+                    screen = Screen.PrivateProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
