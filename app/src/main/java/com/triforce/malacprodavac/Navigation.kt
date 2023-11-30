@@ -20,6 +20,7 @@ import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.maps.MapScreen
 import com.triforce.malacprodavac.presentation.myProducts.MyProductsScreen
+import com.triforce.malacprodavac.presentation.notifications.NotificationsScreen
 import com.triforce.malacprodavac.presentation.orders.OrderScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateScreen
@@ -188,6 +189,10 @@ fun Navigation() {
 
         composable(route = Screen.FavoriteShopScreen.route) {
             FavoriteShopScreen(navController = navController)
+        }
+
+        composable(route = Screen.NotificationScreen.route) {
+            NotificationsScreen(navController = navController)
         }
     }
 }
