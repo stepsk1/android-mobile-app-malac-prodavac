@@ -29,6 +29,7 @@ import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
+import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.products.produtMedias.ProductMediasRepository
 import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
@@ -42,10 +43,11 @@ import com.triforce.malacprodavac.domain.use_case.favoriteShop.AddFavShop
 import com.triforce.malacprodavac.domain.use_case.favoriteShop.DeleteFavShop
 import com.triforce.malacprodavac.domain.use_case.favoriteShop.FavShopUseCase
 import com.triforce.malacprodavac.domain.use_case.favoriteShop.GetFavShop
-
 import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
+import com.triforce.malacprodavac.domain.use_case.notifications.GetNotifications
+import com.triforce.malacprodavac.domain.use_case.notifications.Notification
 import com.triforce.malacprodavac.domain.use_case.order.AddOrder
 import com.triforce.malacprodavac.domain.use_case.order.DeleteOrder
 import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
@@ -74,6 +76,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.sse.EventSources
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
@@ -159,6 +162,11 @@ object ApplicationModule {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
+    @Provides
+    @Singleton
+    fun provideEventSource(client: OkHttpClient) =
+        EventSources.createFactory(client)
+
     @Singleton
     @Provides
     fun provideAuthInterceptorImpl(
@@ -217,6 +225,16 @@ object ApplicationModule {
     ) =
         Registration(registerCustomer, registerCourier, registerShop)
 
+
+    @Provides
+    @Singleton
+    fun provideGetNotificationsUseCase(repository: NotificationsRepository) =
+        GetNotifications(repository)
+
+    @Provides
+    @Singleton
+    fun provideNotificationUseCase(getNotifications: GetNotifications) =
+        Notification(getNotifications)
 
     @Provides
     @Singleton

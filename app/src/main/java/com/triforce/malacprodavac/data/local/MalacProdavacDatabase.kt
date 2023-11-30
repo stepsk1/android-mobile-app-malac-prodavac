@@ -13,6 +13,10 @@ import com.triforce.malacprodavac.data.local.favoriteProduct.FavouriteProductDao
 import com.triforce.malacprodavac.data.local.favoriteProduct.FavouriteProductEntity
 import com.triforce.malacprodavac.data.local.favouriteShop.FavouriteShopDao
 import com.triforce.malacprodavac.data.local.favouriteShop.FavouriteShopEntity
+import com.triforce.malacprodavac.data.local.notifications.NotificationDao
+import com.triforce.malacprodavac.data.local.notifications.NotificationEntity
+import com.triforce.malacprodavac.data.local.notifications.notificationsPayload.NotificationPayloadDao
+import com.triforce.malacprodavac.data.local.notifications.notificationsPayload.NotificationPayloadEntity
 import com.triforce.malacprodavac.data.local.order.OrderDao
 import com.triforce.malacprodavac.data.local.order.OrderEntity
 import com.triforce.malacprodavac.data.local.product.ProductDao
@@ -38,7 +42,9 @@ import com.triforce.malacprodavac.data.local.user.userMedias.UserMediaEntity
         OrderEntity::class,
         FavouriteProductEntity::class,
         ScheduledPickupEntity::class,
-        FavouriteShopEntity::class
+        FavouriteShopEntity::class,
+        NotificationEntity::class,
+        NotificationPayloadEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -57,4 +63,6 @@ abstract class MalacProdavacDatabase : RoomDatabase() {
     abstract val schedulePickupsDao: ScheduledPickupDao
     abstract val favoriteProduct: FavouriteProductDao
     abstract val favoriteShopDao: FavouriteShopDao
+    abstract val notificationPayloadDao: NotificationPayloadDao
+    abstract val notificationDao: NotificationDao
 }

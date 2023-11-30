@@ -4,19 +4,33 @@ import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import com.triforce.malacprodavac.domain.model.notifications.notificationPayload.Payload
 import javax.inject.Inject
 
 @ProvidedTypeConverter
-class RoomConverters @Inject constructor(private val moshi: Moshi){
+class RoomConverters @Inject constructor(private val moshi: Moshi) {
     @TypeConverter
-    fun fromListOfString(value: List<String>): String{
+    fun fromListOfString(value: List<String>): String {
         val listOfStringType = Types.newParameterizedType(List::class.java, String::class.java)
         return moshi.adapter<List<String>>(listOfStringType).toJson(value)
     }
+
     @TypeConverter
-    fun toListOfString(value: String): List<String>{
+    fun toListOfString(value: String): List<String> {
         val listOfStringType = Types.newParameterizedType(List::class.java, String::class.java)
         return moshi.adapter<List<String>>(listOfStringType).fromJson(value)!!
+    }
+
+    @TypeConverter
+    fun fromJson(value: Payload): String {
+        val payloadType = Types.newParameterizedType(Payload::class.java, String::class.java)
+        return moshi.adapter<Payload>(payloadType).toJson(value)
+    }
+
+    @TypeConverter
+    fun toJson(value: String): Payload {
+        val payloadType = Types.newParameterizedType(Payload::class.java, String::class.java)
+        return moshi.adapter<Payload>(payloadType).fromJson(value)!!
     }
 
 //    @TypeConverter
