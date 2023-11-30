@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.presentation.components.ShowHighlightedProducts
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -119,7 +119,10 @@ fun BottomMapShopDetails(
                                 "",
                                 "",
                                 null,
+                                emptyList(),
                                 null,
+                                null,
+                                emptyList(),
                                 null
                             ),
                             Product(
@@ -142,7 +145,10 @@ fun BottomMapShopDetails(
                                 "",
                                 "",
                                 null,
+                                emptyList(),
                                 null,
+                                null,
+                                emptyList(),
                                 null
                             )
                         ),

@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black

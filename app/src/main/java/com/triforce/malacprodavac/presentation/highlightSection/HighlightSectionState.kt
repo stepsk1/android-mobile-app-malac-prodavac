@@ -1,7 +1,7 @@
 package com.triforce.malacprodavac.presentation.highlightSection
 
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.domain.model.User
 
 data class HighlightSectionState(

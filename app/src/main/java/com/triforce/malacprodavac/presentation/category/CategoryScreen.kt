@@ -52,7 +52,7 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
@@ -257,7 +257,7 @@ fun ShowcaseProducts(
         if (products != null) {
             items(products.size) {// how many items do we have
                 // define one of items
-                StoreCategoryProduct(product = products.get(it) ?: null, navController)
+                StoreCategoryProduct(product = products.get(it), navController)
             }
         }
     }

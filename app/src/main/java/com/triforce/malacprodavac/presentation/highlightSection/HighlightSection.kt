@@ -25,15 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
-import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.components.TitleDescComp
-import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White

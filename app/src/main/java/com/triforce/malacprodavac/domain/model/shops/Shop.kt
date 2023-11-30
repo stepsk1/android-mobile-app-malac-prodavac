@@ -1,9 +1,8 @@
-package com.triforce.malacprodavac.domain.model
+package com.triforce.malacprodavac.domain.model.shops
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.triforce.malacprodavac.domain.util.enum.DaysOfTheWeek
+import com.squareup.moshi.Json
+import com.triforce.malacprodavac.domain.model.User
+import com.triforce.malacprodavac.domain.model.products.Product
 
 data class Shop(
     val id: Int,
@@ -18,6 +17,12 @@ data class Shop(
     val availableAt: String?,
     val updatedAt: String?,
     val createdAt: String?,
+
+    val isFavored: Boolean?,
+
     val user: User?,
-    val products: List<Product>?
+    val products: List<Product>?,
+
+    @Json(name = "_count")
+    val counts: Any?
 )

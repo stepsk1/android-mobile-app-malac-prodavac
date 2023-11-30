@@ -6,6 +6,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.triforce.malacprodavac.data.local.category.CategoryEntity
 import com.triforce.malacprodavac.data.local.product.productMedia.ProductMediaEntity
+import com.triforce.malacprodavac.data.local.product.reviews.ReviewEntity
 import com.triforce.malacprodavac.data.local.shops.ShopEntity
 
 @Entity(
@@ -35,6 +36,8 @@ data class ProductEntity(
     val categoryId: Int,
     val createdAt: String,
     val updatedAt: String,
+
+    val isFavored: Boolean?
 ) {
 
 
@@ -46,4 +49,7 @@ data class ProductEntity(
 
     @Ignore
     val productImages: List<ProductMediaEntity> = listOf()
+
+    @Ignore
+    val reviews: List<ReviewEntity> = listOf()
 }

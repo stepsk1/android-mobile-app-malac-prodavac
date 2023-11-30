@@ -1,6 +1,6 @@
 package com.triforce.malacprodavac.presentation.add_edit_product
 
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.util.enum.Currency
 import com.triforce.malacprodavac.util.enum.UnitOfMeasurement
 

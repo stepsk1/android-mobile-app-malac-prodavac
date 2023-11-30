@@ -1,6 +1,6 @@
 package com.triforce.malacprodavac.presentation.category
 
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 
 data class CategoryState (
     val id: Int = -1,

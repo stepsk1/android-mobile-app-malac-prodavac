@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.ui.theme.MP_Black
 

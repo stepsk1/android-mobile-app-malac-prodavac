@@ -1,9 +1,7 @@
 package com.triforce.malacprodavac.data.mappers
 
 import com.triforce.malacprodavac.data.local.order.OrderEntity
-import com.triforce.malacprodavac.domain.model.Courier
 import com.triforce.malacprodavac.domain.model.Order
-import com.triforce.malacprodavac.domain.model.Product
 
 fun OrderEntity.toOrder(): Order = Order(
     id = id,

@@ -3,7 +3,6 @@ package com.triforce.malacprodavac.presentation.myProducts
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,16 +13,13 @@ import com.triforce.malacprodavac.data.services.filter.Filter
 import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.domain.util.compressedFileFromUri
-import com.triforce.malacprodavac.presentation.category.CategoryState
-import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateEvent
-import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

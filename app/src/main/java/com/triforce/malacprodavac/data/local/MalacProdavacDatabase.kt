@@ -21,6 +21,8 @@ import com.triforce.malacprodavac.data.local.order.OrderDao
 import com.triforce.malacprodavac.data.local.order.OrderEntity
 import com.triforce.malacprodavac.data.local.product.ProductDao
 import com.triforce.malacprodavac.data.local.product.ProductEntity
+import com.triforce.malacprodavac.data.local.product.reviews.ReviewEntity
+import com.triforce.malacprodavac.data.local.product.reviews.replies.ReviewReplyEntity
 import com.triforce.malacprodavac.data.local.scheduledPickup.ScheduledPickupDao
 import com.triforce.malacprodavac.data.local.scheduledPickup.ScheduledPickupEntity
 import com.triforce.malacprodavac.data.local.shops.ShopDao
@@ -38,6 +40,8 @@ import com.triforce.malacprodavac.data.local.user.userMedias.UserMediaEntity
         CourierEntity::class,
         ShopEntity::class,
         ProductEntity::class,
+        ReviewEntity::class,
+        ReviewReplyEntity::class,
         CategoryEntity::class,
         OrderEntity::class,
         FavouriteProductEntity::class,

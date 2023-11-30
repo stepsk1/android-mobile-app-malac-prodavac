@@ -8,12 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.remote.orders.dto.UpdateOrderDto
 import com.triforce.malacprodavac.domain.model.Order
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -41,7 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
@@ -135,7 +135,10 @@ fun ProductScreen(
                             "",
                             "",
                             null,
+                            emptyList(),
                             null,
+                            null,
+                            emptyList(),
                             null
                         ), Product(
                             1,
@@ -157,7 +160,10 @@ fun ProductScreen(
                             "",
                             "",
                             null,
+                            emptyList(),
                             null,
+                            null,
+                            emptyList(),
                             null
                         )
                     ), title = "Više proizvoda od prodavca", route = Screen.HighlightSection.route

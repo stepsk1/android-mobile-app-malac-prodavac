@@ -1,6 +1,10 @@
-package com.triforce.malacprodavac.domain.model
+package com.triforce.malacprodavac.domain.model.products
 
+import com.squareup.moshi.Json
+import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.domain.model.products.productMedias.ProductMedia
+import com.triforce.malacprodavac.domain.model.products.reviews.Review
+import com.triforce.malacprodavac.domain.model.shops.Shop
 
 data class Product(
     val id: Int,
@@ -22,7 +26,13 @@ data class Product(
     val createdAt: String,
     val updatedAt: String,
 
+    val isFavored: Boolean?,
+
     val productMedias: List<ProductMedia>?,
     val shop: Shop?,
-    val category: Category?
+    val category: Category?,
+    val reviews: List<Review>?,
+
+    @Json(name = "_count")
+    val counts: Any?
 )

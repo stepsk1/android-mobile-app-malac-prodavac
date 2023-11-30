@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.components.ShowShopDetailsSection
 import com.triforce.malacprodavac.presentation.product.ProductOptions
@@ -88,7 +88,10 @@ fun ProfilePrivateScreen(
                             "",
                             "",
                             null,
+                            emptyList(),
                             null,
+                            null,
+                            emptyList(),
                             null
                         ),
                         Product(
@@ -111,7 +114,10 @@ fun ProfilePrivateScreen(
                             "",
                             "",
                             null,
+                            emptyList(),
                             null,
+                            null,
+                            emptyList(),
                             null
                         )
                     ),
@@ -143,8 +149,12 @@ fun ProfilePrivateScreen(
                             null,
                             "",
                             "",
+
+                            null,
+                            emptyList(),
                             null,
                             null,
+                            emptyList(),
                             null
                         ),
                         Product(
@@ -167,7 +177,10 @@ fun ProfilePrivateScreen(
                             "",
                             "",
                             null,
+                            emptyList(),
                             null,
+                            null,
+                            emptyList(),
                             null
                         )
                     ),

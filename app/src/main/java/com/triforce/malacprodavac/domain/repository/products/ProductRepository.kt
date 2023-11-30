@@ -1,8 +1,8 @@
 package com.triforce.malacprodavac.domain.repository.products
 
 import com.triforce.malacprodavac.domain.model.CreateProduct
-import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.model.UpdateProduct
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 

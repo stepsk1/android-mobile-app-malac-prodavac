@@ -12,7 +12,7 @@ import com.triforce.malacprodavac.data.services.filter.Filter
 import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository

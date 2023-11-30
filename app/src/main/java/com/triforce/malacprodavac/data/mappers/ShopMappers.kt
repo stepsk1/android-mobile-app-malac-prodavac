@@ -3,7 +3,7 @@ package com.triforce.malacprodavac.data.mappers
 import com.triforce.malacprodavac.data.local.shops.ShopEntity
 import com.triforce.malacprodavac.data.mappers.products.toProduct
 import com.triforce.malacprodavac.data.mappers.users.toUser
-import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.model.shops.Shop
 
 fun ShopEntity.toShop(): Shop = Shop(
     id = id,
@@ -21,7 +21,9 @@ fun ShopEntity.toShop(): Shop = Shop(
     user = user?.toUser(),
     products = products.map {
         it.toProduct()
-    }
+    },
+    isFavored = isFavored,
+    counts = null
 )
 
 fun Shop.toShopEntity(): ShopEntity = ShopEntity(
@@ -36,5 +38,6 @@ fun Shop.toShopEntity(): ShopEntity = ShopEntity(
     availableAtLatitude = availableAtLatitude,
     availableAtLongitude = availableAtLongitude,
     createdAt = createdAt,
-    updatedAt = updatedAt
+    updatedAt = updatedAt,
+    isFavored = isFavored
 )

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,8 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.presentation.category.StoreCategoryProduct
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -106,7 +103,7 @@ fun ShowHighlightedProducts(
         if (products != null) {
             items(products.size) {// how many items do we have
                 // define one of items
-                HighlightSectionProduct(product = products.get(it) ?: null, navController)
+                HighlightSectionProduct(product = products.get(it), navController)
             }
         }
     }

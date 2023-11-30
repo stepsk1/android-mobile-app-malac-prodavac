@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.triforce.malacprodavac.data.services.filter.Filter
 import com.triforce.malacprodavac.data.services.filter.FilterBuilder
-import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.maps.styles.MapStyle

@@ -1,10 +1,6 @@
 package com.triforce.malacprodavac.domain.model.customers
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.triforce.malacprodavac.domain.model.Shop
-import java.util.Date
+import com.triforce.malacprodavac.domain.model.shops.Shop
 
 data class FavoriteShop(
     val id: Int,

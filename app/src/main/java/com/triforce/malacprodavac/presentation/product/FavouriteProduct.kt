@@ -1,6 +1,6 @@
 package com.triforce.malacprodavac.presentation.product
 
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 
 object FavouriteProduct {
     var favouriteProductId: Int = 1
