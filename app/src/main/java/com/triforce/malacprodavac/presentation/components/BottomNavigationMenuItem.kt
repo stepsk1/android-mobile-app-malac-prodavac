@@ -19,8 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
+import com.triforce.malacprodavac.presentation.cart.CartEvent
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 
 
@@ -34,6 +37,9 @@ fun BottomNavigationMenuItem(
     nonActiveTextColor: Color = MP_GreenLight,
     onMenuItemClick: () -> Unit
 ) {
+
+    val viewModel: CartViewModel = hiltViewModel()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -63,9 +69,7 @@ fun BottomNavigationMenuItem(
             Icon(
                 imageVector = item.graphicID,
                 contentDescription = item.title,
-                tint = if (item.isActive) selectedTextColor else nonActiveTextColor,
-                modifier = Modifier
-                    .size(25.dp)
+                tint = if (item.isActive) MP_White else nonActiveTextColor,
             )
         }
         Text(

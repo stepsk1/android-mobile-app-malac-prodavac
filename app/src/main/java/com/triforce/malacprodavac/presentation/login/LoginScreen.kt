@@ -14,6 +14,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,20 +36,20 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.SpaceLarge
 import com.triforce.malacprodavac.ui.theme.SpaceMedium
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
+
     val state = viewModel.state
-    val swipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = state.isLoading
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = state.isLoading,
+        onRefresh = {}
     )
 
     if (viewModel.isUserAuthenticated()) {
@@ -73,101 +77,105 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
         )
     }
 
-    SwipeRefresh(state = swipeRefreshState, onRefresh = {}) {
-        Box(
+    Box(
+        modifier = Modifier
+            .pullRefresh(pullRefreshState)
+            .fillMaxSize()
+            .padding(
+                start = SpaceLarge, end = SpaceLarge, top = SpaceLarge, bottom = SpaceLarge
+            )
+            .verticalScroll(rememberScrollState())
+    ) {
+        PullRefreshIndicator(
+            refreshing = state.isLoading, state = pullRefreshState, modifier = Modifier.align(
+                Alignment.TopCenter
+            )
+        )
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    start = SpaceLarge, end = SpaceLarge, top = SpaceLarge, bottom = SpaceLarge
-                )
-                .verticalScroll(rememberScrollState())
+                .padding(SpaceMedium)
+                .align(Alignment.Center),
+            verticalArrangement = Arrangement.SpaceAround
         ) {
-            Column(
+            TextField(
+                value = state.email,
+                onValueChange = {
+                    viewModel.onEvent(LoginFormEvent.EmailChanged(it))
+                },
+                isError = state.emailError != null,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(SpaceMedium)
-                    .align(Alignment.Center),
-                verticalArrangement = Arrangement.SpaceAround
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(15.dp)),
+                placeholder = {
+                    Text(text = "Email")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email
+                )
+            )
+            if (state.emailError != null) {
+                Text(
+                    text = state.emailError,
+                    color = MP_Pink,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                value = state.password,
+                onValueChange = {
+                    viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
+                },
+                isError = state.passwordError != null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(15.dp)),
+                placeholder = {
+                    Text(text = "Lozinka")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                ),
+                visualTransformation = PasswordVisualTransformation()
+            )
+            if (state.passwordError != null) {
+                Text(
+                    text = state.passwordError,
+                    color = MP_Pink,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            if (!state.errorMessage.isNullOrBlank()) {
+                Text(
+                    text = state.errorMessage.toString(),
+                    color = MP_Pink,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    viewModel.onEvent(LoginFormEvent.Submit)
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clip(RoundedCornerShape(10.dp))
             ) {
-                TextField(
-                    value = state.email,
-                    onValueChange = {
-                        viewModel.onEvent(LoginFormEvent.EmailChanged(it))
-                    },
-                    isError = state.emailError != null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(15.dp)),
-                    placeholder = {
-                        Text(text = "Email")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email
-                    )
-                )
-                if (state.emailError != null) {
-                    Text(
-                        text = state.emailError,
-                        color = MP_Pink,
-                        modifier = Modifier.align(Alignment.End)
-                    )
-                }
-                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Prijavi se")
+            }
 
-                TextField(
-                    value = state.password,
-                    onValueChange = {
-                        viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
-                    },
-                    isError = state.passwordError != null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(15.dp)),
-                    placeholder = {
-                        Text(text = "Lozinka")
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password
-                    ),
-                    visualTransformation = PasswordVisualTransformation()
-                )
-                if (state.passwordError != null) {
-                    Text(
-                        text = state.passwordError,
-                        color = MP_Pink,
-                        modifier = Modifier.align(Alignment.End)
-                    )
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                if (!state.errorMessage.isNullOrBlank()) {
-                    Text(
-                        text = state.errorMessage.toString(),
-                        color = MP_Pink,
-                        modifier = Modifier.align(Alignment.End)
-                    )
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    onClick = {
-                        viewModel.onEvent(LoginFormEvent.Submit)
-                    },
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .clip(RoundedCornerShape(10.dp))
-                ) {
-                    Text(text = "Prijavi se")
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(32.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    ClickableText(text = annotatedString, onClick = {
-                        navController.navigate(Screen.RegistrationScreen.route)
-                    })
-                }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(32.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                ClickableText(text = annotatedString, onClick = {
+                    navController.navigate(Screen.RegistrationScreen.route)
+                })
             }
         }
     }

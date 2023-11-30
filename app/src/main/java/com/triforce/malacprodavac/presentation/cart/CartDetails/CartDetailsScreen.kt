@@ -1,28 +1,27 @@
 package com.triforce.malacprodavac.presentation.cart.CartDetails
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,29 +34,37 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
-import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
+import com.triforce.malacprodavac.util.enum.DeliveryMethod
+import com.triforce.malacprodavac.util.enum.PaymentMethod
 
 @Composable
-fun CartDetailsScreen(navController: NavController) {
+fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewModel = hiltViewModel()) {
 
-    val buyedProducts = BuyedProducts.listOfBuyedProducts
+    var viewModelCart: CartViewModel = hiltViewModel()
+    val orderProducts = BuyedProducts
 
     val typeOfPaymentOptions = listOf("Paypal", "Lično/Pouzećem")
     var selectedTypeOfPayment by remember { mutableStateOf(typeOfPaymentOptions[0]) }
 
     val addressesOptions = listOf(
-//        "Živorada Kostića, Jagodina 35000, 066/251-101"
         "Gavrila Principa, Kragujevac, 066/251-102"
     )
+
     var selectedAddress by remember { mutableStateOf(addressesOptions[0]) }
 
     val typeOfSendingOptions = listOf("Lično preuzimanje", "Kurirska dostava")
@@ -69,20 +76,12 @@ fun CartDetailsScreen(navController: NavController) {
             .fillMaxSize()
     ) {
         LinearGradient(color1 = MP_Orange, color2 = MP_Orange_Dark)
-        Surface(
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 67.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ) {
 
-        }
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
         Column {
 
-            HeaderSectionTitleWithoutIcon("Detalji plaćanja", navController)
+            GoBackNoSearch("Detalji plaćanja", navController)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -144,16 +143,16 @@ fun CartDetailsScreen(navController: NavController) {
                     modifier = Modifier
                         .padding(start = 10.dp)
                 )
-                Text(
-                    text = "Izmeni",
-                    style = MaterialTheme.typography.h6,
-                    color = MP_White,
-                    modifier = Modifier
-                        .padding(start = 80.dp, top = 5.dp, bottom = 5.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(MP_Pink)
-                        .padding(start = 7.5.dp, end = 7.5.dp, top = 2.dp, bottom = 2.dp)
-                )
+//                Text(
+//                    text = "Izmeni",
+//                    style = MaterialTheme.typography.h6,
+//                    color = MP_White,
+//                    modifier = Modifier
+//                        .padding(start = 80.dp, top = 5.dp, bottom = 5.dp)
+//                        .clip(RoundedCornerShape(20.dp))
+//                        .background(MP_Pink)
+//                        .padding(start = 7.5.dp, end = 7.5.dp, top = 2.dp, bottom = 2.dp)
+//                )
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -251,8 +250,7 @@ fun CartDetailsScreen(navController: NavController) {
             }
         }
 
-        TotalPrice(buyedProducts = buyedProducts)
-
+        TotalPrice(viewModel = viewModelCart)
 
         Row(
             modifier = Modifier
@@ -273,8 +271,20 @@ fun CartDetailsScreen(navController: NavController) {
             ) {
                 Button(
                     onClick = {
-                        navController.navigate(Screen.DetailsOrderScreen.route)
-                    },
+                        if (selectedTypeOfPayment == "Paypal")
+                            orderProducts.paymentMethod = PaymentMethod.PayPal
+                        else
+                            orderProducts.paymentMethod = PaymentMethod.OnDelivery
+                        orderProducts.address = selectedAddress
+                        if (selectedTypeOfSending == "Lično preuzimanje")
+                            orderProducts.deliveryMethod = DeliveryMethod.SelfPickup
+                        else
+                            orderProducts.deliveryMethod = DeliveryMethod.ByCourier
+                        if (orderProducts.deliveryMethod == DeliveryMethod.ByCourier)
+                            navController.navigate(Screen.DetailsOrderScreen.route)
+                        else
+                            navController.navigate(Screen.SchedulingScreen.route)
+                        },
                     colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
                 ) {
                     Text(
@@ -285,46 +295,40 @@ fun CartDetailsScreen(navController: NavController) {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun HeaderSectionTitleWithoutIcon(
-    msg: String,
-    navController: NavController,
-) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .size(width = 240.dp, height = 35.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Search",
-                tint = MP_White,
-                modifier = Modifier
-                    .size(30.dp)
-                    .clickable {
-                        navController.popBackStack()
-                        //navController.navigate(Screen.HomeScreen.route)
-                    }
-            )
-
-            androidx.compose.material3.Text(
-                text = msg,
-                style = MaterialTheme.typography.h5,
-                color = MP_White,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-            )
-        }
+        BottomNavigationMenu(
+            navController = navController,
+            items = listOf(
+                BottomNavigationMenuContent(
+                    title = "Početna",
+                    graphicID = Icons.Default.Home,
+                    screen = Screen.HomeScreen,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
+                    screen = Screen.StoreScreen,
+                    isActive = true
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Privatni",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Korpa",
+                    graphicID = Icons.Default.ShoppingCart,
+                    screen = Screen.CartScreen,
+                    isActive = false
+                )
+            ), modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }

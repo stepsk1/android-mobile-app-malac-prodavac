@@ -2,7 +2,9 @@ package com.triforce.malacprodavac.data.local.shops
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.triforce.malacprodavac.data.local.product.ProductEntity
 import com.triforce.malacprodavac.data.local.user.UserEntity
 
 @Entity(
@@ -14,9 +16,25 @@ import com.triforce.malacprodavac.data.local.user.UserEntity
 )
 data class ShopEntity(
     @PrimaryKey
-    val id: Int,
-    val userId: Int,
-    val businessName: String,
-    val createdAt: String,
-    val updatedAt: String,
-)
+    var id: Int,
+    var userId: Int,
+    var openFromDays: String?,
+    var openTillDays: String?,
+    var availableAtLatitude: Double?,
+    var availableAtLongitude: Double?,
+    var businessName: String?,
+    var openFrom: String?,
+    var openTill: String?,
+    var availableAt: String?,
+    var updatedAt: String?,
+    var createdAt: String?,
+    var isFavored: Boolean?
+) {
+
+
+    @Ignore
+    val user: UserEntity? = null
+
+    @Ignore
+    val products: List<ProductEntity> = listOf()
+}

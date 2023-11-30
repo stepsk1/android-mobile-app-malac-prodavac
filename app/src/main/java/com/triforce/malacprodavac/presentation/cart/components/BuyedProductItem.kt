@@ -44,7 +44,8 @@ import com.triforce.malacprodavac.ui.theme.MP_Pink
 @Composable
 fun BuyedProductItem(
     buyedProduct: ProductAmount,
-    viewModel: CartViewModel
+    viewModel: CartViewModel,
+    totalPrice: Double
 ) {
     var amount by remember { mutableStateOf(buyedProduct.amount) }
     var productTotalPrice by remember { mutableStateOf(buyedProduct.totalPrice) }
@@ -52,7 +53,8 @@ fun BuyedProductItem(
     fun removeFromBuyedProducts(item: ProductAmount) {
         BuyedProducts.listOfBuyedProducts.remove(item)
     }
-    val buyedProduct by remember { mutableStateOf(buyedProduct) }
+
+//    val buyedProduct by remember { mutableStateOf(buyedProduct) }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -94,6 +96,7 @@ fun BuyedProductItem(
                         modifier = Modifier
                             .size(40.dp)
                             .clickable {
+                                viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
                                 viewModel.onEvent(CartEvent.DeleteFromCart)
                                 removeFromBuyedProducts(buyedProduct)
                                 buyedProduct.amount = 0
@@ -132,6 +135,7 @@ fun BuyedProductItem(
                             .align(Alignment.BottomCenter)
                             .clickable {
                                 amount++
+                                viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
                                 buyedProduct.amount++
                                 buyedProduct.totalPrice = buyedProduct.amount * buyedProduct.product.price
                                 productTotalPrice = amount * buyedProduct.product.price
@@ -147,6 +151,7 @@ fun BuyedProductItem(
                             .align(Alignment.BottomEnd)
                             .clickable {
                                 if (amount > 1) {
+                                    viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
                                     amount--
                                     buyedProduct.amount--
                                     buyedProduct.totalPrice = buyedProduct.amount * buyedProduct.product.price

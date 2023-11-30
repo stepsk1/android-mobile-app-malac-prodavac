@@ -5,26 +5,33 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.components.BuyedProductSection
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Orange
@@ -46,26 +53,18 @@ fun CartScreen(navController: NavController)
             .fillMaxSize()
     ){
         LinearGradient(color1 = MP_Orange, color2 = MP_Orange_Dark )
-        Surface (
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 67.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ){
 
-        }
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
+
         Column {
             GoBackComp("Moja korpa", navController)
             BuyedProductSection(
                 buyedProducts = buyedProducts,
                 viewModel = viewModel,
-
             )
         }
 
-        TotalPrice(buyedProducts = buyedProducts)
+        TotalPrice(viewModel)
 
         Row(
             modifier = Modifier
@@ -98,5 +97,41 @@ fun CartScreen(navController: NavController)
                 }
             }
         }
+
+        BottomNavigationMenu(
+            navController = navController,
+            items = listOf(
+                BottomNavigationMenuContent(
+                    title = "Početna",
+                    graphicID = Icons.Default.Home,
+                    screen = Screen.HomeScreen,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
+                    screen = Screen.StoreScreen,
+                    isActive = true
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Privatni",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Korpa",
+                    graphicID = Icons.Default.ShoppingCart,
+                    screen = Screen.CartScreen,
+                    isActive = false
+                )
+            ), modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }

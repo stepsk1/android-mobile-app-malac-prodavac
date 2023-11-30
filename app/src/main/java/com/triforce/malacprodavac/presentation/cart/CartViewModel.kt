@@ -4,10 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.triforce.malacprodavac.data.services.SessionManager
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.repository.ProductRepository
-import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -16,7 +12,6 @@ class CartViewModel @Inject constructor(
 ): ViewModel() {
 
     var state by mutableStateOf(CartState())
-
 
     fun onEvent(event: CartEvent) {
         when(event) {
@@ -29,6 +24,18 @@ class CartViewModel @Inject constructor(
             is CartEvent.DeleteFromCart -> {
                 state = state.copy(isDeleted = true)
             }
+            is CartEvent.getTotalPrice -> {
+                state = state.copy(totalPrice = event.totalPrice)
+                countTotalPrice()
+            }
         }
+    }
+
+    private fun countTotalPrice() {
+        var totalPrice: Double = 0.00
+        for (buyedProduct in BuyedProducts.listOfBuyedProducts) {
+            totalPrice += buyedProduct.totalPrice
+        }
+        state = state.copy(totalPrice = totalPrice)
     }
 }

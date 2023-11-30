@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetCategory (
     private val repository: CategoryRepository
 ) {
-        suspend operator fun invoke(id: Int, fetchFromRemote: Boolean): Flow<Resource<List<Category>>>? {
+        suspend operator fun invoke(id: Int, fetchFromRemote: Boolean): Flow<Resource<List<Category>>> {
             return repository.getCategory(id, fetchFromRemote)
         }
 }

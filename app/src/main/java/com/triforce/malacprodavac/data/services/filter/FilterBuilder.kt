@@ -15,7 +15,7 @@ class FilterBuilder<T> {
                 parts["limit"] = "${filter.limit}"
             }
 
-            val filterQuery = if (filter.filter != null) FilterBuilder.buildQueryString(
+            val filterQuery = if (filter.filter != null) buildQueryString(
                 "filter",
                 filter.filter
             ) else null
@@ -24,7 +24,7 @@ class FilterBuilder<T> {
                 parts.putAll(filterQuery.map { it.key to it.value })
             }
 
-            val orderQuery = if (filter.order != null) FilterBuilder.buildQueryString(
+            val orderQuery = if (filter.order != null) buildQueryString(
                 "order",
                 filter.order
             ) else null

@@ -14,25 +14,61 @@ import com.triforce.malacprodavac.data.remote.auth.interceptors.AuthInterceptorI
 import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
 import com.triforce.malacprodavac.data.remote.couriers.CouriersApi
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
+import com.triforce.malacprodavac.data.remote.notifications.NotificationsApi
+import com.triforce.malacprodavac.data.remote.orders.OrderApi
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
+import com.triforce.malacprodavac.data.remote.products.productMedias.ProductMediasApi
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.users.UsersApi
+import com.triforce.malacprodavac.data.remote.users.userMedias.UserMediasApi
+import com.triforce.malacprodavac.data.repository.products.productMedias.ProductMediasRepositoryImpl
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.repository.AuthRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
+import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
+import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.produtMedias.ProductMediasRepository
+import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import com.triforce.malacprodavac.domain.use_case.GetToken
+import com.triforce.malacprodavac.domain.use_case.auth.IsAuthenticated
+import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
+import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
+import com.triforce.malacprodavac.domain.use_case.favoriteProduct.FavoriteProduct
+import com.triforce.malacprodavac.domain.use_case.favoriteProduct.GetFavProducts
+import com.triforce.malacprodavac.domain.use_case.favoriteShop.AddFavShop
+import com.triforce.malacprodavac.domain.use_case.favoriteShop.DeleteFavShop
+import com.triforce.malacprodavac.domain.use_case.favoriteShop.FavShopUseCase
+import com.triforce.malacprodavac.domain.use_case.favoriteShop.GetFavShop
 import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
+import com.triforce.malacprodavac.domain.use_case.notifications.GetNotifications
+import com.triforce.malacprodavac.domain.use_case.notifications.Notification
+import com.triforce.malacprodavac.domain.use_case.order.AddOrder
+import com.triforce.malacprodavac.domain.use_case.order.DeleteOrder
+import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
+import com.triforce.malacprodavac.domain.use_case.order.GetOrderForId
+import com.triforce.malacprodavac.domain.use_case.order.Order
+import com.triforce.malacprodavac.domain.use_case.order.UpdateOrder
+import com.triforce.malacprodavac.domain.use_case.product.AddProductImages
+import com.triforce.malacprodavac.domain.use_case.product.GetAllProducts
+import com.triforce.malacprodavac.domain.use_case.product.GetProductForId
+import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
 import com.triforce.malacprodavac.domain.use_case.profile.Logout
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
+import com.triforce.malacprodavac.domain.use_case.profile.SetProfilePicture
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCourier
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterCustomer
 import com.triforce.malacprodavac.domain.use_case.registration.RegisterShop
 import com.triforce.malacprodavac.domain.use_case.registration.Registration
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.AddSchedulePickup
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.GetAllScheduledPickups
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.GetSchedulePickupForId
+import com.triforce.malacprodavac.domain.use_case.schedulePickup.SchedulePickupUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,6 +76,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.sse.EventSources
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
@@ -73,24 +110,32 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideNotificationsApi(retrofit: Retrofit): NotificationsApi =
+        retrofit.create()
+
+
+    @Provides
+    @Singleton
     fun provideUsersApi(retrofit: Retrofit): UsersApi =
         retrofit.create()
 
+    @Provides
+    @Singleton
+    fun provideUserMediasApi(retrofit: Retrofit): UserMediasApi =
+        retrofit.create()
+
 
     @Provides
     @Singleton
-    fun provideCustomersApi(retrofit: Retrofit): CustomersApi =
-        retrofit.create()
+    fun provideCustomersApi(retrofit: Retrofit): CustomersApi = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi =
-        retrofit.create()
+    fun provideCategoriesApi(retrofit: Retrofit): CategoriesApi = retrofit.create()
 
     @Provides
     @Singleton
-    fun provideProductsApi(retrofit: Retrofit): ProductsApi =
-        retrofit.create()
+    fun provideProductsApi(retrofit: Retrofit): ProductsApi = retrofit.create()
 
     @Provides
     @Singleton
@@ -99,9 +144,15 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideShopsApi(retrofit: Retrofit): ShopsApi =
-        retrofit.create()
+    fun provideShopsApi(retrofit: Retrofit): ShopsApi = retrofit.create()
 
+    @Provides
+    @Singleton
+    fun provideOrderApi(retrofit: Retrofit): OrderApi = retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideProductMediasApi(retrofit: Retrofit): ProductMediasApi = retrofit.create()
 
     @Provides
     @Singleton
@@ -111,11 +162,17 @@ object ApplicationModule {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
+    @Provides
+    @Singleton
+    fun provideEventSource(client: OkHttpClient) =
+        EventSources.createFactory(client)
+
     @Singleton
     @Provides
     fun provideAuthInterceptorImpl(
         sessionManager: SessionManager
     ): AuthInterceptorImpl = AuthInterceptorImpl(sessionManager)
+
 
     /* SESSION MANAGER DEPENDENCY CHAIN */
     @Singleton
@@ -171,6 +228,16 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideGetNotificationsUseCase(repository: NotificationsRepository) =
+        GetNotifications(repository)
+
+    @Provides
+    @Singleton
+    fun provideNotificationUseCase(getNotifications: GetNotifications) =
+        Notification(getNotifications)
+
+    @Provides
+    @Singleton
     fun provideLoginUser(repository: AuthRepository) =
         LoginUser(repository)
 
@@ -196,9 +263,106 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideProfileUseCase(logout: Logout, me: Me, getToken: GetToken) =
-        Profile(me, logout, getToken)
+    fun provideSetProfilePicture(repository: UserMediasRepository) =
+        SetProfilePicture(repository)
 
+    @Provides
+    @Singleton
+    fun provideIsAuthenticatedUseCase(sessionManager: SessionManager) =
+        IsAuthenticated(sessionManager)
+
+    @Provides
+    @Singleton
+    fun provideProfileUseCase(
+        logout: Logout,
+        me: Me,
+        getToken: GetToken,
+        setProfilePicture: SetProfilePicture,
+        isAuthenticated: IsAuthenticated
+    ) =
+        Profile(me, logout, getToken, setProfilePicture, isAuthenticated)
+
+    @Provides
+    @Singleton
+    fun provideOrderUseCase(
+        addOrder: AddOrder,
+        deleteOrder: DeleteOrder,
+        getAllOrders: GetAllOrders,
+        getOrderForId: GetOrderForId
+    ) =
+        Order(getAllOrders, getOrderForId, addOrder, deleteOrder)
+
+    @Provides
+    @Singleton
+    fun provideFavProductUseCase(
+        addFavProduct: AddFavProduct,
+        deleteFavProduct: DeleteFavProduct,
+        getFavProducts: GetFavProducts
+    ) =
+        FavoriteProduct(getFavProducts, deleteFavProduct, addFavProduct)
+
+
+    @Provides
+    @Singleton
+    fun provideProductUseCase(
+        getAllProducts: GetAllProducts,
+        addProductImages: AddProductImages,
+        getProductForId: GetProductForId,
+        updateOrder: UpdateOrder,
+    ) = ProductUseCase(getAllProducts, getProductForId, updateOrder, addProductImages)
+
+    @Provides
+    @Singleton
+    fun provideUpdateOrderUseCase(repository: OrderRepository) = UpdateOrder(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetProductUseCase(
+        repository: ProductRepository
+    ) =
+        GetProductForId(repository)
+
+    @Provides
+    @Singleton
+    fun provideSchedulePickupUseCase(
+        addSchedulePickup: AddSchedulePickup,
+        getAllScheduledPickups: GetAllScheduledPickups,
+        getSchedulePickupForId: GetSchedulePickupForId,
+        updateSchedulePickup: com.triforce.malacprodavac.domain.use_case.schedulePickup.UpdateScheduledPickup
+    ) =
+        SchedulePickupUseCase(
+            getAllScheduledPickups,
+            getSchedulePickupForId,
+            addSchedulePickup,
+            updateSchedulePickup
+        )
+
+    @Provides
+    @Singleton
+    fun provideProductMediasRepositoryImpl(
+        api: ProductMediasApi,
+        db: MalacProdavacDatabase,
+        sessionManager: SessionManager
+    ): ProductMediasRepository = ProductMediasRepositoryImpl(api, db, sessionManager)
+
+    @Provides
+    @Singleton
+    fun provideAddProductImagesUseCase(repository: ProductMediasRepository) =
+        AddProductImages(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetProductsUseCase(repository: ProductRepository) =
+        GetAllProducts(repository)
+
+    @Provides
+    @Singleton
+    fun provideFavShopUseCase(
+        addFavShop: AddFavShop,
+        deleteFavShop: DeleteFavShop,
+        getFavShop: GetFavShop
+    ) =
+        FavShopUseCase(getFavShop, deleteFavShop, addFavShop)
 
     @Provides
     @Singleton

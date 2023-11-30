@@ -1,11 +1,10 @@
 package com.triforce.malacprodavac.data.repository.users
 
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
-import com.triforce.malacprodavac.data.mappers.toUser
 import com.triforce.malacprodavac.data.remote.users.UsersApi
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.model.User
-import com.triforce.malacprodavac.domain.repository.UserRepository
+import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

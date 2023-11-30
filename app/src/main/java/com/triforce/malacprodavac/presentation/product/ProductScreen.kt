@@ -7,38 +7,47 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
-import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
-import com.triforce.malacprodavac.presentation.login.LoginViewModel
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
@@ -50,35 +59,17 @@ import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
+
 @Composable
 fun ProductScreen(
-    navController: NavController,
-    viewModel: ProductViewModel = hiltViewModel()
+    navController: NavController, viewModel: ProductViewModel = hiltViewModel()
 ) {
 
-    var state = viewModel.state
+    val viewModelFavProduct: FavoriteViewModel = hiltViewModel()
+
+    val state = viewModel.state
 
     val product = state.product
-//        Product(
-//            id = 1,
-//            available = true,
-//            price = 19.99,
-//            unitOfMeasurement = "RSD",
-//            rating = 4.5,
-//            availableAtLatitude = 40.7128,
-//            availableAtLongitude = -74.0060,
-//            availableFromHours = 9.0,
-//            availableTillHours = 18.0,
-//            currency = "RSD",
-//            shopId = 101,
-//            title = "Example Product",
-//            desc = "This is an example product description.",
-//            ratingsCount = 100.0,
-//            availableAt = "New York, NY",
-//            categoryId = 5,
-//            createdAt = "2023-01-01T12:00:00",
-//            updatedAt = "2023-11-13T15:30:00"
-//        )
 
     var colorBackground = MP_White
     var colorForeground = MP_White
@@ -96,50 +87,172 @@ fun ProductScreen(
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
+            .verticalScroll(state = scrollState)
             .background(MP_White)
-            .fillMaxSize()
+            .height(950.dp)
     ) {
         LinearGradient(color1 = colorForeground, color2 = colorBackground)
-        Surface(
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 250.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ) {
+        RoundedBackgroundComp(top = 250.dp, color = MP_White)
 
-        }
         Column {
             GoBackComp("Malac Pijaca", navController)
-            HeroImage()
+            ProductHeroImage()
             if (product != null) {
+
+                Spacer(modifier = Modifier.padding(16.dp))
+
                 ProductDetails(product = product)
-                ShowFavouriteAddToCart(
-                    navController = navController,
-                    viewModel = viewModel
+
+                Spacer(modifier = Modifier.padding(16.dp))
+
+                ProductOptions(product, navController, true)
+
+                Spacer(modifier = Modifier.padding(16.dp))
+
+                ShowHighlightSectionComp(
+                    navController = navController, products = listOf(
+                        Product(
+                            1,
+                            2,
+                            3,
+                            true,
+                            99.0,
+                            "RSD",
+                            9.0,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "RSD",
+                            "Prsuta 100g",
+                            "",
+                            null,
+                            null,
+                            "",
+                            "",
+                            null,
+                            emptyList(),
+                            null,
+                            null,
+                            emptyList(),
+                            null
+                        ), Product(
+                            1,
+                            2,
+                            3,
+                            true,
+                            99.0,
+                            "RSD",
+                            9.0,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "RSD",
+                            "Prsuta 100g",
+                            "",
+                            null,
+                            null,
+                            "",
+                            "",
+                            null,
+                            emptyList(),
+                            null,
+                            null,
+                            emptyList(),
+                            null
+                        )
+                    ), title = "Više proizvoda od prodavca", route = Screen.HighlightSection.route
                 )
-                ShowHighlightSection(
-                    navController = navController,
-                    product1 = product,
-                    product2 = product,
-                    title = "Više proizvoda od prodavca"
-                )
+                Box(
+                    contentAlignment = Alignment.BottomCenter, modifier = Modifier
+                        //.background(MP_Pink)
+                        .fillMaxSize()
+                ) {
+                    ShowFavouriteAddToCart(
+                        navController = navController,
+                        viewModel = viewModel,
+                        viewModelFavourite = viewModelFavProduct
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun HeroImage(
+fun ProductOptions(
+    product: Product?, navController: NavController, isEdit: Boolean
+) {
+    val colorTint = if (isEdit) {
+        MP_Orange_Dark
+    } else {
+        MP_Green
+    }
+    val msg = if (isEdit) {
+        "Izmeni proizvod"
+    } else {
+        "Dodaj novi proizvod"
+    }
 
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(
+                start = 20.dp, end = 20.dp
+            )
+            .shadow(
+                elevation = 10.dp, spotColor = MP_Black, shape = RoundedCornerShape(20.dp)
+            )
+            .clip(RoundedCornerShape(20.dp))
+            .background(MP_White)
+            .padding(
+                vertical = 10.dp, horizontal = 16.dp
+            )
+    ) {
+        Icon(
+            imageVector = if (isEdit) {
+                Icons.Outlined.Edit
+            } else {
+                Icons.Outlined.Add
+            },
+            contentDescription = "FavoriteBorder",
+            tint = colorTint,
+            modifier = Modifier.size(35.dp)
+        )
+        Text(text = msg,
+            style = MaterialTheme.typography.body2,
+            color = MP_White,
+            fontWeight = FontWeight.W400,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .clickable {
+                    if (product != null) {
+                        navController.navigate(Screen.AddEditProduct.route + "?productId=${product.id}")
+                    } else {
+                        navController.navigate(Screen.AddEditProduct.route)
+                    }
+                }
+                .clip(RoundedCornerShape(15.dp))
+                .background(colorTint)
+                .width(width = 200.dp)
+                .padding(vertical = 10.dp))
+    }
+}
+
+@Composable
+fun ProductHeroImage(
+    modifier: Modifier = Modifier
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 15.dp, end = 15.dp)
             .background(MP_White, RoundedCornerShape(10.dp))
@@ -149,8 +262,7 @@ fun HeroImage(
             imageVector = Icons.Default.ShoppingCart,
             contentDescription = "Malac Prodavac",
             tint = MP_Gray,
-            modifier = Modifier
-                .size(100.dp)
+            modifier = Modifier.size(100.dp)
         )
     }
 }
@@ -163,10 +275,7 @@ fun ProductDetails(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 50.dp,
-                bottom = 10.dp,
-                start = 20.dp,
-                end = 20.dp
+                start = 20.dp, end = 20.dp
             )
     ) {
         Column(
@@ -191,7 +300,7 @@ fun ProductDetails(
         }
         Text(
             text = product.desc,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.body2,
             color = Color.Gray,
             softWrap = true
         )
@@ -199,58 +308,15 @@ fun ProductDetails(
 }
 
 @Composable
-fun ShowHighlightSection(
-    navController: NavController,
-    product1: Product,
-    product2: Product,
-    title: String
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 15.dp,
-                    bottom = 15.dp,
-                    start = 20.dp,
-                    end = 20.dp
-                )
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.body1,
-                color = MP_Black,
-                fontWeight = FontWeight.W500
-            )
-            androidx.compose.material3.Text(
-                text = "Vidi više",
-                style = MaterialTheme.typography.caption,
-                color = MP_White,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(Screen.HighlightDetailed.route)
-                    }
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MP_Pink)
-                    .padding(vertical = 6.dp, horizontal = 15.dp)
-            )
-        }
-
-        ShowcaseProducts(products = listOf(product1,product2), navController = navController)
-    }
-}
-
-@Composable
 fun ShowFavouriteAddToCart(
-    navController: NavController,
-    viewModel: ProductViewModel
+    navController: NavController, viewModel: ProductViewModel, viewModelFavourite: FavoriteViewModel
 ) {
+
+    val imageVector: ImageVector
+
+    if (viewModel.state.isFavorite == true) imageVector = Icons.Outlined.Favorite
+    else imageVector = Icons.Outlined.FavoriteBorder
+
     fun addToBuyedProducts(item: ProductAmount) {
         BuyedProducts.listOfBuyedProducts.add(item)
     }
@@ -263,60 +329,75 @@ fun ShowFavouriteAddToCart(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 15.dp,
-                bottom = 15.dp,
-                start = 5.dp,
-                end = 5.dp
+                bottom = 25.dp, start = 5.dp, end = 5.dp
             )
             .shadow(
-                elevation = 10.dp,
-                spotColor = MP_Black,
-                shape = RoundedCornerShape(7.5.dp)
+                elevation = 10.dp, spotColor = MP_Black, shape = RoundedCornerShape(20.dp)
             )
-            .clip(RoundedCornerShape(15.dp))
+            .clip(RoundedCornerShape(20.dp))
             .background(MP_White)
             .padding(
                 vertical = 10.dp,
-                horizontal = 20.dp
             )
     ) {
-        Icon(
-            imageVector = Icons.Outlined.FavoriteBorder,
+        Icon(imageVector = imageVector,
             contentDescription = "FavoriteBorder",
             tint = MP_Pink,
             modifier = Modifier
                 .size(50.dp)
-        )
+                .clickable {
+                    if (viewModel.state.isFavorite == false) {
+                        viewModel.onEvent(ProductEvent.favoriteProduct)
+                        viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct)
 
-        Text(
-            text = "Dodaj u korpu",
+                        Toast
+                            .makeText(
+                                context,
+                                "Uspešno dodat proizvod u listu omiljenih proizvoda",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    } else {
+
+                        viewModel.onEvent(ProductEvent.removeFavoriteProduct)
+                        viewModelFavourite.onEvent(FavoriteEvent.DeleteFavProduct)
+                        Toast
+                            .makeText(
+                                context,
+                                "Proizvod se već nalazi u listi omiljenih proizvoda",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    }
+                })
+
+        Text(text = "Dodaj u korpu",
             style = MaterialTheme.typography.h5,
             color = MP_White,
-            fontWeight = FontWeight.W500,
+            fontWeight = FontWeight.W400,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .clickable {
                     if (viewModel.state.isBuyed == false) {
                         viewModel.onEvent(ProductEvent.buyProduct)
                         viewModel.state.product?.let { addToBuyedProducts(ProductAmount(it)) }
 
-                        Toast.makeText(
-                            context,
-                            "Uspešno dodat proizvod u korpu",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    else
-                    {
-                        Toast.makeText(
-                            context,
-                            "Proizvod se već nalazi u korpi",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast
+                            .makeText(
+                                context, "Uspešno dodat proizvod u korpu", Toast.LENGTH_LONG
+                            )
+                            .show()
+                    } else {
+                        Toast
+                            .makeText(
+                                context, "Proizvod se već nalazi u korpi", Toast.LENGTH_LONG
+                            )
+                            .show()
                     }
                 }
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(MP_Pink)
-                .padding(vertical = 6.dp, horizontal = 15.dp)
-        )
+                .width(width = 250.dp)
+                .padding(vertical = 10.dp))
     }
 }

@@ -2,6 +2,7 @@ package com.triforce.malacprodavac.data.local.category
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -18,4 +19,10 @@ data class CategoryEntity(
     val parentCategoryId: Int?,
     val updatedAt: String,
     val createdAt: String,
-)
+) {
+    @Ignore
+    val parentCategory: CategoryEntity? = null
+
+    @Ignore
+    val subCategories: List<CategoryEntity> = listOf()
+}

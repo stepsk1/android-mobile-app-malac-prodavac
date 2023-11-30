@@ -1,7 +1,6 @@
 package com.triforce.malacprodavac.domain.use_case.product
 
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.repository.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 
 class DeleteProduct (
 

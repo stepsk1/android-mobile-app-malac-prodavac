@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.domain.repository.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -31,14 +31,25 @@ class ProductViewModel @Inject constructor(
             is ProductEvent.ToggleFavouriteProduct -> {
                 state = state.copy(isBuyed = true)
             }
+
+            is ProductEvent.favoriteProduct -> {
+                state = state.copy(isFavorite = true)
+            }
+
+            is ProductEvent.removeFavoriteProduct -> {
+                state = state.copy(isFavorite = false)
+            }
         }
     }
+
 
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
             getProduct(true, productId)
+            FavouriteProduct.favouriteProductId = productId
+            FavouriteProduct.favouriteProduct = state.product
+            FavouriteProduct.favProducts.add(state.product)
         }
-
     }
 
     private fun getProduct(fetchFromRemote: Boolean, productId: Int) {

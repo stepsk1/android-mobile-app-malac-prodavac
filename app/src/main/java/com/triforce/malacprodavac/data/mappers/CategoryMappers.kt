@@ -12,3 +12,12 @@ fun CategoryEntity.toCategory(): Category = Category(
     parentCategory = null,
     subCategories = null
 )
+
+
+fun Category.toCategoryEntity(): CategoryEntity = CategoryEntity(
+    id = id,
+    name = name,
+    parentCategoryId = parentCategoryId,
+    updatedAt = updatedAt,
+    createdAt = createdAt,
+)

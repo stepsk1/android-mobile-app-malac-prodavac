@@ -1,7 +1,7 @@
 package com.triforce.malacprodavac.data.repository.customers.favoriteProducts
 
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
-import com.triforce.malacprodavac.data.repository.customers.favoriteProducts.dto.CreateFavoriteProductDto
+import com.triforce.malacprodavac.data.remote.customers.dto.CreateFavoriteProductDto
 import com.triforce.malacprodavac.domain.model.PaginationResponse
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
 import retrofit2.http.Body
@@ -22,7 +22,7 @@ interface FavoriteProductsApi {
     suspend fun getFavoriteProducts(
         @Path("id") customerId: Int,
         @QueryMap queryMap: MutableMap<String, String>
-    ): PaginationResponse<FavoriteProduct>
+    ): PaginationResponse<List<FavoriteProduct>>
 
     @DELETE("${ROUTE}/{favoriteProductId}")
     suspend fun deleteFavoriteProduct(

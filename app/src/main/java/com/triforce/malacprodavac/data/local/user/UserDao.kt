@@ -4,18 +4,23 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import com.triforce.malacprodavac.data.local.user.relations.UserWithRelations
 
 @Dao
 interface UserDao {
     @Query("SELECT * FROM UserEntity")
     suspend fun getUsers(): List<UserEntity>
 
-    @Query("""SELECT * FROM UserEntity
-                WHERE id = :id""")
-    suspend fun getUserForId(id: Int): List<UserEntity>
+    @Transaction
+    @Query("""SELECT * FROM UserEntity WHERE id = :id""")
+    suspend fun getUserWithRelations(id: Int): UserWithRelations
 
-    @Query("""SELECT * FROM UserEntity
-        WHERE email = :email""")
+
+    @Query(
+        """SELECT * FROM UserEntity
+        WHERE email = :email"""
+    )
     suspend fun getUserForEmail(email: String): List<UserEntity>
 
     @Query("DELETE FROM UserEntity")

@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class
+)
+
 package com.triforce.malacprodavac.presentation.category
 
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -20,15 +24,23 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,9 +49,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -52,7 +67,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun StoreCategoryScreen(
 
@@ -61,20 +76,28 @@ fun StoreCategoryScreen(
 ) {
     val state = viewModel.state
 
-    val productsList: List<Product>? = state.products
+    val searchText by viewModel.searchText.collectAsState()
+    val isSearching by viewModel.isSearching.collectAsState()
+    //val productsAsState by viewModel.products.collectAsState()
+
+    val products: List<Product>? = state.products
 
     val titleState = viewModel.categoryTitle.value
 
-    var colorBackground = MP_Orange_Dark
-    var colorForeground = MP_Orange
+    var colorBackground = MP_White
+    var colorForeground = MP_White
 
-    if ( viewModel.currentCategoryId!! % 3 == 1 ) {
-        colorBackground = MP_GreenDark
-        colorForeground = MP_Green
-    }
-    else if ( viewModel.currentCategoryId!! % 3 == 2 ) {
-        colorBackground = MP_Pink_Dark
-        colorForeground = MP_Pink
+    if (viewModel.currentCategoryId != null) {
+        if (viewModel.currentCategoryId!! % 3 == 1) {
+            colorBackground = MP_GreenDark
+            colorForeground = MP_Green
+        } else if (viewModel.currentCategoryId!! % 3 == 2) {
+            colorBackground = MP_Pink_Dark
+            colorForeground = MP_Pink
+        } else {
+            colorBackground = MP_Orange_Dark
+            colorForeground = MP_Orange
+        }
     }
 
     Box(
@@ -83,32 +106,93 @@ fun StoreCategoryScreen(
             .fillMaxSize()
     ){
         LinearGradient(color1 = colorBackground, color2 = colorForeground )
-        Surface (
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 250.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ){
 
-        }
+        RoundedBackgroundComp(top = 250.dp, color = MP_White)
+
         Column {
             GoBackComp("Malac Pijaca", navController)
             CategorySectionHeader(titleState.title, "Podržite zajednicu, podržavajte lokalno preduzetništvo. Vaša podrška čini razliku!", colorBackground)
             FilterSortComp(navController)
-            ShowcaseProducts(
-                products = productsList,
-                navController
+
+            OutlinedTextField(
+                value = searchText,
+                onValueChange = viewModel::onSearchTextChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 15.dp),
+                placeholder = {
+                    Text(
+                        text = "Pretražite",
+                        color = colorBackground
+                    )
+                },
+                trailingIcon = {
+                    Icon(Icons.Filled.Search, "", tint = colorBackground)
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = colorBackground,
+                    containerColor = MP_White,
+                    focusedIndicatorColor = colorBackground
+                ),
+                singleLine = true,
+                shape = RoundedCornerShape(10.dp)
             )
+
+            if ( isSearching ) {
+
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+
+            } else {
+                ShowcaseProducts(
+                    products = products,
+                    navController
+                )
+            }
         }
+        BottomNavigationMenu(
+            navController = navController,
+            items = listOf(
+                BottomNavigationMenuContent(
+                    title = "Početna",
+                    graphicID = Icons.Default.Home,
+                    screen = Screen.HomeScreen,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
+                    screen = Screen.StoreScreen,
+                    isActive = true
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Privatni",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Korpa",
+                    graphicID = Icons.Default.ShoppingCart,
+                    screen = Screen.CartScreen,
+                    isActive = false
+                )
+            ), modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 
-@Composable
-fun CategoriesSection(categories: List<String>) {
-
-}
+//@Composable
+//fun CategoriesSection(categories: List<String>) {
+//
+//}
 
 @Composable
 fun CategorySectionHeader(
@@ -125,13 +209,13 @@ fun CategorySectionHeader(
             .background(colorBackground, RoundedCornerShape(10.dp))
             .padding(15.dp)
     ) {
-        Column (
-        ) {
+        Column {
             Text(
                 text = title,
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h6,
                 fontWeight = FontWeight.Bold,
                 color = MP_White,
+                maxLines = 1,
                 modifier = Modifier
                     .padding(bottom = 10.dp)
                     .fillMaxWidth(0.5F)
@@ -140,6 +224,7 @@ fun CategorySectionHeader(
                 text = sub,
                 style = MaterialTheme.typography.body2,
                 color = MP_White,
+                maxLines = 4,
                 modifier = Modifier
                     .fillMaxWidth(0.6F)
             )
@@ -172,7 +257,7 @@ fun ShowcaseProducts(
         if (products != null) {
             items(products.size) {// how many items do we have
                 // define one of items
-                StoreCategoryProduct(product = products?.get(it) ?: null, navController)
+                StoreCategoryProduct(product = products.get(it), navController)
             }
         }
     }
@@ -197,7 +282,7 @@ fun StoreCategoryProduct (
             .background(MP_White)
             .clickable {
                 if (product != null) {
-                    navController.navigate(Screen.ProductScreen.route+ "?productId=${product.id}")
+                    navController.navigate(Screen.ProductScreen.route + "?productId=${product.id}")
                 }
             }
     ) {

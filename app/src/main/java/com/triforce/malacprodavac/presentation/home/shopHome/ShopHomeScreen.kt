@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,12 +70,20 @@ fun ShopHomeScreen(navController: NavController) {
                         screen = Screen.StoreScreen
                     ),
                     Feature(
-                        id = -1,
-                        title = "Moj Profil",
+                        id = 1,
+                        title = "Public",
                         graphicID = Icons.Default.AccountCircle,
-                        color1 = MP_Orange,
-                        color2 = MP_Orange,
-                        screen = Screen.Profile
+                        color1 = MP_Green,
+                        color2 = MP_Green,
+                        screen = Screen.PublicProfile
+                    ),
+                    Feature(
+                        id = 1,
+                        title = "Private",
+                        graphicID = Icons.Default.AccountCircle,
+                        color1 = MP_Green,
+                        color2 = MP_Green,
+                        screen = Screen.PrivateProfile
                     ),
                     Feature(
                         id = -1,
@@ -118,28 +127,33 @@ fun ShopHomeScreen(navController: NavController) {
                     title = "Početna",
                     graphicID = Icons.Default.Home,
                     screen = Screen.HomeScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Proizvodi",
-                    graphicID = Icons.Default.AddCircle,
-                    screen = Screen.StoreScreen,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Moj Profil",
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
+                    screen = Screen.StoreScreen,
+                    isActive = true
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.Profile,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Privatni",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
                     title = "Korpa",
-                    graphicID = Icons.Default.AddCircle,
+                    graphicID = Icons.Default.ShoppingCart,
                     screen = Screen.CartScreen,
                     isActive = false
                 )
-            ), modifier = Modifier
-                .align(Alignment.BottomCenter)
+            ), modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 }

@@ -9,10 +9,19 @@ sealed class Screen(val route: String) {
     object ProductScreen : Screen("product_screen")
     object CartScreen : Screen("cart_screen")
     object  CartDetailsScreen : Screen("cart_deatils_screen")
-    object  HighlightDetailed : Screen("highlight_detailed_screen")
     object DetailsOrderScreen : Screen("details_order_screen")
-    object Profile : Screen("profile_screen")
+    object PrivateProfile : Screen("private_profile_screen")
+    object PublicProfile : Screen("public_profile_screen")
     object ShopHomeScreen : Screen("shop_home_screen")
+    object HighlightSection : Screen("highlight_section")
+    object AddEditProduct : Screen("add_edit_product")
+    object OrderScreen : Screen("order_screen")
+    object TransactionScreen : Screen("transaction_screen")
+    object FavoriteProductsScreen : Screen("favorite_products")
+    object MapScreen : Screen("map_screen")
+    object SchedulingScreen : Screen("scheduling_screen")
+    object MyProductsScreen: Screen("my_products_screen")
+    object FavoriteShopScreen : Screen("favorite_shops")
 
     fun withArgs(vararg args: String): String {
         return buildString {

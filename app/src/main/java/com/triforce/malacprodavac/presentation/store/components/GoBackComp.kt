@@ -42,7 +42,7 @@ fun GoBackComp(
                 contentDescription = "Search",
                 tint = MP_White,
                 modifier = Modifier
-                    .size(30.dp)
+                    .size(25.dp)
                     .clickable {
                         navController.popBackStack()
                         //navController.navigate(Screen.HomeScreen.route)
@@ -50,8 +50,8 @@ fun GoBackComp(
             )
 
             Text(
-                text = msg,
-                style = MaterialTheme.typography.h5,
+                text = if ( msg.length > 12) { msg.subSequence(0,15).toString() + "..." } else { msg },
+                style = MaterialTheme.typography.body1,
                 color = MP_White,
                 modifier = Modifier
                     .padding(start = 10.dp)
@@ -63,7 +63,7 @@ fun GoBackComp(
             contentDescription = "Search",
             tint = MP_White,
             modifier = Modifier
-                .size(35.dp)
+                .size(25.dp)
         )
     }
 }

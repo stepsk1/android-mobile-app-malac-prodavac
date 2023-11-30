@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +20,13 @@ class MainActivity : ComponentActivity() {
         ) {
             //for permissions launch coroutine to consume them
         }
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+            )
+        )
         setContent {
             MalacProdavacTheme {
                 Navigation()

@@ -18,14 +18,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
@@ -38,9 +33,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -50,6 +43,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -64,17 +58,34 @@ fun StoreScreen(navController: NavController)
 {
     val viewModel: StoreViewModel = hiltViewModel()
     val state = viewModel.state
-    val context = LocalContext.current
+    //val context = LocalContext.current
 
     val Categories: List<Category> = state.categories
     var features : List<Feature> = listOf()
     var flagNumber: Int = 0
 
     Categories.forEach {
-        if(it.parentCategoryId == null)
-        {
+        if (it.parentCategoryId == null) {
             flagNumber++
-            if(flagNumber%3==0){
+            if (it.id % 3 == 1) {
+                features += Feature(
+                    id = it.id,
+                    title = it.name,
+                    graphicID = Icons.Default.Star,
+                    color1 = MP_Green,
+                    color2 = MP_Green,
+                    screen = Screen.StoreScreen
+                )
+            } else if (it.id % 3 == 2) {
+                features += Feature(
+                    id = it.id,
+                    title = it.name,
+                    graphicID = Icons.Default.Star,
+                    color1 = MP_Pink,
+                    color2 = MP_Pink,
+                    screen = Screen.StoreScreen
+                )
+            } else {
                 features += Feature(
                     id = it.id,
                     title = it.name,
@@ -84,25 +95,6 @@ fun StoreScreen(navController: NavController)
                     screen = Screen.StoreScreen
                 )
             }
-            else if(flagNumber%3==1){
-                features += Feature(
-                    id = it.id,
-                    title = it.name,
-                    graphicID = Icons.Default.Star,
-                    color1 = MP_Green,
-                    color2 = MP_Green,
-                    screen = Screen.StoreScreen
-                )
-            }else{
-            features += Feature(
-                id = it.id,
-                title = it.name,
-                graphicID = Icons.Default.Star,
-                color1 = MP_Pink,
-                color2 = MP_Pink,
-                screen = Screen.StoreScreen
-            )
-        }
         }
     }
     Box(
@@ -111,16 +103,9 @@ fun StoreScreen(navController: NavController)
             .fillMaxSize()
     ){
         LinearGradient(color1 = MP_GreenDark, color2 = MP_GreenLight)
-        Surface (
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 67.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ){
 
-        }
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
+
         Column {
             GoBackComp("Malac prodavnica", navController)
             TitleTextContentSection(
@@ -145,15 +130,21 @@ fun StoreScreen(navController: NavController)
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Prodavnica",
-                    graphicID = Icons.Default.AddCircle,
+                    title = "Market",
+                    graphicID = Icons.Default.Star,
                     screen = Screen.StoreScreen,
                     isActive = true
                 ),
                 BottomNavigationMenuContent(
-                    title = "Moj Profil",
+                    title = "Profil",
                     graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.Profile,
+                    screen = Screen.PublicProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Privatni",
+                    graphicID = Icons.Default.AccountCircle,
+                    screen = Screen.PrivateProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(

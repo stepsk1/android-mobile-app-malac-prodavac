@@ -6,60 +6,84 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
-import com.triforce.malacprodavac.presentation.cart.CartDetails.HeaderSectionTitleWithoutIcon
+import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsEvent
+import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsViewModel
+import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
 import com.triforce.malacprodavac.presentation.cart.components.Confirmation
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
+import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.orders.OrderEvent
+import com.triforce.malacprodavac.presentation.orders.OrderViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
+import com.triforce.malacprodavac.util.enum.DeliveryMethod
+import com.triforce.malacprodavac.util.enum.PaymentMethod
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun DetailsOrderScreen(navController: NavController) {
 
-    val totalPrice: Double = TotalPrice(buyedProducts = BuyedProducts.listOfBuyedProducts)
+    val viewModel: CartDetailsViewModel = hiltViewModel()
+    val state = viewModel.state
+//    val totalPrice: Double = state.totalPrice
+    val totalPrice: Double = TotalPrice()
+
+    val year = BuyedProducts.localDate.split("-")[0]
+    val month = BuyedProducts.localDate.split("-")[1]
+    val day = BuyedProducts.localDate.split("-")[2]
+
+    var paymentMethod: String
+    var deliveryMethod: String
+    if (BuyedProducts.paymentMethod == PaymentMethod.OnDelivery)
+        paymentMethod = "Lično/Pouzećem"
+    else
+        paymentMethod = "PayPal"
+
+    if(BuyedProducts.deliveryMethod == DeliveryMethod.ByCourier)
+        deliveryMethod = "Kurirska dostava"
+    else
+        deliveryMethod = "Lično preuzimanje"
+
+    val scrollState = rememberScrollState()
 
     Box(
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
+            .verticalScroll(state = scrollState)
     ) {
         LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark )
-        Surface(
-            color = MP_White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1F)
-                .padding(top = 67.dp)
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-        ) {
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
-        }
         Column {
-            HeaderSectionTitleWithoutIcon("Detalji porudžbine", navController)
+            GoBackNoSearch("Detalji porudžbine", navController)
 
             Spacer(modifier = Modifier.height(7.dp))
 
@@ -89,8 +113,8 @@ fun DetailsOrderScreen(navController: NavController) {
                     ) {
 
                         Text(
-                            text = "Način plaćanja: Paypal",
-                            style = MaterialTheme.typography.h6,
+                            text = "Način plaćanja: " + paymentMethod,
+                            style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
                                 .padding(start = 10.dp)
@@ -98,8 +122,8 @@ fun DetailsOrderScreen(navController: NavController) {
                         )
 
                         Text(
-                            text = "Podaci za slanje: Gavrila Principa, Kragujevac, 066/251-102",
-                            style = MaterialTheme.typography.h6,
+                            text = "Podaci za slanje: " + BuyedProducts.address,
+                            style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
                                 .padding(start = 10.dp)
@@ -107,8 +131,8 @@ fun DetailsOrderScreen(navController: NavController) {
                         )
 
                         Text(
-                            text = "Način slanja: Lično preuzimanje",
-                            style = MaterialTheme.typography.h6,
+                            text = "Način slanja: " + deliveryMethod,
+                            style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
                                 .padding(start = 10.dp)
@@ -117,12 +141,23 @@ fun DetailsOrderScreen(navController: NavController) {
 
                         Text(
                             text = "Ukupan iznos: $totalPrice",
-                            style = MaterialTheme.typography.h6,
+                            style = MaterialTheme.typography.body1,
                             color = MP_Black,
                             modifier = Modifier
                                 .padding(start = 10.dp)
                                 .align(Alignment.Start)
                         )
+
+                        if(deliveryMethod == "Lično preuzimanje"){
+                            Text(
+                                text = "Vreme preuzimanja paketa: $day.$month.$year ${BuyedProducts.localTime}",
+                                style = MaterialTheme.typography.body1,
+                                color = MP_Black,
+                                modifier = Modifier
+                                    .padding(start = 10.dp)
+                                    .align(Alignment.Start)
+                            )
+                        }
                     }
                 }
 
@@ -146,6 +181,7 @@ fun DetailsOrderScreen(navController: NavController) {
                         Button(
                             onClick = {
                                 navController.navigate(Screen.HomeScreen.route)
+                                viewModel.onEvent(CartDetailsEvent.order)
                             },
                             colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
                         ) {

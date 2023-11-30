@@ -20,17 +20,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.Calendar
 
 @Composable
 fun Confirmation() {
+
+    val codeForPaying = generateRandomString(11)
+
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = Modifier
@@ -62,8 +64,9 @@ fun Confirmation() {
 
             Text(
                 text = "Vaša kupovina je uspešno završena",
-                style = MaterialTheme.typography.h4,
+                style = MaterialTheme.typography.h5,
                 color = MP_Black,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(start = 10.dp)
                     .align(Alignment.CenterHorizontally)
@@ -73,7 +76,7 @@ fun Confirmation() {
 
             Text(
                 text = "Kod za praćenje:",
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h6,
                 color = MP_Black,
                 modifier = Modifier
                     .padding(start = 10.dp)
@@ -81,8 +84,8 @@ fun Confirmation() {
             )
 
             Text(
-                text = "0001000012F",
-                style = MaterialTheme.typography.h5,
+                text = codeForPaying,
+                style = MaterialTheme.typography.h6,
                 color = MP_Pink,
                 modifier = Modifier
                     .padding(start = 10.dp)
@@ -93,7 +96,7 @@ fun Confirmation() {
 
             Text(
                 text = "Datum potvrde",
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h6,
                 color = MP_Black,
                 modifier = Modifier
                     .padding(start = 10.dp)
@@ -111,7 +114,7 @@ fun Confirmation() {
 
             Text(
                 text = date,
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h6,
                 color = MP_Pink,
                 modifier = Modifier
                     .padding(start = 10.dp)
