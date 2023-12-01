@@ -64,7 +64,7 @@ fun HomeScreen(
         LinearGradient(color1 = MP_Green, color2 = MP_Green)
         RoundedBackgroundComp(top = 100.dp, color = MP_White)
         Column {
-            GreetingSection(msg = "Malac Prodavac", subMsg = "Od sirupa do sira")
+            GreetingSection(msg = "Malac Prodavac", subMsg = "Od sirupa do sira", navController = navController)
             //GoToStoreSection(navController)
             Spacer(modifier = Modifier.padding(16.dp))
             RecommendedFeaturesSection(

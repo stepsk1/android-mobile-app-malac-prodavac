@@ -65,11 +65,7 @@ fun RecommendedFeatureItem(
                 .fillMaxSize()
                 .clickable {
                     navController.navigate(feature.screen.route)
-                    println("PRVI ID USERA")
-                    println(favoriteViewModel.state.customerId)
                     favoriteViewModel.onEvent(FavoriteEvent.GetFavProducts)
-                    println("DRUGI ID USERA")
-                    println(favoriteViewModel.state.customerId)
                 }
                 .padding(15.dp)
         ) {
