@@ -14,12 +14,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.model.notifications.Notification
 import com.triforce.malacprodavac.presentation.notifications.NotificationsState
 import com.triforce.malacprodavac.presentation.notifications.NotificationsViewModel
-import com.triforce.malacprodavac.presentation.orders.OrderState
-import com.triforce.malacprodavac.presentation.orders.components.OrderProductItem
 
 @Composable
 fun NotificationsSection(

@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.domain.model.Product
 import com.triforce.malacprodavac.domain.model.notifications.Notification
 import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
 import com.triforce.malacprodavac.domain.util.Resource
