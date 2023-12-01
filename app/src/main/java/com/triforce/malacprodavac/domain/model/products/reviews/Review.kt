@@ -10,5 +10,5 @@ data class Review(
     val rating: Int,
     val updatedAt: String,
     val createdAt: String,
-    val reviewReplies: List<ReviewReply>
+    val reviewReplies: List<ReviewReply>?
 )

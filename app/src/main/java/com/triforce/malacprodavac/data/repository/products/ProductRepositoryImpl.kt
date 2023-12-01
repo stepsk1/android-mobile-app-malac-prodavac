@@ -72,10 +72,7 @@ class ProductRepositoryImpl @Inject constructor(
             }
 
             remoteProducts?.let {
-
-                Log.d("PRODUCTS:", it.toString())
-                emit(Resource.Success(remoteProducts.data.map { jt -> jt.toProduct() }))
-
+                emit(Resource.Success(remoteProducts.data))
             }
 
             emit(Resource.Loading(false))
@@ -122,7 +119,7 @@ class ProductRepositoryImpl @Inject constructor(
             remoteProduct?.let {
 
                 Log.d("PRODUCTS:", it.toString())
-                emit(Resource.Success(remoteProduct.toProduct()))
+                emit(Resource.Success(remoteProduct))
 
             }
 
@@ -146,7 +143,7 @@ class ProductRepositoryImpl @Inject constructor(
                 null
             }
             deletedProduct?.let {
-                emit(Resource.Success(it.toProduct()))
+                emit(Resource.Success(it))
             }
             emit(Resource.Loading(false))
         }
@@ -167,7 +164,7 @@ class ProductRepositoryImpl @Inject constructor(
                 null
             }
             updateProduct?.let {
-                emit(Resource.Success(it.toProduct()))
+                emit(Resource.Success(it))
             }
 
             emit(Resource.Loading(false))
@@ -192,7 +189,7 @@ class ProductRepositoryImpl @Inject constructor(
                 null
             }
             updatedProduct?.let {
-                emit(Resource.Success(it.toProduct()))
+                emit(Resource.Success(it))
             }
 
             emit(Resource.Loading(false))

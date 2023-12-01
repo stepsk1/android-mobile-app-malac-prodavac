@@ -1,12 +1,15 @@
 package com.triforce.malacprodavac.presentation.product
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.triforce.malacprodavac.domain.model.products.reviews.CreateReviewDto
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
+import com.triforce.malacprodavac.domain.use_case.product.replies.ReviewUseCase
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,10 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-
     private val repository: ProductRepository,
+    private val reviewUseCase: ReviewUseCase,
     savedStateHandle: SavedStateHandle
-
 ) : ViewModel() {
 
     var state by mutableStateOf(ProductState())
@@ -39,6 +41,10 @@ class ProductViewModel @Inject constructor(
             is ProductEvent.removeFavoriteProduct -> {
                 state = state.copy(isFavorite = false)
             }
+
+            is ProductEvent.CreateReview -> {
+                createReview(event.text, event.rating)
+            }
         }
     }
 
@@ -52,6 +58,32 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+    private fun createReview(text: String, rating: Int) {
+        viewModelScope.launch {
+            reviewUseCase.createReview.invoke(state.product!!.id, CreateReviewDto(text, rating))
+                .collect { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                        }
+
+                        is Resource.Loading -> {
+                            state = state.copy()
+                        }
+
+                        is Resource.Success -> {
+                            result.data?.let {
+                                state = state.copy(
+                                    reviews = listOf(*state.reviews!!.toTypedArray(), it)
+                                )
+                            }
+                        }
+                    }
+                }
+
+
+        }
+    }
+
     private fun getProduct(fetchFromRemote: Boolean, productId: Int) {
 
         viewModelScope.launch {
@@ -59,7 +91,8 @@ class ProductViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let {
-                            state = state.copy(product = it)
+                            Log.d("PRODUCT", it.toString())
+                            state = state.copy(product = it, reviews = it.reviews)
                         }
                     }
 
