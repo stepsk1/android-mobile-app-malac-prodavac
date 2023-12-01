@@ -24,5 +24,6 @@ fun ReviewEntity.toReview(): Review =
         createdAt = createdAt,
         productId = productId,
         rating = rating,
+        customer = null,
         reviewReplies = reviewReplies.map { it.toReviewReply() }
     )
