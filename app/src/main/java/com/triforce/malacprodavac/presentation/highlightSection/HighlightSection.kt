@@ -48,18 +48,18 @@ fun HighlightSection(
 
     Box(
         modifier = Modifier
-            .background(MP_White)
-            .fillMaxSize()
-    ) {
-        LinearGradient(color1 = MP_Pink, color2 = MP_Pink_Dark)
+                .background(MP_White)
+                .fillMaxSize()
+                ) {
+                    LinearGradient(color1 = MP_Pink, color2 = MP_Pink_Dark)
 
-        RoundedBackgroundComp(top = 65.dp, color = MP_White)
+                    RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
-        Column {
-            GoBackComp("Više od ${state.currentShop?.businessName}", navController)
+                    Column {
+                        GoBackComp("Više od ${state.user?.shop?.businessName}", navController)
             TitleDescComp(
-                title = "${state.currentShop?.businessName} za Vaš užitak!",
-                description = "Domaćinstvo ${state.currentShop?.businessName} Dostupni od ${state.currentShop?.openFromDays} do ${state.currentShop?.openTillDays} Dana!",
+                title = "${state.user?.shop?.businessName} za Vaš užitak!",
+                description = "Domaćinstvo ${state.user?.shop?.businessName} Dostupni od ${state.user?.shop?.openFromDays} do ${state.user?.shop?.openTillDays} Dana!",
                 colorTitle = MP_Black,
                 colorDesc = Color.DarkGray
             )
@@ -72,7 +72,7 @@ fun HighlightSection(
                     .padding(horizontal = 20.dp, vertical = 15.dp),
                 placeholder = {
                     Text(
-                        text = "Pretražite ${state.currentShop?.businessName}",
+                        text = "Pretražite ${state.user?.shop?.businessName}",
                         color = MP_Black
                     )
                 },
@@ -96,7 +96,7 @@ fun HighlightSection(
 
             } else {
                 ShowcaseProducts(
-                    products = state.products,
+                    products = state.user?.shop?.products,
                     navController
                 )
             }

@@ -57,7 +57,7 @@ class HighlightSectionViewModel @Inject constructor(
             if ( shopId != -1 ) {
 
                 currentShopId = shopId
-                getShop(shopId)
+                //getShop(shopId)
             }
         }
     }
@@ -69,7 +69,7 @@ class HighlightSectionViewModel @Inject constructor(
                     is Resource.Success -> {
                         result.data?.let {shop ->
 
-                            state = state.copy(currentShop = shop)
+                            //state = state.copy(state.user.shop = shop)
 
                             getProducts(true, shop.id)
                         }
@@ -114,7 +114,7 @@ class HighlightSectionViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Product>) {
-                            state = state.copy(products = result.data)
+                            //state = state.copy(products = result.data)
                         }
                     }
 
