@@ -60,7 +60,26 @@ class ReviewsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getReviews(productId: Int): Flow<Resource<List<Review>>> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(Resource.Loading(true))
+
+            val reviews = try {
+                api.getReviews(productId)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't find user."))
+                null
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emit(Resource.Error("Couldn't find user."))
+                null
+            }
+
+            reviews?.let {
+                emit(Resource.Success(data = reviews.data))
+            }
+            emit(Resource.Loading(false))
+        }
     }
 
     override suspend fun getReview(productId: Int, reviewId: Int): Flow<Resource<Review>> {

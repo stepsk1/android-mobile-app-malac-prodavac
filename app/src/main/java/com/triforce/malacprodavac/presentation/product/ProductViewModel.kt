@@ -52,9 +52,26 @@ class ProductViewModel @Inject constructor(
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
             getProduct(true, productId)
+            getReviews(productId)
             FavouriteProduct.favouriteProductId = productId
             FavouriteProduct.favouriteProduct = state.product
             FavouriteProduct.favProducts.add(state.product)
+        }
+    }
+
+    private fun getReviews(productId: Int) {
+        viewModelScope.launch {
+            reviewUseCase.getReviews(productId).collect { result ->
+                when (result) {
+                    is Resource.Error -> {}
+                    is Resource.Loading -> {
+                        state = state.copy(isLoading = result.isLoading)
+                    }
+                    is Resource.Success -> {
+                        state = state.copy(reviews = result.data)
+                    }
+                }
+            }
         }
     }
 
@@ -92,15 +109,13 @@ class ProductViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let {
-                            Log.d("PRODUCT", it.toString())
-                            state = state.copy(product = it, reviews = it.reviews)
+                            state = state.copy(product = it)
                         }
                     }
 
                     is Resource.Error -> {
                         Unit
                     }
-
                     is Resource.Loading -> {
                         state = state.copy(
                             isLoading = result.isLoading
