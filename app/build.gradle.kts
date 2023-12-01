@@ -74,6 +74,7 @@ dependencies {
 
     implementation("androidx.compose.ui:ui:1.5.4")
     implementation("androidx.compose.material:material:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 

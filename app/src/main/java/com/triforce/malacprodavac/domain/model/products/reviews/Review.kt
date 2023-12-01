@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.domain.model.products.reviews
 
+import com.triforce.malacprodavac.domain.model.Customer
 import com.triforce.malacprodavac.domain.model.products.reviews.reviewReplies.ReviewReply
 
 data class Review(
@@ -10,5 +11,9 @@ data class Review(
     val rating: Int,
     val updatedAt: String,
     val createdAt: String,
-    val reviewReplies: List<ReviewReply>
+
+
+    val customer: Customer?,
+    val reviewReplies: List<ReviewReply>?
+
 )
