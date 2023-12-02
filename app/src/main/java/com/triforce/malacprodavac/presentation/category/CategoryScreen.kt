@@ -129,8 +129,9 @@ fun StoreCategoryScreen(
                     .padding(horizontal = 20.dp, vertical = 15.dp),
                 placeholder = {
                     Text(
-                        text = "Pretražite",
-                        color = colorBackground
+                        text = "Pretražite...",
+                        color = colorBackground,
+                        style = MaterialTheme.typography.body2,
                     )
                 },
                 trailingIcon = {
@@ -142,7 +143,8 @@ fun StoreCategoryScreen(
                     focusedIndicatorColor = colorBackground
                 ),
                 singleLine = true,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(10.dp),
+                textStyle = MaterialTheme.typography.body2
             )
 
             if ( isSearching ) {

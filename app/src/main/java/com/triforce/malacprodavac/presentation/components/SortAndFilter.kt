@@ -61,7 +61,7 @@ fun SortAndFilter(
             )
             Text(
                 text = "Sortriraj",
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.body2,
                 color = MP_Orange_Dark
             )
         }
@@ -73,7 +73,7 @@ fun SortAndFilter(
             ){
                 Text(
                     text = "Rastuće",
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.body2,
                     color = MP_Black,
                     modifier = Modifier
                         .clickable {
@@ -82,7 +82,7 @@ fun SortAndFilter(
                 )
                 Text(
                     text = "Opadajuće",
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.body2,
                     color = MP_Black,
                     modifier = Modifier
                         .clickable {

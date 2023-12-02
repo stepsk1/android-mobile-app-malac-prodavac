@@ -61,7 +61,7 @@ fun SortAndFilterCategoryProducts(
             )
             Text(
                 text = "Sortriraj",
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.body2,
                 color = MP_White
             )
         }
@@ -73,7 +73,7 @@ fun SortAndFilterCategoryProducts(
             ){
                 Text(
                     text = "Rastuće",
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.body2,
                     color = MP_White,
                     modifier = Modifier
                         .clickable {
@@ -82,7 +82,7 @@ fun SortAndFilterCategoryProducts(
                 )
                 Text(
                     text = "Opadajuće",
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.body2,
                     color = MP_White,
                     modifier = Modifier
                         .clickable {

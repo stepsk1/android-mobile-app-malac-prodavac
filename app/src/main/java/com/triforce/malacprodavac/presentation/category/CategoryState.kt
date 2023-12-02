@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.category
 
+import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.model.products.Product
 
 data class CategoryState (
@@ -14,8 +15,8 @@ data class CategoryState (
     val products: List<Product>? = emptyList(),
     val isLoading: Boolean = false,
 
-    val isOrderSectionVisible: Boolean = false,
-    val isFilterSectionVisible: Boolean = false,
-    val isStoresSectionVisible: Boolean = false
-
-)
+    val token: String? = null,
+    val user: User? = null,
+    val profileImageUrl: String? = null,
+    val profileImageKey: String? = null,
+    )
