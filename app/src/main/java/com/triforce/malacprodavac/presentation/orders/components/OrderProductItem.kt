@@ -128,8 +128,8 @@ fun OrderProductItem(
 
                                 }
                         )
-                        if (profileState.currentUser?.roles?.first().equals("Courier", ignoreCase = true) ||
-                            profileState.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
+                        if (profileState.user?.roles?.first().equals("Courier", ignoreCase = true) ||
+                            profileState.user?.roles?.first().equals("Shop", ignoreCase = true)){
                             Icon(
                                 imageVector = Icons.Default.CheckCircle,
                                 contentDescription = "Check",

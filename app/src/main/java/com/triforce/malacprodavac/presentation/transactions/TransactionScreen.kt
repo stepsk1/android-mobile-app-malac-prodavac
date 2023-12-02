@@ -53,7 +53,7 @@ fun TransactionScreen(navController: NavController, viewModel: TransactionViewMo
     val transactions: List<Order> = state.orders
     var color: Color
 
-    if (profileState.currentUser?.roles?.first().equals("Courier", ignoreCase = true) || profileState.currentUser?.roles?.first().equals("Shop", ignoreCase = true)){
+    if (profileState.user?.roles?.first().equals("Courier", ignoreCase = true) || profileState.user?.roles?.first().equals("Shop", ignoreCase = true)){
         color = MP_Pink
     }
     else

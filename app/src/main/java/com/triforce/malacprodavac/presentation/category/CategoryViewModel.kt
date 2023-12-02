@@ -16,6 +16,8 @@ import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -37,9 +39,17 @@ class CategoryViewModel @Inject constructor(
     private val _isSearching = MutableStateFlow(false)
     val isSearching = _isSearching.asStateFlow()
 
-    fun onSearchTextChange(text: String){
+    private val debouncePeriod = 500L;
+
+    private var searchJob: Job? = null
+
+    fun onSearchTextChange(text: String) {
         _searchText.value = text
-        currentCategoryId?.let { getProducts(true, it, text) }
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(debouncePeriod)
+            currentCategoryId?.let { getProducts(it, text) }
+        }
     }
 
     private val _categoryTitle = mutableStateOf(
@@ -58,7 +68,7 @@ class CategoryViewModel @Inject constructor(
 
             currentCategoryId = categoryId
 
-            getProducts(true, categoryId)
+            getProducts(categoryId)
 
             Log.d("CURRENT_CAT_ID", currentCategoryId.toString())
         }
@@ -68,7 +78,7 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    private fun getProducts(fetchFromRemote: Boolean, categoryId: Int, searchText: String = "") {
+    private fun getProducts(categoryId: Int, searchText: String = "") {
 
         viewModelScope.launch {
 
@@ -89,7 +99,7 @@ class CategoryViewModel @Inject constructor(
                 )
             )
 
-            repository.getProducts(categoryId, fetchFromRemote, query).collect { result ->
+            repository.getProducts(categoryId, true, query).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Product>) {

@@ -86,7 +86,6 @@ class MyProductsViewModel @Inject constructor(
                 .collect { result ->
                     when (result) {
                         is Resource.Error -> {
-
                         }
 
                         is Resource.Loading -> {
@@ -109,7 +108,6 @@ class MyProductsViewModel @Inject constructor(
             profile.getMe().collect { result ->
                 when (result) {
                     is Resource.Error -> {
-
                     }
 
                     is Resource.Loading -> {
@@ -123,10 +121,8 @@ class MyProductsViewModel @Inject constructor(
                             profileImageKey = result.data?.profilePicture?.key
                         )
 
-                        Log.d("FILIP1", state.currentUser.toString())
-
                         state.currentUser?.let {
-                            getShop(it.id)
+                            getProducts(fetchFromRemote = true, filterTag = "shopId", id = it.shop!!.id)
                         }
                     }
 
@@ -136,56 +132,7 @@ class MyProductsViewModel @Inject constructor(
         }
     }
 
-    private fun getShop(userId: Int) {
-        viewModelScope.launch {
-
-            val query = FilterBuilder.buildFilterQueryMap(
-                Filter(
-                    filter = listOf(
-                        SingleFilter(
-                            "userId",
-                            FilterOperation.Eq,
-                            userId
-                        )
-                    ), order = null, limit = null, offset = null
-                )
-            )
-
-
-            repositoryShop.getShops(true, query).collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        result.data?.let {shops ->
-
-                            state = state.copy(
-                                currentShop = shops.first()
-                            )
-
-                            Log.d("FILIP2", state.currentShop.toString())
-
-                            state.currentShop?.let {
-                                currentShopId = it.id
-                                getProducts(true, "shopId", it.id)
-                            }
-
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getProducts(fetchFromRemote: Boolean, filterTag: String, id: Int, searchText: String = "") {
+    private fun getProducts(fetchFromRemote: Boolean, filterTag: String = "", id: Int, searchText: String = "") {
 
         viewModelScope.launch {
 
@@ -212,8 +159,6 @@ class MyProductsViewModel @Inject constructor(
                         if (result.data is List<Product>) {
                             state = state.copy(products = result.data)
                         }
-
-                        Log.d("FILIP3", state.products.toString())
                     }
 
                     is Resource.Error -> {
