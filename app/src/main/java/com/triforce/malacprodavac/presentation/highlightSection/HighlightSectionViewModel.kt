@@ -10,7 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.filter.Filter
 import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
+import com.triforce.malacprodavac.data.services.filter.FilterOrder
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
+import com.triforce.malacprodavac.data.services.filter.SingleOrder
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
@@ -43,7 +45,6 @@ class HighlightSectionViewModel @Inject constructor(
 
     var state by mutableStateOf(HighlightSectionState())
 
-    private val debouncePeriod = 500L;
     private val searchQueryChannel = Channel<String>(Channel.CONFLATED)
 
     private val _searchText = MutableStateFlow("")
@@ -54,7 +55,9 @@ class HighlightSectionViewModel @Inject constructor(
 
     var currentShopId: Int? = null
 
+    private val debouncePeriod = 500L;
     private var searchJob: Job? = null
+
     fun onSearchTextChange(text: String) {
         _searchText.value = text
         searchJob?.cancel()
@@ -65,13 +68,22 @@ class HighlightSectionViewModel @Inject constructor(
     }
 
     init {
-
         state.copy(isLoading = true)
-
         savedStateHandle.get<Int>("id")?.let { shopId ->
             if (shopId != -1) {
                 currentShopId = shopId
                 getShop(shopId)
+            }
+        }
+    }
+
+    fun onEvent(event: HighlightSectionEvent){
+        when ( event){
+            is HighlightSectionEvent.OrderBy -> {
+                currentShopId?.let {
+                    Log.d("SearchText", searchText.value)
+                    getProducts(shopId = it, searchText = searchText.value, orderId = event.order )
+                }
             }
         }
     }
@@ -101,7 +113,7 @@ class HighlightSectionViewModel @Inject constructor(
         }
     }
 
-    private fun getProducts(shopId: Int, searchText: String = "") {
+    private fun getProducts(shopId: Int, searchText: String = "", orderId: Int = -1) {
         viewModelScope.launch {
 
             val query = FilterBuilder.buildFilterQueryMap(
@@ -117,7 +129,7 @@ class HighlightSectionViewModel @Inject constructor(
                             FilterOperation.IContains,
                             searchText
                         )
-                    ), order = null, limit = null, offset = null
+                    ), order = if ( orderId == -1 ) null else listOf(SingleOrder("price", if(orderId == 1) FilterOrder.Asc else FilterOrder.Desc)), limit = null, offset = null
                 )
             )
 

@@ -98,7 +98,7 @@ fun HighlightSection(
                 textStyle = MaterialTheme.typography.body2
             )
 
-            SortAndFilter()
+            SortAndFilter(navController,viewModel)
 
             if (!state.isLoading) {
                 if (isSearching) {
