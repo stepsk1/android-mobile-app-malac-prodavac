@@ -189,11 +189,6 @@ fun StoreCategoryScreen(
     }
 }
 
-//@Composable
-//fun CategoriesSection(categories: List<String>) {
-//
-//}
-
 @Composable
 fun CategorySectionHeader(
     title: String,

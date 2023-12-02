@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.SortAndFilter
 import com.triforce.malacprodavac.presentation.components.TitleDescComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -57,66 +58,63 @@ fun HighlightSection(
             .fillMaxSize()
     ) {
         LinearGradient(color1 = MP_Pink, color2 = MP_Pink_Dark)
-
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
-        if (!state.isLoading) {
+        Column {
 
-            Column {
+            GoBackComp("Više od ${shop?.businessName}", navController)
 
-                GoBackComp("Više od ${shop?.businessName}", navController)
+            TitleDescComp(
+                title = "${shop?.businessName} za Vaš užitak!",
+                description = "Domaćinstvo ${shop?.businessName} Dostupni od ${shop?.openFromDays} do ${shop?.openTillDays} Dana!",
+                colorTitle = MP_Black,
+                colorDesc = Color.DarkGray
+            )
 
-                TitleDescComp(
-                    title = "${shop?.businessName} za Vaš užitak!",
-                    description = "Domaćinstvo ${shop?.businessName} Dostupni od ${shop?.openFromDays} do ${shop?.openTillDays} Dana!",
-                    colorTitle = MP_Black,
-                    colorDesc = Color.DarkGray
-                )
+            OutlinedTextField(
+                value = searchText,
+                onValueChange = viewModel::onSearchTextChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 16.dp),
+                placeholder = {
+                    Text(
+                        text = "Pretražite ${shop?.businessName}...",
+                        style = MaterialTheme.typography.body2,
+                        color = MP_Black
+                    )
+                },
+                trailingIcon = {
+                    Icon(Icons.Filled.Search, "", tint = MP_Green)
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = MP_Green,
+                    containerColor = MP_White,
+                    focusedIndicatorColor = MP_Green
+                ),
+                singleLine = true,
+                shape = RoundedCornerShape(10.dp),
+                textStyle = MaterialTheme.typography.body2
+            )
 
-                OutlinedTextField(
-                    value = searchText,
-                    onValueChange = viewModel::onSearchTextChange,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .padding(bottom = 16.dp),
-                    placeholder = {
-                        Text(
-                            text = "Pretražite ${shop?.businessName}...",
-                            style = MaterialTheme.typography.body1,
-                            color = MP_Black
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(Icons.Filled.Search, "", tint = MP_Green)
-                    },
-                    colors = TextFieldDefaults.textFieldColors(
-                        textColor = MP_Green,
-                        containerColor = MP_White,
-                        focusedIndicatorColor = MP_Green
-                    ),
-                    singleLine = true,
-                    shape = RoundedCornerShape(10.dp),
-                    textStyle = MaterialTheme.typography.body1
-                )
+            SortAndFilter()
 
+            if (!state.isLoading) {
                 if (isSearching) {
-
                     Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     }
-
                 } else {
                     ShowcaseProducts(
                         products = products,
                         navController
                     )
                 }
-            }
-
-        } else {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
             }
         }
     }
