@@ -12,6 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -28,18 +29,18 @@ fun RecommendedFeaturesSection(
             .fillMaxWidth()
     ) {
         Text(
-            text = "Podržite lokalnu ekonomiju",
-            style = MaterialTheme.typography.h5,
-            fontWeight = FontWeight.W400,
+            text = "Podržite lokalnu ekonomiju!",
+            style = MaterialTheme.typography.h6,
+            fontWeight = FontWeight.W500,
             color = MP_Black,
             modifier = Modifier
                 .padding(start = 15.dp)
         )
         Text(
-            text = "Napravi razliku",
+            text = "Napravi razliku - Malac Trgovac",
             style = MaterialTheme.typography.body1,
-            fontWeight = FontWeight.W400,
-            color = MP_Black,
+            fontWeight = FontWeight.W300,
+            color = Color.Gray,
             modifier = Modifier
                 .padding(start = 15.dp)
         )
