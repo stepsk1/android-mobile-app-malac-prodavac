@@ -42,8 +42,8 @@ fun ProfilePublicScreen(
 
     if (!state.isLoading) {
 
-        val shop = if ( state.role == 1 ) state.shop else state.user?.shop
-        val user = if ( state.role == 1 ) state.shop?.user else state.user
+        val shop = state.shop
+        val user = state.shop?.user
 
         if (shop?.products?.isEmpty() == false) {
             heightWindow = if (shop.products.size > 3) 1400.dp
@@ -61,32 +61,28 @@ fun ProfilePublicScreen(
                     .height(heightWindow)
             ) {
                 ProfileHeroComp(user, navController, false)
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 Log.d("PROFILE_PUBLIC_USER", user.toString())
                 Log.d("PROFILE_PUBLIC_SHOP", shop.toString())
                 Log.d("PROFILE_PUBLIC_SHOP_PRODUCTS", shop?.products.toString())
 
-                Spacer(modifier = Modifier.padding(16.dp))
-
                 ShopDescComp(user, shop)
-
                 Spacer(modifier = Modifier.padding(16.dp))
 
                 ShowHighlightSectionComp(
-                        navController = navController,
-                        products = shop?.products,
-                        title = "Naši najnoviji Proizvodi",
-                        route = Screen.HighlightSection.route + "?id=${shop?.id}"
-                    )
-                    Spacer(modifier = Modifier.padding(16.dp))
-
+                    navController = navController,
+                    products = shop?.products,
+                    title = "Naši najnoviji Proizvodi",
+                    route = Screen.HighlightSection.route + "?id=${shop?.id}"
+                )
+                Spacer(modifier = Modifier.padding(16.dp))
 
                 CallToActionFavourite(
                     "Ukoliko želite da pratite naš rad, kako bi znali kada smo u Vašoj okolini:",
                     viewModel,
                     viewModelFavShop
                 )
-
                 Spacer(modifier = Modifier.padding(16.dp))
 
                 ShowShopDetailsSection(user)

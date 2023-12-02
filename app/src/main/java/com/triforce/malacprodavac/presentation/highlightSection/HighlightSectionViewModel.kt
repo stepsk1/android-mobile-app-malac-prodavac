@@ -19,24 +19,32 @@ import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HighlightSectionViewModel @Inject constructor(
 
-    private val profile: Profile,
     private val repositoryShop: ShopRepository,
-    private val repositoryUser: UserRepository,
     private val repositoryProduct: ProductRepository,
 
     savedStateHandle: SavedStateHandle
 
 ) : ViewModel() {
 
-    var state by mutableStateOf(ProfilePublicState())
+    var state by mutableStateOf(HighlightSectionState())
+
+    private val debouncePeriod = 500L;
+    private val searchQueryChannel = Channel<String>(Channel.CONFLATED)
 
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
@@ -45,19 +53,25 @@ class HighlightSectionViewModel @Inject constructor(
     val isSearching = _isSearching.asStateFlow()
 
     var currentShopId: Int? = null
-    fun onSearchTextChange(text: String){
+
+    private var searchJob: Job? = null
+    fun onSearchTextChange(text: String) {
         _searchText.value = text
-        currentShopId?.let { getProducts(true, currentShopId!!, text) }
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(debouncePeriod)
+            currentShopId?.let { getProducts(it, text) }
+        }
     }
 
     init {
+
+        state.copy(isLoading = true)
+
         savedStateHandle.get<Int>("id")?.let { shopId ->
-
-            Log.d("SHOPID222", shopId.toString())
-            if ( shopId != -1 ) {
-
+            if (shopId != -1) {
                 currentShopId = shopId
-                //getShop(shopId)
+                getShop(shopId)
             }
         }
     }
@@ -67,11 +81,9 @@ class HighlightSectionViewModel @Inject constructor(
             repositoryShop.getShop(id, true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        result.data?.let {shop ->
-
-                            //state = state.copy(state.user.shop = shop)
-
-                            getProducts(true, shop.id)
+                        result.data?.let { shop ->
+                            state = state.copy(shop = shop)
+                            getProducts(shop.id)
                         }
                     }
 
@@ -89,8 +101,7 @@ class HighlightSectionViewModel @Inject constructor(
         }
     }
 
-    private fun getProducts(fetchFromRemote: Boolean, shopId: Int, searchText: String = "") {
-
+    private fun getProducts(shopId: Int, searchText: String = "") {
         viewModelScope.launch {
 
             val query = FilterBuilder.buildFilterQueryMap(
@@ -110,11 +121,11 @@ class HighlightSectionViewModel @Inject constructor(
                 )
             )
 
-            repositoryProduct.getProducts(shopId, fetchFromRemote, query).collect { result ->
+            repositoryProduct.getProducts(shopId, true, query).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Product>) {
-                            //state = state.copy(products = result.data)
+                            state = state.copy(products = result.data, isLoading = false)
                         }
                     }
 

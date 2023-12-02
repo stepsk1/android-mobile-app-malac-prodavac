@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -46,59 +48,75 @@ fun HighlightSection(
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
 
+    val shop = state.shop
+    val products = state.products
+
     Box(
         modifier = Modifier
-                .background(MP_White)
-                .fillMaxSize()
-                ) {
-                    LinearGradient(color1 = MP_Pink, color2 = MP_Pink_Dark)
+            .background(MP_White)
+            .fillMaxSize()
+    ) {
+        LinearGradient(color1 = MP_Pink, color2 = MP_Pink_Dark)
 
-                    RoundedBackgroundComp(top = 65.dp, color = MP_White)
+        RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
-                    Column {
-                        GoBackComp("Više od ${state.user?.shop?.businessName}", navController)
-            TitleDescComp(
-                title = "${state.user?.shop?.businessName} za Vaš užitak!",
-                description = "Domaćinstvo ${state.user?.shop?.businessName} Dostupni od ${state.user?.shop?.openFromDays} do ${state.user?.shop?.openTillDays} Dana!",
-                colorTitle = MP_Black,
-                colorDesc = Color.DarkGray
-            )
+        if (!state.isLoading) {
 
-            OutlinedTextField(
-                value = searchText,
-                onValueChange = viewModel::onSearchTextChange,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 15.dp),
-                placeholder = {
-                    Text(
-                        text = "Pretražite ${state.user?.shop?.businessName}",
-                        color = MP_Black
-                    )
-                },
-                trailingIcon = {
-                    Icon(Icons.Filled.Search, "", tint = MP_Green)
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    textColor = MP_Green,
-                    containerColor = MP_White,
-                    focusedIndicatorColor = MP_Green
-                ),
-                singleLine = true,
-                shape = RoundedCornerShape(10.dp)
-            )
+            Column {
 
-            if ( isSearching ) {
+                GoBackComp("Više od ${shop?.businessName}", navController)
 
-                Box(modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-
-            } else {
-                ShowcaseProducts(
-                    products = state.user?.shop?.products,
-                    navController
+                TitleDescComp(
+                    title = "${shop?.businessName} za Vaš užitak!",
+                    description = "Domaćinstvo ${shop?.businessName} Dostupni od ${shop?.openFromDays} do ${shop?.openTillDays} Dana!",
+                    colorTitle = MP_Black,
+                    colorDesc = Color.DarkGray
                 )
+
+                OutlinedTextField(
+                    value = searchText,
+                    onValueChange = viewModel::onSearchTextChange,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(bottom = 16.dp),
+                    placeholder = {
+                        Text(
+                            text = "Pretražite ${shop?.businessName}...",
+                            style = MaterialTheme.typography.body1,
+                            color = MP_Black
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(Icons.Filled.Search, "", tint = MP_Green)
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = MP_Green,
+                        containerColor = MP_White,
+                        focusedIndicatorColor = MP_Green
+                    ),
+                    singleLine = true,
+                    shape = RoundedCornerShape(10.dp),
+                    textStyle = MaterialTheme.typography.body1
+                )
+
+                if (isSearching) {
+
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+
+                } else {
+                    ShowcaseProducts(
+                        products = products,
+                        navController
+                    )
+                }
+            }
+
+        } else {
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }

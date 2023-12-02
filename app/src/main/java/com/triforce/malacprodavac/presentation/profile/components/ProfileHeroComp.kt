@@ -184,7 +184,7 @@ fun ProfileHeroComp(
                             contentDescription = "Round Image",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .size(175.dp)
+                                .size(150.dp)
                                 .clip(CircleShape)
                                 .border(3.dp, MP_White, CircleShape)
                         )
@@ -194,7 +194,7 @@ fun ProfileHeroComp(
                             contentDescription = "Round Image",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .size(175.dp)
+                                .size(150.dp)
                                 .clip(CircleShape)
                                 .border(3.dp, MP_White, CircleShape)
                         )

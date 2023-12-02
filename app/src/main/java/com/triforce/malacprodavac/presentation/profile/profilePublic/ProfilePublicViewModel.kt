@@ -85,7 +85,7 @@ class ProfilePublicViewModel @Inject constructor(
                             profileImageKey = result.data?.profilePicture?.key
                         )
 
-                        state = state.copy(isLoading = false)
+                        state.user?.shop?.id?.let { getShop(it) }
                     }
                 }
             }

@@ -29,22 +29,22 @@ fun TitleDescComp(
         modifier = Modifier
             .fillMaxWidth(1F)
             .height(
-                height = 150.dp
+                height = 130.dp
             )
             .padding(
-                horizontal = 30.dp
+                horizontal = 20.dp
             )
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.h5,
+            style = MaterialTheme.typography.body1,
             color = MP_Black,
             fontWeight = FontWeight.W400,
             textAlign = TextAlign.Center
         )
         Text(
             text = description,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.body2,
             color = Color.Gray,
             fontWeight = FontWeight.W300,
             textAlign = TextAlign.Center
