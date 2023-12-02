@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,6 +60,8 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.SortAndFilter
+import com.triforce.malacprodavac.presentation.highlightSection.components.SortAndFilterCategoryProducts
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -82,7 +85,6 @@ fun StoreCategoryScreen(
 
     val searchText by viewModel.searchText.collectAsState()
     val isSearching by viewModel.isSearching.collectAsState()
-    //val productsAsState by viewModel.products.collectAsState()
 
     val products: List<Product>? = state.products
 
@@ -116,8 +118,9 @@ fun StoreCategoryScreen(
         Column {
             GoBackComp("Malac Pijaca", navController)
             CategorySectionHeader(titleState.title, "Podržite zajednicu, podržavajte lokalno preduzetništvo. Vaša podrška čini razliku!", colorBackground)
-            FilterSortComp(navController)
 
+            Spacer(modifier = Modifier.size(21.dp))
+            SortAndFilterCategoryProducts(navController,viewModel)
             OutlinedTextField(
                 value = searchText,
                 onValueChange = viewModel::onSearchTextChange,
@@ -143,11 +146,9 @@ fun StoreCategoryScreen(
             )
 
             if ( isSearching ) {
-
                 Box(modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-
             } else {
                 ShowcaseProducts(
                     products = products,

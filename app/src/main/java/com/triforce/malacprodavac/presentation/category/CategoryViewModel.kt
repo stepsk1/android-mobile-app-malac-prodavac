@@ -11,10 +11,13 @@ import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.filter.Filter
 import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
+import com.triforce.malacprodavac.data.services.filter.FilterOrder
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
+import com.triforce.malacprodavac.data.services.filter.SingleOrder
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.presentation.highlightSection.HighlightSectionEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -54,9 +57,7 @@ class CategoryViewModel @Inject constructor(
 
     private val _categoryTitle = mutableStateOf(
         CategoryState(
-
             title = "Category title..."
-
         )
     )
     val categoryTitle: State<CategoryState> = _categoryTitle
@@ -65,23 +66,26 @@ class CategoryViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Int>("categoryId")?.let { categoryId ->
-
             currentCategoryId = categoryId
-
             getProducts(categoryId)
-
-            Log.d("CURRENT_CAT_ID", currentCategoryId.toString())
         }
-
         savedStateHandle.get<String>("title")?.let { title ->
             _categoryTitle.value = categoryTitle.value.copy(title = title)
         }
     }
 
-    private fun getProducts(categoryId: Int, searchText: String = "") {
+    fun onEvent(event: CategoryEvent){
+        when ( event){
+            is CategoryEvent.OrderBy -> {
+                currentCategoryId?.let {
+                    getProducts(categoryId = it, searchText = searchText.value, orderId = event.order )
+                }
+            }
+        }
+    }
 
+    private fun getProducts(categoryId: Int, searchText: String = "", orderId: Int = -1) {
         viewModelScope.launch {
-
             val query = FilterBuilder.buildFilterQueryMap(
                 Filter(
                     filter = listOf(
@@ -95,10 +99,9 @@ class CategoryViewModel @Inject constructor(
                             FilterOperation.IContains,
                             searchText
                         )
-                    ), order = null, limit = null, offset = null
+                    ), order = if ( orderId == -1 ) null else listOf(SingleOrder("price", if(orderId == 1) FilterOrder.Asc else FilterOrder.Desc)), limit = null, offset = null
                 )
             )
-
             repository.getProducts(categoryId, true, query).collect { result ->
                 when (result) {
                     is Resource.Success -> {
@@ -106,11 +109,9 @@ class CategoryViewModel @Inject constructor(
                             state = state.copy(products = result.data)
                         }
                     }
-
                     is Resource.Error -> {
                         Unit
                     }
-
                     is Resource.Loading -> {
                         state = state.copy(
                             isLoading = result.isLoading
