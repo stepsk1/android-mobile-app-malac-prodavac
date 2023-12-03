@@ -33,14 +33,12 @@ fun BuyedProductSection(
                 bottom = 50.dp
             ), // 130 dp bottom padding because navigation and total price
             modifier = Modifier
-                .requiredHeight(530.dp)
+                .requiredHeight(490.dp)
                 .padding(top = 20.dp)
         ) {
 
             for (order in buyedProducts) {
                 totalPriceOfAllOrders += order.totalPrice
-                println("TOTAL PRICE")
-                println(totalPriceOfAllOrders)
             }
 
             items(buyedProducts.size) {// how many items do we have

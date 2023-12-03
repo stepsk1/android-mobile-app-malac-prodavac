@@ -48,6 +48,10 @@ import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.maps.components.BottomMapShopDetails
+import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -77,20 +81,6 @@ fun MapScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        /*floatingActionButton = {
-                FloatingActionButton(
-                    onClick = { viewModel.onEvent(MapEvent.ToggleSpecialMap) }
-                ) {
-                    Icon(
-                        imageVector = if (viewModel.state.isSpecialMap) {
-                            Icons.Outlined.Clear
-                        } else {
-                            Icons.Outlined.LocationOn
-                        },
-                        contentDescription = "Toggle Special map"
-                    )
-                }
-            },*/
         content = { padding ->
             Box(
                 modifier = Modifier.padding(padding)
@@ -146,9 +136,10 @@ fun MapScreen(
                     onClick = {
                         viewModel.onEvent(MapEvent.ToggleSpecialMap)
                     },
+                    backgroundColor = MP_Orange,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(16.dp)
+                        .padding(27.dp)
                 ) {
                     Icon(
                         imageVector = if (viewModel.state.isSpecialMap) {

@@ -39,6 +39,7 @@ import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.orders.OrderEvent
 import com.triforce.malacprodavac.presentation.orders.OrderViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
@@ -66,7 +67,7 @@ fun DetailsOrderScreen(navController: NavController) {
     else
         paymentMethod = "PayPal"
 
-    if(BuyedProducts.deliveryMethod == DeliveryMethod.ByCourier)
+    if (BuyedProducts.deliveryMethod == DeliveryMethod.ByCourier)
         deliveryMethod = "Kurirska dostava"
     else
         deliveryMethod = "Lično preuzimanje"
@@ -74,126 +75,76 @@ fun DetailsOrderScreen(navController: NavController) {
     val scrollState = rememberScrollState()
 
     Box(
-        modifier = Modifier
-            .background(MP_White)
-            .fillMaxSize()
-            .verticalScroll(state = scrollState)
     ) {
-        LinearGradient(color1 = MP_GreenLight, color2 = MP_GreenDark )
-        RoundedBackgroundComp(top = 65.dp, color = MP_White)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxSize().background(MP_GreenLight).padding(vertical = 50.dp, horizontal = 20.dp)
+        ) {
 
-        Column {
-            GoBackNoSearch("Detalji porudžbine", navController)
+            Confirmation()
 
-            Spacer(modifier = Modifier.height(7.dp))
+            Box(
+                modifier = Modifier
+                    .shadow(
+                        elevation = 5.dp,
+                        spotColor = MP_Black,
+                        shape = RoundedCornerShape(7.5.dp)
+                    )
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MP_White)
+                    .padding(vertical = 20.dp, horizontal = 20.dp)
+            ) {
+                Column{
 
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center
-            ){
-                Confirmation()
+                    Text(
+                        text = "Način plaćanja: " + paymentMethod,
+                        style = MaterialTheme.typography.body1,
+                        color = MP_Black
+                    )
 
-                Box(
-                    contentAlignment = Alignment.CenterStart,
-                    modifier = Modifier
-                        .padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
-                        .fillMaxWidth()
-                        .shadow(
-                            elevation = 5.dp,
-                            spotColor = MP_Black,
-                            shape = RoundedCornerShape(7.5.dp)
-                        )
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MP_White)
-                        .padding(vertical = 20.dp, horizontal = 20.dp)
-                ){
-                    Column(
-                        modifier = Modifier.padding(2.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
+                    Text(
+                        text = "Podaci za slanje: " + BuyedProducts.address,
+                        style = MaterialTheme.typography.body1,
+                        color = MP_Black
+                    )
 
+                    Text(
+                        text = "Način slanja: " + deliveryMethod,
+                        style = MaterialTheme.typography.body1,
+                        color = MP_Black
+                    )
+
+                    Text(
+                        text = "Ukupan iznos: $totalPrice",
+                        style = MaterialTheme.typography.body1,
+                        color = MP_Black
+                    )
+
+                    if (deliveryMethod == "Lično preuzimanje") {
                         Text(
-                            text = "Način plaćanja: " + paymentMethod,
+                            text = "Vreme preuzimanja paketa: $day.$month.$year ${BuyedProducts.localTime}",
                             style = MaterialTheme.typography.body1,
-                            color = MP_Black,
-                            modifier = Modifier
-                                .padding(start = 10.dp)
-                                .align(Alignment.Start)
+                            color = MP_Black
                         )
-
-                        Text(
-                            text = "Podaci za slanje: " + BuyedProducts.address,
-                            style = MaterialTheme.typography.body1,
-                            color = MP_Black,
-                            modifier = Modifier
-                                .padding(start = 10.dp)
-                                .align(Alignment.Start)
-                        )
-
-                        Text(
-                            text = "Način slanja: " + deliveryMethod,
-                            style = MaterialTheme.typography.body1,
-                            color = MP_Black,
-                            modifier = Modifier
-                                .padding(start = 10.dp)
-                                .align(Alignment.Start)
-                        )
-
-                        Text(
-                            text = "Ukupan iznos: $totalPrice",
-                            style = MaterialTheme.typography.body1,
-                            color = MP_Black,
-                            modifier = Modifier
-                                .padding(start = 10.dp)
-                                .align(Alignment.Start)
-                        )
-
-                        if(deliveryMethod == "Lično preuzimanje"){
-                            Text(
-                                text = "Vreme preuzimanja paketa: $day.$month.$year ${BuyedProducts.localTime}",
-                                style = MaterialTheme.typography.body1,
-                                color = MP_Black,
-                                modifier = Modifier
-                                    .padding(start = 10.dp)
-                                    .align(Alignment.Start)
-                            )
-                        }
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(25.dp))
-                        .padding(
-                            start = 5.dp,
-                            top = 1.dp, //663.dp,
-                            end = 5.dp,
-                            bottom = 40.dp
-                        )
-                ){
-                    Column (
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Button(
-                            onClick = {
-                                navController.navigate(Screen.HomeScreen.route)
-                                viewModel.onEvent(CartDetailsEvent.order)
-                            },
-                            colors = ButtonDefaults.buttonColors(MP_Orange_Dark)
-                        ) {
-                            Text(
-                                text = "Vrati se na naslovnu",
-                                color = MP_White,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
                     }
                 }
             }
+
+            Button(
+                onClick = {
+                    navController.navigate(Screen.HomeScreen.route)
+                    viewModel.onEvent(CartDetailsEvent.order)
+                },
+                colors = ButtonDefaults.buttonColors(MP_White)
+            ) {
+                Text(
+                    text = "Vrati se na početnu",
+                    color = MP_GreenDark,
+                    style = MaterialTheme.typography.body1
+                )
+            }
+
         }
     }
 }

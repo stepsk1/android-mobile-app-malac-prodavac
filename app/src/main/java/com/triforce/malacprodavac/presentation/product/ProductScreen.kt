@@ -131,16 +131,22 @@ fun ProductScreen(
         Column {
             GoBackComp("Malac Pijaca", navController)
             ProductHeroImage()
+
             if (product != null) {
                 Spacer(modifier = Modifier.padding(16.dp))
                 ProductDetails(product = product)
 
                 Spacer(modifier = Modifier.padding(16.dp))
-
                 ProductOptions(product, navController, true)
 
                 Spacer(modifier = Modifier.padding(16.dp))
+                ShowFavouriteAddToCart(
+                    navController = navController,
+                    viewModel = viewModel,
+                    viewModelFavourite = viewModelFavProduct
+                )
 
+                Spacer(Modifier.height(16.dp))
                 ShowHighlightSectionComp(
                     navController = navController,
                     products = listOf(
@@ -199,6 +205,7 @@ fun ProductScreen(
                     title = "Više proizvoda od prodavca",
                     route = Screen.HighlightSection.route
                 )
+
                 Spacer(Modifier.height(16.dp))
                 Row(
                     modifier = Modifier
@@ -218,6 +225,7 @@ fun ProductScreen(
                     }
                 }
 
+                Spacer(Modifier.height(16.dp))
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -244,17 +252,7 @@ fun ProductScreen(
                         }
                     }
                 }
-                Box(
-                    contentAlignment = Alignment.BottomCenter, modifier = Modifier
-                        //.background(MP_Pink)
-                        .fillMaxSize()
-                ) {
-                    ShowFavouriteAddToCart(
-                        navController = navController,
-                        viewModel = viewModel,
-                        viewModelFavourite = viewModelFavProduct
-                    )
-                }
+
             }
         }
     }
