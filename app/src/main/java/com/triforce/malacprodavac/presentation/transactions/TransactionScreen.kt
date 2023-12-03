@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -25,11 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
+import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Order
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
@@ -53,60 +58,50 @@ fun TransactionScreen(navController: NavController, viewModel: TransactionViewMo
     val transactions: List<Order> = state.orders
     var color: Color
 
-    if (profileState.user?.roles?.first().equals("Courier", ignoreCase = true) || profileState.user?.roles?.first().equals("Shop", ignoreCase = true)){
+    if (profileState.user?.roles?.first()
+            .equals("Courier", ignoreCase = true) || profileState.user?.roles?.first()
+            .equals("Shop", ignoreCase = true)
+    ) {
         color = MP_Pink
-    }
-    else
+    } else
         color = MP_Green
 
-    Box(
-        modifier = Modifier
-            .background(MP_GreenDark)
-            .fillMaxSize()
-    ){
+    Box {
         LinearGradient(color1 = color, color2 = color)
+        GoBackComp("Transakcije", navController)
 
-        Column {
-            GoBackComp("Moje transakcije", navController)
-
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .padding(vertical = 65.dp, horizontal = 20.dp)
+                .fillMaxSize()
+        ) {
             TransactionSection(
                 transactions = transactions,
-                viewModel = viewModel)
-        }
+                viewModel = viewModel,
+                navController = navController
+            )
+            Text(
+                text = "Broj ostvarenih paketa: 19",
+                color = MP_White,
+                style = MaterialTheme.typography.body2
+            )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(25.dp))
-                .padding(
-                    start = 7.5.dp,
-                    top = 643.dp,
-                    end = 7.5.dp,
-                    bottom = 40.dp
-                )
-        ){
-            Column (
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
+            Button(
+                onClick = {
+                    navController.navigate(Screen.HomeScreen.route)
+                },
+                colors = ButtonDefaults.buttonColors(MP_White)
             ) {
-
-                Text(text = "Broj ostvarenih paketa: 17", color = MP_White)
-
-                Button(
-                    onClick = {
-                        navController.navigate(Screen.HomeScreen.route)
-                    },
-                    colors = ButtonDefaults.buttonColors(MP_White)
-                ) {
-                    Text(
-                        text = "Vrati se na početnu stranu",
-                        color = color,
-                        style = MaterialTheme.typography.body1
-                    )
-                }
+                Text(
+                    text = "Vrati se na početna stranu",
+                    color = color,
+                    style = MaterialTheme.typography.body1
+                )
             }
+
+            Spacer(modifier = Modifier.padding(6.dp))
         }
 
         BottomNavigationMenu(
@@ -120,19 +115,13 @@ fun TransactionScreen(navController: NavController, viewModel: TransactionViewMo
                 ),
                 BottomNavigationMenuContent(
                     title = "Market",
-                    graphicID = Icons.Default.Star,
+                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
                     screen = Screen.StoreScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Profil",
-                    graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.PublicProfile,
                     isActive = false
                 ),
                 BottomNavigationMenuContent(
-                    title = "Privatni",
-                    graphicID = Icons.Default.AccountCircle,
+                    title = "Profil",
+                    graphicID = Icons.Default.Person,
                     screen = Screen.PrivateProfile,
                     isActive = false
                 ),

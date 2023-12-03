@@ -113,9 +113,7 @@ fun OrderProductItem(
 
                     Box(
                         modifier = Modifier
-                            .align(Alignment.CenterEnd)
-                            .requiredWidth(130.dp)
-                            .requiredHeight(50.dp)
+                            .align(Alignment.TopEnd)
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_cancel_24),
@@ -123,7 +121,7 @@ fun OrderProductItem(
                             tint = MP_Pink,
                             modifier = Modifier
                                 .align(Alignment.Center)
-                                .size(30.dp)
+                                .size(36.dp)
                                 .clickable {
 
                                 }
