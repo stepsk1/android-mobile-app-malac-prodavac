@@ -23,6 +23,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
@@ -42,18 +44,22 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
+import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RatingStars
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
@@ -112,8 +118,6 @@ fun ProductScreen(
 
     val scrollState = rememberScrollState()
 
-
-
     Box(
         modifier = Modifier
             .verticalScroll(state = scrollState)
@@ -136,8 +140,10 @@ fun ProductScreen(
                 Spacer(modifier = Modifier.padding(16.dp))
                 ProductDetails(product = product)
 
-                Spacer(modifier = Modifier.padding(16.dp))
-                ProductOptions(product, navController, true)
+                if ( viewModel.state.product?.shopId == viewModel.state.user?.shop?.id) {
+                    Spacer(modifier = Modifier.padding(16.dp))
+                    ProductOptions(product, navController, true)
+                }
 
                 Spacer(modifier = Modifier.padding(16.dp))
                 ShowFavouriteAddToCart(
@@ -149,59 +155,7 @@ fun ProductScreen(
                 Spacer(Modifier.height(16.dp))
                 ShowHighlightSectionComp(
                     navController = navController,
-                    products = listOf(
-                        Product(
-                            1,
-                            2,
-                            3,
-                            true,
-                            99.0,
-                            "RSD",
-                            9.0,
-                            null,
-                            null,
-                            null,
-                            null,
-                            "RSD",
-                            "Prsuta 100g",
-                            "",
-                            null,
-                            null,
-                            "",
-                            "",
-                            null,
-                            emptyList(),
-                            null,
-                            null,
-                            emptyList(),
-                            null
-                        ), Product(
-                            1,
-                            2,
-                            3,
-                            true,
-                            99.0,
-                            "RSD",
-                            9.0,
-                            null,
-                            null,
-                            null,
-                            null,
-                            "RSD",
-                            "Prsuta 100g",
-                            "",
-                            null,
-                            null,
-                            "",
-                            "",
-                            null,
-                            emptyList(),
-                            null,
-                            null,
-                            emptyList(),
-                            null
-                        )
-                    ),
+                    products = viewModel.state.shop?.products,
                     title = "Više proizvoda od prodavca",
                     route = Screen.HighlightSection.route
                 )
@@ -252,9 +206,38 @@ fun ProductScreen(
                         }
                     }
                 }
-
             }
         }
+
+        BottomNavigationMenu(
+            navController = navController,
+            items = listOf(
+                BottomNavigationMenuContent(
+                    title = "Početna",
+                    graphicID = Icons.Default.Home,
+                    screen = Screen.HomeScreen,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Market",
+                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
+                    screen = Screen.StoreScreen,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
+                    graphicID = Icons.Default.Person,
+                    screen = Screen.PrivateProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Korpa",
+                    graphicID = Icons.Default.ShoppingCart,
+                    screen = Screen.CartScreen,
+                    isActive = false
+                )
+            ), modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 

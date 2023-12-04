@@ -8,17 +8,23 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.model.products.reviews.CreateReviewDto
+import com.triforce.malacprodavac.domain.model.shops.Shop
+import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.use_case.product.replies.ReviewUseCase
+import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
+    private val profile: Profile,
     private val repository: ProductRepository,
     private val reviewUseCase: ReviewUseCase,
+    private val repositoryShop: ShopRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -48,11 +54,43 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+    private fun getToken() {
+        profile.getToken().let {
+            state = state.copy(token = it)
+        }
+    }
+
+    private fun me() {
+        viewModelScope.launch {
+            profile.getMe().collect { result ->
+                when (result) {
+                    is Resource.Error -> {}
+
+                    is Resource.Loading -> {
+                        state = state.copy(isLoading = result.isLoading)
+                    }
+
+                    is Resource.Success -> {
+                        state = state.copy(
+                            user = result.data,
+                            profileImageUrl = "http://softeng.pmf.kg.ac.rs:10010/users/${result.data?.profilePicture?.userId}/medias/${result.data?.profilePicture?.id}",
+                            profileImageKey = result.data?.profilePicture?.key
+                        )
+
+                    }
+                }
+            }
+        }
+    }
 
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
-            getProduct(true, productId)
+            me()
+            getToken()
+
+            getProduct(productId)
             getReviews(productId)
+
             FavouriteProduct.favouriteProductId = productId
             FavouriteProduct.favouriteProduct = state.product
             FavouriteProduct.favProducts.add(state.product)
@@ -97,19 +135,43 @@ class ProductViewModel @Inject constructor(
                         }
                     }
                 }
-
-
         }
     }
 
-    private fun getProduct(fetchFromRemote: Boolean, productId: Int) {
+    private fun getShop(shopId: Int) {
+        viewModelScope.launch {
+            repositoryShop.getShop(fetchFromRemote = true, id = shopId)
+                .collectLatest { result ->
+                    when (result) {
+
+                        is Resource.Success -> {
+                            if (result.data is Shop) {
+                                state = state.copy(shop = result.data, isLoading = false)
+                            }
+                        }
+                        is Resource.Error -> { Unit }
+
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun getProduct(productId: Int) {
 
         viewModelScope.launch {
-            repository.getProduct(productId, fetchFromRemote).collect { result ->
+            repository.getProduct(productId, true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let {
                             state = state.copy(product = it)
+                        }
+                        state.product?.let {
+                            getShop(it.shopId)
                         }
                     }
 
