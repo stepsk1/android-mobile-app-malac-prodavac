@@ -51,6 +51,7 @@ import com.triforce.malacprodavac.presentation.maps.components.BottomMapShopDeta
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_Orange
+import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -136,7 +137,7 @@ fun MapScreen(
                     onClick = {
                         viewModel.onEvent(MapEvent.ToggleSpecialMap)
                     },
-                    backgroundColor = MP_Orange,
+                    backgroundColor = MP_Orange_Dark,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(27.dp)
@@ -147,7 +148,8 @@ fun MapScreen(
                         } else {
                             Icons.Outlined.LocationOn
                         },
-                        contentDescription = "Toggle Special map"
+                        contentDescription = "Toggle Special map",
+                        tint = MP_White
                     )
                 }
                 BottomNavigationMenu(
@@ -163,7 +165,7 @@ fun MapScreen(
                             title = "Market",
                             graphicID = ImageVector.vectorResource(R.drawable.logo_green),
                             screen = Screen.StoreScreen,
-                            isActive = true
+                            isActive = false
                         ),
                         BottomNavigationMenuContent(
                             title = "Profil",

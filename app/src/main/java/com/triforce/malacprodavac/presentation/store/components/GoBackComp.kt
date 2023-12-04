@@ -15,8 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -59,11 +63,14 @@ fun GoBackComp(
         }
 
         Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "Search",
+            imageVector = ImageVector.vectorResource(id = R.drawable.baseline_circle_notifications_24),
+            contentDescription = "Notifications",
             tint = MP_White,
             modifier = Modifier
                 .size(25.dp)
+                .clickable {
+                    navController.navigate(Screen.NotificationScreen.route)
+                }
         )
     }
 }
