@@ -54,7 +54,7 @@ fun GoBackComp(
             )
 
             Text(
-                text = if ( msg.length > 12) { msg.subSequence(0,15).toString() + "..." } else { msg },
+                text = if ( msg.length > 15) { msg.subSequence(0,15).toString() + "..." } else { msg },
                 style = MaterialTheme.typography.body1,
                 color = MP_White,
                 modifier = Modifier

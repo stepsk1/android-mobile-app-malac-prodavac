@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,11 +24,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
+import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.components.TitleDescComp
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
@@ -55,12 +64,14 @@ fun MyProductsScreen(
         LinearGradient(color1 = MP_Pink, color2 = MP_Pink_Dark)
 
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
+        GoBackComp("Svi Proizvodi", navController)
 
-        Column {
-            GoBackComp("Više od ${state.currentShop?.businessName}", navController)
+        Column (
+            modifier = Modifier.padding(vertical = 60.dp)
+        ){
             TitleDescComp(
                 title = "Moji Proizvodi",
-                description = "Dostupni od ${state.currentShop?.openFromDays} do ${state.currentShop?.openTillDays} Dana!",
+                description = "Dostupni od ${state.currentShop?.openFromDays} do ${state.currentShop?.openTillDays} Dana!" ,
                 colorTitle = MP_Black,
                 colorDesc = Color.DarkGray
             )
@@ -70,7 +81,7 @@ fun MyProductsScreen(
                 onValueChange = viewModel::onSearchTextChange,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 15.dp),
+                    .padding(horizontal = 16.dp, vertical = 15.dp),
                 placeholder = {
                     Text(
                         text = "Pretražite ${state.currentShop?.businessName}",
@@ -102,5 +113,35 @@ fun MyProductsScreen(
                 )
             }
         }
+
+        BottomNavigationMenu(
+            navController = navController,
+            items = listOf(
+                BottomNavigationMenuContent(
+                    title = "Početna",
+                    graphicID = Icons.Default.Home,
+                    screen = Screen.HomeScreen,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Market",
+                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
+                    screen = Screen.StoreScreen,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Profil",
+                    graphicID = Icons.Default.Person,
+                    screen = Screen.PrivateProfile,
+                    isActive = false
+                ),
+                BottomNavigationMenuContent(
+                    title = "Korpa",
+                    graphicID = Icons.Default.ShoppingCart,
+                    screen = Screen.CartScreen,
+                    isActive = false
+                )
+            ), modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }

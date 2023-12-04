@@ -14,6 +14,7 @@ import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
 import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
@@ -23,6 +24,7 @@ import com.triforce.malacprodavac.domain.util.compressedFileFromUri
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -122,7 +124,7 @@ class MyProductsViewModel @Inject constructor(
                         )
 
                         state.currentUser?.let {
-                            getProducts(fetchFromRemote = true, filterTag = "shopId", id = it.shop!!.id)
+                            getShop(shopId = it.shop!!.id)
                         }
                     }
 
@@ -157,7 +159,11 @@ class MyProductsViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Product>) {
-                            state = state.copy(products = result.data)
+                            state = state.copy(
+                                products = result.data,
+                                isLoading = false
+                            )
+
                         }
                     }
 
@@ -172,6 +178,33 @@ class MyProductsViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun getShop(shopId: Int) {
+        viewModelScope.launch {
+            repositoryShop.getShop(fetchFromRemote = true, id = shopId)
+                .collectLatest { result ->
+                    when (result) {
+
+                        is Resource.Success -> {
+                            if (result.data is Shop) {
+                                state = state.copy(
+                                    currentShop = result.data
+                                )
+
+                                getProducts(fetchFromRemote = true, filterTag = "shopId", id = state.currentShop!!.id)
+                            }
+                        }
+                        is Resource.Error -> { Unit }
+
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
+                        }
+                    }
+                }
         }
     }
 }
