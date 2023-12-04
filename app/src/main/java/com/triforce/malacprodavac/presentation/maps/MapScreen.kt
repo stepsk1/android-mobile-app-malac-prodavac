@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,6 +65,18 @@ fun MapScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
 
+    val initialCameraPosition = remember {
+        CameraPosition(
+            LatLng(44.01667, 20.91667),
+            12.0f,
+            0.0f,
+            0.0f
+        )
+    }
+    val cameraPositionState = remember {
+        mutableStateOf(initialCameraPosition)
+    }
+
     val shopIconVector: ImageVector = ImageVector.vectorResource(id = R.drawable.shop_icon)
 
     val uiSettings = remember {
@@ -88,12 +101,7 @@ fun MapScreen(
             ) {
                 GoogleMap(
                     cameraPositionState = CameraPositionState(
-                        position = CameraPosition(
-                            LatLng(44.01667, 20.91667),
-                            12.0f,
-                            0.0f,
-                            0.0f
-                        )
+                        position = cameraPositionState.value
                     ),
                     properties = viewModel.state.properties,
                     uiSettings = uiSettings,
@@ -104,6 +112,13 @@ fun MapScreen(
                         viewModel.onEvent(MapEvent.OnMapLongClick(it))
                     }
                 ) {
+                    cameraPositionState.value = CameraPosition(
+                        cameraPositionState.value.target,
+                        cameraPositionState.value.zoom,
+                        cameraPositionState.value.tilt,
+                        cameraPositionState.value.bearing
+                    )
+
                     viewModel.state.shops!!.forEach { shop ->
                         if (shop.availableAtLatitude != null && shop.availableAtLongitude != null) {
                             Marker(
@@ -121,6 +136,13 @@ fun MapScreen(
                                     viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
                                 },*/
                                 onClick = {
+                                    cameraPositionState.value = CameraPosition(
+                                        cameraPositionState.value.target,
+                                        cameraPositionState.value.zoom,
+                                        cameraPositionState.value.tilt,
+                                        cameraPositionState.value.bearing
+                                    )
+
                                     viewModel.onEvent(MapEvent.OnInfoWindowLongClick(shop))
                                     //it.showInfoWindow()
                                     true
@@ -135,6 +157,13 @@ fun MapScreen(
                 }
                 FloatingActionButton(
                     onClick = {
+                        cameraPositionState.value = CameraPosition(
+                            cameraPositionState.value.target,
+                            cameraPositionState.value.zoom,
+                            cameraPositionState.value.tilt,
+                            cameraPositionState.value.bearing
+                        )
+
                         viewModel.onEvent(MapEvent.ToggleSpecialMap)
                     },
                     backgroundColor = MP_Orange_Dark,
