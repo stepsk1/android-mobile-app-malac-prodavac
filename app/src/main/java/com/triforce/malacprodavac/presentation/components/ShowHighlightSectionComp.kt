@@ -47,7 +47,7 @@ fun ShowHighlightSectionComp(
     route: String
 ) {
     val subProducts = if ( products != null ) {
-        products.subList(0, if (products.size > 3) { 3 } else { products.size })
+        products.subList(0, if (products.size > 3) { 4 } else { products.size })
     } else null
 
     Column(

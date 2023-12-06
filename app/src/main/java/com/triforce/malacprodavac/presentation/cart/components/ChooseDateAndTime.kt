@@ -67,27 +67,25 @@ fun ChooseDateAndTime() {
     val timeDialogState = rememberMaterialDialogState()
 
     Column (
-        modifier = Modifier
-            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = {
                 dateDialogState.show()
             },
-            colors = ButtonDefaults.buttonColors(MP_Orange)
+            colors = ButtonDefaults.buttonColors(MP_Green)
         ) {
             Text(
                 text = "Izaberi datum preuzimanja",
                 color = MP_White,
                 style = androidx.compose.material.MaterialTheme.typography.body1,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.W400
             )
 
         }
         Text(
             text = formattedDate,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.W400
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -95,18 +93,18 @@ fun ChooseDateAndTime() {
         Button(onClick = {
                 timeDialogState.show()
             },
-            colors = ButtonDefaults.buttonColors(MP_Orange)
+            colors = ButtonDefaults.buttonColors(MP_Green)
         ) {
             Text(
                 text = "Izaberi vreme preuzimanja",
                 color = MP_White,
                 style = androidx.compose.material.MaterialTheme.typography.body1,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.W400
             )
         }
         Text(
             text = formattedTime,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.W400
         )
     }
 

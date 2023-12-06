@@ -31,14 +31,8 @@ fun NotificationsSection(
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(1),
-            contentPadding = PaddingValues(
-                start = 15.dp,
-                end = 15.dp,
-                bottom = 50.dp
-            ), // 130 dp bottom padding because navigation and total price
             modifier = Modifier
-                .requiredHeight(530.dp)
-                .padding(top = 20.dp)
+                .requiredHeight(600.dp)
         ) {
             items(notifications.size) {// how many items do we have
                 // define one of items
