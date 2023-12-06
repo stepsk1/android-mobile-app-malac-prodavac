@@ -44,7 +44,10 @@ fun AddEditDropDownList(
 
     Column (
         modifier = if ( fill ) {
-            Modifier.fillMaxWidth().padding(horizontal = 20.dp).clip(RoundedCornerShape(10.dp))
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .clip(RoundedCornerShape(10.dp))
         } else {
             Modifier.width(150.dp)
         }
@@ -82,7 +85,9 @@ fun AddEditDropDownList(
                 expanded = isExpanded,
                 onDismissRequest = {
                     isExpanded = false
-                }, modifier = Modifier.width(150.dp).background(MP_White)
+                }, modifier = Modifier
+                    .width(150.dp)
+                    .background(MP_White)
             ) {
                 entries.forEach { entry ->
                     DropdownMenuItem(

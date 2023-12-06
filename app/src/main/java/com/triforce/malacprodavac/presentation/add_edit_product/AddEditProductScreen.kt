@@ -1,5 +1,7 @@
 package com.triforce.malacprodavac.presentation.add_edit_product
 
+import android.Manifest
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,6 +29,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Category
@@ -35,7 +40,7 @@ import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEd
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditTextField
 import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
-import com.triforce.malacprodavac.presentation.product.ProductHeroImage
+import com.triforce.malacprodavac.presentation.product.components.ProductHeroImage
 import com.triforce.malacprodavac.presentation.store.StoreViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
@@ -46,7 +51,7 @@ import com.triforce.malacprodavac.util.enum.Currency
 import com.triforce.malacprodavac.util.enum.UnitOfMeasurement
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
 @Composable
 fun AddEditProductScreen(
     navController: NavController,
@@ -87,6 +92,15 @@ fun AddEditProductScreen(
         }
     }
 
+    val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        Manifest.permission.READ_MEDIA_IMAGES
+    } else {
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+    val permissionState = rememberPermissionState(
+        permission = permission
+    )
+
     val launcher = LocalContext.current.let { it ->
         rememberLauncherForActivityResult(
             ActivityResultContracts.PickMultipleVisualMedia(5)
@@ -110,9 +124,13 @@ fun AddEditProductScreen(
             if (product != null) {
                 GoBackNoSearch("Izmeni proizvod", navController)
                 ProductHeroImage(modifier = Modifier.clickable {
-                    launcher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
+                    if (!permissionState.status.isGranted) {
+                        permissionState.launchPermissionRequest()
+                    } else {
+                        launcher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
                 })
                 Spacer(modifier = Modifier.padding(20.dp))
                 Column(
