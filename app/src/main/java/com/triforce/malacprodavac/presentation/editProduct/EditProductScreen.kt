@@ -155,7 +155,7 @@ fun EditProductScreen(
                 ) {
                     AddEditDropDownList(
                         entries = enumValues<UnitOfMeasurement>().toList(),
-                        selectedEntry = state.product?.unitOfMeasurement.toString(),
+                        selectedEntry = state.product?.unitOfMeasurement?.toString(),
                         handleSelect = { unit ->
                             viewModel.onEvent(
                                 EditProductEvent.UnitOfMeasurementChanged(
@@ -169,7 +169,7 @@ fun EditProductScreen(
 
                     AddEditDropDownList(
                         entries = enumValues<Currency>().toList(),
-                        selectedEntry = state.product?.currency.toString(),
+                        selectedEntry = state.product?.currency?.toString(),
                         handleSelect = { currency ->
                             viewModel.onEvent(
                                 EditProductEvent.CurrencyChanged(
@@ -198,7 +198,7 @@ fun EditProductScreen(
 
                 AddEditDropDownList(
                     entries = state.categories,
-                    selectedEntry = state.product?.category?.name.toString(),
+                    selectedEntry = state.categories.firstOrNull()?.toString(),
                     handleSelect = { category ->
                         viewModel.onEvent(
                             EditProductEvent.CategoryIdChanged(

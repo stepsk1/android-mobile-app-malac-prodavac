@@ -34,13 +34,16 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 @Composable
 fun AddEditDropDownList(
     entries: List<Any> = emptyList(),
-    selectedEntry: String,
+    selectedEntry: String? = null,
     handleSelect: (Any) -> Unit,
     label: String,
     fill: Boolean
 ) {
     var isExpanded by remember { mutableStateOf(false) }
-    var selected by mutableStateOf(selectedEntry)
+    var selected by if (selectedEntry != null)
+        remember { mutableStateOf(selectedEntry) }
+    else mutableStateOf("")
+
 
     Column(
         modifier = if (fill) {
@@ -63,12 +66,9 @@ fun AddEditDropDownList(
                 .padding(start = 20.dp, end = 20.dp, bottom = 10.dp),
         )
         // menu box
-        ExposedDropdownMenuBox(
-            expanded = isExpanded,
-            onExpandedChange = {
-                isExpanded = it
-            }
-        ) {
+        ExposedDropdownMenuBox(expanded = isExpanded, onExpandedChange = {
+            isExpanded = it
+        }) {
             TextField(
                 value = selected.toString(),
                 modifier = Modifier
@@ -82,8 +82,7 @@ fun AddEditDropDownList(
             )
             // menu
             ExposedDropdownMenu(
-                expanded = isExpanded,
-                onDismissRequest = {
+                expanded = isExpanded, onDismissRequest = {
                     isExpanded = false
                 }, modifier = Modifier
                     .width(150.dp)
@@ -93,8 +92,7 @@ fun AddEditDropDownList(
                     DropdownMenuItem(
                         text = {
                             Text(
-                                entry.toString(),
-                                color = MP_Pink_Dark
+                                entry.toString(), color = MP_Pink_Dark
                             )
                         },
                         onClick = {

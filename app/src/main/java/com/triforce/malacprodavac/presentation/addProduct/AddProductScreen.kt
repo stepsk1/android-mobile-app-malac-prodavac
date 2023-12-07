@@ -177,10 +177,7 @@ fun AddProductScreen(
 
                 AddEditDropDownList(
                     entries = state.categories,
-                    selectedEntry = if (state.categories.isEmpty()) "" else state.categories.find {
-                        it.id == state.categoryId
-                    }
-                        .toString(),
+                    selectedEntry = state.categories.firstOrNull()?.toString(),
                     handleSelect = { category ->
                         viewModel.onEvent(
                             AddProductEvent.CategoryIdChanged(
