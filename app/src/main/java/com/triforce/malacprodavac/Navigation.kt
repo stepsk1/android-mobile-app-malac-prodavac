@@ -8,12 +8,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteScreen
 import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopScreen
-import com.triforce.malacprodavac.presentation.add_edit_product.AddEditProductScreen
+import com.triforce.malacprodavac.presentation.addProduct.AddProductScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
-import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
+import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.scheduling.ScheduleScreen
 import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
+import com.triforce.malacprodavac.presentation.editProduct.EditProductScreen
 import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
@@ -153,8 +154,12 @@ fun Navigation() {
             MyProductsScreen(navController = navController)
         }
 
+        composable(route = Screen.AddProduct.route) {
+            AddProductScreen(navController = navController)
+        }
+
         composable(
-            route = Screen.AddEditProduct.route + "?productId={productId}",
+            route = Screen.EditProduct.route + "?productId={productId}",
             arguments = listOf(
                 navArgument(
                     name = "productId"
@@ -164,7 +169,7 @@ fun Navigation() {
                 }
             )
         ) {
-            AddEditProductScreen(navController = navController)
+            EditProductScreen(navController = navController)
         }
 
         composable(route = Screen.OrderScreen.route) {

@@ -161,7 +161,7 @@ fun ProfilePrivateHeroComp(
                                         modifier = Modifier
                                             .size(35.dp)
                                             .clickable {
-                                                navController.navigate(Screen.AddEditProduct.route)
+                                                navController.navigate(Screen.AddProduct.route)
                                             })
                                 }
                             }

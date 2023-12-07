@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,7 +40,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
@@ -64,9 +62,10 @@ import com.triforce.malacprodavac.presentation.components.RatingStars
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.product.components.CreateReviewDialog
+import com.triforce.malacprodavac.presentation.product.components.ProductDetails
+import com.triforce.malacprodavac.presentation.product.components.ProductHeroImage
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
-import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_Orange
@@ -134,13 +133,13 @@ fun ProductScreen(
 
         Column {
             GoBackComp("Malac Pijaca", navController)
-            ProductHeroImage()
+            ProductHeroImage(imageUrl = state.thumbnailUrl)
 
             if (product != null) {
                 Spacer(modifier = Modifier.padding(16.dp))
                 ProductDetails(product = product)
 
-                if ( viewModel.state.product?.shopId == viewModel.state.user?.shop?.id) {
+                if (viewModel.state.product?.shopId == viewModel.state.user?.shop?.id) {
                     Spacer(modifier = Modifier.padding(16.dp))
                     ProductOptions(product, navController, true)
                 }
@@ -291,86 +290,15 @@ fun ProductOptions(
             modifier = Modifier
                 .clickable {
                     if (product != null) {
-                        navController.navigate(Screen.AddEditProduct.route + "?productId=${product.id}")
+                        navController.navigate(Screen.EditProduct.route + "?productId=${product.id}")
                     } else {
-                        navController.navigate(Screen.AddEditProduct.route)
+                        navController.navigate(Screen.AddProduct.route)
                     }
                 }
                 .clip(RoundedCornerShape(15.dp))
                 .background(colorTint)
                 .width(width = 200.dp)
                 .padding(vertical = 10.dp))
-    }
-}
-
-@Composable
-fun ProductHeroImage(
-    modifier: Modifier = Modifier
-) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 15.dp, end = 15.dp)
-            .background(MP_White, RoundedCornerShape(10.dp))
-            .padding(35.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.ShoppingCart,
-            contentDescription = "Malac Prodavac",
-            tint = MP_Gray,
-            modifier = Modifier.size(100.dp)
-        )
-    }
-}
-
-@Composable
-fun ProductDetails(
-    product: Product,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                start = 20.dp, end = 20.dp
-            )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    bottom = 20.dp
-                )
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = product.title,
-                    style = MaterialTheme.typography.h5,
-                    color = MP_Black,
-                    fontWeight = FontWeight.W500
-                )
-                RatingStars(rating = product.rating!!)
-            }
-
-
-            Text(
-                text = product.price.toString() + " rsd",
-                style = MaterialTheme.typography.h5,
-                color = MP_Green,
-                fontWeight = FontWeight.W500
-            )
-        }
-        Text(
-            text = product.desc,
-            style = MaterialTheme.typography.body2,
-            color = Color.Gray,
-            softWrap = true
-        )
     }
 }
 

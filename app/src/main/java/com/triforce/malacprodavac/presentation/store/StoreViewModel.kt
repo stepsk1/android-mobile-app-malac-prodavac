@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.model.Category
-import com.triforce.malacprodavac.domain.repository.CategoryRepository
+import com.triforce.malacprodavac.domain.repository.CategoriesRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoreViewModel @Inject constructor(
-    private val repository: CategoryRepository
+    private val repository: CategoriesRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(StoreState())

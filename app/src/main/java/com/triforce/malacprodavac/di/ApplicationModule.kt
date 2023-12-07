@@ -27,6 +27,7 @@ import com.triforce.malacprodavac.data.repository.products.productMedias.Product
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.repository.AuthRepository
+import com.triforce.malacprodavac.domain.repository.CategoriesRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
@@ -39,6 +40,9 @@ import com.triforce.malacprodavac.domain.repository.products.reviews.replies.Rev
 import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import com.triforce.malacprodavac.domain.use_case.GetToken
 import com.triforce.malacprodavac.domain.use_case.auth.IsAuthenticated
+import com.triforce.malacprodavac.domain.use_case.category.CategoryUseCase
+import com.triforce.malacprodavac.domain.use_case.category.GetCategories
+import com.triforce.malacprodavac.domain.use_case.category.GetCategory
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.FavoriteProduct
@@ -58,10 +62,12 @@ import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
 import com.triforce.malacprodavac.domain.use_case.order.GetOrderForId
 import com.triforce.malacprodavac.domain.use_case.order.Order
 import com.triforce.malacprodavac.domain.use_case.order.UpdateOrder
+import com.triforce.malacprodavac.domain.use_case.product.AddProduct
 import com.triforce.malacprodavac.domain.use_case.product.AddProductImages
 import com.triforce.malacprodavac.domain.use_case.product.GetAllProducts
 import com.triforce.malacprodavac.domain.use_case.product.GetProductForId
 import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
+import com.triforce.malacprodavac.domain.use_case.product.UpdateProduct
 import com.triforce.malacprodavac.domain.use_case.product.replies.CreateReview
 import com.triforce.malacprodavac.domain.use_case.product.replies.GetReview
 import com.triforce.malacprodavac.domain.use_case.product.replies.GetReviews
@@ -249,6 +255,29 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideGetCategories(
+        repository: CategoriesRepository
+    ) = GetCategories(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCategory(
+        repository: CategoriesRepository
+    ) = GetCategory(repository)
+
+
+    @Provides
+    @Singleton
+    fun provideCategoryUseCase(
+        getCategories: GetCategories,
+        getCategory: GetCategory
+    ) = CategoryUseCase(
+        getCategories,
+        getCategory
+    )
+
+    @Provides
+    @Singleton
     fun provideGetNotificationsUseCase(repository: NotificationsRepository) =
         GetNotifications(repository)
 
@@ -325,12 +354,23 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideAddProduct(repository: ProductRepository) =
+        AddProduct(repository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateProduct(repository: ProductRepository) =
+        UpdateProduct(repository)
+
+    @Provides
+    @Singleton
     fun provideProductUseCase(
+        addProduct: AddProduct,
         getAllProducts: GetAllProducts,
         addProductImages: AddProductImages,
         getProductForId: GetProductForId,
-        updateOrder: UpdateOrder,
-    ) = ProductUseCase(getAllProducts, getProductForId, updateOrder, addProductImages)
+        updateProduct: UpdateProduct,
+    ) = ProductUseCase(addProduct, getAllProducts, getProductForId, updateProduct, addProductImages)
 
     @Provides
     @Singleton

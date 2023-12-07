@@ -7,20 +7,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +37,6 @@ import com.triforce.malacprodavac.presentation.home.components.RecommendedFeatur
 import com.triforce.malacprodavac.presentation.orders.OrderViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -122,11 +113,10 @@ fun HomeScreen(
         )
     )
 
-    if ( user != null ) {
-        if (user.roles.contains("Shop") == false && user.roles.contains("Courier")){
+    if (user != null) {
+        if (user.roles.contains("Shop") == false && user.roles.contains("Courier")) {
             role = "Kurir"
-        }
-        else if ( user.roles.contains("Shop")){
+        } else if (user.roles.contains("Shop")) {
             role = "Prodavac"
             features = listOf(
                 Feature(
@@ -135,14 +125,16 @@ fun HomeScreen(
                     graphicID = ImageVector.vectorResource(R.drawable.logo_green),
                     color1 = MP_Pink,
                     color2 = MP_Pink,
-                    screen = Screen.MyProductsScreen),
+                    screen = Screen.MyProductsScreen
+                ),
                 Feature(
                     id = 1,
                     title = "Dodaj novi proizvod",
                     graphicID = Icons.Default.Add,
                     color1 = MP_Pink,
                     color2 = MP_Pink,
-                    screen = Screen.AddEditProduct)
+                    screen = Screen.AddProduct
+                )
             ) + features
         }
     }
@@ -155,7 +147,11 @@ fun HomeScreen(
         RoundedBackgroundComp(top = 100.dp, color = MP_White)
 
         Column {
-            GreetingSection(msg = "Malac ${role}", subMsg = "Od sirupa do sira", navController = navController)
+            GreetingSection(
+                msg = "Malac ${role}",
+                subMsg = "Od sirupa do sira",
+                navController = navController
+            )
             Spacer(modifier = Modifier.padding(16.dp))
 
             RecommendedFeaturesSection(

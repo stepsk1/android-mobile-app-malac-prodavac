@@ -19,6 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.util.enum.Currency
+import com.triforce.malacprodavac.domain.util.enum.UnitOfMeasurement
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.components.ShowShopDetailsSection
 import com.triforce.malacprodavac.presentation.product.ProductOptions
@@ -46,7 +48,6 @@ fun ProfilePrivateScreen(
             .background(MP_White)
             .verticalScroll(state = scrollState)
     ) {
-
         Column(
             modifier = Modifier
                 .height(1400.dp)
@@ -74,13 +75,13 @@ fun ProfilePrivateScreen(
                             3,
                             true,
                             99.0,
-                            "RSD",
+                            UnitOfMeasurement.KG,
                             9.0,
                             null,
                             null,
                             null,
                             null,
-                            "RSD",
+                            Currency.RSD,
                             "Prsuta 100g",
                             "",
                             null,
@@ -100,13 +101,13 @@ fun ProfilePrivateScreen(
                             3,
                             true,
                             99.0,
-                            "RSD",
+                            UnitOfMeasurement.KG,
                             9.0,
                             null,
                             null,
                             null,
                             null,
-                            "RSD",
+                            Currency.RSD,
                             "Prsuta 100g",
                             "",
                             null,
@@ -136,13 +137,13 @@ fun ProfilePrivateScreen(
                             3,
                             true,
                             99.0,
-                            "RSD",
+                            UnitOfMeasurement.KG,
                             9.0,
                             null,
                             null,
                             null,
                             null,
-                            "RSD",
+                            Currency.RSD,
                             "Prsuta 100g",
                             "",
                             null,
@@ -163,13 +164,13 @@ fun ProfilePrivateScreen(
                             3,
                             true,
                             99.0,
-                            "RSD",
+                            UnitOfMeasurement.KG,
                             9.0,
                             null,
                             null,
                             null,
                             null,
-                            "RSD",
+                            Currency.RSD,
                             "Prsuta 100g",
                             "",
                             null,

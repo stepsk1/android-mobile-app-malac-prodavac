@@ -14,7 +14,7 @@ import com.triforce.malacprodavac.data.repository.shops.ShopRepositoryImpl
 import com.triforce.malacprodavac.data.repository.users.UserRepositoryImpl
 import com.triforce.malacprodavac.data.repository.users.userMedias.UserMediasRepositoryImpl
 import com.triforce.malacprodavac.domain.repository.AuthRepository
-import com.triforce.malacprodavac.domain.repository.CategoryRepository
+import com.triforce.malacprodavac.domain.repository.CategoriesRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
@@ -75,7 +75,7 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindsCategoryRepository(
         categoryRepositoryImpl: CategoryRepositoryImpl
-    ): CategoryRepository
+    ): CategoriesRepository
 
     @Binds
     @Singleton

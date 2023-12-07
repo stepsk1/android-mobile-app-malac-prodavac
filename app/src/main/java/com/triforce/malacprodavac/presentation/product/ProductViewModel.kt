@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.presentation.product
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -105,6 +104,7 @@ class ProductViewModel @Inject constructor(
                     is Resource.Loading -> {
                         state = state.copy(isLoading = result.isLoading)
                     }
+
                     is Resource.Success -> {
                         state = state.copy(reviews = result.data)
                     }
@@ -149,7 +149,10 @@ class ProductViewModel @Inject constructor(
                                 state = state.copy(shop = result.data, isLoading = false)
                             }
                         }
-                        is Resource.Error -> { Unit }
+
+                        is Resource.Error -> {
+                            Unit
+                        }
 
                         is Resource.Loading -> {
                             state = state.copy(
@@ -168,7 +171,11 @@ class ProductViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let {
-                            state = state.copy(product = it)
+                            state =
+                                state.copy(
+                                    product = it,
+                                    thumbnailUrl = if (it.productMedias?.isNotEmpty() == true) "http://softeng.pmf.kg.ac.rs:10010/products/${it.productMedias.first().productId}/medias/${it.productMedias.first().id}" else null
+                                )
                         }
                         state.product?.let {
                             getShop(it.shopId)
@@ -178,6 +185,7 @@ class ProductViewModel @Inject constructor(
                     is Resource.Error -> {
                         Unit
                     }
+
                     is Resource.Loading -> {
                         state = state.copy(
                             isLoading = result.isLoading

@@ -1,9 +1,9 @@
 package com.triforce.malacprodavac.data.remote.products
 
 import com.triforce.malacprodavac.data.remote.dto.PaginationResponse
-import com.triforce.malacprodavac.data.remote.products.dto.CreateProductDto
-import com.triforce.malacprodavac.data.remote.products.dto.UpdateProductDto
+import com.triforce.malacprodavac.domain.model.products.CreateProductDto
 import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.model.products.UpdateProductDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

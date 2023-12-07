@@ -1,7 +1,7 @@
 package com.triforce.malacprodavac.presentation.cart.CartDetails
 
-import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,15 +17,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.RadioButtonColors
-import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,11 +33,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
@@ -56,14 +50,15 @@ import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
-import com.triforce.malacprodavac.ui.theme.MP_Orange
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 import com.triforce.malacprodavac.util.enum.DeliveryMethod
 import com.triforce.malacprodavac.util.enum.PaymentMethod
 
 @Composable
-fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewModel = hiltViewModel()) {
+fun CartDetailsScreen(
+    navController: NavController,
+    viewModel: CartDetailsViewModel = hiltViewModel()
+) {
 
     var viewModelCart: CartViewModel = hiltViewModel()
     val orderProducts = BuyedProducts
@@ -85,14 +80,18 @@ fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewMo
             .background(MP_White)
             .fillMaxSize()
     ) {
-        LinearGradient(color1 = MP_Green, color2 = MP_GreenDark )
+        LinearGradient(color1 = MP_Green, color2 = MP_GreenDark)
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
-        GoBackNoSearch("Detalji plaćanja", navController)
+        GoBackNoSearch(msg = "Detalji plaćanja", modifier = Modifier.clickable {
+            navController.popBackStack()
+        })
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxHeight().padding(horizontal = 20.dp, vertical = 90.dp)
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(horizontal = 20.dp, vertical = 90.dp)
         ) {
 
             Text(
@@ -249,7 +248,7 @@ fun CartDetailsScreen(navController: NavController, viewModel: CartDetailsViewMo
                     Text(
                         text = "Izvrši Porudžbinu",
                         color = MP_White,
-                        style = androidx.compose.material.MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.body1
                     )
                 }
             }

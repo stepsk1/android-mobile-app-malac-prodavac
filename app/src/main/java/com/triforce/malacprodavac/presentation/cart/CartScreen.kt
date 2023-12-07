@@ -1,6 +1,7 @@
 package com.triforce.malacprodavac.presentation.cart
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,22 +13,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
@@ -39,16 +36,12 @@ import com.triforce.malacprodavac.presentation.cart.components.BuyedProductSecti
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
-import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
-import com.triforce.malacprodavac.ui.theme.MP_Orange
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun CartScreen(navController: NavController)
-{
+fun CartScreen(navController: NavController) {
 
     var buyedProducts = BuyedProducts.listOfBuyedProducts
     val buyedProductsSet = buyedProducts.toMutableSet()
@@ -59,12 +52,14 @@ fun CartScreen(navController: NavController)
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
-    ){
-        LinearGradient(color1 = MP_Green, color2 = MP_GreenDark )
+    ) {
+        LinearGradient(color1 = MP_Green, color2 = MP_GreenDark)
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
         Column {
-            GoBackNoSearch("Moja korpa", navController)
+            GoBackNoSearch(msg = "Moja korpa", modifier = Modifier.clickable {
+                navController.popBackStack()
+            })
 
             BuyedProductSection(
                 buyedProducts = buyedProducts,
@@ -83,8 +78,8 @@ fun CartScreen(navController: NavController)
                         start = 20.dp,
                         end = 20.dp,
                     )
-            ){
-                Column (
+            ) {
+                Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier

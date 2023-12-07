@@ -1,8 +1,6 @@
 package com.triforce.malacprodavac.domain.use_case.category
 
-import kotlinx.coroutines.Job
-
-data class CategoryUseCases(
-    var getCategories: GetAllCategories,
+data class CategoryUseCase(
+    var getCategories: GetCategories,
     var getCategory: GetCategory
 )

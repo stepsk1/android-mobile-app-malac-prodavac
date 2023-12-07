@@ -1,12 +1,11 @@
 package com.triforce.malacprodavac.data.repository.categories
 
-import android.util.Log
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
 import com.triforce.malacprodavac.data.mappers.toCategory
 import com.triforce.malacprodavac.data.remote.categories.CategoriesApi
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.model.Category
-import com.triforce.malacprodavac.domain.repository.CategoryRepository
+import com.triforce.malacprodavac.domain.repository.CategoriesRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,22 +19,11 @@ class CategoryRepositoryImpl @Inject constructor(
     private val api: CategoriesApi,
     private val db: MalacProdavacDatabase,
     private val sessionManager: SessionManager
-) : CategoryRepository {
+) : CategoriesRepository {
     private val dao = db.categoryDao
 
 
-
     override suspend fun getCategories(fetchFromRemote: Boolean): Flow<Resource<List<Category>>> {
-        // ****PRIMER****   private val queryMap = FilterBuilder.buildFilterQueryMap(
-        //        Filter(
-        //            filter = listOf(
-        //                SingleFilter("id", FilterOperation.In, listOf(1, 2, 3, 4, 5)),
-        //                SingleFilter("!after", FilterOperation.Eq, 21),
-        //            ),
-        //            order = listOf(SingleOrder("id", FilterOrder.Asc)),
-        //            offset = null, limit = 20
-        //        )
-        //    )
         return flow {
             emit(Resource.Loading(isLoading = true))
             val localCategories = dao.getAllCategories()
@@ -49,11 +37,7 @@ class CategoryRepositoryImpl @Inject constructor(
                 return@flow
             }
             val remoteCategories = try {
-                api.getAllCategories(
-                    // ****PRIMER**** queryMap
-                    limit = 80,
-                    mutableMapOf()
-                )
+                api.getAllCategories()
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't load categories."))
@@ -64,8 +48,7 @@ class CategoryRepositoryImpl @Inject constructor(
                 null
             }
             remoteCategories?.let {
-                Log.d("CATEGORIES:", it.toString())
-                emit(Resource.Success(remoteCategories.data.map { it.toCategory() }))
+                emit(Resource.Success(remoteCategories.data.map { it }))
             }
             emit(Resource.Loading(false))
         }
@@ -74,13 +57,15 @@ class CategoryRepositoryImpl @Inject constructor(
     override suspend fun getCategory(
         id: Int,
         fetchFromRemote: Boolean
-    ): Flow<Resource<List<Category>>> {
+    ): Flow<Resource<Category>> {
         return flow {
             emit(Resource.Loading(true))
             val localCategory = dao.getCategoryForId(id)
-            emit(Resource.Success(
-                data = localCategory.map { it.toCategory() }
-            ))
+            emit(
+                Resource.Success(
+                    data = localCategory.first().toCategory()
+                )
+            )
 
             val isDbEmpty = localCategory.isEmpty()
             val shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote
@@ -89,7 +74,7 @@ class CategoryRepositoryImpl @Inject constructor(
                 return@flow
             }
             val remoteCategory = try {
-                api.getCategoryForId(id)
+                api.getCategory(id)
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't load post data"))
@@ -98,6 +83,9 @@ class CategoryRepositoryImpl @Inject constructor(
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't load post data"))
                 null
+            }
+            remoteCategory?.let {
+                emit(Resource.Success(data = it))
             }
             emit(Resource.Loading(false))
         }
