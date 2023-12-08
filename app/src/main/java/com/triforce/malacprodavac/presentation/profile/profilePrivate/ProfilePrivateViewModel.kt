@@ -43,7 +43,7 @@ class ProfilePrivateViewModel @Inject constructor(
             }
 
             ProfilePrivateEvent.Refresh -> {
-                //me()
+                me()
             }
         }
     }

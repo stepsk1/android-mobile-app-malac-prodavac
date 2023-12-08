@@ -59,10 +59,10 @@ fun MyProductsButton(
             Icons.Outlined.Edit,
             contentDescription = "Edit",
             tint = colorTint,
-            modifier = Modifier.size(35.dp)
+            modifier = Modifier.size(35.dp).padding(end = 6.dp)
         )
         Text(text = msg,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.body1,
             color = MP_White,
             fontWeight = FontWeight.W400,
             textAlign = TextAlign.Center,

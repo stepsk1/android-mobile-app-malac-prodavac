@@ -253,7 +253,7 @@ fun ProductOptions(
     val msg = if (isEdit) {
         "Izmeni proizvod"
     } else {
-        "Dodaj novi proizvod"
+        "Novi proizvod"
     }
 
     Row(
@@ -280,10 +280,10 @@ fun ProductOptions(
             },
             contentDescription = "FavoriteBorder",
             tint = colorTint,
-            modifier = Modifier.size(35.dp)
+            modifier = Modifier.size(35.dp).padding(end = 6.dp)
         )
         Text(text = msg,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.body1,
             color = MP_White,
             fontWeight = FontWeight.W400,
             textAlign = TextAlign.Center,
