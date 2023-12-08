@@ -124,4 +124,7 @@ dependencies {
 
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
     implementation("io.github.nefilim.kjwt:kjwt-core:0.9.0")
+
+    // Socket.io
+    implementation("io.socket:socket.io-client:2.0.0")
 }
