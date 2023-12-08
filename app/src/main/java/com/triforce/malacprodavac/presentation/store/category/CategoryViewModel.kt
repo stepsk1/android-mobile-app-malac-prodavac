@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.category
+package com.triforce.malacprodavac.presentation.store.category
 
 import android.util.Log
 import androidx.compose.runtime.State
@@ -38,29 +38,14 @@ class CategoryViewModel @Inject constructor(
 
     var state by mutableStateOf(CategoryState())
 
+    private val debouncePeriod = 500L;
+    private var searchJob: Job? = null
+
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
     private val _isSearching = MutableStateFlow(false)
     val isSearching = _isSearching.asStateFlow()
-
-    private val debouncePeriod = 500L;
-    private var searchJob: Job? = null
-
-    fun onSearchTextChange(text: String) {
-        _searchText.value = text
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(debouncePeriod)
-            currentCategoryId?.let {
-                state.user?.let { it1 ->
-                    it1.shop?.let { it2 ->
-                        getProducts(categoryId = it, myShopId = it2.id, searchText = text)
-                    }
-                }
-            }
-        }
-    }
 
     private val _categoryTitle = mutableStateOf(
         CategoryState(
@@ -68,6 +53,7 @@ class CategoryViewModel @Inject constructor(
         )
     )
     val categoryTitle: State<CategoryState> = _categoryTitle
+
     var currentCategoryId: Int? = null
 
     init {
@@ -104,64 +90,63 @@ class CategoryViewModel @Inject constructor(
                             profileImageKey = result.data?.profilePicture?.key
                         )
 
-                        state.user?.let {
-                            currentCategoryId?.let { it1 ->
-                                it.shop?.let { it2 ->
-                                    getProducts(myShopId = it2.id, categoryId = it1)
-                                }
-                            }
-                        }
+                        callGetProducts()
                     }
                 }
             }
+        }
+    }
+
+    fun onSearchTextChange(text: String) {
+        _searchText.value = text
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(debouncePeriod)
+            callGetProducts()
         }
     }
 
     fun onEvent(event: CategoryEvent) {
         when (event) {
             is CategoryEvent.OrderBy -> {
-                currentCategoryId?.let {
-                    state.user?.let { it1 ->
-                        it1.shop?.let { it2 ->
-                            getProducts(
-                                myShopId = it2.id,
-                                categoryId = it,
-                                searchText = searchText.value,
-                                orderId = event.order
-                            )
-                        }
-                    }
-                }
+                callGetProducts(event.order)
             }
         }
     }
 
     private fun getProducts(
-        myShopId: Int,
+        myShopId: Int = -1,
         categoryId: Int,
         searchText: String = "",
         orderId: Int = -1
     ) {
+        var filters = listOf(
+            SingleFilter(
+                "categoryId",
+                FilterOperation.Eq,
+                categoryId.toString()
+            )
+        )
+
+        if (searchText != "")
+            filters +=
+                SingleFilter(
+                    "title",
+                    FilterOperation.IContains,
+                    searchText
+                )
+
+        if (myShopId != -1)
+            filters += SingleFilter(
+                "shopId",
+                FilterOperation.Ne,
+                myShopId.toString()
+            )
+
         viewModelScope.launch {
             val query = FilterBuilder.buildFilterQueryMap(
                 Filter(
-                    filter = listOf(
-                        SingleFilter(
-                            "categoryId",
-                            FilterOperation.Eq,
-                            categoryId
-                        ),
-                        SingleFilter(
-                            "title",
-                            FilterOperation.IContains,
-                            searchText
-                        ),
-                        SingleFilter(
-                            "shopId",
-                            FilterOperation.Ne,
-                            myShopId
-                        )
-                    ),
+                    filter = filters,
                     order = if (orderId == -1) null else listOf(
                         SingleOrder(
                             "price",
@@ -189,6 +174,29 @@ class CategoryViewModel @Inject constructor(
                             isLoading = result.isLoading
                         )
                     }
+                }
+            }
+        }
+    }
+
+    fun callGetProducts(orderId: Int = -1) {
+        currentCategoryId?.let { categoryId ->
+            state.user?.let { user ->
+                if (user.roles.contains("Shop")) {
+                    user.shop?.let { shop ->
+                        getProducts(
+                            myShopId = shop.id,
+                            categoryId = categoryId,
+                            searchText = searchText.value,
+                            orderId = orderId
+                        )
+                    }
+                } else {
+                    getProducts(
+                        categoryId = categoryId,
+                        searchText = searchText.value,
+                        orderId = orderId
+                    )
                 }
             }
         }

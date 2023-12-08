@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.category
+package com.triforce.malacprodavac.presentation.store.category
 
 import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.model.products.Product

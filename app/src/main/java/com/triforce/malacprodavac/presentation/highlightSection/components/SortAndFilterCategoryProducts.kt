@@ -22,8 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.triforce.malacprodavac.presentation.category.CategoryEvent
-import com.triforce.malacprodavac.presentation.category.CategoryViewModel
+import com.triforce.malacprodavac.presentation.store.category.CategoryEvent
+import com.triforce.malacprodavac.presentation.store.category.CategoryViewModel
 import com.triforce.malacprodavac.presentation.highlightSection.HighlightSectionEvent
 import com.triforce.malacprodavac.presentation.highlightSection.HighlightSectionViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black

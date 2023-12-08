@@ -2,7 +2,7 @@
     ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class
 )
 
-package com.triforce.malacprodavac.presentation.category
+package com.triforce.malacprodavac.presentation.store.category
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background

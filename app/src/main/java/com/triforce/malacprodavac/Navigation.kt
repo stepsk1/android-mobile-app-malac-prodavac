@@ -13,7 +13,7 @@ import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScree
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.scheduling.ScheduleScreen
-import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
+import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
 import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductScreen
 import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen

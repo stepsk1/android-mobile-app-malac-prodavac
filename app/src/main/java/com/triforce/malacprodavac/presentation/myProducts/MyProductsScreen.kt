@@ -33,7 +33,7 @@ import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.category.ShowcaseProducts
+import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.components.TitleDescComp
