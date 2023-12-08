@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.chat
 
+import androidx.annotation.UiThread
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,10 +11,12 @@ import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.presentation.chat.components.SocketHandler
 import com.triforce.malacprodavac.presentation.home.HomeEvent
 import com.triforce.malacprodavac.presentation.home.HomeScreenState
 import com.triforce.malacprodavac.presentation.orders.OrderState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.socket.client.Socket
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,22 +24,48 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     private val profile: Profile
 ) : ViewModel() {
+
     var state by mutableStateOf(HomeScreenState())
+
+    var mSocket: Socket? = null
 
     init {
         state.copy(isLoading = true)
 
-
+        initSocket()
 
 
         me()
         getToken()
     }
 
-    fun onEvent(event: HomeEvent) {
+    fun initSocket(){
+        SocketHandler.setSocket()
+        mSocket = SocketHandler.getSocket()
+
+        mSocket!!.connect()
+
+        mSocket!!.emit("init_chat")
+    }
+
+    fun onEvent(event: ChatEvent) {
         when (event) {
-            HomeEvent.Refresh -> {
+            ChatEvent.Refresh -> {
                 me()
+            }
+
+            is ChatEvent.SendMessage -> {
+                mSocket!!.emit("send_msg", event.msg)
+            }
+
+            ChatEvent.RecieveMessage -> {
+                mSocket!!.on("recieve_msg"){ args ->
+                    if ( args[0] != null ) {
+                        val msg = args[0] as String
+
+                        // msgBox.text = msg
+                    }
+                }
             }
         }
     }
