@@ -89,8 +89,11 @@ class EditProductViewModel @Inject constructor(
                     availableTillHours = state.product?.availableTillHours
                 )
 
-                changeProductImages(event.context, state.imageUris)
-                updateProduct(state.productId!!, updateProduct)
+                if (state.imageUris.isNotEmpty()) changeProductImages(
+                    event.context,
+                    state.imageUris
+                )
+                updateProduct(state.product?.id!!, updateProduct)
             }
 
             is EditProductEvent.ChangeProductImages -> {
@@ -102,7 +105,7 @@ class EditProductViewModel @Inject constructor(
     private fun changeProductImages(context: Context, uris: List<Uri>) {
         viewModelScope.launch {
             val files = uris.map { compressedFileFromUri(context, it) }
-            productUseCase.addProductImages(state.productId!!, files).collect {
+            productUseCase.addProductImages(state.product?.id!!, files).collect {
                 when (it) {
                     is Resource.Error -> {
 
@@ -113,7 +116,7 @@ class EditProductViewModel @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        getProduct(true, state.productId!!)
+                        getProduct(true, state.product?.id!!)
                     }
                 }
             }
@@ -153,7 +156,12 @@ class EditProductViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let {
-                            state = state.copy(product = result.data)
+                            state = state.copy(
+                                product = result.data,
+                                thumbUrl = if (result.data.productMedias!!.isNotEmpty())
+                                    "http://softeng.pmf.kg.ac.rs:10010/products/${result.data.productMedias.first().productId}/medias/${result.data.productMedias.first().id}"
+                                else null
+                            )
                         }
                     }
 

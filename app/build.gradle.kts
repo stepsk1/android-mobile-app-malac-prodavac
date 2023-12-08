@@ -123,4 +123,5 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+    implementation("io.github.nefilim.kjwt:kjwt-core:0.9.0")
 }

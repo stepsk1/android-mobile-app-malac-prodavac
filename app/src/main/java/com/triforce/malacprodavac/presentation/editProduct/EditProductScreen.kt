@@ -23,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -108,17 +109,21 @@ fun EditProductScreen(
             GoBackNoSearch(msg = "Izmeni proizvod", modifier = Modifier.clickable {
                 navController.popBackStack()
             })
-            ProductHeroImage(modifier = Modifier.clickable {
-                if (!permissionState.status.isGranted) {
-                    permissionState.launchPermissionRequest()
-                } else {
-                    launcher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                }
-            })
+            ProductHeroImage(
+                modifier = Modifier.clickable {
+                    if (!permissionState.status.isGranted) {
+                        permissionState.launchPermissionRequest()
+                    } else {
+                        launcher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
+                },
+                imageUrl = state.thumbUrl
+            )
             Spacer(modifier = Modifier.padding(20.dp))
             Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
                     .height(600.dp)
@@ -198,7 +203,8 @@ fun EditProductScreen(
 
                 AddEditDropDownList(
                     entries = state.categories,
-                    selectedEntry = state.categories.firstOrNull()?.toString(),
+                    selectedEntry = state.categories.find { it.id == state.product?.categoryId }
+                        ?.toString(),
                     handleSelect = { category ->
                         viewModel.onEvent(
                             EditProductEvent.CategoryIdChanged(

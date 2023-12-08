@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -39,8 +40,8 @@ fun ProductHeroImage(
         val imageRequest = ImageRequest.Builder(LocalContext.current)
             .data(imageUrl)
             .dispatcher(Dispatchers.IO)
-//            .memoryCachePolicy(CachePolicy.ENABLED)
-//            .memoryCacheKey(state.profileImageKey)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .memoryCacheKey(imageUrl)
             .placeholder(placeholder)
             .error(placeholder)
             .fallback(placeholder)
@@ -48,7 +49,7 @@ fun ProductHeroImage(
         AsyncImage(
             model = imageRequest,
             contentDescription = "Profile Picture",
-            contentScale = ContentScale.FillWidth,
+            contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxSize()
         )

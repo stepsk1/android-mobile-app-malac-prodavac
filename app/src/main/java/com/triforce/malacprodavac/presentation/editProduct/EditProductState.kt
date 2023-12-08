@@ -11,6 +11,8 @@ data class EditProductState(
     val categories: List<Category> = emptyList(),
     val isUpdateSuccessful: Boolean = false,
 
+    val thumbUrl: String? = null,
+
     val errorMessage: String? = null,
     val titleError: String? = null,
     val priceError: String? = null,
