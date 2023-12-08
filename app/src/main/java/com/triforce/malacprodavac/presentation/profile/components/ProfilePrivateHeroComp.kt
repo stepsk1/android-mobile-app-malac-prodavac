@@ -23,7 +23,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.AddCircle
+import androidx.compose.material.icons.rounded.AddCircleOutline
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Message
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -124,13 +128,13 @@ fun ProfilePrivateHeroComp(
 
                         Column {
                             Text(
-                                text = "Jagodina, Srbija",
+                                text = "${user.address}",
                                 style = MaterialTheme.typography.body2,
                                 color = MP_White,
                                 fontWeight = FontWeight.W500,
                             )
                             Text(
-                                text = "Ocena 9.8",
+                                text = "${user.email}" ,
                                 style = MaterialTheme.typography.body2,
                                 color = MP_White,
                                 fontWeight = FontWeight.W500
@@ -146,32 +150,33 @@ fun ProfilePrivateHeroComp(
                                 else 75.dp
                             )
                         ) {
+                            Icon(imageVector = Icons.Rounded.Message,
+                                contentDescription = "Poruka",
+                                tint = MP_White,
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .clickable { })
+
                             if (private) {
-                                Icon(imageVector = Icons.Rounded.AccountCircle,
-                                    contentDescription = "Izmeni",
-                                    tint = MP_White,
-                                    modifier = Modifier
-                                        .size(35.dp)
-                                        .clickable { })
 
                                 if (user.roles.first().equals("Shop", ignoreCase = true)) {
                                     Icon(imageVector = Icons.Rounded.AddCircle,
                                         contentDescription = "Dodaj",
                                         tint = MP_White,
                                         modifier = Modifier
-                                            .size(35.dp)
+                                            .size(30.dp)
                                             .clickable {
                                                 navController.navigate(Screen.AddProduct.route)
                                             })
                                 }
-                            }
 
-                            Icon(imageVector = Icons.Rounded.Email,
-                                contentDescription = "Poruka",
-                                tint = MP_White,
-                                modifier = Modifier
-                                    .size(35.dp)
-                                    .clickable { })
+                                Icon(imageVector = Icons.Rounded.Edit,
+                                    contentDescription = "Izmeni",
+                                    tint = MP_White,
+                                    modifier = Modifier
+                                        .size(30.dp)
+                                        .clickable { })
+                            }
                         }
                     }
 
@@ -212,7 +217,7 @@ fun ProfilePrivateHeroComp(
                             contentDescription = "Profile Picture",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .size(175.dp)
+                                .size(150.dp)
                                 .clip(CircleShape)
                                 .border(3.dp, MP_White, CircleShape)
                                 .clickable {

@@ -10,8 +10,6 @@ sealed class Screen(val route: String) {
     data object CartScreen : Screen("cart_screen")
     data object CartDetailsScreen : Screen("cart_deatils_screen")
     data object DetailsOrderScreen : Screen("details_order_screen")
-    data object PrivateProfile : Screen("private_profile_screen")
-    data object PublicProfile : Screen("public_profile_screen")
     data object ShopHomeScreen : Screen("shop_home_screen")
     data object HighlightSection : Screen("highlight_section")
     data object AddProduct : Screen("add_product")
@@ -24,6 +22,11 @@ sealed class Screen(val route: String) {
     data object MyProductsScreen : Screen("my_products_screen")
     object FavoriteShopScreen : Screen("favorite_shops")
     data object NotificationScreen : Screen("notification_screen")
+    data object PrivateProfile : Screen("private_profile_screen")
+    data object PublicProfile : Screen("public_profile_screen")
+    data object ShopPrivateScreen : Screen("shop_private_screen")
+    data object CourierPrivateScreen : Screen("courier_private_screen")
+    data object CustomerPrivateScreen : Screen("customer_private_screen")
 
     fun withArgs(vararg args: String): String {
         return buildString {

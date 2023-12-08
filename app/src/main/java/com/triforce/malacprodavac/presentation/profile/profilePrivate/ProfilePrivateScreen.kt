@@ -2,6 +2,7 @@ package com.triforce.malacprodavac.presentation.profile.profilePrivate
 
 //import coil.compose.AsyncImage
 //import coil.request.ImageRequest
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.util.enum.Currency
 import com.triforce.malacprodavac.domain.util.enum.UnitOfMeasurement
@@ -26,6 +28,9 @@ import com.triforce.malacprodavac.presentation.components.ShowShopDetailsSection
 import com.triforce.malacprodavac.presentation.product.ProductOptions
 import com.triforce.malacprodavac.presentation.profile.components.ProfilePrivateHeroComp
 import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.CourierPrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.CustomerPrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.ShopPrivateScreen
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
@@ -34,168 +39,36 @@ fun ProfilePrivateScreen(
     viewModel: ProfilePrivateViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
-    if (!viewModel.isLoggedIn())
-        LaunchedEffect(Unit) {
+
+    LaunchedEffect(Unit) {
+        if (viewModel.isLoggedIn() == true) {
+            viewModel.me()
+        } else {
             navController.navigate(Screen.LoginScreen.route)
         }
-
-    val scope = rememberCoroutineScope()
-    val scrollState = rememberScrollState()
-
-
-    Box(
-        modifier = Modifier
-            .background(MP_White)
-            .verticalScroll(state = scrollState)
-    ) {
-        Column(
-            modifier = Modifier
-                .height(1400.dp)
-        ) {
-            ProfilePrivateHeroComp(state.currentUser, navController, viewModel, true)
-
-            if (state.currentUser?.roles?.first().equals("Shop", ignoreCase = true)) {
-
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                ProductOptions(null, navController, false)
-
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                ShopDescComp(state.currentUser)
-
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                ShowHighlightSectionComp(
-                    navController = navController,
-                    products = listOf(
-                        Product(
-                            1,
-                            2,
-                            3,
-                            true,
-                            99.0,
-                            UnitOfMeasurement.KG,
-                            9.0,
-                            null,
-                            null,
-                            null,
-                            null,
-                            Currency.RSD,
-                            "Prsuta 100g",
-                            "",
-                            null,
-                            null,
-                            "",
-                            "",
-                            null,
-                            emptyList(),
-                            null,
-                            null,
-                            emptyList(),
-                            null
-                        ),
-                        Product(
-                            1,
-                            2,
-                            3,
-                            true,
-                            99.0,
-                            UnitOfMeasurement.KG,
-                            9.0,
-                            null,
-                            null,
-                            null,
-                            null,
-                            Currency.RSD,
-                            "Prsuta 100g",
-                            "",
-                            null,
-                            null,
-                            "",
-                            "",
-                            null,
-                            emptyList(),
-                            null,
-                            null,
-                            emptyList(),
-                            null
-                        )
-                    ),
-                    title = "Najpopularniji Proizvodi",
-                    route = Screen.HighlightSection.route
-                )
-
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                ShowHighlightSectionComp(
-                    navController = navController,
-                    products = listOf(
-                        Product(
-                            1,
-                            2,
-                            3,
-                            true,
-                            99.0,
-                            UnitOfMeasurement.KG,
-                            9.0,
-                            null,
-                            null,
-                            null,
-                            null,
-                            Currency.RSD,
-                            "Prsuta 100g",
-                            "",
-                            null,
-                            null,
-                            "",
-                            "",
-
-                            null,
-                            emptyList(),
-                            null,
-                            null,
-                            emptyList(),
-                            null
-                        ),
-                        Product(
-                            1,
-                            2,
-                            3,
-                            true,
-                            99.0,
-                            UnitOfMeasurement.KG,
-                            9.0,
-                            null,
-                            null,
-                            null,
-                            null,
-                            Currency.RSD,
-                            "Prsuta 100g",
-                            "",
-                            null,
-                            null,
-                            "",
-                            "",
-                            null,
-                            emptyList(),
-                            null,
-                            null,
-                            emptyList(),
-                            null
-                        )
-                    ),
-                    title = "Najnoviji Proizvodi",
-                    route = Screen.HighlightSection.route
-                )
-
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                //ShowCommentsSection()
-                ShowShopDetailsSection(state.currentUser)
-            }
-        }
-
     }
 
+    val user = state.currentUser
+
+    LaunchedEffect(user) {
+        if (user != null) {
+            handleUserNavigation(navController, user)
+        }
+    }
 }
+
+private fun handleUserNavigation(navController: NavController, user: User?) {
+    if (user != null) {
+        val roles = user.roles
+
+        when {
+            roles.contains("Shop") -> navController.navigate(Screen.ShopPrivateScreen.route)
+            roles.contains("Courier") -> navController.navigate(Screen.CourierPrivateScreen.route)
+            roles.contains("Customer") -> navController.navigate(Screen.CustomerPrivateScreen.route)
+            else -> navController.navigate(Screen.HomeScreen.route)
+        }
+    } else {
+        navController.navigate(Screen.HomeScreen.route)
+    }
+}
+

@@ -25,6 +25,9 @@ import com.triforce.malacprodavac.presentation.notifications.NotificationsScreen
 import com.triforce.malacprodavac.presentation.orders.OrderScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.CourierPrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.CustomerPrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.ShopPrivateScreen
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
@@ -108,10 +111,6 @@ fun Navigation() {
             )
         ) {
             ProductScreen(navController = navController)
-        }
-
-        composable(route = Screen.PrivateProfile.route) {
-            ProfilePrivateScreen(navController = navController)
         }
 
         composable(
@@ -198,6 +197,22 @@ fun Navigation() {
 
         composable(route = Screen.NotificationScreen.route) {
             NotificationsScreen(navController = navController)
+        }
+
+        composable(route = Screen.PrivateProfile.route) {
+            ProfilePrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.ShopPrivateScreen.route) {
+            ShopPrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.CourierPrivateScreen.route) {
+            CourierPrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.CustomerPrivateScreen.route) {
+            CustomerPrivateScreen(navController = navController)
         }
     }
 }

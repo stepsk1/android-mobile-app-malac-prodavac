@@ -18,6 +18,7 @@ class HomeViewModel @Inject constructor(
     var state by mutableStateOf(HomeScreenState())
 
     init {
+        state.copy(isLoading = true)
         me()
         getToken()
     }

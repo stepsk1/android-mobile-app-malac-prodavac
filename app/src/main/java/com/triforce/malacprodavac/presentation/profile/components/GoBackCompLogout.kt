@@ -63,13 +63,6 @@ fun GoBackCompLogout(
             )
         }
 
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "Search",
-            tint = MP_White,
-            modifier = Modifier
-                .size(25.dp)
-        )
 
         Icon(
             imageVector = Icons.Default.ExitToApp,

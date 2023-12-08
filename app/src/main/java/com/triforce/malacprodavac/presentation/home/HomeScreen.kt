@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -138,55 +139,61 @@ fun HomeScreen(
             ) + features
         }
     }
-    Box(
-        modifier = Modifier
-            .background(MP_White)
-            .fillMaxSize()
-    ) {
-        LinearGradient(color1 = MP_Green, color2 = MP_Green)
-        RoundedBackgroundComp(top = 100.dp, color = MP_White)
+    if (!state.isLoading) {
+        Box(
+            modifier = Modifier
+                .background(MP_White)
+                .fillMaxSize()
+        ) {
+            LinearGradient(color1 = MP_Green, color2 = MP_Green)
+            RoundedBackgroundComp(top = 100.dp, color = MP_White)
 
-        Column {
-            GreetingSection(
-                msg = "Malac ${role}",
-                subMsg = "Od sirupa do sira",
-                navController = navController
-            )
-            Spacer(modifier = Modifier.padding(16.dp))
+            Column {
+                GreetingSection(
+                    msg = "Malac ${role}",
+                    subMsg = "Od sirupa do sira",
+                    navController = navController
+                )
+                Spacer(modifier = Modifier.padding(16.dp))
 
-            RecommendedFeaturesSection(
+                RecommendedFeaturesSection(
+                    navController = navController,
+                    features = features
+                )
+            }
+            BottomNavigationMenu(
                 navController = navController,
-                features = features
+                items = listOf(
+                    BottomNavigationMenuContent(
+                        title = "Početna",
+                        graphicID = Icons.Default.Home,
+                        screen = Screen.HomeScreen,
+                        isActive = true
+                    ),
+                    BottomNavigationMenuContent(
+                        title = "Market",
+                        graphicID = ImageVector.vectorResource(R.drawable.logo_green),
+                        screen = Screen.StoreScreen,
+                        isActive = false
+                    ),
+                    BottomNavigationMenuContent(
+                        title = "Profil",
+                        graphicID = Icons.Default.Person,
+                        screen = Screen.PrivateProfile,
+                        isActive = false
+                    ),
+                    BottomNavigationMenuContent(
+                        title = "Korpa",
+                        graphicID = Icons.Default.ShoppingCart,
+                        screen = Screen.CartScreen,
+                        isActive = false
+                    )
+                ), modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
-        BottomNavigationMenu(
-            navController = navController,
-            items = listOf(
-                BottomNavigationMenuContent(
-                    title = "Početna",
-                    graphicID = Icons.Default.Home,
-                    screen = Screen.HomeScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Market",
-                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
-                    screen = Screen.StoreScreen,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Profil",
-                    graphicID = Icons.Default.Person,
-                    screen = Screen.PrivateProfile,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Korpa",
-                    graphicID = Icons.Default.ShoppingCart,
-                    screen = Screen.CartScreen,
-                    isActive = false
-                )
-            ), modifier = Modifier.align(Alignment.BottomCenter)
-        )
+    } else {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
     }
 }
