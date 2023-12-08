@@ -19,14 +19,16 @@ class StoreViewModel @Inject constructor(
 
     var state by mutableStateOf(StoreState())
 
-
     init {
-        getCategories(true, null)
+        getCategories()
     }
 
-    private fun getCategories(fetchFromRemote: Boolean, category: Category?) {
+    private fun getCategories() {
+
+        state.copy(isLoading = true)
+
         viewModelScope.launch {
-            repository.getCategories(fetchFromRemote).collect { result ->
+            repository.getCategories(true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Category>) {
@@ -46,7 +48,6 @@ class StoreViewModel @Inject constructor(
                     }
                 }
             }
-
         }
     }
 }

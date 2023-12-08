@@ -8,13 +8,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteScreen
 import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopScreen
-import com.triforce.malacprodavac.presentation.addProduct.AddProductScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.addProduct.AddProductScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.scheduling.ScheduleScreen
 import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
-import com.triforce.malacprodavac.presentation.editProduct.EditProductScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductScreen
 import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen

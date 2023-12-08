@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.addProduct
+package com.triforce.malacprodavac.presentation.add_edit_product.addProduct
 
 import android.widget.Toast
 import androidx.compose.foundation.background

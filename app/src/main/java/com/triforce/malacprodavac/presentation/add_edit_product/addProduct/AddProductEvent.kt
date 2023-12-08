@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.addProduct
+package com.triforce.malacprodavac.presentation.add_edit_product.addProduct
 
 import com.triforce.malacprodavac.domain.util.enum.Currency
 import com.triforce.malacprodavac.domain.util.enum.UnitOfMeasurement

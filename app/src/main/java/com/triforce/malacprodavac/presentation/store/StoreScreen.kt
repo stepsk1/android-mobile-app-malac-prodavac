@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -118,10 +119,16 @@ fun StoreScreen(navController: NavController)
                 iconImage = ImageVector.vectorResource(R.drawable.logo_green),
                 iconColor = MP_Green
             )
-            StoreCategoriesSection(
-                features = features,
-                navController
-            )
+            if (!state.isLoading) {
+                StoreCategoriesSection(
+                    features = features,
+                    navController
+                )
+            } else {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
         }
         BottomNavigationMenu(
             navController = navController,

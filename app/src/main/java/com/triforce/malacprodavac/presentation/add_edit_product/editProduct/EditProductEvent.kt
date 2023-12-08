@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.editProduct
+package com.triforce.malacprodavac.presentation.add_edit_product.editProduct
 
 import android.content.Context
 import android.net.Uri
