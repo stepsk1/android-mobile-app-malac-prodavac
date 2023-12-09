@@ -77,6 +77,7 @@ import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
+import com.triforce.malacprodavac.ui.theme.MP_GreenLight
 import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
@@ -88,69 +89,46 @@ fun ProductScreenContent(
     navController: NavController,
     viewModel: ProductViewModel
 ) {
+    var isCreateReviewOpen by remember { mutableStateOf(false) }
 
-    var isCreateReviewOpen by remember {
-        mutableStateOf(false)
-    }
-
-    val openCreateReviewDialog = {
-        isCreateReviewOpen = true
-    }
-
-    val closeCreateReviewDialog = {
-        isCreateReviewOpen = false
-    }
+    val openCreateReviewDialog = { isCreateReviewOpen = true }
+    val closeCreateReviewDialog = { isCreateReviewOpen = false }
 
     val createReviewCallback = { text: String, rating: Int ->
         viewModel.onEvent(ProductEvent.CreateReview(text, rating))
     }
 
     val state = viewModel.state
-
     val product = state.product
 
-    var colorBackground = MP_White
-    var colorForeground = MP_White
-
-    if (product != null) {
-        if (product.categoryId % 3 == 1) {
-            colorBackground = MP_GreenDark
-            colorForeground = MP_Green
-        } else if (product.categoryId % 3 == 2) {
-            colorBackground = MP_Pink_Dark
-            colorForeground = MP_Pink
-        } else {
-            colorBackground = MP_Orange_Dark
-            colorForeground = MP_Orange
-        }
-    }
+    var colorForeground = MP_Green
+    var colorBackground = MP_GreenLight
 
     val scrollState = rememberScrollState()
 
-    Scaffold(
-        content = {padding ->
-            Box(
-                modifier = Modifier
-                    .verticalScroll(state = scrollState)
-                    .background(MP_White)
-                    .padding(padding)
-                    .height(1300.dp)
-            ) {
+    if (product != null) {
+        Scaffold(
+            content = { padding ->
+                Box(
+                    modifier = Modifier
+                        .verticalScroll(state = scrollState)
+                        .background(MP_White)
+                        .padding(padding)
+                        .height(1300.dp)
+                ) {
 
-                if (isCreateReviewOpen) {
-                    CreateReviewDialog(closeCreateReviewDialog, createReviewCallback)
-                }
+                    if (isCreateReviewOpen) {
+                        CreateReviewDialog(closeCreateReviewDialog, createReviewCallback)
+                    }
 
-                LinearGradient(color1 = colorForeground, color2 = colorBackground)
-                RoundedBackgroundComp(top = 250.dp, color = MP_White)
+                    LinearGradient(color1 = colorForeground, color2 = colorBackground)
+                    RoundedBackgroundComp(top = 260.dp, color = MP_White)
 
-                Column {
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    ProductHeroImage(imageUrl = state.thumbnailUrl)
-
-                    if (product != null) {
-
+                    Column {
                         Spacer(modifier = Modifier.padding(16.dp))
+                        ProductHeroImage(imageUrl = state.thumbnailUrl)
+
+                        Spacer(modifier = Modifier.padding(22.dp))
                         ProductDetails(product = product)
 
                         if (viewModel.state.product?.shopId == viewModel.state.user?.shop?.id) {
@@ -158,15 +136,14 @@ fun ProductScreenContent(
                             ProductOptions(product, navController, true)
                         }
 
-                        Spacer(Modifier.height(16.dp))
+                        Spacer(Modifier.height(22.dp))
                         ShowHighlightSectionComp(
                             navController = navController,
                             products = viewModel.state.shop?.products,
-                            title = "Više proizvoda od prodavca",
+                            title = "Više od prodavca",
                             route = Screen.HighlightSection.route
                         )
 
-                        Spacer(Modifier.height(16.dp))
                         Row(
                             modifier = Modifier
                                 .padding(horizontal = 20.dp)
@@ -185,7 +162,7 @@ fun ProductScreenContent(
                             }
                         }
 
-                        if ( state.reviews != null ) {
+                        if (state.reviews != null) {
 
                             Spacer(Modifier.height(16.dp))
                             LazyColumn(
@@ -221,6 +198,6 @@ fun ProductScreenContent(
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }

@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -34,7 +35,7 @@ fun GoBackComp(
     isLight: Boolean = false,
 ) {
     var color = MP_White
-    if(isLight) color = MP_Black
+    if(isLight) color = Color.Gray
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
