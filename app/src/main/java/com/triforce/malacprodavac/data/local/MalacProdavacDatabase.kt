@@ -50,7 +50,7 @@ import com.triforce.malacprodavac.data.local.user.userMedias.UserMediaEntity
         NotificationEntity::class,
         NotificationPayloadEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 
