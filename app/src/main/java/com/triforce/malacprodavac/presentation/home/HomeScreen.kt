@@ -31,6 +31,7 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.home.components.GreetingSection

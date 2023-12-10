@@ -31,7 +31,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.CartEvent
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -41,14 +43,9 @@ import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 
 @Composable
-fun BoughtProductItem(
-    boughtProduct: ProductAmount,
-    viewModel: CartViewModel,
-    totalPrice: Double
+fun CartItemRow(
+    cartItem: CartItem,
 ) {
-    var amount by remember { mutableStateOf(boughtProduct.amount) }
-    var productTotalPrice by remember { mutableStateOf(boughtProduct.totalPrice) }
-
     fun removeFromBoughtProducts(item: ProductAmount) {
         BoughtProducts.listOfBoughtProducts.remove(item)
     }
@@ -72,16 +69,13 @@ fun BoughtProductItem(
                 .padding(15.dp)
         ) {
 
-            if (amount > 0) {
-
+            if (cartItem.quantity > 0) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-
+                    modifier = Modifier.fillMaxWidth().align(Alignment.TopStart),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = boughtProduct.product.title,
+                        text = cartItem.product.title,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.h6,
                         color = MP_Black
@@ -93,29 +87,38 @@ fun BoughtProductItem(
                         modifier = Modifier
                             .size(40.dp)
                             .clickable {
-                                viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
-                                viewModel.onEvent(CartEvent.DeleteFromCart)
-                                removeFromBoughtProducts(boughtProduct)
-                                boughtProduct.amount = 0
-                                amount = 0
                             }
                     )
                 }
 
                 Text(
-                    text = productTotalPrice.toString() + " rsd",
+                    text = "${cartItem.shop?.businessName}",
+                    fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.body1,
-                    color = MP_Green,
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                )
-                Text(
-                    text = amount.toString() + "X",
-                    style = MaterialTheme.typography.h6,
                     color = MP_Black,
                     modifier = Modifier
-                        .align(Alignment.BottomStart)
+                        .align(Alignment.CenterStart)
+                        .clickable {
+
+                    }
                 )
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                ) {
+                    Text(
+                        text = cartItem.quantity.toString() + "X ",
+                        style = MaterialTheme.typography.body1,
+                        color = MP_Black,
+                    )
+                    Text(
+                        text = cartItem.price.toString() + " rsd",
+                        style = MaterialTheme.typography.body1,
+                        color = MP_Green,
+                    )
+                }
 
                 Box(
                     modifier = Modifier
@@ -131,11 +134,8 @@ fun BoughtProductItem(
                             .size(35.dp)
                             .align(Alignment.BottomCenter)
                             .clickable {
-                                amount++
-                                viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
-                                boughtProduct.amount++
-                                boughtProduct.totalPrice = boughtProduct.amount * boughtProduct.product.price
-                                productTotalPrice = amount * boughtProduct.product.price
+                                cartItem.quantity++
+                                cartItem.price = cartItem.quantity * cartItem.product.price
                             }
                     )
 
@@ -147,12 +147,9 @@ fun BoughtProductItem(
                             .size(35.dp)
                             .align(Alignment.BottomEnd)
                             .clickable {
-                                if (amount > 1) {
-                                    viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
-                                    amount--
-                                    boughtProduct.amount--
-                                    boughtProduct.totalPrice = boughtProduct.amount * boughtProduct.product.price
-                                    productTotalPrice = amount * boughtProduct.product.price
+                                if (cartItem.quantity > 1) {
+                                    cartItem.quantity--
+                                    cartItem.price = cartItem.quantity * cartItem.product.price
                                 }
                             }
                     )

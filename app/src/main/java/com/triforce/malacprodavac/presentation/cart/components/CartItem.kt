@@ -3,9 +3,9 @@ package com.triforce.malacprodavac.presentation.cart.components
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.model.shops.Shop
 
-data class ProductAmount(
+data class CartItem(
     val product: Product,
     val shop: Shop?,
-    var amount: Int = 1,
-    var totalPrice: Double = product.price * amount
+    var quantity: Int = 1,
+    var price: Double = 0.00
 )

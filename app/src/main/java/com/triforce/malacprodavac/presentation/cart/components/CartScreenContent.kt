@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -19,27 +20,23 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
+import androidx.compose.runtime.getValue
 
 @Composable
 fun CartScreenContent(
     navController: NavController,
     viewModel: CartViewModel = hiltViewModel()
 ) {
-    var boughtProducts = BoughtProducts.listOfBoughtProducts
-    val boughtProductsSet = boughtProducts.toMutableSet()
+    val cartItems by viewModel.cartItems.collectAsState()
 
-    boughtProducts = boughtProductsSet.toMutableList()
-
-    Column (
+    Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
-    ){
-        BoughtProductsSection(
-            boughtProducts = boughtProducts,
-            viewModel = viewModel,
-        )
+    ) {
+
+        DisplayCartItems(cartItems = cartItems)
         Spacer(modifier = Modifier.padding(6.dp))
 
         TotalPrice(viewModel)

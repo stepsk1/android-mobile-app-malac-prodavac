@@ -43,8 +43,6 @@ class ProductViewModel @Inject constructor(
                 state = state.copy(isFavorite = true)
             }
 
-// product = state.product?.copy(title = event.title)
-
             is ProductEvent.removeFavoriteProduct -> { // POGLEDAJ PONOVO
                 state = state.copy(isFavorite = false)
             }
