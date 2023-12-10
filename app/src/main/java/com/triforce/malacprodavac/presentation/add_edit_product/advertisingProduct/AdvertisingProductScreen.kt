@@ -18,12 +18,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,7 +32,6 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditDropDownList
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditTextField
-import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductEvent
 import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.product.components.ProductHeroImage
@@ -98,9 +95,7 @@ fun AdvertisingProductScreen(
         RoundedBackgroundComp(top = 250.dp, color = MP_White)
 
         Column {
-            GoBackNoSearch(msg = "Oglasi proizvod", modifier = Modifier.clickable {
-                navController.popBackStack()
-            })
+            GoBackNoSearch(msg = "Oglasi proizvod", navController = navController)
             ProductHeroImage(
                 modifier = Modifier.clickable {
                     if (!permissionState.status.isGranted) {
@@ -155,7 +150,24 @@ fun AdvertisingProductScreen(
                     .padding(horizontal = 20.dp)
             ) {
                 AddEditDropDownList(
-                    entries = listOf(7.0, 8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0,22.0),
+                    entries = listOf(
+                        7.0,
+                        8.0,
+                        9.0,
+                        10.0,
+                        11.0,
+                        12.0,
+                        13.0,
+                        14.0,
+                        15.0,
+                        16.0,
+                        17.0,
+                        18.0,
+                        19.0,
+                        20.0,
+                        21.0,
+                        22.0
+                    ),
                     selectedEntry = state.product?.availableFromHours?.toInt().toString(),
                     handleSelect = { unit ->
                         viewModel.onEvent(
@@ -169,7 +181,24 @@ fun AdvertisingProductScreen(
                 )
 
                 AddEditDropDownList(
-                    entries = listOf(8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0,21.0,22.0,23.0),
+                    entries = listOf(
+                        8.0,
+                        9.0,
+                        10.0,
+                        11.0,
+                        12.0,
+                        13.0,
+                        14.0,
+                        15.0,
+                        16.0,
+                        17.0,
+                        18.0,
+                        19.0,
+                        20.0,
+                        21.0,
+                        22.0,
+                        23.0
+                    ),
                     selectedEntry = state.product?.availableTillHours?.toInt().toString(),
                     handleSelect = { unit ->
                         viewModel.onEvent(
@@ -181,18 +210,18 @@ fun AdvertisingProductScreen(
                     label = "Kraj oglašavanja",
                     fill = false
                 )
-                }
-                Spacer(modifier = Modifier.padding(10.dp))
-                AdvertisingProductButton(
-                    Modifier.clickable {
-                        viewModel.onEvent(AdvertisingProductEvent.Submit(context))
-                    },
-                    product = product,
-                    navController = navController,
-                    advertising = true,
-                    change = true,
-                    )
-                Spacer(modifier = Modifier.padding(10.dp))
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
+            AdvertisingProductButton(
+                Modifier.clickable {
+                    viewModel.onEvent(AdvertisingProductEvent.Submit(context))
+                },
+                product = product,
+                navController = navController,
+                advertising = true,
+                change = true,
+            )
+            Spacer(modifier = Modifier.padding(10.dp))
         }
     }
 }
