@@ -14,7 +14,7 @@ interface UserDao {
 
     @Transaction
     @Query("""SELECT * FROM UserEntity WHERE id = :id""")
-    suspend fun getUserWithRelations(id: Int): UserWithRelations
+    suspend fun getUserWithRelations(id: Int): UserWithRelations?
 
 
     @Query(

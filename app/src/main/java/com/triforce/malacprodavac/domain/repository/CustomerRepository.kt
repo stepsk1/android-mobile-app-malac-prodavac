@@ -18,13 +18,26 @@ interface CustomerRepository {
         customerId: Int,
         fetchFromRemote: Boolean
     ): Flow<Resource<List<FavoriteProduct>>>
-    suspend fun insertFavoriteProduct(customerId: Int, createFavoriteProductDto: CreateFavoriteProductDto): Flow<Resource<FavoriteProduct>>
-    suspend fun deleteFavoriteProduct(id: Int, favoriteProductId: Int): Flow<Resource<FavoriteProduct>>
+
+    suspend fun insertFavoriteProduct(
+        customerId: Int,
+        createFavoriteProductDto: CreateFavoriteProductDto
+    ): Flow<Resource<FavoriteProduct>>
+
+    suspend fun deleteFavoriteProduct(
+        id: Int,
+        favoriteProductId: Int
+    ): Flow<Resource<FavoriteProduct>>
 
     suspend fun getFavoriteShops(
         customerId: Int,
         fetchFromRemote: Boolean
     ): Flow<Resource<List<FavoriteShop>>>
-    suspend fun insertFavoriteShop(customerId: Int, createFavoriteShopDto: CreateFavoriteShopDto): Flow<Resource<FavoriteShop>>
+
+    suspend fun insertFavoriteShop(
+        customerId: Int,
+        createFavoriteShopDto: CreateFavoriteShopDto
+    ): Flow<Resource<FavoriteShop>>
+
     suspend fun deleteFavoriteShop(id: Int, favoriteShopId: Int): Flow<Resource<FavoriteShop>>
 }

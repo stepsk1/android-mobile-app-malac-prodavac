@@ -1,8 +1,8 @@
 package com.triforce.malacprodavac.presentation.cart
 
+import com.triforce.malacprodavac.presentation.cart.components.CartItem
+import com.triforce.malacprodavac.presentation.product.ProductEvent
+
 sealed class CartEvent {
-    data class AddToCart(val totalPrice: Double): CartEvent()
-    data class RemoveFromCart(val totalPrice: Double): CartEvent()
-    data class getTotalPrice(val totalPrice: Double): CartEvent()
-    object DeleteFromCart: CartEvent()
+    object quantityChange : CartEvent()
 }

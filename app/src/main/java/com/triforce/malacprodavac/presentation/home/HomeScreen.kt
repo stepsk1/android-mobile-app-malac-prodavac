@@ -7,18 +7,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,13 +31,14 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.home.components.GreetingSection
 import com.triforce.malacprodavac.presentation.home.components.RecommendedFeaturesSection
 import com.triforce.malacprodavac.presentation.orders.OrderViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -53,134 +49,152 @@ fun HomeScreen(
     viewModelOrder: OrderViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
-    var viewModelFavProducts: FavoriteViewModel = hiltViewModel()
+
+    val viewModelFavProducts: FavoriteViewModel = hiltViewModel()
     val stateFav by remember { mutableStateOf(viewModelFavProducts.state) }
 
-    Box(
-        modifier = Modifier
-            .background(MP_White)
-            .fillMaxSize()
-    ) {
-        LinearGradient(color1 = MP_Green, color2 = MP_Green)
-        RoundedBackgroundComp(top = 100.dp, color = MP_White)
-        Column {
-            GreetingSection(msg = "Malac Prodavac", subMsg = "Od sirupa do sira", navController = navController)
-            //GoToStoreSection(navController)
-            Spacer(modifier = Modifier.padding(16.dp))
-            RecommendedFeaturesSection(
+    val user = state.currentUser
+    var role = "Kupac"
+
+    var features = listOf(
+        Feature(
+            id = 1,
+            title = "Otvori Market",
+            graphicID = ImageVector.vectorResource(R.drawable.logo_green),
+            color1 = MP_Green,
+            color2 = MP_Green,
+            screen = Screen.StoreScreen
+        ),
+        Feature(
+            id = 1,
+            title = "Korpa",
+            graphicID = Icons.Default.ShoppingCart,
+            color1 = MP_GreenDark,
+            color2 = MP_GreenDark,
+            screen = Screen.CartScreen
+        ),
+        Feature(
+            id = 1,
+            title = "Pretraži Mape",
+            graphicID = Icons.Default.LocationOn,
+            color1 = MP_Green,
+            color2 = MP_Green,
+            screen = Screen.MapScreen
+        ),
+        Feature(
+            id = 1,
+            title = "Profil",
+            graphicID = Icons.Default.Person,
+            color1 = MP_GreenDark,
+            color2 = MP_GreenDark,
+            screen = Screen.PrivateProfile
+        ),
+        Feature(
+            id = 1,
+            title = "Porudžbine",
+            graphicID = ImageVector.vectorResource(R.drawable.round_featured_play_list_24),
+            color1 = MP_Green,
+            color2 = MP_Green,
+            screen = Screen.OrderScreen
+        ),
+        Feature(
+            id = 1,
+            title = "Omiljeni proizvodi",
+            graphicID = Icons.Default.Favorite,
+            color1 = MP_GreenDark,
+            color2 = MP_GreenDark,
+            screen = Screen.FavoriteProductsScreen
+        ),
+        Feature(
+            id = 1,
+            title = "Omiljeni prodavci",
+            graphicID = Icons.Default.Favorite,
+            color1 = MP_Green,
+            color2 = MP_Green,
+            screen = Screen.FavoriteShopScreen
+        )
+    )
+
+    if (user != null) {
+        if (user.roles.contains("Shop") == false && user.roles.contains("Courier")) {
+            role = "Kurir"
+        } else if (user.roles.contains("Shop")) {
+            role = "Prodavac"
+            features = listOf(
+                Feature(
+                    id = 1,
+                    title = "Moji Proizvodi",
+                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
+                    color1 = MP_Pink,
+                    color2 = MP_Pink,
+                    screen = Screen.MyProductsScreen
+                ),
+                Feature(
+                    id = 1,
+                    title = "Dodaj novi proizvod",
+                    graphicID = Icons.Default.Add,
+                    color1 = MP_Pink,
+                    color2 = MP_Pink,
+                    screen = Screen.AddProduct
+                )
+            ) + features
+        }
+    }
+    if (!state.isLoading) {
+        Box(
+            modifier = Modifier
+                .background(MP_White)
+                .fillMaxSize()
+        ) {
+            LinearGradient(color1 = MP_Green, color2 = MP_Green)
+            RoundedBackgroundComp(top = 100.dp, color = MP_White)
+
+            Column {
+                GreetingSection(
+                    msg = "Malac ${role}",
+                    subMsg = "Od sirupa do sira",
+                    navController = navController
+                )
+                Spacer(modifier = Modifier.padding(16.dp))
+
+                RecommendedFeaturesSection(
+                    navController = navController,
+                    features = features
+                )
+            }
+            BottomNavigationMenu(
                 navController = navController,
-                features = listOf(
-                    Feature(
-                        id = 1,
-                        title = "Market",
-                        graphicID = Icons.Default.Star,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
-                        screen = Screen.StoreScreen
+                items = listOf(
+                    BottomNavigationMenuContent(
+                        title = "Početna",
+                        graphicID = Icons.Default.Home,
+                        screen = Screen.HomeScreen,
+                        isActive = true
                     ),
-                    Feature(
-                        id = 1,
+                    BottomNavigationMenuContent(
+                        title = "Market",
+                        graphicID = ImageVector.vectorResource(R.drawable.logo_green),
+                        screen = Screen.StoreScreen,
+                        isActive = false
+                    ),
+                    BottomNavigationMenuContent(
+                        title = "Profil",
+                        graphicID = Icons.Default.Person,
+                        screen = Screen.PrivateProfile,
+                        isActive = false
+                    ),
+                    BottomNavigationMenuContent(
                         title = "Korpa",
                         graphicID = Icons.Default.ShoppingCart,
-                        color1 = MP_Pink,
-                        color2 = MP_Pink,
-                        screen = Screen.CartScreen
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Moji Proizvodi",
-                        graphicID = ImageVector.vectorResource(R.drawable.logo_green),
-                        color1 = MP_Pink,
-                        color2 = MP_Pink,
-                        screen = Screen.MyProductsScreen
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Mape",
-                        graphicID = Icons.Default.LocationOn,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
-                        screen = Screen.MapScreen
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Javan profil",
-                        graphicID = Icons.Default.AccountCircle,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
-                        screen = Screen.PublicProfile
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Privatan profil",
-                        graphicID = Icons.Default.AccountBox,
-                        color1 = MP_Orange_Dark,
-                        color2 = MP_Orange_Dark,
-                        screen = Screen.PrivateProfile
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Dodaj novi proizvod",
-                        graphicID = Icons.Default.Check,
-                        color1 = MP_Green,
-                        color2 = MP_Green,
-                        screen = Screen.AddEditProduct
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Moje porudžbine",
-                        graphicID = ImageVector.vectorResource(R.drawable.round_featured_play_list_24),
-                        color1 = MP_Pink,
-                        color2 = MP_Pink,
-                        screen = Screen.OrderScreen
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Moji omiljeni proizvodi",
-                        graphicID = Icons.Default.Favorite,
-                        color1 = MP_Pink,
-                        color2 = MP_Pink,
-                        screen = Screen.FavoriteProductsScreen
-                    ),
-                    Feature(
-                        id = 1,
-                        title = "Moji omiljeni prodavci",
-                        graphicID = Icons.Default.FavoriteBorder,
-                        color1 = MP_Pink,
-                        color2 = MP_Pink,
-                        screen = Screen.FavoriteShopScreen
+                        screen = Screen.CartScreen,
+                        isActive = false
                     )
-                )
+                ), modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
-        BottomNavigationMenu(
-            navController = navController,
-            items = listOf(
-                BottomNavigationMenuContent(
-                    title = "Početna",
-                    graphicID = Icons.Default.Home,
-                    screen = Screen.HomeScreen,
-                    isActive = true
-                ),
-                BottomNavigationMenuContent(
-                    title = "Market",
-                    graphicID = Icons.Default.Star,
-                    screen = Screen.StoreScreen,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Profil",
-                    graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.PrivateProfile,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Korpa",
-                    graphicID = Icons.Default.ShoppingCart,
-                    screen = Screen.CartScreen,
-                    isActive = false
-                )
-            ), modifier = Modifier.align(Alignment.BottomCenter)
-        )
+    } else {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
     }
 }

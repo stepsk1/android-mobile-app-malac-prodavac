@@ -7,8 +7,11 @@ import com.triforce.malacprodavac.domain.model.User
 
 data class ProfilePublicState(
     val isLoading: Boolean = false,
-    val currentUser: User? = null,
-    val currentShop: Shop? = null,
+
+    val role: Int = -1,
+
+    val user: User? = null,
+    val shop: Shop? = null,
     val products: List<Product>? = emptyList(),
 
     val profileImageUrl: String? = null,

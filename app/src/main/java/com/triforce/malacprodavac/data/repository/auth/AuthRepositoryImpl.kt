@@ -65,11 +65,12 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun me(): Flow<Resource<User>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
-            val authUserId = sessionManager.getAuthUserId()
 
-            val user = if (authUserId > 0) {
-                userDao.getUserWithRelations(authUserId).toUser()
-            } else {
+            val authUserId = sessionManager.getAuthUserId()
+            val user = userDao.getUserWithRelations(authUserId)
+            user?.let { emit(Resource.Success(data = user.toUser())) }
+
+            val remoteUser =
                 try {
                     api.me().let {
                         userDao.insertUser(listOf(it.toUserEntity()))
@@ -84,9 +85,9 @@ class AuthRepositoryImpl @Inject constructor(
                     emit(Resource.Error("Couldn't get user."))
                     null
                 }
-            }
 
-            user?.let {
+
+            remoteUser?.let {
                 insertUserWithRelations(it.toUserWithRelations())
                 sessionManager.refreshAuthUserId(it.id)
                 emit(Resource.Success(data = it))

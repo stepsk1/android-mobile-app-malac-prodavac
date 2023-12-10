@@ -8,7 +8,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.data.services.SessionManager
+import com.triforce.malacprodavac.domain.model.User
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.domain.util.compressedFileFromUri
@@ -55,7 +58,7 @@ class ProfilePrivateViewModel @Inject constructor(
         }
     }
 
-    private fun me() {
+    fun me() {
         viewModelScope.launch {
             profile.getMe().collect { result ->
                 when (result) {
@@ -73,6 +76,7 @@ class ProfilePrivateViewModel @Inject constructor(
                             profileImageUrl = "http://softeng.pmf.kg.ac.rs:10010/users/${result.data?.profilePicture?.userId}/medias/${result.data?.profilePicture?.id}",
                             profileImageKey = result.data?.profilePicture?.key
                         )
+
                     }
 
                     else -> {}

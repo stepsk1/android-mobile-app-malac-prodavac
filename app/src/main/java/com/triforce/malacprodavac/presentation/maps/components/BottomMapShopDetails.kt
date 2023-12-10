@@ -92,73 +92,18 @@ fun BottomMapShopDetails(
                     ShopDetailItem("Do", selectedShop.openTillDays ?: "-")
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    ShopDetailItem("Lat", selectedShop.availableAtLatitude.toString())
+                    /*ShopDetailItem("Lat", selectedShop.availableAtLatitude.toString())
                     ShopDetailItem("Long", selectedShop.availableAtLongitude.toString())
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))*/
 
                     ShopHighlightProduct(
                         navController = navController,
-                        products = listOf(
-                            Product(
-                                1,
-                                2,
-                                3,
-                                true,
-                                99.0,
-                                "RSD",
-                                9.0,
-                                null,
-                                null,
-                                null,
-                                null,
-                                "RSD",
-                                "Prsuta 100g",
-                                "",
-                                null,
-                                null,
-                                "",
-                                "",
-                                null,
-                                emptyList(),
-                                null,
-                                null,
-                                emptyList(),
-                                null
-                            ),
-                            Product(
-                                1,
-                                2,
-                                3,
-                                true,
-                                99.0,
-                                "RSD",
-                                9.0,
-                                null,
-                                null,
-                                null,
-                                null,
-                                "RSD",
-                                "Prsuta 100g",
-                                "",
-                                null,
-                                null,
-                                "",
-                                "",
-                                null,
-                                emptyList(),
-                                null,
-                                null,
-                                emptyList(),
-                                null
-                            )
-                        ),
-                        title = "Najpopularniji Proizvodi",
+                        products = selectedShop.products,
+                        title = "Preporučeni proizvodi",
                         route = Screen.HighlightSection.route + "?id=${selectedShop.id}"
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
 
                     GoToShopProfileButton(navController = navController, shop = selectedShop)
-                    Spacer(modifier = Modifier.height(32.dp))
                 }
             }
         ) {

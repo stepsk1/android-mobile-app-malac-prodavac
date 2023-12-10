@@ -1,9 +1,5 @@
 package com.triforce.malacprodavac.domain.model
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
 data class Category(
     val id: Int,
     val parentCategoryId: Int?,
@@ -13,4 +9,8 @@ data class Category(
 
     val parentCategory: Category?,
     val subCategories: List<Category>?
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}

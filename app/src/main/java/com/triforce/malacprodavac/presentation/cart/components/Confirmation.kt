@@ -34,10 +34,7 @@ fun Confirmation() {
     val codeForPaying = generateRandomString(11)
 
     Box(
-        contentAlignment = Alignment.CenterStart,
         modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 15.dp, bottom = 5.dp)
-            .fillMaxWidth()
             .shadow(
                 elevation = 5.dp,
                 spotColor = MP_Black,
@@ -47,60 +44,41 @@ fun Confirmation() {
             .background(MP_White)
             .padding(vertical = 20.dp, horizontal = 20.dp)
     ){
-        Column(
-            modifier = Modifier.padding(2.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-
-
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ){
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = "CheckCircle",
                 tint = MP_Green,
                 modifier = Modifier
                     .size(70.dp)
-                    .align(Alignment.CenterHorizontally)
             )
 
             Text(
                 text = "Vaša kupovina je uspešno završena",
                 style = MaterialTheme.typography.h5,
                 color = MP_Black,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .align(Alignment.CenterHorizontally)
+                textAlign = TextAlign.Center
             )
-
-            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = "Kod za praćenje:",
                 style = MaterialTheme.typography.h6,
-                color = MP_Black,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .align(Alignment.CenterHorizontally)
+                color = MP_Black
             )
 
             Text(
                 text = codeForPaying,
                 style = MaterialTheme.typography.h6,
-                color = MP_Pink,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .align(Alignment.CenterHorizontally)
+                color = MP_Pink
             )
-
-            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = "Datum potvrde",
                 style = MaterialTheme.typography.h6,
-                color = MP_Black,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .align(Alignment.CenterHorizontally)
+                color = MP_Black
             )
 
             val calender = Calendar.getInstance()
@@ -116,9 +94,6 @@ fun Confirmation() {
                 text = date,
                 style = MaterialTheme.typography.h6,
                 color = MP_Pink,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .align(Alignment.CenterHorizontally)
             )
         }
     }

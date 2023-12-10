@@ -24,7 +24,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Order
 import com.triforce.malacprodavac.presentation.transactions.TransactionViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -37,7 +39,8 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 fun TransactionItem(
     transaction: Order,
     viewModel: TransactionViewModel,
-    numberTransaction: Int
+    numberTransaction: Int,
+    navController: NavController
 ) {
     var orderStatus = transaction.orderStatus
     var orderDeliveryMethod = transaction.deliveryMethod
@@ -74,6 +77,9 @@ fun TransactionItem(
             .background(MP_White)
             .fillMaxWidth()
             .requiredHeight(130.dp)
+            .clickable {
+                navController.navigate(Screen.DetailsOrderScreen.route)
+            }
     ) {
 
         Box(
@@ -90,7 +96,6 @@ fun TransactionItem(
                 modifier = Modifier
                     .align(Alignment.TopStart)
             )
-
 
             Text(
                 text = date + " " + time,
@@ -110,9 +115,7 @@ fun TransactionItem(
 
             Box(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .requiredWidth(130.dp)
-                    .requiredHeight(50.dp)
+                    .align(Alignment.TopEnd)
             ) {
                 Icon(
                     imageVector = Icons.Default.CheckCircle,
@@ -120,10 +123,7 @@ fun TransactionItem(
                     tint = MP_Green,
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
-                        .size(30.dp)
-                        .clickable {
-
-                        }
+                        .size(36.dp)
                 )
             }
         }

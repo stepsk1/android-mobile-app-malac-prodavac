@@ -4,6 +4,7 @@ import com.triforce.malacprodavac.data.local.scheduledPickup.ScheduledPickupEnti
 import com.triforce.malacprodavac.data.local.shops.ShopEntity
 import com.triforce.malacprodavac.data.remote.dto.PaginationResponse
 import com.triforce.malacprodavac.data.remote.shops.dto.CreateShopDto
+import com.triforce.malacprodavac.domain.model.shops.Shop
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -12,13 +13,13 @@ import retrofit2.http.QueryMap
 
 interface ShopsApi {
     @POST(ROUTE)
-    suspend fun registerShop(@Body registerRequest: CreateShopDto): ShopEntity
+    suspend fun registerShop(@Body registerRequest: CreateShopDto): Shop
 
     @GET(ROUTE)
-    suspend fun getShops(@QueryMap() queryMap: MutableMap<String, String>): PaginationResponse<ShopEntity>
+    suspend fun getShops(@QueryMap() queryMap: MutableMap<String, String>): PaginationResponse<Shop>
 
     @GET("${ROUTE}/{id}")
-    suspend fun getShop(@Path("id") id: Int): ShopEntity
+    suspend fun getShop(@Path("id") id: Int): Shop
 
     @GET("${ROUTE}/{id}/scheduledPickups")
     suspend fun getShopSchedulePickups(

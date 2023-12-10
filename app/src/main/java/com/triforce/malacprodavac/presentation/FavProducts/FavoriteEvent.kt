@@ -1,8 +1,7 @@
 package com.triforce.malacprodavac.presentation.FavProducts
 
 sealed class FavoriteEvent {
-    object AddFavProduct: FavoriteEvent()
-   // object GetUser: FavoriteEvent()
+    data class AddFavProduct(val productId: Int): FavoriteEvent()
     object GetFavProducts: FavoriteEvent()
-    object DeleteFavProduct: FavoriteEvent()
+    data class DeleteFavProduct(val productId: Int): FavoriteEvent()
 }
