@@ -25,13 +25,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Green
 @Composable
 fun TotalPrice(
     viewModel: CartViewModel = hiltViewModel()
-): Double{
-    var totalPrice = 0.00
-
-    for (order in BoughtProducts.listOfBoughtProducts) {
-        totalPrice += order.totalPrice
-    }
-
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
@@ -43,8 +37,8 @@ fun TotalPrice(
                 end = 20.dp,
             )
     ) {
-        Column (
-        ){
+        Column(
+        ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -52,13 +46,11 @@ fun TotalPrice(
             )
             {
                 Text(
-                    text = "Ukupno: ${totalPrice} rsd",
+                    text = "Ukupno: ${viewModel.cartState.totalPrice} rsd",
                     style = MaterialTheme.typography.h6,
                     color = MP_Green
                 )
             }
         }
     }
-
-    return totalPrice
 }

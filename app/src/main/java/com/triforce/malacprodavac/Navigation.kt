@@ -88,7 +88,15 @@ fun Navigation() {
             StoreCategoryScreen(navController = navController)
         }
 
-        composable(route = Screen.CartScreen.route) {
+        composable(route = Screen.CartScreen.route+ "?productId={productId}",
+            arguments = listOf(
+                navArgument(
+                    name = "productId"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )) {
             CartScreen(navController = navController)
         }
 

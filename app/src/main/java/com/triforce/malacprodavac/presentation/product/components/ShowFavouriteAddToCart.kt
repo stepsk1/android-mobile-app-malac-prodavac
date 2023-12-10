@@ -26,11 +26,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.presentation.cart.components.BoughtProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.product.ProductEvent
@@ -46,6 +48,8 @@ fun ShowFavouriteAddToCart(
     viewModel: ProductViewModel,
     viewModelFavourite: FavoriteViewModel
 ) {
+    val cartViewModel: CartViewModel = hiltViewModel()
+
     val imageVector: ImageVector
 
     if (viewModel.state.isFavorite == true) imageVector = Icons.Outlined.Favorite
@@ -112,15 +116,15 @@ fun ShowFavouriteAddToCart(
                 .clickable {
                     if (!viewModel.state.isBuyed) {
                         viewModel.onEvent(ProductEvent.buyProduct)
-
-                        viewModel.state.product?.let { addToBoughtProducts(ProductAmount(it)) }
                         Toast
                             .makeText(
                                 context, "Proizvod je dodat u korpu", Toast.LENGTH_LONG
                             )
                             .show()
 
+                        cartViewModel.addToCart(mainProduct, viewModel.state.shop)
                         navController.navigate(Screen.CartScreen.route)
+
                     } else {
                         Toast
                             .makeText(

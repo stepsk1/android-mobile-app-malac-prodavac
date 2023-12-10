@@ -63,10 +63,6 @@ fun ProfilePublicScreen(
                 ProfileHeroComp(user, navController, false)
                 Spacer(modifier = Modifier.padding(16.dp))
 
-                Log.d("PROFILE_PUBLIC_USER", user.toString())
-                Log.d("PROFILE_PUBLIC_SHOP", shop.toString())
-                Log.d("PROFILE_PUBLIC_SHOP_PRODUCTS", shop?.products.toString())
-
                 ShopDescComp(user, shop)
                 Spacer(modifier = Modifier.padding(16.dp))
 
