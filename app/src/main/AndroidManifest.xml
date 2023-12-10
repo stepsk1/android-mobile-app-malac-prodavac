@@ -29,6 +29,8 @@
     <!--media-picker-->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
+    <!-- notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".MalacProdavacApp"
@@ -54,7 +56,9 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAthH75Bwhc4JS5-18BRvbB6gMElDyfeXo"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAthH75Bwhc4JS5-18BRvbB6gMElDyfeXo" />
 
     </application>
 
