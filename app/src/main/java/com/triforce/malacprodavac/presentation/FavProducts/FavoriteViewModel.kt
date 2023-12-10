@@ -23,7 +23,6 @@ class FavoriteViewModel @Inject constructor(
 ) : ViewModel() {
 
     var state by mutableStateOf(FavoriteState())
-    var listOfProducts: MutableList<FavoriteProduct> = mutableListOf()
     var orderStatus: String = ""
 
     init {
@@ -33,28 +32,22 @@ class FavoriteViewModel @Inject constructor(
     fun onEvent(event: FavoriteEvent) {
         when(event) {
             is FavoriteEvent.AddFavProduct -> {
-                addFavProduct(state.customerId!!, CreateFavoriteProductDto(productId = FavouriteProduct.favouriteProductId))
+                addFavProduct(state.customerId!!, CreateFavoriteProductDto(productId = event.productId))
             }
-//            is FavoriteEvent.GetUser -> {
-//                me()
-//            }
             is FavoriteEvent.GetFavProducts -> {
-                getFavProducts(state.customerId!!, true)
+                getFavProducts(state.customerId!!)
             }
-
             is FavoriteEvent.DeleteFavProduct -> {
-                deleteFavProduct(state.customerId!!, FavouriteProduct.favouriteProductId)
+                deleteFavProduct(state.customerId!!, favoriteProductId = event.productId)
             }
         }
     }
 
     private fun getFavProducts(
         id: Int,
-        fetchFromRemote: Boolean
-    )
-    {
+    ) {
         viewModelScope.launch {
-            repository.getFavoriteProducts(id, fetchFromRemote).collect { result ->
+            repository.getFavoriteProducts(id, true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<FavoriteProduct>) {
@@ -80,8 +73,7 @@ class FavoriteViewModel @Inject constructor(
     private fun addFavProduct(
         id: Int,
         createFavoriteProductDto: CreateFavoriteProductDto
-    )
-    {
+    ) {
         viewModelScope.launch {
             repository.insertFavoriteProduct(id, createFavoriteProductDto).collect { result ->
                 when (result) {
@@ -109,8 +101,7 @@ class FavoriteViewModel @Inject constructor(
     private fun deleteFavProduct(
         id: Int,
         favoriteProductId: Int
-    )
-    {
+    ) {
         viewModelScope.launch {
             repository.deleteFavoriteProduct(id, favoriteProductId).collect { result ->
                 when (result) {
@@ -143,18 +134,14 @@ class FavoriteViewModel @Inject constructor(
                             state = state.copy(
                                 customerId = result.data.customer!!.id
                             )
-                            getFavProducts(state.customerId!!, true)
+                            getFavProducts(state.customerId!!)
                         }
-                        println("REZULTAT")
-                        println(state.customerId)
                     }
                     is Resource.Error -> Unit
 
                     is Resource.Loading -> {
                         state = state.copy(isLoading = result.isLoading)
                     }
-
-                    else -> {}
                 }
             }
         }

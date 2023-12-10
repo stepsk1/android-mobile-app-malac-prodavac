@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.cart.BuyedProducts
@@ -39,7 +40,10 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun ShowFavouriteAddToCart(
-    navController: NavController, viewModel: ProductViewModel, viewModelFavourite: FavoriteViewModel
+    mainProduct: Product,
+    navController: NavController,
+    viewModel: ProductViewModel,
+    viewModelFavourite: FavoriteViewModel
 ) {
 
     val imageVector: ImageVector
@@ -76,25 +80,23 @@ fun ShowFavouriteAddToCart(
             modifier = Modifier
                 .size(50.dp)
                 .clickable {
-                    if (viewModel.state.isFavorite == false) {
+                    if (!viewModel.state.isFavorite) {
                         viewModel.onEvent(ProductEvent.favoriteProduct)
-                        viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct)
-
+                        viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct(productId = mainProduct.id))
                         Toast
                             .makeText(
                                 context,
-                                "Uspešno dodat proizvod u listu omiljenih proizvoda",
+                                "Dodat u omiljene proizvode",
                                 Toast.LENGTH_LONG
                             )
                             .show()
                     } else {
-
                         viewModel.onEvent(ProductEvent.removeFavoriteProduct)
-                        viewModelFavourite.onEvent(FavoriteEvent.DeleteFavProduct)
+                        viewModelFavourite.onEvent(FavoriteEvent.DeleteFavProduct(mainProduct.id))
                         Toast
                             .makeText(
                                 context,
-                                "Proizvod se već nalazi u listi omiljenih proizvoda",
+                                "Već se nalazi u omiljenim proizvodima",
                                 Toast.LENGTH_LONG
                             )
                             .show()
@@ -114,7 +116,7 @@ fun ShowFavouriteAddToCart(
 
                         Toast
                             .makeText(
-                                context, "Uspešno dodat proizvod u korpu", Toast.LENGTH_LONG
+                                context, "Proizvod je dodat u korpu", Toast.LENGTH_LONG
                             )
                             .show()
                     } else {

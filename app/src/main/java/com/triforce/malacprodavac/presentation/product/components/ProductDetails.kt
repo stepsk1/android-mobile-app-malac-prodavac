@@ -63,7 +63,7 @@ fun ProductDetails(
             text = "Ostavi ocenu:",
             style = MaterialTheme.typography.body1,
             color = MP_Pink,
-            softWrap = true
+            fontWeight = FontWeight.W500
         )
         RatingStars(rating = product.rating!!)
     }

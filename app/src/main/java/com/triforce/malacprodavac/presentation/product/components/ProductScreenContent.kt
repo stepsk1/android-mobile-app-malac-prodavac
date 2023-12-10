@@ -87,7 +87,7 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 @Composable
 fun ProductScreenContent(
     navController: NavController,
-    viewModel: ProductViewModel
+    viewModel: ProductViewModel,
 ) {
     var isCreateReviewOpen by remember { mutableStateOf(false) }
 
@@ -100,13 +100,14 @@ fun ProductScreenContent(
 
     val state = viewModel.state
     val product = state.product
+    val shop = state.shop
 
     var colorForeground = MP_Green
     var colorBackground = MP_GreenLight
 
     val scrollState = rememberScrollState()
 
-    if (product != null) {
+    if (product != null && shop != null) {
         Scaffold(
             content = { padding ->
                 Box(
@@ -131,7 +132,7 @@ fun ProductScreenContent(
                         Spacer(modifier = Modifier.padding(22.dp))
                         ProductDetails(product = product)
 
-                        if (viewModel.state.product?.shopId == viewModel.state.user?.shop?.id) {
+                        if (product.shopId == viewModel.state.user?.shop?.id) {
                             Spacer(modifier = Modifier.padding(16.dp))
                             ProductOptions(product, navController, true)
                         }
@@ -139,9 +140,9 @@ fun ProductScreenContent(
                         Spacer(Modifier.height(22.dp))
                         ShowHighlightSectionComp(
                             navController = navController,
-                            products = viewModel.state.shop?.products,
-                            title = "Više od prodavca",
-                            route = Screen.HighlightSection.route
+                            products = shop.products,
+                            title = "Više od ${shop.businessName}",
+                            route = Screen.HighlightSection.route + "?id=${shop.id}"
                         )
 
                         Row(
@@ -153,7 +154,7 @@ fun ProductScreenContent(
                         ) {
                             Text(
                                 text = "Komentari:",
-                                style = MaterialTheme.typography.body1,
+                                style = MaterialTheme.typography.body2,
                                 color = MP_Black,
                                 fontWeight = FontWeight.W500
                             )

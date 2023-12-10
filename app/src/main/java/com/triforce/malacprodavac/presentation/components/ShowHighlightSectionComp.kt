@@ -1,6 +1,7 @@
 package com.triforce.malacprodavac.presentation.components
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,11 +29,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
+import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
+import com.triforce.malacprodavac.presentation.product.ProductEvent
+import com.triforce.malacprodavac.presentation.product.ProductViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -63,11 +70,10 @@ fun ShowHighlightSectionComp(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.body2,
                 color = MP_Black,
                 fontWeight = FontWeight.W500
             )
-            Log.d("NavController222", route)
             Text(
                 text = "Vidi više",
                 style = MaterialTheme.typography.caption,
@@ -81,6 +87,8 @@ fun ShowHighlightSectionComp(
                     .background(MP_Pink)
                     .padding(vertical = 6.dp, horizontal = 15.dp)
             )
+
+            Log.d("SHOW_Highlight_Section_Comp", route)
         }
 
         ShowHighlightedProducts(subProducts, navController)
@@ -95,15 +103,14 @@ fun ShowHighlightedProducts(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(
-            top = 7.5.dp,
-            start = 7.5.dp,
-            end = 7.5.dp
+            top = 16.dp,
+            start = 10.dp,
+            end = 10.dp
         )
     ) {
         if (products != null) {
-            items(products.size) {// how many items do we have
-                // define one of items
-                HighlightSectionProduct(product = products.get(it), navController)
+            items(products.size) {
+                HighlightSectionProduct(product = products[it], navController)
             }
         }
     }
@@ -112,8 +119,12 @@ fun ShowHighlightedProducts(
 @Composable
 fun HighlightSectionProduct (
     product: Product?,
-    navController: NavController
+    navController: NavController,
+    viewModel: ProductViewModel = hiltViewModel(),
+    viewModelFavourite: FavoriteViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
     BoxWithConstraints(
         modifier = Modifier
             .padding(start = 7.5.dp, end = 7.5.dp, top = 7.5.dp, bottom = 15.dp)
@@ -123,7 +134,7 @@ fun HighlightSectionProduct (
                 shape = RoundedCornerShape(7.5.dp)
             )
             .padding(1.5.dp)
-            .aspectRatio(0.8F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
+            .aspectRatio(0.8F) // ratio is 1x1 so whatever the width is, the height will be the same
             .clip(RoundedCornerShape(10.dp))
             .background(MP_White)
             .clickable {
@@ -153,6 +164,7 @@ fun HighlightSectionProduct (
                     ) {
 
                     }
+
                     Column(
                         horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.SpaceAround,
@@ -161,7 +173,7 @@ fun HighlightSectionProduct (
                                 top = 7.5.dp
                             )
                     ) {
-                        androidx.compose.material3.Text(
+                        Text(
                             text = if (product.title.length <= 16 ){
                                 product.title
                             }else{
@@ -179,25 +191,44 @@ fun HighlightSectionProduct (
                                     top = 5.dp
                                 )
                         ) {
-                            androidx.compose.material3.Text(
+                            Text(
                                 text = product.price.toString() + " rsd",
                                 style = MaterialTheme.typography.body2,
                                 color = MP_Green,
                                 fontWeight = FontWeight.Bold
                             )
-                            Icon(
-                                imageVector = if (product.available) {
-                                    Icons.Filled.Favorite
-                                } else {
-                                    Icons.Filled.FavoriteBorder
-                                },
-                                contentDescription = "favourite",
-                                tint = MP_Pink,
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .clickable {
-                                    }
-                            )
+                            if ( product.isFavored != null ) {
+
+                                Icon(
+                                    imageVector = if (product.isFavored) { Icons.Filled.Favorite } else { Icons.Filled.FavoriteBorder },
+                                    contentDescription = "favourite_product",
+                                    tint = MP_Pink,
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .clickable {
+                                            if (!viewModel.state.isFavorite) {
+                                                viewModel.onEvent(ProductEvent.favoriteProduct)
+                                                viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct(product.id))
+                                                Toast
+                                                    .makeText(
+                                                        context,
+                                                        "Dodat u omiljene proizvode",
+                                                        Toast.LENGTH_LONG
+                                                    )
+                                                    .show()
+                                            } else {
+                                                viewModel.onEvent(ProductEvent.removeFavoriteProduct)
+                                                viewModelFavourite.onEvent(FavoriteEvent.DeleteFavProduct(product.id))
+                                                Toast
+                                                    .makeText(
+                                                        context,
+                                                        "Već se nalazi u omiljenim proizvodima",
+                                                        Toast.LENGTH_LONG
+                                                    )
+                                                    .show()
+                                            }
+                                        })
+                            }
                         }
                     }
                 }

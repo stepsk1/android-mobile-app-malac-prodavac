@@ -37,10 +37,10 @@ fun ProductScreen(
             GoBackComp("Malac Pijaca", navController, true)
                  },
         bottomBar = {
-            ProductBottomBar(navController,viewModel,viewModelFavProduct)
+            ProductBottomBar(navController, viewModel, viewModelFavProduct)
         },
         content = { padding ->
-            ProductScreenContent(navController = navController, viewModel = viewModel)
+            ProductScreenContent(navController, viewModel)
         }
     )
 }

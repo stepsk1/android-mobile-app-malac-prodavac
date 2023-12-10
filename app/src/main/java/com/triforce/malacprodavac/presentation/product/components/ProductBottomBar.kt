@@ -28,11 +28,14 @@ fun ProductBottomBar(
 ){
     Column {
 
-        ShowFavouriteAddToCart(
-            navController = navController,
-            viewModel = viewModel,
-            viewModelFavourite = viewModelFavProduct
-        )
+        viewModel.state.product?.let {
+            ShowFavouriteAddToCart(
+                navController = navController,
+                viewModel = viewModel,
+                viewModelFavourite = viewModelFavProduct,
+                mainProduct = it
+            )
+        }
 
         BottomNavigationMenu(
             navController = navController,

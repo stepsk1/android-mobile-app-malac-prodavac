@@ -143,7 +143,6 @@ class ProductViewModel @Inject constructor(
             repositoryShop.getShop(fetchFromRemote = true, id = shopId)
                 .collectLatest { result ->
                     when (result) {
-
                         is Resource.Success -> {
                             if (result.data is Shop) {
                                 state = state.copy(shop = result.data, isLoading = false)
@@ -165,7 +164,6 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun getProduct(productId: Int) {
-
         viewModelScope.launch {
             repository.getProduct(productId, true).collect { result ->
                 when (result) {
@@ -196,5 +194,4 @@ class ProductViewModel @Inject constructor(
             }
         }
     }
-
 }
