@@ -1,5 +1,7 @@
 package com.triforce.malacprodavac.domain.model
 
+import com.triforce.malacprodavac.domain.model.shops.Shop
+
 data class User(
     val id: Int,
     val firstName: String,

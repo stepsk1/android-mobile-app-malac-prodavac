@@ -9,20 +9,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.triforce.malacprodavac.presentation.add_edit_product.AddEditProductEvent
-import com.triforce.malacprodavac.presentation.registration.RegistrationFormEvent
 import com.triforce.malacprodavac.ui.theme.MP_Black
-import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -31,6 +26,7 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 fun AddEditTextField(
     label: String,
     text: String,
+    isError: Boolean = false,
     onTextValueChange: (String) -> Unit,
     placeholder: String,
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -51,6 +47,7 @@ fun AddEditTextField(
         )
         OutlinedTextField(
             value = text,
+            isError = isError,
             onValueChange = { value -> onTextValueChange(value) },
             modifier = Modifier
                 .fillMaxWidth()

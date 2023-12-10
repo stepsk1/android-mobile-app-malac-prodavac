@@ -1,7 +1,7 @@
 package com.triforce.malacprodavac.presentation.maps
 
 import com.google.android.gms.maps.model.LatLng
-import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.model.shops.Shop
 
 sealed class MapEvent {
 

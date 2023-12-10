@@ -56,7 +56,7 @@ fun ShopHomeScreen(navController: NavController) {
 
         }
         Column {
-            GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac")
+            GreetingSection(msg = "Početna strana", subMsg = "Pretražite Malac Prodavac", navController = navController)
             GoToShopProducts(navController)
             RecommendedFeaturesSection(
                 navController = navController,

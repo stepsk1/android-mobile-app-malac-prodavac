@@ -1,9 +1,9 @@
 package com.triforce.malacprodavac.data.remote.products
 
-import com.triforce.malacprodavac.data.local.product.ProductEntity
 import com.triforce.malacprodavac.data.remote.dto.PaginationResponse
-import com.triforce.malacprodavac.data.remote.products.dto.CreateProductDto
-import com.triforce.malacprodavac.data.remote.products.dto.UpdateProductDto
+import com.triforce.malacprodavac.domain.model.products.CreateProductDto
+import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.model.products.UpdateProductDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -14,24 +14,24 @@ import retrofit2.http.QueryMap
 
 interface ProductsApi {
     @POST(ROUTE)
-    suspend fun create(@Body() createPostDto: CreateProductDto): ProductEntity
+    suspend fun create(@Body() createPostDto: CreateProductDto): Product
 
     @GET(ROUTE)
-    suspend fun getProducts(@QueryMap() queryMap: MutableMap<String, String>): PaginationResponse<ProductEntity>
+    suspend fun getProducts(@QueryMap() queryMap: MutableMap<String, String>): PaginationResponse<Product>
 
     @GET("${ROUTE}/{id}")
-    suspend fun getProduct(@Path("id") id: Int): ProductEntity
+    suspend fun getProduct(@Path("id") id: Int): Product
 
     @PATCH("${ROUTE}/{id}")
     suspend fun update(
         @Path("id") id: Int,
         @Body() updateProductDto: UpdateProductDto
-    ): ProductEntity
+    ): Product
 
     @DELETE("${ROUTE}/{id}")
     suspend fun delete(
         @Path("id") id: Int
-    ): ProductEntity
+    ): Product
 
     companion object {
         const val ROUTE = "/products"

@@ -1,8 +1,8 @@
 package com.triforce.malacprodavac.domain.repository.products
 
-import com.triforce.malacprodavac.domain.model.CreateProduct
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.model.UpdateProduct
+import com.triforce.malacprodavac.domain.model.products.CreateProductDto
+import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.model.products.UpdateProductDto
 import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -20,7 +20,7 @@ interface ProductRepository {
     ): Flow<Resource<Product>>
 
     suspend fun deleteProduct(id: Int): Flow<Resource<Product>>
-    suspend fun insertProduct(createProduct: CreateProduct): Flow<Resource<Product>>
+    suspend fun insertProduct(createProductDto: CreateProductDto): Flow<Resource<Product>>
 
-    suspend fun updateProduct(id: Int, updateProduct: UpdateProduct): Flow<Resource<Product>>
+    suspend fun updateProduct(id: Int, updateProduct: UpdateProductDto): Flow<Resource<Product>>
 }

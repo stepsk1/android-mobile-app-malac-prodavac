@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.domain.model.Category
-import com.triforce.malacprodavac.domain.repository.CategoryRepository
+import com.triforce.malacprodavac.domain.repository.CategoriesRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,19 +14,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoreViewModel @Inject constructor(
-    private val repository: CategoryRepository
+    private val repository: CategoriesRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(StoreState())
 
-
     init {
-        getCategories(true, null)
+        getCategories()
     }
 
-    private fun getCategories(fetchFromRemote: Boolean, category: Category?) {
+    private fun getCategories() {
+
+        state.copy(isLoading = true)
+
         viewModelScope.launch {
-            repository.getCategories(fetchFromRemote).collect { result ->
+            repository.getCategories(true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Category>) {
@@ -46,7 +48,6 @@ class StoreViewModel @Inject constructor(
                     }
                 }
             }
-
         }
     }
 }

@@ -10,8 +10,10 @@ import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.filter.Filter
 import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
+import com.triforce.malacprodavac.data.services.filter.FilterOrder
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.data.services.filter.SingleOrder
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
@@ -19,24 +21,31 @@ import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HighlightSectionViewModel @Inject constructor(
 
-    private val profile: Profile,
     private val repositoryShop: ShopRepository,
-    private val repositoryUser: UserRepository,
     private val repositoryProduct: ProductRepository,
 
     savedStateHandle: SavedStateHandle
 
 ) : ViewModel() {
 
-    var state by mutableStateOf(ProfilePublicState())
+    var state by mutableStateOf(HighlightSectionState())
+
+    private val searchQueryChannel = Channel<String>(Channel.CONFLATED)
 
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
@@ -45,19 +54,36 @@ class HighlightSectionViewModel @Inject constructor(
     val isSearching = _isSearching.asStateFlow()
 
     var currentShopId: Int? = null
-    fun onSearchTextChange(text: String){
+
+    private val debouncePeriod = 500L;
+    private var searchJob: Job? = null
+
+    fun onSearchTextChange(text: String) {
         _searchText.value = text
-        currentShopId?.let { getProducts(true, currentShopId!!, text) }
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(debouncePeriod)
+            currentShopId?.let { getProducts(it, text) }
+        }
     }
 
     init {
+        state.copy(isLoading = true)
         savedStateHandle.get<Int>("id")?.let { shopId ->
-
-            Log.d("SHOPID222", shopId.toString())
-            if ( shopId != -1 ) {
-
+            if (shopId != -1) {
                 currentShopId = shopId
                 getShop(shopId)
+            }
+        }
+    }
+
+    fun onEvent(event: HighlightSectionEvent){
+        when ( event){
+            is HighlightSectionEvent.OrderBy -> {
+                currentShopId?.let {
+                    Log.d("SearchText", searchText.value)
+                    getProducts(shopId = it, searchText = searchText.value, orderId = event.order )
+                }
             }
         }
     }
@@ -67,11 +93,9 @@ class HighlightSectionViewModel @Inject constructor(
             repositoryShop.getShop(id, true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        result.data?.let {shop ->
-
-                            state = state.copy(currentShop = shop)
-
-                            getProducts(true, shop.id)
+                        result.data?.let { shop ->
+                            state = state.copy(shop = shop)
+                            getProducts(shop.id)
                         }
                     }
 
@@ -89,8 +113,7 @@ class HighlightSectionViewModel @Inject constructor(
         }
     }
 
-    private fun getProducts(fetchFromRemote: Boolean, shopId: Int, searchText: String = "") {
-
+    private fun getProducts(shopId: Int, searchText: String = "", orderId: Int = -1) {
         viewModelScope.launch {
 
             val query = FilterBuilder.buildFilterQueryMap(
@@ -106,15 +129,15 @@ class HighlightSectionViewModel @Inject constructor(
                             FilterOperation.IContains,
                             searchText
                         )
-                    ), order = null, limit = null, offset = null
+                    ), order = if ( orderId == -1 ) null else listOf(SingleOrder("price", if(orderId == 1) FilterOrder.Asc else FilterOrder.Desc)), limit = null, offset = null
                 )
             )
 
-            repositoryProduct.getProducts(shopId, fetchFromRemote, query).collect { result ->
+            repositoryProduct.getProducts(shopId, true, query).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Product>) {
-                            state = state.copy(products = result.data)
+                            state = state.copy(products = result.data, isLoading = false)
                         }
                     }
 

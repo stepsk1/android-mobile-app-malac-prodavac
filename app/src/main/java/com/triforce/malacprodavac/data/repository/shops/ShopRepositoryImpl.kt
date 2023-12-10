@@ -6,7 +6,7 @@ import com.triforce.malacprodavac.data.mappers.toShop
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.shops.dto.CreateShopDto
 import com.triforce.malacprodavac.domain.model.CreateShop
-import com.triforce.malacprodavac.domain.model.Shop
+import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -48,7 +48,7 @@ class ShopRepositoryImpl @Inject constructor(
                 null
             }
             shop?.let {
-                emit(Resource.Success(data = it.toShop()))
+                emit(Resource.Success(data = it))
             }
             emit(Resource.Loading(isLoading = false))
         }
@@ -94,8 +94,7 @@ class ShopRepositoryImpl @Inject constructor(
 
             remoteShops?.let {
 
-                Log.d("SHOPS:", it.toString())
-                emit(Resource.Success(remoteShops.data.map { jt -> jt.toShop() }))
+                emit(Resource.Success(remoteShops.data.map { jt -> jt }))
 
             }
 
@@ -141,7 +140,7 @@ class ShopRepositoryImpl @Inject constructor(
             remoteShop?.let {
 
                 Log.d("SHOP:", it.toString())
-                emit(Resource.Success(remoteShop.toShop()))
+                emit(Resource.Success(remoteShop))
 
             }
 

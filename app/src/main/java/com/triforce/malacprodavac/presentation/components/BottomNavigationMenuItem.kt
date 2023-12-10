@@ -70,6 +70,7 @@ fun BottomNavigationMenuItem(
                 imageVector = item.graphicID,
                 contentDescription = item.title,
                 tint = if (item.isActive) MP_White else nonActiveTextColor,
+                modifier = Modifier.size(25.dp)
             )
         }
         Text(

@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,12 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.ui.theme.MP_White
 import androidx.compose.foundation.layout.Column as Column
 
@@ -21,7 +27,8 @@ import androidx.compose.foundation.layout.Column as Column
 fun GreetingSection(
     name: String = "Filip",
     msg: String,
-    subMsg: String = ""
+    subMsg: String = "",
+    navController: NavController
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -47,11 +54,14 @@ fun GreetingSection(
         }
 
         Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "Search",
+            imageVector = ImageVector.vectorResource(id = R.drawable.baseline_circle_notifications_24),
+            contentDescription = "Notifications",
             tint = MP_White,
             modifier = Modifier
-                .size(35.dp)
+                .size(45.dp)
+                .clickable {
+                    navController.navigate(Screen.NotificationScreen.route)
+                }
         )
     }
 }

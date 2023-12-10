@@ -7,19 +7,23 @@ import com.triforce.malacprodavac.data.repository.customers.CustomerRepositoryIm
 import com.triforce.malacprodavac.data.repository.notifications.NotificationsRepositoryImpl
 import com.triforce.malacprodavac.data.repository.orders.OrderRepositoryImpl
 import com.triforce.malacprodavac.data.repository.products.ProductRepositoryImpl
+import com.triforce.malacprodavac.data.repository.products.reviews.ReviewsRepositoryImpl
+import com.triforce.malacprodavac.data.repository.products.reviews.replies.ReviewRepliesRepositoryImpl
 import com.triforce.malacprodavac.data.repository.scheduledPickups.ScheduledPickupsRepositoryImpl
 import com.triforce.malacprodavac.data.repository.shops.ShopRepositoryImpl
 import com.triforce.malacprodavac.data.repository.users.UserRepositoryImpl
 import com.triforce.malacprodavac.data.repository.users.userMedias.UserMediasRepositoryImpl
 import com.triforce.malacprodavac.domain.repository.AuthRepository
-import com.triforce.malacprodavac.domain.repository.CategoryRepository
+import com.triforce.malacprodavac.domain.repository.CategoriesRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
-import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ScheduledPickupRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
+import com.triforce.malacprodavac.domain.repository.products.ProductRepository
+import com.triforce.malacprodavac.domain.repository.products.reviews.ReviewsRepository
+import com.triforce.malacprodavac.domain.repository.products.reviews.replies.ReviewRepliesRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import dagger.Binds
@@ -71,7 +75,7 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindsCategoryRepository(
         categoryRepositoryImpl: CategoryRepositoryImpl
-    ): CategoryRepository
+    ): CategoriesRepository
 
     @Binds
     @Singleton
@@ -97,4 +101,16 @@ abstract class RepositoryModule {
         notificationsRepositoryImpl: NotificationsRepositoryImpl
     ): NotificationsRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindReviewsRepository(
+        reviewsRepositoryImpl: ReviewsRepositoryImpl
+    ): ReviewsRepository
+
+
+    @Binds
+    @Singleton
+    abstract fun bindReviewRepliesRepository(
+        reviewRepliesRepositoryImpl: ReviewRepliesRepositoryImpl
+    ): ReviewRepliesRepository
 }

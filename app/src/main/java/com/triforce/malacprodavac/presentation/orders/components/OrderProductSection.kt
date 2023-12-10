@@ -15,10 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.domain.model.Order
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.orders.OrderState
 import com.triforce.malacprodavac.presentation.orders.OrderViewModel
-import com.triforce.malacprodavac.presentation.orders.OrderedProducts
 
 @Composable
 fun OrderProductSection(
@@ -36,14 +35,8 @@ fun OrderProductSection(
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(1),
-            contentPadding = PaddingValues(
-                start = 15.dp,
-                end = 15.dp,
-                bottom = 50.dp
-            ), // 130 dp bottom padding because navigation and total price
             modifier = Modifier
-                .requiredHeight(530.dp)
-                .padding(top = 20.dp)
+                .requiredHeight(500.dp)
         ) {
             items(orders.size) {// how many items do we have
             // define one of items

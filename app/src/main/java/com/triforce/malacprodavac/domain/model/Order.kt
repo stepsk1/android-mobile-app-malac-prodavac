@@ -1,8 +1,6 @@
 package com.triforce.malacprodavac.domain.model
 
-import androidx.room.PrimaryKey
-import com.triforce.malacprodavac.domain.model.Courier
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
 
 data class Order(
     val id: Int,

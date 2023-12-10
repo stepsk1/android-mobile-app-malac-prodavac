@@ -19,22 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
-import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Green
 
 @Composable
-fun TotalPrice(viewModel: CartViewModel = hiltViewModel()): Double {
+fun TotalPrice(
+    viewModel: CartViewModel = hiltViewModel()
+): Double{
+    var totalPrice = 0.00
 
-    var totalPrice: Double = 0.00
-    for (order in BuyedProducts.listOfBuyedProducts) {
+    for (order in BoughtProducts.listOfBoughtProducts) {
         totalPrice += order.totalPrice
-        println("CENA PORUDZINE")
-        println(totalPrice)
     }
-
-    var state by remember { mutableStateOf(viewModel.state) }
 
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
@@ -43,31 +39,26 @@ fun TotalPrice(viewModel: CartViewModel = hiltViewModel()): Double {
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .padding(
-                start = 5.dp,
-                top = 590.dp,
-                end = 5.dp,
-                bottom = 40.dp
+                start = 20.dp,
+                end = 20.dp,
             )
     ) {
         Column (
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
         ){
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 20.dp)
             )
             {
                 Text(
-                    text = "Ukupno: $totalPrice rsd",
-//                    text = "Ukupno: ${state.totalPrice} rsd",
-                    style = MaterialTheme.typography.h5,
-                    color = MP_Black
+                    text = "Ukupno: ${totalPrice} rsd",
+                    style = MaterialTheme.typography.h6,
+                    color = MP_Green
                 )
             }
         }
     }
+
     return totalPrice
 }

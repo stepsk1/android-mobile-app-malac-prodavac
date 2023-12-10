@@ -4,12 +4,10 @@ import android.util.Log
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
 import com.triforce.malacprodavac.data.mappers.products.toProduct
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
-import com.triforce.malacprodavac.data.remote.products.dto.CreateProductDto
-import com.triforce.malacprodavac.data.remote.products.dto.UpdateProductDto
 import com.triforce.malacprodavac.data.services.SessionManager
-import com.triforce.malacprodavac.domain.model.CreateProduct
-import com.triforce.malacprodavac.domain.model.Product
-import com.triforce.malacprodavac.domain.model.UpdateProduct
+import com.triforce.malacprodavac.domain.model.products.CreateProductDto
+import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.model.products.UpdateProductDto
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -72,10 +70,7 @@ class ProductRepositoryImpl @Inject constructor(
             }
 
             remoteProducts?.let {
-
-                Log.d("PRODUCTS:", it.toString())
-                emit(Resource.Success(remoteProducts.data.map { jt -> jt.toProduct() }))
-
+                emit(Resource.Success(remoteProducts.data))
             }
 
             emit(Resource.Loading(false))
@@ -122,7 +117,7 @@ class ProductRepositoryImpl @Inject constructor(
             remoteProduct?.let {
 
                 Log.d("PRODUCTS:", it.toString())
-                emit(Resource.Success(remoteProduct.toProduct()))
+                emit(Resource.Success(remoteProduct))
 
             }
 
@@ -146,28 +141,31 @@ class ProductRepositoryImpl @Inject constructor(
                 null
             }
             deletedProduct?.let {
-                emit(Resource.Success(it.toProduct()))
+                emit(Resource.Success(it))
             }
             emit(Resource.Loading(false))
         }
     }
 
-    override suspend fun insertProduct(createProduct: CreateProduct): Flow<Resource<Product>> {
+    override suspend fun insertProduct(createProductDto: CreateProductDto): Flow<Resource<Product>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
-            val updateProduct = try {
-                api.create(createProduct as CreateProductDto)
+            val insertedProduct = try {
+                api.create(createProductDto)
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't create Product"))
+                null
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.message()))
                 null
             } catch (e: HttpException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't create Product"))
                 null
             }
-            updateProduct?.let {
-                emit(Resource.Success(it.toProduct()))
+            insertedProduct?.let {
+                emit(Resource.Success(it))
             }
 
             emit(Resource.Loading(false))
@@ -176,12 +174,12 @@ class ProductRepositoryImpl @Inject constructor(
 
     override suspend fun updateProduct(
         id: Int,
-        updateProduct: UpdateProduct
+        updateProduct: UpdateProductDto
     ): Flow<Resource<Product>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
             val updatedProduct = try {
-                api.update(id, updateProduct as UpdateProductDto)
+                api.update(id, updateProduct)
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't update Product"))
@@ -192,7 +190,7 @@ class ProductRepositoryImpl @Inject constructor(
                 null
             }
             updatedProduct?.let {
-                emit(Resource.Success(it.toProduct()))
+                emit(Resource.Success(it))
             }
 
             emit(Resource.Loading(false))

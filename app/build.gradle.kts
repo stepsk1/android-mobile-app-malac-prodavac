@@ -74,6 +74,7 @@ dependencies {
 
     implementation("androidx.compose.ui:ui:1.5.4")
     implementation("androidx.compose.material:material:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 
@@ -122,4 +123,8 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     implementation("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
+    implementation("io.github.nefilim.kjwt:kjwt-core:0.9.0")
+
+    // Socket.io
+    implementation("io.socket:socket.io-client:2.0.0")
 }

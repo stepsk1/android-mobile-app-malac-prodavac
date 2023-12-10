@@ -10,17 +10,18 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
-import androidx.navigation.NavController
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun GoBackNoSearch(
-    msg: String,
     navController: NavController,
+    msg: String
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -40,14 +41,13 @@ fun GoBackNoSearch(
                 contentDescription = "Search",
                 tint = MP_White,
                 modifier = Modifier
-                    .size(30.dp)
                     .clickable {
                         navController.popBackStack()
-                        //navController.navigate(Screen.HomeScreen.route)
                     }
+                    .size(30.dp)
             )
 
-            androidx.compose.material3.Text(
+            Text(
                 text = msg,
                 style = MaterialTheme.typography.body1,
                 color = MP_White,

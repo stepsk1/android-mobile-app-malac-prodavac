@@ -18,6 +18,8 @@ import com.triforce.malacprodavac.data.remote.notifications.NotificationsApi
 import com.triforce.malacprodavac.data.remote.orders.OrderApi
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
 import com.triforce.malacprodavac.data.remote.products.productMedias.ProductMediasApi
+import com.triforce.malacprodavac.data.remote.products.reviews.ReviewsApi
+import com.triforce.malacprodavac.data.remote.products.reviews.replies.ReviewRepliesApi
 import com.triforce.malacprodavac.data.remote.shops.ShopsApi
 import com.triforce.malacprodavac.data.remote.users.UsersApi
 import com.triforce.malacprodavac.data.remote.users.userMedias.UserMediasApi
@@ -25,6 +27,7 @@ import com.triforce.malacprodavac.data.repository.products.productMedias.Product
 import com.triforce.malacprodavac.data.services.AppSharedPreferences
 import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.repository.AuthRepository
+import com.triforce.malacprodavac.domain.repository.CategoriesRepository
 import com.triforce.malacprodavac.domain.repository.CourierRepository
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
@@ -32,9 +35,14 @@ import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.products.produtMedias.ProductMediasRepository
+import com.triforce.malacprodavac.domain.repository.products.reviews.ReviewsRepository
+import com.triforce.malacprodavac.domain.repository.products.reviews.replies.ReviewRepliesRepository
 import com.triforce.malacprodavac.domain.repository.users.userMedias.UserMediasRepository
 import com.triforce.malacprodavac.domain.use_case.GetToken
 import com.triforce.malacprodavac.domain.use_case.auth.IsAuthenticated
+import com.triforce.malacprodavac.domain.use_case.category.CategoryUseCase
+import com.triforce.malacprodavac.domain.use_case.category.GetCategories
+import com.triforce.malacprodavac.domain.use_case.category.GetCategory
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.FavoriteProduct
@@ -54,10 +62,21 @@ import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
 import com.triforce.malacprodavac.domain.use_case.order.GetOrderForId
 import com.triforce.malacprodavac.domain.use_case.order.Order
 import com.triforce.malacprodavac.domain.use_case.order.UpdateOrder
+import com.triforce.malacprodavac.domain.use_case.product.AddProduct
 import com.triforce.malacprodavac.domain.use_case.product.AddProductImages
 import com.triforce.malacprodavac.domain.use_case.product.GetAllProducts
 import com.triforce.malacprodavac.domain.use_case.product.GetProductForId
 import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
+import com.triforce.malacprodavac.domain.use_case.product.UpdateProduct
+import com.triforce.malacprodavac.domain.use_case.product.replies.CreateReview
+import com.triforce.malacprodavac.domain.use_case.product.replies.GetReview
+import com.triforce.malacprodavac.domain.use_case.product.replies.GetReviews
+import com.triforce.malacprodavac.domain.use_case.product.replies.ReviewUseCase
+import com.triforce.malacprodavac.domain.use_case.product.replies.UpdateReview
+import com.triforce.malacprodavac.domain.use_case.product.replies.replies.CreateReviewReply
+import com.triforce.malacprodavac.domain.use_case.product.replies.replies.GetReviewReplies
+import com.triforce.malacprodavac.domain.use_case.product.replies.replies.GetReviewReply
+import com.triforce.malacprodavac.domain.use_case.product.replies.replies.ReviewReplyUseCase
 import com.triforce.malacprodavac.domain.use_case.profile.Logout
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.use_case.profile.SetProfilePicture
@@ -156,6 +175,14 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideReviewsApi(retrofit: Retrofit): ReviewsApi = retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideReviewRepliesApi(retrofit: Retrofit): ReviewRepliesApi = retrofit.create()
+
+    @Provides
+    @Singleton
     fun provideOkHttpClient(authInterceptorImpl: AuthInterceptorImpl): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(authInterceptorImpl)
@@ -225,6 +252,29 @@ object ApplicationModule {
     ) =
         Registration(registerCustomer, registerCourier, registerShop)
 
+
+    @Provides
+    @Singleton
+    fun provideGetCategories(
+        repository: CategoriesRepository
+    ) = GetCategories(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCategory(
+        repository: CategoriesRepository
+    ) = GetCategory(repository)
+
+
+    @Provides
+    @Singleton
+    fun provideCategoryUseCase(
+        getCategories: GetCategories,
+        getCategory: GetCategory
+    ) = CategoryUseCase(
+        getCategories,
+        getCategory
+    )
 
     @Provides
     @Singleton
@@ -304,12 +354,23 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideAddProduct(repository: ProductRepository) =
+        AddProduct(repository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateProduct(repository: ProductRepository) =
+        UpdateProduct(repository)
+
+    @Provides
+    @Singleton
     fun provideProductUseCase(
+        addProduct: AddProduct,
         getAllProducts: GetAllProducts,
         addProductImages: AddProductImages,
         getProductForId: GetProductForId,
-        updateOrder: UpdateOrder,
-    ) = ProductUseCase(getAllProducts, getProductForId, updateOrder, addProductImages)
+        updateProduct: UpdateProduct,
+    ) = ProductUseCase(addProduct, getAllProducts, getProductForId, updateProduct, addProductImages)
 
     @Provides
     @Singleton
@@ -363,6 +424,61 @@ object ApplicationModule {
         getFavShop: GetFavShop
     ) =
         FavShopUseCase(getFavShop, deleteFavShop, addFavShop)
+
+    @Provides
+    @Singleton
+    fun provideCreateReview(repository: ReviewsRepository) =
+        CreateReview(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetReviews(repository: ReviewsRepository) =
+        GetReviews(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetReview(repository: ReviewsRepository) =
+        GetReview(repository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateReview(repository: ReviewsRepository) =
+        UpdateReview(repository)
+
+
+    @Provides
+    @Singleton
+    fun provideReviewUseCase(
+        createReview: CreateReview,
+        getReviews: GetReviews,
+        getReview: GetReview,
+        updateReview: UpdateReview
+    ) =
+        ReviewUseCase(createReview, getReviews, getReview, updateReview)
+
+    @Provides
+    @Singleton
+    fun provideCreateReviewReply(repository: ReviewRepliesRepository) =
+        CreateReviewReply(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetReviewReplies(repository: ReviewRepliesRepository) =
+        GetReviewReplies(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetReviewReply(repository: ReviewRepliesRepository) =
+        GetReviewReply(repository)
+
+    @Provides
+    @Singleton
+    fun provideReviewReplyUseCase(
+        createReviewReply: CreateReviewReply,
+        getReviewReplies: GetReviewReplies,
+        getReviewReply: GetReviewReply
+    ) =
+        ReviewReplyUseCase(createReviewReply, getReviewReplies, getReviewReply)
 
     @Provides
     @Singleton

@@ -28,6 +28,7 @@ data class ShopEntity(
     var availableAt: String?,
     var updatedAt: String?,
     var createdAt: String?,
+    var isFavored: Boolean?
 ) {
 
 

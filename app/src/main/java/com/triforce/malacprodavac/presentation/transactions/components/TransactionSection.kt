@@ -10,13 +10,15 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.domain.model.Order
 import com.triforce.malacprodavac.presentation.transactions.TransactionViewModel
 
 @Composable
 fun TransactionSection(
     transactions: List<Order>,
-    viewModel: TransactionViewModel
+    viewModel: TransactionViewModel,
+    navController: NavController
 ) {
 
     Column(
@@ -25,22 +27,15 @@ fun TransactionSection(
     ) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(1),
-            contentPadding = PaddingValues(
-                start = 15.dp,
-                end = 15.dp,
-                bottom = 50.dp
-            ), // 130 dp bottom padding because navigation and total price
             modifier = Modifier
-                .requiredHeight(530.dp)
-                .padding(top = 20.dp)
+                .requiredHeight(500.dp)
         ) {
-            items(transactions.size) {// how many items do we have
-                // define one of items
-
+            items(transactions.size) {
                 TransactionItem(
                     transaction = transactions[transactions.size - it - 1],
                     viewModel = viewModel,
-                    numberTransaction = it + 1
+                    numberTransaction = it + 1,
+                    navController = navController
                 )
             }
         }

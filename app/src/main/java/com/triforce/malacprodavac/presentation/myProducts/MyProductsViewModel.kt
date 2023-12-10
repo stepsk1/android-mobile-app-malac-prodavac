@@ -3,7 +3,6 @@ package com.triforce.malacprodavac.presentation.myProducts
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,19 +13,18 @@ import com.triforce.malacprodavac.data.services.filter.Filter
 import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.domain.model.Product
+import com.triforce.malacprodavac.domain.model.products.Product
+import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.users.UserRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.domain.util.compressedFileFromUri
-import com.triforce.malacprodavac.presentation.category.CategoryState
-import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateEvent
-import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -90,7 +88,6 @@ class MyProductsViewModel @Inject constructor(
                 .collect { result ->
                     when (result) {
                         is Resource.Error -> {
-
                         }
 
                         is Resource.Loading -> {
@@ -113,7 +110,6 @@ class MyProductsViewModel @Inject constructor(
             profile.getMe().collect { result ->
                 when (result) {
                     is Resource.Error -> {
-
                     }
 
                     is Resource.Loading -> {
@@ -127,10 +123,8 @@ class MyProductsViewModel @Inject constructor(
                             profileImageKey = result.data?.profilePicture?.key
                         )
 
-                        Log.d("FILIP1", state.currentUser.toString())
-
                         state.currentUser?.let {
-                            getShop(it.id)
+                            getShop(shopId = it.shop!!.id)
                         }
                     }
 
@@ -140,56 +134,7 @@ class MyProductsViewModel @Inject constructor(
         }
     }
 
-    private fun getShop(userId: Int) {
-        viewModelScope.launch {
-
-            val query = FilterBuilder.buildFilterQueryMap(
-                Filter(
-                    filter = listOf(
-                        SingleFilter(
-                            "userId",
-                            FilterOperation.Eq,
-                            userId
-                        )
-                    ), order = null, limit = null, offset = null
-                )
-            )
-
-
-            repositoryShop.getShops(true, query).collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        result.data?.let {shops ->
-
-                            state = state.copy(
-                                currentShop = shops.first()
-                            )
-
-                            Log.d("FILIP2", state.currentShop.toString())
-
-                            state.currentShop?.let {
-                                currentShopId = it.id
-                                getProducts(true, "shopId", it.id)
-                            }
-
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getProducts(fetchFromRemote: Boolean, filterTag: String, id: Int, searchText: String = "") {
+    private fun getProducts(fetchFromRemote: Boolean, filterTag: String = "", id: Int, searchText: String = "") {
 
         viewModelScope.launch {
 
@@ -214,10 +159,12 @@ class MyProductsViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<Product>) {
-                            state = state.copy(products = result.data)
-                        }
+                            state = state.copy(
+                                products = result.data,
+                                isLoading = false
+                            )
 
-                        Log.d("FILIP3", state.products.toString())
+                        }
                     }
 
                     is Resource.Error -> {
@@ -231,6 +178,33 @@ class MyProductsViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun getShop(shopId: Int) {
+        viewModelScope.launch {
+            repositoryShop.getShop(fetchFromRemote = true, id = shopId)
+                .collectLatest { result ->
+                    when (result) {
+
+                        is Resource.Success -> {
+                            if (result.data is Shop) {
+                                state = state.copy(
+                                    currentShop = result.data
+                                )
+
+                                getProducts(fetchFromRemote = true, filterTag = "shopId", id = state.currentShop!!.id)
+                            }
+                        }
+                        is Resource.Error -> { Unit }
+
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
+                        }
+                    }
+                }
         }
     }
 }

@@ -8,21 +8,27 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteScreen
 import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopScreen
-import com.triforce.malacprodavac.presentation.add_edit_product.AddEditProductScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.addProduct.AddProductScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.advertisingProduct.AdvertisingProductScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
-import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
+import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.scheduling.ScheduleScreen
-import com.triforce.malacprodavac.presentation.category.StoreCategoryScreen
+import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductScreen
 import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
 import com.triforce.malacprodavac.presentation.login.LoginScreen
 import com.triforce.malacprodavac.presentation.maps.MapScreen
 import com.triforce.malacprodavac.presentation.myProducts.MyProductsScreen
+import com.triforce.malacprodavac.presentation.notifications.NotificationsScreen
 import com.triforce.malacprodavac.presentation.orders.OrderScreen
 import com.triforce.malacprodavac.presentation.product.ProductScreen
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.CourierPrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.CustomerPrivateScreen
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreens.ShopPrivateScreen
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
@@ -108,10 +114,6 @@ fun Navigation() {
             ProductScreen(navController = navController)
         }
 
-        composable(route = Screen.PrivateProfile.route) {
-            ProfilePrivateScreen(navController = navController)
-        }
-
         composable(
             route = Screen.PublicProfile.route + "?id={id}&role={role}",
             arguments = listOf(
@@ -152,8 +154,12 @@ fun Navigation() {
             MyProductsScreen(navController = navController)
         }
 
+        composable(route = Screen.AddProduct.route) {
+            AddProductScreen(navController = navController)
+        }
+
         composable(
-            route = Screen.AddEditProduct.route + "?productId={productId}",
+            route = Screen.EditProduct.route + "?productId={productId}",
             arguments = listOf(
                 navArgument(
                     name = "productId"
@@ -163,7 +169,7 @@ fun Navigation() {
                 }
             )
         ) {
-            AddEditProductScreen(navController = navController)
+            EditProductScreen(navController = navController)
         }
 
         composable(route = Screen.OrderScreen.route) {
@@ -188,6 +194,38 @@ fun Navigation() {
 
         composable(route = Screen.FavoriteShopScreen.route) {
             FavoriteShopScreen(navController = navController)
+        }
+
+        composable(route = Screen.NotificationScreen.route) {
+            NotificationsScreen(navController = navController)
+        }
+
+        composable(route = Screen.PrivateProfile.route) {
+            ProfilePrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.ShopPrivateScreen.route) {
+            ShopPrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.CourierPrivateScreen.route) {
+            CourierPrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.CustomerPrivateScreen.route) {
+            CustomerPrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.AdvertisingProductScreen.route + "?productId={productId}",
+            arguments = listOf(
+                navArgument(
+                    name = "productId"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )) {
+            AdvertisingProductScreen(navController = navController)
         }
     }
 }

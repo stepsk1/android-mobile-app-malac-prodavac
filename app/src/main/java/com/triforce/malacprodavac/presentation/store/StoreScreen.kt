@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,8 +22,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,12 +37,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.Feature
 import com.triforce.malacprodavac.LinearGradient
+import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
@@ -71,7 +77,7 @@ fun StoreScreen(navController: NavController)
                 features += Feature(
                     id = it.id,
                     title = it.name,
-                    graphicID = Icons.Default.Star,
+                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
                     color1 = MP_Green,
                     color2 = MP_Green,
                     screen = Screen.StoreScreen
@@ -80,7 +86,7 @@ fun StoreScreen(navController: NavController)
                 features += Feature(
                     id = it.id,
                     title = it.name,
-                    graphicID = Icons.Default.Star,
+                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
                     color1 = MP_Pink,
                     color2 = MP_Pink,
                     screen = Screen.StoreScreen
@@ -89,7 +95,7 @@ fun StoreScreen(navController: NavController)
                 features += Feature(
                     id = it.id,
                     title = it.name,
-                    graphicID = Icons.Default.Star,
+                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
                     color1 = MP_Orange,
                     color2 = MP_Orange,
                     screen = Screen.StoreScreen
@@ -103,7 +109,6 @@ fun StoreScreen(navController: NavController)
             .fillMaxSize()
     ){
         LinearGradient(color1 = MP_GreenDark, color2 = MP_GreenLight)
-
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
         Column {
@@ -111,15 +116,20 @@ fun StoreScreen(navController: NavController)
             TitleTextContentSection(
                 sectionTitle = "Podržite lokalnu ekonomiju",
                 sectionText = "Pronađite najbolje proizvode od malih proizvođača. Pratite svoje omiljene proizvođače i podržite lokalnu ekonomiju!",
-                iconImage = Icons.Default.Star,
+                iconImage = ImageVector.vectorResource(R.drawable.logo_green),
                 iconColor = MP_Green
             )
-            StoreCategoriesSection(
-                features = features,
-                navController
-            )
+            if (!state.isLoading) {
+                StoreCategoriesSection(
+                    features = features,
+                    navController
+                )
+            } else {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
         }
-
         BottomNavigationMenu(
             navController = navController,
             items = listOf(
@@ -131,19 +141,13 @@ fun StoreScreen(navController: NavController)
                 ),
                 BottomNavigationMenuContent(
                     title = "Market",
-                    graphicID = Icons.Default.Star,
+                    graphicID = ImageVector.vectorResource(R.drawable.logo_green),
                     screen = Screen.StoreScreen,
                     isActive = true
                 ),
                 BottomNavigationMenuContent(
                     title = "Profil",
-                    graphicID = Icons.Default.AccountCircle,
-                    screen = Screen.PublicProfile,
-                    isActive = false
-                ),
-                BottomNavigationMenuContent(
-                    title = "Privatni",
-                    graphicID = Icons.Default.AccountCircle,
+                    graphicID = Icons.Default.Person,
                     screen = Screen.PrivateProfile,
                     isActive = false
                 ),
@@ -166,11 +170,10 @@ fun TitleTextContentSection(
     iconColor: Color
 ){
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(25.dp)
+            .padding(20.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -181,7 +184,8 @@ fun TitleTextContentSection(
 
             Text(
                 text = sectionTitle,
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.body1,
+                fontWeight = FontWeight.W500,
                 color = MP_Black
             )
 
@@ -196,10 +200,11 @@ fun TitleTextContentSection(
 
         Text(
             text = sectionText,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.body2,
             color = Color.Gray,
+            fontWeight = FontWeight.W300,
             modifier = Modifier
-                .padding(top = 15.dp)
+                .width(300.dp)
         )
     }
 }
@@ -215,11 +220,10 @@ fun StoreCategoriesSection(
             start = 7.5.dp,
             end = 7.5.dp,
             bottom = 80.dp
-        ), // 100 dp bottom padding because navigation
+        ),
         modifier = Modifier.fillMaxHeight(),
     ) {
-        items(features.size) {// how many items do we have
-            // define one of items
+        items(features.size) {
             StoreCategoryItem(feature = features[it], navController)
         }
     }
@@ -254,7 +258,6 @@ fun StoreCategoryItem(
                 )
             )
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -263,6 +266,7 @@ fun StoreCategoryItem(
             Text(
                 text = feature.title,
                 style = MaterialTheme.typography.body1,
+                fontWeight = FontWeight.W400,
                 color = MP_White,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -273,7 +277,7 @@ fun StoreCategoryItem(
                 tint = MP_White,
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .size(100.dp)
+                    .size(95.dp)
             )
         }
     }
