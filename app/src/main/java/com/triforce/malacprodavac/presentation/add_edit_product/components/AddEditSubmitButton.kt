@@ -45,8 +45,8 @@ fun AddEditSubmitButton(
             .fillMaxWidth()
             .padding(
                 bottom = 25.dp,
-                start = 5.dp,
-                end = 5.dp
+                start = 20.dp,
+                end = 20.dp
             )
             .shadow(
                 elevation = 10.dp,

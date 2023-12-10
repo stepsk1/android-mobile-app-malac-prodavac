@@ -27,6 +27,7 @@ sealed class Screen(val route: String) {
     data object ShopPrivateScreen : Screen("shop_private_screen")
     data object CourierPrivateScreen : Screen("courier_private_screen")
     data object CustomerPrivateScreen : Screen("customer_private_screen")
+    data object AdvertisingProductScreen : Screen("advertising_product_screen")
 
     fun withArgs(vararg args: String): String {
         return buildString {

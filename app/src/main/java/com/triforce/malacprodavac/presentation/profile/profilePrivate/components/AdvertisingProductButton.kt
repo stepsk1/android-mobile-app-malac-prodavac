@@ -11,7 +11,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddLink
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,23 +29,30 @@ import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
-import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun MyProductsButton(
-    navController: NavController
+fun AdvertisingProductButton(
+    modifier: Modifier = Modifier,
+    product: Product?,
+    navController: NavController,
+    advertising: Boolean,
+    change: Boolean
 ) {
-    val colorTint = MP_Pink
+    var colorTint = MP_Orange_Dark
+    var start = 20.dp
+    if (advertising)
+        colorTint = MP_Green
 
-    val msg = "Izmeni proizvode"
-
+    val msg = "Oglasi proizvod"
+    if(change)
+        start = 50.dp
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(
-                start = 20.dp, end = 20.dp
+                bottom=25.dp, start = start, end = 20.dp
             )
             .shadow(
                 elevation = 10.dp, spotColor = MP_Black, shape = RoundedCornerShape(20.dp)
@@ -55,8 +64,8 @@ fun MyProductsButton(
             )
     ) {
         Icon(
-            Icons.Outlined.Edit,
-            contentDescription = "Edit",
+            Icons.Outlined.PostAdd,
+            contentDescription = "Advertising",
             tint = colorTint,
             modifier = Modifier.size(35.dp).padding(end = 6.dp)
         )
@@ -67,9 +76,12 @@ fun MyProductsButton(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .clickable {
-                    navController.navigate(Screen.MyProductsScreen.route)
+                    if(!advertising)
+                        navController.navigate(Screen.MyProductsScreen.route)
+                    else
+                        navController.navigate(Screen.AdvertisingProductScreen.route + "?productId=${product?.id}")
                 }
-                .clip(RoundedCornerShape(15.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(colorTint)
                 .width(width = 200.dp)
                 .padding(vertical = 10.dp))
