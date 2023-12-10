@@ -58,13 +58,9 @@ fun ProductDetails(
             softWrap = true
         )
         Spacer(modifier = Modifier.padding(verticalSpace))
+        Spacer(modifier = Modifier.padding(verticalSpace))
 
-        Text(
-            text = "Ostavi ocenu:",
-            style = MaterialTheme.typography.body1,
-            color = MP_Pink,
-            fontWeight = FontWeight.W500
-        )
         RatingStars(rating = product.rating!!)
+        Spacer(modifier = Modifier.padding(verticalSpace))
     }
 }

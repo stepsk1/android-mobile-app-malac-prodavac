@@ -29,11 +29,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
+import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
@@ -45,6 +50,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun ShowHighlightSectionComp(
@@ -98,19 +104,24 @@ fun ShowHighlightSectionComp(
 @Composable
 fun ShowHighlightedProducts(
     products: List<Product>?,
-    navController: NavController
+    navController: NavController,
+    bottomNavigation: Boolean = false
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(
-            top = 16.dp,
+            top = if ( bottomNavigation) 1.5.dp else 16.dp,
             start = 10.dp,
-            end = 10.dp
+            end = 10.dp,
+            bottom = if ( bottomNavigation) 80.dp else 15.dp
         )
     ) {
         if (products != null) {
             items(products.size) {
-                HighlightSectionProduct(product = products[it], navController)
+                HighlightSectionProduct(
+                    product = products[it],
+                    navController = navController
+                )
             }
         }
     }
@@ -121,19 +132,18 @@ fun HighlightSectionProduct (
     product: Product?,
     navController: NavController,
     viewModel: ProductViewModel = hiltViewModel(),
-    viewModelFavourite: FavoriteViewModel = hiltViewModel()
+    viewModelFavourite: FavoriteViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
 
     BoxWithConstraints(
         modifier = Modifier
-            .padding(start = 7.5.dp, end = 7.5.dp, top = 7.5.dp, bottom = 15.dp)
+            .padding(start = 7.5.dp, end = 7.5.dp, bottom = 15.dp)
             .shadow(
                 elevation = 5.dp,
                 spotColor = MP_Black,
                 shape = RoundedCornerShape(7.5.dp)
             )
-            .padding(1.5.dp)
             .aspectRatio(0.8F) // ratio is 1x1 so whatever the width is, the height will be the same
             .clip(RoundedCornerShape(10.dp))
             .background(MP_White)
@@ -144,6 +154,9 @@ fun HighlightSectionProduct (
             }
     ) {
         if (product != null) {
+
+            val imageUrl = if (product.productMedias?.isNotEmpty() == true) "http://softeng.pmf.kg.ac.rs:10010/products/${product.productMedias.first().productId}/medias/${product.productMedias.first().id}" else null
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -162,7 +175,23 @@ fun HighlightSectionProduct (
                             .background(MP_Gray)
                             .align(Alignment.CenterHorizontally)
                     ) {
-
+                        val placeholder = R.drawable.logo_green
+                        val imageRequest = ImageRequest.Builder(LocalContext.current)
+                            .data(imageUrl)
+                            .dispatcher(Dispatchers.IO)
+                            .memoryCachePolicy(CachePolicy.ENABLED)
+                            .memoryCacheKey(imageUrl)
+                            .placeholder(placeholder)
+                            .error(placeholder)
+                            .fallback(placeholder)
+                            .build()
+                        AsyncImage(
+                            model = imageRequest,
+                            contentDescription = "Profile Picture",
+                            contentScale = ContentScale.FillWidth,
+                            modifier = Modifier
+                                .fillMaxSize()
+                        )
                     }
 
                     Column(
