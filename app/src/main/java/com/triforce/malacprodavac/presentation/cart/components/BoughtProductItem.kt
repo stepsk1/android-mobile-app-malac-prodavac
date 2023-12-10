@@ -32,7 +32,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.R
-import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.CartEvent
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -42,16 +41,16 @@ import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 
 @Composable
-fun BuyedProductItem(
-    buyedProduct: ProductAmount,
+fun BoughtProductItem(
+    boughtProduct: ProductAmount,
     viewModel: CartViewModel,
     totalPrice: Double
 ) {
-    var amount by remember { mutableStateOf(buyedProduct.amount) }
-    var productTotalPrice by remember { mutableStateOf(buyedProduct.totalPrice) }
+    var amount by remember { mutableStateOf(boughtProduct.amount) }
+    var productTotalPrice by remember { mutableStateOf(boughtProduct.totalPrice) }
 
-    fun removeFromBuyedProducts(item: ProductAmount) {
-        BuyedProducts.listOfBuyedProducts.remove(item)
+    fun removeFromBoughtProducts(item: ProductAmount) {
+        BoughtProducts.listOfBoughtProducts.remove(item)
     }
 
     BoxWithConstraints(
@@ -82,7 +81,7 @@ fun BuyedProductItem(
 
                 ) {
                     Text(
-                        text = buyedProduct.product.title,
+                        text = boughtProduct.product.title,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.h6,
                         color = MP_Black
@@ -96,8 +95,8 @@ fun BuyedProductItem(
                             .clickable {
                                 viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
                                 viewModel.onEvent(CartEvent.DeleteFromCart)
-                                removeFromBuyedProducts(buyedProduct)
-                                buyedProduct.amount = 0
+                                removeFromBoughtProducts(boughtProduct)
+                                boughtProduct.amount = 0
                                 amount = 0
                             }
                     )
@@ -134,9 +133,9 @@ fun BuyedProductItem(
                             .clickable {
                                 amount++
                                 viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
-                                buyedProduct.amount++
-                                buyedProduct.totalPrice = buyedProduct.amount * buyedProduct.product.price
-                                productTotalPrice = amount * buyedProduct.product.price
+                                boughtProduct.amount++
+                                boughtProduct.totalPrice = boughtProduct.amount * boughtProduct.product.price
+                                productTotalPrice = amount * boughtProduct.product.price
                             }
                     )
 
@@ -151,9 +150,9 @@ fun BuyedProductItem(
                                 if (amount > 1) {
                                     viewModel.onEvent(CartEvent.getTotalPrice(totalPrice))
                                     amount--
-                                    buyedProduct.amount--
-                                    buyedProduct.totalPrice = buyedProduct.amount * buyedProduct.product.price
-                                    productTotalPrice = amount * buyedProduct.product.price
+                                    boughtProduct.amount--
+                                    boughtProduct.totalPrice = boughtProduct.amount * boughtProduct.product.price
+                                    productTotalPrice = amount * boughtProduct.product.price
                                 }
                             }
                     )

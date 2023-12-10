@@ -1,7 +1,6 @@
 package com.triforce.malacprodavac.presentation.cart.CartDetails
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,9 +39,9 @@ import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
+import com.triforce.malacprodavac.presentation.cart.components.BoughtProducts
 import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
@@ -61,7 +60,7 @@ fun CartDetailsScreen(
 ) {
 
     var viewModelCart: CartViewModel = hiltViewModel()
-    val orderProducts = BuyedProducts
+    val orderProducts = BoughtProducts
 
     val typeOfPaymentOptions = listOf("Paypal", "Lično/Pouzećem")
     var selectedTypeOfPayment by remember { mutableStateOf(typeOfPaymentOptions[0]) }
@@ -82,9 +81,7 @@ fun CartDetailsScreen(
     ) {
         LinearGradient(color1 = MP_Green, color2 = MP_GreenDark)
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
-        GoBackNoSearch(msg = "Detalji plaćanja", modifier = Modifier.clickable {
-            navController.popBackStack()
-        })
+        GoBackNoSearch(msg = "Detalji plaćanja", navController = navController)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

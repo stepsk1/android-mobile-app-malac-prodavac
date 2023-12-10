@@ -106,9 +106,7 @@ fun EditProductScreen(
         RoundedBackgroundComp(top = 250.dp, color = MP_White)
 
         Column {
-            GoBackNoSearch(msg = "Izmeni proizvod", modifier = Modifier.clickable {
-                navController.popBackStack()
-            })
+            GoBackNoSearch(msg = "Izmeni proizvod", navController = navController)
             ProductHeroImage(
                 modifier = Modifier.clickable {
                     if (!permissionState.status.isGranted) {

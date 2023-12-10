@@ -51,9 +51,7 @@ fun ScheduleScreen(navController: NavController, viewModel: ScheduleViewModel = 
     ) {
         LinearGradient(color1 = MP_Green, color2 = MP_GreenDark)
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
-        GoBackNoSearch(msg = "Zakazivanje", modifier = Modifier.clickable {
-            navController.popBackStack()
-        })
+        GoBackNoSearch(msg = "Zakazivanje", navController = navController)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
