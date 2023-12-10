@@ -14,8 +14,8 @@ import com.triforce.malacprodavac.presentation.cart.CartViewModel
 
 
 @Composable
-fun BuyedProductSection(
-    buyedProducts: MutableList<ProductAmount>,
+fun BoughtProductsSection(
+    boughtProducts: MutableList<ProductAmount>,
     viewModel: CartViewModel
 ) {
 
@@ -30,21 +30,20 @@ fun BuyedProductSection(
             contentPadding = PaddingValues(
                 start = 15.dp,
                 end = 15.dp,
-                bottom = 50.dp
-            ), // 130 dp bottom padding because navigation and total price
+                bottom = 80.dp
+            ),
             modifier = Modifier
-                .requiredHeight(490.dp)
+                .requiredHeight(450.dp)
                 .padding(top = 20.dp)
         ) {
 
-            for (order in buyedProducts) {
+            for (order in boughtProducts) {
                 totalPriceOfAllOrders += order.totalPrice
             }
 
-            items(buyedProducts.size) {// how many items do we have
-                // define one of items
-                    BuyedProductItem(
-                        buyedProduct = buyedProducts[it],
+            items(boughtProducts.size) {
+                    BoughtProductItem(
+                        boughtProduct = boughtProducts[it],
                         viewModel = viewModel,
                         totalPrice = totalPriceOfAllOrders
                     )

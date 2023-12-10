@@ -19,17 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 
 @Composable
 fun TotalPrice(
     viewModel: CartViewModel = hiltViewModel()
-) {
+): Double{
     var totalPrice = 0.00
 
-    for (order in BuyedProducts.listOfBuyedProducts) {
+    for (order in BoughtProducts.listOfBoughtProducts) {
         totalPrice += order.totalPrice
     }
 
@@ -60,4 +59,6 @@ fun TotalPrice(
             }
         }
     }
+
+    return totalPrice
 }

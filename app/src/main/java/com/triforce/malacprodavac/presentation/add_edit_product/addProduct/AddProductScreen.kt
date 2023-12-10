@@ -90,10 +90,7 @@ fun AddProductScreen(
         RoundedBackgroundComp(top = 250.dp, color = MP_White)
 
         Column {
-            GoBackNoSearch(msg = "Dodaj proizvod", modifier = Modifier.clickable {
-                navController.popBackStack()
-                //navController.navigate(Screen.HomeScreen.route)
-            })
+            GoBackNoSearch(msg = "Dodaj proizvod", navController = navController)
 //                ProductHeroImage()
             Spacer(modifier = Modifier.padding(10.dp))
             Column(

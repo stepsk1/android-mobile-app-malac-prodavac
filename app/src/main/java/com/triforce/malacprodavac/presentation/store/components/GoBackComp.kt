@@ -41,6 +41,7 @@ fun GoBackComp(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
+            .background(if(isLight) MP_White else Color.Transparent)
             .fillMaxWidth()
             .padding(15.dp)
     ) {

@@ -4,11 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.triforce.malacprodavac.presentation.cart.components.BoughtProducts
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
+
 ): ViewModel() {
 
     var state by mutableStateOf(CartState())
@@ -33,8 +35,8 @@ class CartViewModel @Inject constructor(
 
     private fun countTotalPrice() {
         var totalPrice: Double = 0.00
-        for (buyedProduct in BuyedProducts.listOfBuyedProducts) {
-            totalPrice += buyedProduct.totalPrice
+        for (boughtProduct in BoughtProducts.listOfBoughtProducts) {
+            totalPrice += boughtProduct.totalPrice
         }
         state = state.copy(totalPrice = totalPrice)
     }

@@ -4,8 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -21,10 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.triforce.malacprodavac.presentation.cart.BuyedProducts
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_Orange
 import com.triforce.malacprodavac.ui.theme.MP_White
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
@@ -129,7 +125,7 @@ fun ChooseDateAndTime() {
             )
         ) {
             pickedDate = it
-            BuyedProducts.localDate = pickedDate.toString()
+            BoughtProducts.localDate = pickedDate.toString()
         }
     }
 
@@ -141,7 +137,7 @@ fun ChooseDateAndTime() {
                     context,
                     "Uspešno izabrano vreme",
                     Toast.LENGTH_LONG
-                )
+                ).show()
             }
             negativeButton(text = "Poništi")
         }
@@ -152,7 +148,7 @@ fun ChooseDateAndTime() {
             timeRange = LocalTime.of(7,0)..LocalTime.of(22,0)
         ) {
             pickedTime = it
-            BuyedProducts.localTime = pickedTime.toString()
+            BoughtProducts.localTime = pickedTime.toString()
         }
     }
 

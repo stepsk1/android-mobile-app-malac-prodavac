@@ -31,7 +31,7 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
-import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.presentation.cart.components.BoughtProducts
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.product.ProductEvent
 import com.triforce.malacprodavac.presentation.product.ProductViewModel
@@ -51,8 +51,8 @@ fun ShowFavouriteAddToCart(
     if (viewModel.state.isFavorite == true) imageVector = Icons.Outlined.Favorite
     else imageVector = Icons.Outlined.FavoriteBorder
 
-    fun addToBuyedProducts(item: ProductAmount) {
-        BuyedProducts.listOfBuyedProducts.add(item)
+    fun addToBoughtProducts(item: ProductAmount) {
+        BoughtProducts.listOfBoughtProducts.add(item)
     }
 
     val context = LocalContext.current
@@ -113,7 +113,7 @@ fun ShowFavouriteAddToCart(
                     if (!viewModel.state.isBuyed) {
                         viewModel.onEvent(ProductEvent.buyProduct)
 
-                        viewModel.state.product?.let { addToBuyedProducts(ProductAmount(it)) }
+                        viewModel.state.product?.let { addToBoughtProducts(ProductAmount(it)) }
                         Toast
                             .makeText(
                                 context, "Proizvod je dodat u korpu", Toast.LENGTH_LONG

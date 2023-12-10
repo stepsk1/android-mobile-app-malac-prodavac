@@ -11,7 +11,7 @@ import com.triforce.malacprodavac.data.remote.orders.dto.CreateSchedulePickupDto
 import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ScheduledPickupRepository
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.presentation.cart.BuyedProducts
+import com.triforce.malacprodavac.presentation.cart.components.BoughtProducts
 import com.triforce.malacprodavac.presentation.cart.scheduling.ScheduleState
 import com.triforce.malacprodavac.util.enum.DeliveryMethod
 import com.triforce.malacprodavac.util.enum.PaymentMethod
@@ -32,46 +32,47 @@ class CartDetailsViewModel @Inject constructor(
     fun onEvent(event: CartDetailsEvent) {
         when (event) {
             CartDetailsEvent.order -> {
-                for (buyedProduct in BuyedProducts.listOfBuyedProducts){
+                for (boughtProduct in BoughtProducts.listOfBoughtProducts) {
                     buyProducts(
                         true,
-                        buyedProduct.product.id,
-                        buyedProduct.amount,
-                        BuyedProducts.deliveryMethod,
-                        BuyedProducts.paymentMethod,
-                        BuyedProducts.localDate,
-                        BuyedProducts.localTime
+                        boughtProduct.product.id,
+                        boughtProduct.amount,
+                        BoughtProducts.deliveryMethod,
+                        BoughtProducts.paymentMethod,
+                        BoughtProducts.localDate,
+                        BoughtProducts.localTime
                     )
                 }
 
-                BuyedProducts.listOfBuyedProducts.removeAll(BuyedProducts.listOfBuyedProducts)
+                BoughtProducts.listOfBoughtProducts.removeAll(BoughtProducts.listOfBoughtProducts)
             }
         }
     }
 
-    private fun buyProducts(fetchFromRemote: Boolean,
-                            productId: Int,
-                            quantity: Int,
-                            deliveryMethod: DeliveryMethod,
-                            paymentMethod: PaymentMethod,
-                            localDate: String,
-                            localTime: String
+    private fun buyProducts(
+        fetchFromRemote: Boolean,
+        productId: Int,
+        quantity: Int,
+        deliveryMethod: DeliveryMethod,
+        paymentMethod: PaymentMethod,
+        localDate: String,
+        localTime: String
     ) {
         viewModelScope.launch {
-            repository.insertOrder(createOrder = CreateOrderDto(
-                deliveryMethod = deliveryMethod,
-                paymentMethod = paymentMethod,
-                productId = productId,
-                quantity = quantity
-            )).collect { result ->
+            repository.insertOrder(
+                createOrder = CreateOrderDto(
+                    deliveryMethod = deliveryMethod,
+                    paymentMethod = paymentMethod,
+                    productId = productId,
+                    quantity = quantity
+                )
+            ).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let {
                             state = state.copy(isSuccesful = true)
                             state = state.copy(orderId = result.data.id)
-                            if(deliveryMethod == DeliveryMethod.SelfPickup) {
-                                println("PORUDZBINA ZAKAZIVANJE")
-                                println(state.orderId)
+                            if (deliveryMethod == DeliveryMethod.SelfPickup) {
                                 scheduleProducts(state.orderId, localDate, localTime)
                             }
                         }
@@ -91,9 +92,11 @@ class CartDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun scheduleProducts(orderId: Int,
-                                 date: String,
-                                 time: String) {
+    private fun scheduleProducts(
+        orderId: Int,
+        date: String,
+        time: String
+    ) {
         viewModelScope.launch {
             repositorySchedule.insertScheduledPickup(
                 id = orderId,
@@ -108,6 +111,7 @@ class CartDetailsViewModel @Inject constructor(
                             stateSchedule = stateSchedule.copy(isSuccesful = true)
                         }
                     }
+
                     is Resource.Error -> {
                         Unit
                     }

@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.cart.CartDetails.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,15 +10,17 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun GoBackNoSearch(
-    modifier: Modifier = Modifier,
+    navController: NavController,
     msg: String
 ) {
     Row(
@@ -37,11 +40,14 @@ fun GoBackNoSearch(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Search",
                 tint = MP_White,
-                modifier = modifier
+                modifier = Modifier
+                    .clickable {
+                        navController.popBackStack()
+                    }
                     .size(30.dp)
             )
 
-            androidx.compose.material3.Text(
+            Text(
                 text = msg,
                 style = MaterialTheme.typography.body1,
                 color = MP_White,
