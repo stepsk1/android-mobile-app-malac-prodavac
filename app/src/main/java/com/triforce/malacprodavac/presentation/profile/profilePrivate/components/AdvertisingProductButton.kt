@@ -11,7 +11,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddLink
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,20 +25,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
-import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun MyProductsButton(
-    navController: NavController
+fun AdvertisingProductButton(
+    navController: NavController,
+    advertising: Boolean
 ) {
-    val colorTint = MP_Pink
+    var colorTint = MP_Orange_Dark
+    if (advertising)
+        colorTint = MP_Green
 
-    val msg = "Izmeni proizvode"
+    val msg = "Oglasi proizvod"
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -55,8 +58,8 @@ fun MyProductsButton(
             )
     ) {
         Icon(
-            Icons.Outlined.Edit,
-            contentDescription = "Edit",
+            Icons.Outlined.PostAdd,
+            contentDescription = "Advertising",
             tint = colorTint,
             modifier = Modifier.size(35.dp).padding(end = 6.dp)
         )
@@ -67,7 +70,10 @@ fun MyProductsButton(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .clickable {
-                    navController.navigate(Screen.MyProductsScreen.route)
+                    if(!advertising)
+                        navController.navigate(Screen.MyProductsScreen.route)
+                    else
+                        navController.navigate(Screen.AdvertisingProductScreen.route)
                 }
                 .clip(RoundedCornerShape(15.dp))
                 .background(colorTint)

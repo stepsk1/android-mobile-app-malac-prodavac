@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteScreen
 import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopScreen
 import com.triforce.malacprodavac.presentation.add_edit_product.addProduct.AddProductScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.advertisingProduct.AdvertisingProductScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
@@ -213,6 +214,10 @@ fun Navigation() {
 
         composable(route = Screen.CustomerPrivateScreen.route) {
             CustomerPrivateScreen(navController = navController)
+        }
+
+        composable(route = Screen.AdvertisingProductScreen.route) {
+            AdvertisingProductScreen(navController = navController)
         }
     }
 }

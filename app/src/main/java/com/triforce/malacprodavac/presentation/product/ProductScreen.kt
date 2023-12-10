@@ -29,6 +29,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -64,6 +65,7 @@ import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionCo
 import com.triforce.malacprodavac.presentation.product.components.CreateReviewDialog
 import com.triforce.malacprodavac.presentation.product.components.ProductDetails
 import com.triforce.malacprodavac.presentation.product.components.ProductHeroImage
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.components.AdvertisingProductButton
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -142,6 +144,8 @@ fun ProductScreen(
                 if (viewModel.state.product?.shopId == viewModel.state.user?.shop?.id) {
                     Spacer(modifier = Modifier.padding(16.dp))
                     ProductOptions(product, navController, true)
+                    Spacer(modifier = Modifier.padding(12.dp))
+                    AdvertisingProductButton(navController = navController, true)
                 }
 
                 Spacer(modifier = Modifier.padding(16.dp))
@@ -280,7 +284,9 @@ fun ProductOptions(
             },
             contentDescription = "FavoriteBorder",
             tint = colorTint,
-            modifier = Modifier.size(35.dp).padding(end = 6.dp)
+            modifier = Modifier
+                .size(35.dp)
+                .padding(end = 6.dp)
         )
         Text(text = msg,
             style = MaterialTheme.typography.body1,

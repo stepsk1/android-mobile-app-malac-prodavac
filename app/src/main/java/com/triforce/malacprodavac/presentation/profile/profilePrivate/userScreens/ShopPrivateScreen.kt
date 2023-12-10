@@ -39,6 +39,7 @@ import com.triforce.malacprodavac.presentation.product.ProductOptions
 import com.triforce.malacprodavac.presentation.profile.components.ProfilePrivateHeroComp
 import com.triforce.malacprodavac.presentation.profile.components.ShopDescComp
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.ProfilePrivateViewModel
+import com.triforce.malacprodavac.presentation.profile.profilePrivate.components.AdvertisingProductButton
 import com.triforce.malacprodavac.presentation.profile.profilePrivate.components.MyProductsButton
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -67,6 +68,9 @@ fun ShopPrivateScreen(
             Spacer(modifier = Modifier.padding(12.dp))
 
             MyProductsButton(navController)
+            Spacer(modifier = Modifier.padding(16.dp))
+
+            AdvertisingProductButton(navController, false)
             Spacer(modifier = Modifier.padding(16.dp))
 
             if ( user?.shop?.products != null ) {
