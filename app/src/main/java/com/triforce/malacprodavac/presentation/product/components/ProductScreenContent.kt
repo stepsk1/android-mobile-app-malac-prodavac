@@ -102,8 +102,8 @@ fun ProductScreenContent(
     val product = state.product
     val shop = state.shop
 
-    var colorForeground = MP_Green
-    var colorBackground = MP_GreenLight
+    val colorForeground = MP_Green
+    val colorBackground = MP_GreenLight
 
     val scrollState = rememberScrollState()
 
@@ -115,7 +115,7 @@ fun ProductScreenContent(
                         .verticalScroll(state = scrollState)
                         .background(MP_White)
                         .padding(padding)
-                        .height(1300.dp)
+                        .height(1400.dp)
                 ) {
 
                     if (isCreateReviewOpen) {

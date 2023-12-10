@@ -44,10 +44,10 @@ class FavoriteViewModel @Inject constructor(
     }
 
     private fun getFavProducts(
-        id: Int,
+        userId: Int,
     ) {
         viewModelScope.launch {
-            repository.getFavoriteProducts(id, true).collect { result ->
+            repository.getFavoriteProducts(userId, true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<FavoriteProduct>) {
@@ -71,11 +71,11 @@ class FavoriteViewModel @Inject constructor(
 
 
     private fun addFavProduct(
-        id: Int,
+        userId: Int,
         createFavoriteProductDto: CreateFavoriteProductDto
     ) {
         viewModelScope.launch {
-            repository.insertFavoriteProduct(id, createFavoriteProductDto).collect { result ->
+            repository.insertFavoriteProduct(userId, createFavoriteProductDto).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is FavoriteProduct) {
@@ -99,15 +99,15 @@ class FavoriteViewModel @Inject constructor(
 
 
     private fun deleteFavProduct(
-        id: Int,
+        userId: Int,
         favoriteProductId: Int
     ) {
         viewModelScope.launch {
-            repository.deleteFavoriteProduct(id, favoriteProductId).collect { result ->
+            repository.deleteFavoriteProduct(userId, favoriteProductId).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is FavoriteProduct) {
-
+                            state = state.copy(favProduct = result.data)
                         }
                     }
 

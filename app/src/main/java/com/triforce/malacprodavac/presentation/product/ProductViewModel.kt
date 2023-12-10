@@ -39,11 +39,13 @@ class ProductViewModel @Inject constructor(
                 state = state.copy(isBuyed = true)
             }
 
-            is ProductEvent.favoriteProduct -> {
+            is ProductEvent.favoriteProduct -> { // POGLEDAJ PONOVO
                 state = state.copy(isFavorite = true)
             }
 
-            is ProductEvent.removeFavoriteProduct -> {
+// product = state.product?.copy(title = event.title)
+
+            is ProductEvent.removeFavoriteProduct -> { // POGLEDAJ PONOVO
                 state = state.copy(isFavorite = false)
             }
 

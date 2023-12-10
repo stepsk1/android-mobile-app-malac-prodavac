@@ -206,8 +206,8 @@ fun HighlightSectionProduct (
                                     modifier = Modifier
                                         .size(20.dp)
                                         .clickable {
-                                            if (!viewModel.state.isFavorite) {
-                                                viewModel.onEvent(ProductEvent.favoriteProduct)
+                                            if (!product.isFavored) {
+                                                viewModel.onEvent(ProductEvent.favoriteProduct) // POGLEDAJ PONOVO
                                                 viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct(product.id))
                                                 Toast
                                                     .makeText(

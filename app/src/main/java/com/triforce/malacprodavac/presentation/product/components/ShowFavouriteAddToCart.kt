@@ -45,7 +45,6 @@ fun ShowFavouriteAddToCart(
     viewModel: ProductViewModel,
     viewModelFavourite: FavoriteViewModel
 ) {
-
     val imageVector: ImageVector
 
     if (viewModel.state.isFavorite == true) imageVector = Icons.Outlined.Favorite
@@ -110,10 +109,10 @@ fun ShowFavouriteAddToCart(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .clickable {
-                    if (viewModel.state.isBuyed == false) {
+                    if (!viewModel.state.isBuyed) {
                         viewModel.onEvent(ProductEvent.buyProduct)
-                        viewModel.state.product?.let { addToBuyedProducts(ProductAmount(it)) }
 
+                        viewModel.state.product?.let { addToBuyedProducts(ProductAmount(it)) }
                         Toast
                             .makeText(
                                 context, "Proizvod je dodat u korpu", Toast.LENGTH_LONG
