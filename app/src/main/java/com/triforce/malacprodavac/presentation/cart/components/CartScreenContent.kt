@@ -39,7 +39,7 @@ fun CartScreenContent(
             .fillMaxSize()
     ) {
 
-        DisplayCartItems(cartItems = cartItems)
+        DisplayCartItems(cartItems = cartItems, navController = navController)
         Spacer(modifier = Modifier.padding(6.dp))
 
         Text(

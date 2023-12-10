@@ -16,6 +16,7 @@ import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.cart.components.CartItem
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
+import com.triforce.malacprodavac.presentation.product.ProductEvent
 import com.triforce.malacprodavac.presentation.store.category.CategoryEvent
 import com.triforce.malacprodavac.presentation.store.category.CategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,7 +49,7 @@ class CartViewModel @Inject constructor(
         val existingItem = _cartItems.value.find { it.product.id == product.id }
 
         if (existingItem != null) {
-            existingItem.quantity++
+            existingItem.quantity.value++
         } else {
             val newItem = CartItem(product, shop)
             CartRepository.addItemToCart(newItem)
@@ -68,8 +69,14 @@ class CartViewModel @Inject constructor(
     }
 
     private fun recalculateTotalPrice() {
-        val totalPrice = _cartItems.value.sumOf { it.price }
+        val totalPrice = _cartItems.value.sumOf { it.price.value * it.quantity.value }
         cartState = cartState.copy(totalPrice = totalPrice)
+    }
+
+    fun onEvent(event: CartEvent) {
+        when (event) {
+            CartEvent.quantityChange -> recalculateTotalPrice()
+        }
     }
 
 }

@@ -28,7 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.CartEvent
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -40,8 +42,10 @@ import com.triforce.malacprodavac.ui.theme.MP_Pink
 @Composable
 fun CartItemRow(
     cartItem: CartItem,
+    navController: NavController,
     viewModel: CartViewModel = hiltViewModel()
 ) {
+
     BoxWithConstraints(
         modifier = Modifier
             .padding(bottom = 20.dp)
@@ -74,7 +78,7 @@ fun CartItemRow(
 
                 Icon(
                     imageVector = Icons.Default.Clear,
-                    contentDescription = "DeleteOne",
+                    contentDescription = "DeleteCartItem",
                     tint = MP_Pink,
                     modifier = Modifier
                         .size(40.dp)
@@ -86,13 +90,13 @@ fun CartItemRow(
 
             Text(
                 text = "${cartItem.shop?.businessName}",
-                fontWeight = FontWeight.W500,
+                fontWeight = FontWeight.W400,
                 style = MaterialTheme.typography.body1,
-                color = MP_Black,
+                color = MP_Pink,
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .clickable {
-
+                        navController.navigate(Screen.PublicProfile.route + "?id=${cartItem.shop!!.id}&role=1")
                     }
             )
 
@@ -102,12 +106,12 @@ fun CartItemRow(
                     .align(Alignment.BottomStart)
             ) {
                 Text(
-                    text = cartItem.quantity.toString() + "X ",
+                    text = cartItem.quantity.value.toString() + "X ",
                     style = MaterialTheme.typography.body1,
                     color = MP_Black,
                 )
                 Text(
-                    text = cartItem.price.toString() + " rsd",
+                    text = cartItem.price.value.toString() + " rsd",
                     style = MaterialTheme.typography.body1,
                     color = MP_Green,
                 )
@@ -127,7 +131,8 @@ fun CartItemRow(
                         .size(35.dp)
                         .align(Alignment.BottomCenter)
                         .clickable {
-                            cartItem.quantity++
+                            cartItem.quantity.value++
+                            viewModel.onEvent(CartEvent.quantityChange)
                         }
                 )
 
@@ -139,8 +144,9 @@ fun CartItemRow(
                         .size(35.dp)
                         .align(Alignment.BottomEnd)
                         .clickable {
-                            if (cartItem.quantity > 1) {
-                                cartItem.quantity--
+                            if (cartItem.quantity.value > 1) {
+                                cartItem.quantity.value--
+                                viewModel.onEvent(CartEvent.quantityChange)
                             }
                         }
                 )
