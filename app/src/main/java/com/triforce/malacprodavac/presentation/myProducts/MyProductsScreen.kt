@@ -33,9 +33,9 @@ import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.ShowHighlightedProducts
 import com.triforce.malacprodavac.presentation.components.TitleDescComp
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
@@ -107,9 +107,10 @@ fun MyProductsScreen(
                 }
 
             } else {
-                ShowcaseProducts(
+                ShowHighlightedProducts(
                     products = state.products,
-                    navController
+                    navController,
+                    bottomNavigation = true
                 )
             }
         }

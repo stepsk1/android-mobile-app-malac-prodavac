@@ -60,6 +60,7 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.ShowHighlightedProducts
 import com.triforce.malacprodavac.presentation.components.SortAndFilter
 import com.triforce.malacprodavac.presentation.highlightSection.components.SortAndFilterCategoryProducts
 import com.triforce.malacprodavac.presentation.store.components.FilterSortComp
@@ -152,9 +153,10 @@ fun StoreCategoryScreen(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             } else {
-                ShowcaseProducts(
+                ShowHighlightedProducts(
                     products = products,
-                    navController
+                    navController,
+                    bottomNavigation = true
                 )
             }
         }
@@ -232,133 +234,5 @@ fun CategorySectionHeader(
             modifier = Modifier
                 .size(100.dp)
         )
-    }
-}
-
-@Composable
-fun ShowcaseProducts(
-    products: List<Product>?,
-    navController: NavController
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(
-            top = 7.5.dp,
-            start = 7.5.dp,
-            end = 7.5.dp,
-            bottom = 80.dp
-        ), // 100 dp bottom padding because navigation
-        modifier = Modifier.fillMaxHeight(),
-    ) {
-        if (products != null) {
-            items(products.size) {// how many items do we have
-                // define one of items
-                StoreCategoryProduct(product = products.get(it), navController)
-            }
-        }
-    }
-}
-
-@Composable
-fun StoreCategoryProduct (
-    product: Product?,
-    navController: NavController
-) {
-    BoxWithConstraints(
-        modifier = Modifier
-            .padding(start = 7.5.dp, end = 7.5.dp, bottom = 15.dp)
-            .shadow(
-                elevation = 5.dp,
-                spotColor = MP_Black,
-                shape = RoundedCornerShape(7.5.dp)
-            )
-            .padding(1.5.dp)
-            .aspectRatio(0.8F) // ratio is 1x1 so whatever the width is, the hegiht will be the same
-            .clip(RoundedCornerShape(10.dp))
-            .background(MP_White)
-            .clickable {
-                if (product != null) {
-                    navController.navigate(Screen.ProductScreen.route + "?productId=${product.id}")
-                }
-            }
-    ) {
-        if (product != null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.SpaceAround
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(
-                                width = 150.dp,
-                                height = 125.dp
-                            )
-                            .background(MP_Gray)
-                            .align(Alignment.CenterHorizontally)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Home,
-                            contentDescription = "home icon",
-                            tint = MP_White,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .align(Alignment.Center)
-                        )
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.SpaceAround,
-                        modifier = Modifier
-                            .padding(
-                                top = 7.5.dp
-                            )
-                    ) {
-                        Text(
-                            text = if (product.title.length <= 16 ){
-                                product.title
-                            }else{
-                                product.title.take(16) + "..."
-                            },
-                            style = MaterialTheme.typography.body2,
-                            color = MP_Black
-                        )
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    top = 5.dp
-                                )
-                        ) {
-                            Text(
-                                text = product.price.toString() + " rsd",
-                                style = MaterialTheme.typography.body2,
-                                color = MP_Green,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Icon(
-                                imageVector = if (product.available) {
-                                    Icons.Filled.Favorite
-                                } else {
-                                    Icons.Filled.FavoriteBorder
-                                },
-                                contentDescription = "favourite",
-                                tint = MP_Pink,
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .clickable {
-                                    }
-                            )
-                        }
-                    }
-                }
-            }
-        }
     }
 }
