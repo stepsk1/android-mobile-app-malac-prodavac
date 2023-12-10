@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.store.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,19 +16,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.ui.theme.MP_Black
+import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun GoBackComp(
     msg: String,
     navController: NavController,
+    isLight: Boolean = false,
 ) {
+    var color = MP_White
+    if(isLight) color = Color.Gray
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -44,7 +53,7 @@ fun GoBackComp(
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Search",
-                tint = MP_White,
+                tint = color,
                 modifier = Modifier
                     .size(25.dp)
                     .clickable {
@@ -54,9 +63,13 @@ fun GoBackComp(
             )
 
             Text(
-                text = if ( msg.length > 15) { msg.subSequence(0,15).toString() + "..." } else { msg },
+                text = if (msg.length > 15) {
+                    msg.subSequence(0, 15).toString() + "..."
+                } else {
+                    msg
+                },
                 style = MaterialTheme.typography.body1,
-                color = MP_White,
+                color = color,
                 modifier = Modifier
                     .padding(start = 10.dp)
             )
@@ -65,7 +78,7 @@ fun GoBackComp(
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.baseline_circle_notifications_24),
             contentDescription = "Notifications",
-            tint = MP_White,
+            tint = color,
             modifier = Modifier
                 .size(25.dp)
                 .clickable {

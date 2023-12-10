@@ -81,7 +81,7 @@ fun FavProductItem(
                     modifier = Modifier
                         .size(36.dp)
                         .clickable {
-                            viewModel.onEvent(FavoriteEvent.DeleteFavProduct)
+                            viewModel.onEvent(FavoriteEvent.DeleteFavProduct(favoriteProduct.productId))
                         }
                 )
             }

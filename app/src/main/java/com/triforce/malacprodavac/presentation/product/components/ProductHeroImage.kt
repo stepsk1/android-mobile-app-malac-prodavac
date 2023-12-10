@@ -31,10 +31,10 @@ fun ProductHeroImage(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(250.dp)
-            .padding(start = 15.dp, end = 15.dp)
+            .height(200.dp)
+            .padding(start = 20.dp, end = 20.dp)
             .background(MP_White, RoundedCornerShape(10.dp))
-            .padding(35.dp)
+            .padding(5.dp)
     ) {
         val placeholder = R.drawable.logo_green
         val imageRequest = ImageRequest.Builder(LocalContext.current)
@@ -49,7 +49,7 @@ fun ProductHeroImage(
         AsyncImage(
             model = imageRequest,
             contentDescription = "Profile Picture",
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .fillMaxSize()
         )

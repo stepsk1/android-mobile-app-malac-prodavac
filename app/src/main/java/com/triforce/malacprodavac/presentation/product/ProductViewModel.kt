@@ -39,11 +39,13 @@ class ProductViewModel @Inject constructor(
                 state = state.copy(isBuyed = true)
             }
 
-            is ProductEvent.favoriteProduct -> {
+            is ProductEvent.favoriteProduct -> { // POGLEDAJ PONOVO
                 state = state.copy(isFavorite = true)
             }
 
-            is ProductEvent.removeFavoriteProduct -> {
+// product = state.product?.copy(title = event.title)
+
+            is ProductEvent.removeFavoriteProduct -> { // POGLEDAJ PONOVO
                 state = state.copy(isFavorite = false)
             }
 
@@ -143,7 +145,6 @@ class ProductViewModel @Inject constructor(
             repositoryShop.getShop(fetchFromRemote = true, id = shopId)
                 .collectLatest { result ->
                     when (result) {
-
                         is Resource.Success -> {
                             if (result.data is Shop) {
                                 state = state.copy(shop = result.data, isLoading = false)
@@ -165,7 +166,6 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun getProduct(productId: Int) {
-
         viewModelScope.launch {
             repository.getProduct(productId, true).collect { result ->
                 when (result) {
@@ -196,5 +196,4 @@ class ProductViewModel @Inject constructor(
             }
         }
     }
-
 }

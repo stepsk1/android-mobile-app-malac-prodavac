@@ -2,7 +2,10 @@ package com.triforce.malacprodavac.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -18,6 +21,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_Pink
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -26,7 +31,7 @@ fun RatingStars(
     modifier: Modifier = Modifier,
     rating: Double = 0.0,
     stars: Int = 5,
-    starsColor: Color = Color.Green,
+    starsColor: Color = MP_Pink,
     onClick: ((Int) -> Unit)? = null
 ) {
     val filledStars = floor(rating).toInt()
@@ -35,7 +40,10 @@ fun RatingStars(
 
     var ratingState by remember { mutableIntStateOf(filledStars) }
 
-    Row(modifier = modifier.wrapContentWidth(), horizontalArrangement = Arrangement.Center) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier.fillMaxWidth(),
+    ) {
         repeat(stars) { index ->
             if (index < ratingState)
                 IconButton(
@@ -51,7 +59,7 @@ fun RatingStars(
                         imageVector = Icons.Outlined.Star,
                         contentDescription = null,
                         tint = starsColor,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(26.dp)
                     )
                 }
             else if (index in (ratingState)..<stars - unfilledStars) {
@@ -68,7 +76,7 @@ fun RatingStars(
                         imageVector = Icons.Outlined.StarHalf,
                         contentDescription = null,
                         tint = starsColor,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(26.dp)
                     )
                 }
             } else
@@ -86,10 +94,9 @@ fun RatingStars(
                         imageVector = Icons.Outlined.StarOutline,
                         contentDescription = null,
                         tint = starsColor,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier.size(26.dp)
                     )
                 }
         }
-
     }
 }

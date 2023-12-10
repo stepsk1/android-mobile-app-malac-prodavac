@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.LinearGradient
-import com.triforce.malacprodavac.presentation.store.category.ShowcaseProducts
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.components.ShowHighlightedProducts
 import com.triforce.malacprodavac.presentation.components.SortAndFilter
 import com.triforce.malacprodavac.presentation.components.TitleDescComp
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
@@ -106,9 +106,10 @@ fun HighlightSection(
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     }
                 } else {
-                    ShowcaseProducts(
+                    ShowHighlightedProducts(
                         products = products,
-                        navController
+                        navController,
+                        bottomNavigation = true
                     )
                 }
             } else {

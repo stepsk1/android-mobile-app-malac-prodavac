@@ -12,6 +12,8 @@ data class ProductState(
     val createReviewError: String? = null,
     val isLoading: Boolean = false,
     val isBuyed: Boolean = false,
+
+
     val isFavorite: Boolean = false,
 
 

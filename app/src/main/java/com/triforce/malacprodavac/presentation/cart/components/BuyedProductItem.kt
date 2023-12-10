@@ -54,8 +54,6 @@ fun BuyedProductItem(
         BuyedProducts.listOfBuyedProducts.remove(item)
     }
 
-//    val buyedProduct by remember { mutableStateOf(buyedProduct) }
-
     BoxWithConstraints(
         modifier = Modifier
             .padding(bottom = 20.dp)
