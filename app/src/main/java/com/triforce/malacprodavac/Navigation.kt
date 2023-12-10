@@ -216,7 +216,15 @@ fun Navigation() {
             CustomerPrivateScreen(navController = navController)
         }
 
-        composable(route = Screen.AdvertisingProductScreen.route) {
+        composable(route = Screen.AdvertisingProductScreen.route + "?productId={productId}",
+            arguments = listOf(
+                navArgument(
+                    name = "productId"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )) {
             AdvertisingProductScreen(navController = navController)
         }
     }

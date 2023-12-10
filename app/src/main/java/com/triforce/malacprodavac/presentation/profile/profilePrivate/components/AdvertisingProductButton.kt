@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
@@ -32,21 +33,26 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun AdvertisingProductButton(
+    modifier: Modifier = Modifier,
+    product: Product?,
     navController: NavController,
-    advertising: Boolean
+    advertising: Boolean,
+    change: Boolean
 ) {
     var colorTint = MP_Orange_Dark
+    var start = 20.dp
     if (advertising)
         colorTint = MP_Green
 
     val msg = "Oglasi proizvod"
-
+    if(change)
+        start = 50.dp
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(
-                start = 20.dp, end = 20.dp
+                bottom=25.dp, start = start, end = 20.dp
             )
             .shadow(
                 elevation = 10.dp, spotColor = MP_Black, shape = RoundedCornerShape(20.dp)
@@ -73,9 +79,9 @@ fun AdvertisingProductButton(
                     if(!advertising)
                         navController.navigate(Screen.MyProductsScreen.route)
                     else
-                        navController.navigate(Screen.AdvertisingProductScreen.route)
+                        navController.navigate(Screen.AdvertisingProductScreen.route + "?productId=${product?.id}")
                 }
-                .clip(RoundedCornerShape(15.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(colorTint)
                 .width(width = 200.dp)
                 .padding(vertical = 10.dp))

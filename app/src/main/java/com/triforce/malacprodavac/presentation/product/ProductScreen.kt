@@ -145,7 +145,7 @@ fun ProductScreen(
                     Spacer(modifier = Modifier.padding(16.dp))
                     ProductOptions(product, navController, true)
                     Spacer(modifier = Modifier.padding(12.dp))
-                    AdvertisingProductButton(navController = navController, true)
+                    AdvertisingProductButton(Modifier, product, navController, true, false)
                 }
 
                 Spacer(modifier = Modifier.padding(16.dp))

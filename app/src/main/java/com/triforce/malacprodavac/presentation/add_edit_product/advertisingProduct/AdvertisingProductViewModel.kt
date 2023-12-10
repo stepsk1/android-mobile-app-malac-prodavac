@@ -1,13 +1,17 @@
 package com.triforce.malacprodavac.presentation.add_edit_product.advertisingProduct
 
+import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.triforce.malacprodavac.domain.model.products.UpdateProductDto
 import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.domain.util.compressedFileFromUri
 import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -36,7 +40,68 @@ class AdvertisingProductViewModel @Inject constructor(
             is AdvertisingProductEvent.DescChanged -> {
                 state = state.copy(product = state.product?.copy(desc = event.desc))
             }
+            is AdvertisingProductEvent.LocationChanged -> {
+                state = state.copy(product = state.product?.copy(availableAt = event.location))
+            }
+            is AdvertisingProductEvent.StartAdvertisingChanged -> {
+                state = state.copy(product = state.product?.copy(availableFromHours = event.start))
+            }
+            is AdvertisingProductEvent.EndAdvertisingChanged -> {
+                state = state.copy(product = state.product?.copy(availableTillHours = event.end))
+            }
+
+            is AdvertisingProductEvent.Submit -> {
+                state = if (state.product?.availableAt.isNullOrBlank()) {
+                    state.copy(locationError = "Unesite lokaciju oglašavanja!")
+                } else {
+                    state.copy(locationError = null)
+                }
+
+                val updateProduct = UpdateProductDto(
+                    unitOfMeasurement = state.product?.unitOfMeasurement,
+                    currency = state.product?.currency,
+                    title = state.product?.title,
+                    desc = state.product?.desc,
+                    price = state.product?.price,
+                    categoryId = state.product?.categoryId,
+                    availableAt = state.product?.availableAt,
+                    availableAtLatitude = state.product?.availableAtLatitude,
+                    availableAtLongitude = state.product?.availableAtLongitude,
+                    availableFromHours = state.product?.availableFromHours,
+                    availableTillHours = state.product?.availableTillHours
+                )
+
+                updateProduct(state.product?.id!!, updateProduct)
+            }
+
             else -> { }
+        }
+    }
+
+    private fun updateProduct(
+        productId: Int,
+        updateProduct: UpdateProductDto
+    ) {
+        viewModelScope.launch {
+            productUseCase.updateProduct(productId, updateProduct).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        result.data?.let {
+                            state = state.copy(product = it, isUpdateSuccessful = true)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        Unit
+                    }
+
+                    is Resource.Loading -> {
+                        state = state.copy(
+                            isLoading = result.isLoading
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -64,6 +129,27 @@ class AdvertisingProductViewModel @Inject constructor(
                         state = state.copy(
                             isLoading = result.isLoading
                         )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun changeProductImages(context: Context, uris: List<Uri>) {
+        viewModelScope.launch {
+            val files = uris.map { compressedFileFromUri(context, it) }
+            productUseCase.addProductImages(state.product?.id!!, files).collect {
+                when (it) {
+                    is Resource.Error -> {
+
+                    }
+
+                    is Resource.Loading -> {
+                        state = state.copy(isLoading = it.isLoading)
+                    }
+
+                    is Resource.Success -> {
+                        getProduct(true, state.product?.id!!)
                     }
                 }
             }

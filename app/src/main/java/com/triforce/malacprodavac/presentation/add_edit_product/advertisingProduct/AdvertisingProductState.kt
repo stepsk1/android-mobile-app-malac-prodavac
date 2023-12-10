@@ -12,8 +12,7 @@ data class AdvertisingProductState(
     val thumbUrl: String? = null,
 
     val errorMessage: String? = null,
-    val titleError: String? = null,
-    val priceError: String? = null,
-
-    val imageUris: List<Uri> = emptyList()
+    val locationError: String? = null,
+    val startHourError: String? = null,
+    val EndHourError: String? = null,
 )

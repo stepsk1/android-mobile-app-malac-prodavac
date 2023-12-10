@@ -70,7 +70,7 @@ fun ShopPrivateScreen(
             MyProductsButton(navController)
             Spacer(modifier = Modifier.padding(16.dp))
 
-            AdvertisingProductButton(navController, false)
+            AdvertisingProductButton(Modifier, null, navController, false, false)
             Spacer(modifier = Modifier.padding(16.dp))
 
             if ( user?.shop?.products != null ) {
