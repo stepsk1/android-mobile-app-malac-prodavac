@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -89,12 +90,14 @@ fun CartScreen(navController: NavController) {
                         onClick = {
                             navController.navigate(Screen.CartDetailsScreen.route)
                         },
-                        colors = ButtonDefaults.buttonColors(MP_GreenDark)
+                        colors = ButtonDefaults.buttonColors(MP_Green)
                     ) {
                         Text(
                             text = "Nastavi Dalje",
                             color = MP_White,
-                            style = androidx.compose.material.MaterialTheme.typography.body1
+                            style = androidx.compose.material.MaterialTheme.typography.body1,
+                            modifier = Modifier
+                                .padding(horizontal = 70.dp)
                         )
                     }
                 }

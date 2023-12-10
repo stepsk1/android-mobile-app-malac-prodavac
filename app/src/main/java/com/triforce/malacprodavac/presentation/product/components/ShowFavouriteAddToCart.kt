@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
@@ -118,6 +119,8 @@ fun ShowFavouriteAddToCart(
                                 context, "Proizvod je dodat u korpu", Toast.LENGTH_LONG
                             )
                             .show()
+
+                        navController.navigate(Screen.CartScreen.route)
                     } else {
                         Toast
                             .makeText(

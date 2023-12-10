@@ -10,6 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,13 +24,13 @@ import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 
 @Composable
-fun TotalPrice(viewModel: CartViewModel = hiltViewModel()): Double {
+fun TotalPrice(
+    viewModel: CartViewModel = hiltViewModel()
+) {
+    var totalPrice = 0.00
 
-    var totalPrice: Double = 0.00
     for (order in BuyedProducts.listOfBuyedProducts) {
         totalPrice += order.totalPrice
-        println("CENA PORUDZINE")
-        println(totalPrice)
     }
 
     Row(
@@ -49,12 +53,11 @@ fun TotalPrice(viewModel: CartViewModel = hiltViewModel()): Double {
             )
             {
                 Text(
-                    text = "Ukupno: $totalPrice rsd",
+                    text = "Ukupno: ${totalPrice} rsd",
                     style = MaterialTheme.typography.h6,
                     color = MP_Green
                 )
             }
         }
     }
-    return totalPrice
 }
