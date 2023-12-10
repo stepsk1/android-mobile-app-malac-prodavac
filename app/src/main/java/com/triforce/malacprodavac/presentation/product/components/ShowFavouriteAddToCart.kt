@@ -115,9 +115,7 @@ fun ShowFavouriteAddToCart(
             modifier = Modifier
                 .clickable {
                     if (!viewModel.state.isBuyed) {
-
                         viewModel.onEvent(ProductEvent.buyProduct)
-                        //viewModel.state.product?.let { addToBoughtProducts(ProductAmount(it, viewModel.state.shop)) }
                         Toast
                             .makeText(
                                 context, "Proizvod je dodat u korpu", Toast.LENGTH_LONG

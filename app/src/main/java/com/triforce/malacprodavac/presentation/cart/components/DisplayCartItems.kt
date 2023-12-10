@@ -30,9 +30,10 @@ fun DisplayCartItems(
         ) {
 
             items(cartItems.size) { id ->
-                CartItemRow(
-                    cartItem = cartItems[id]
-                )
+                if (cartItems[id].quantity > 0)
+                    CartItemRow(
+                        cartItem = cartItems[id]
+                    )
             }
         }
     }

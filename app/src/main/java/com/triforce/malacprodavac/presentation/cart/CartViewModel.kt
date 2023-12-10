@@ -16,6 +16,8 @@ import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.cart.components.CartItem
 import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
+import com.triforce.malacprodavac.presentation.store.category.CategoryEvent
+import com.triforce.malacprodavac.presentation.store.category.CategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +30,7 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
 
 ) : ViewModel() {
+    var cartState by mutableStateOf(CartState())
 
     private val _cartItems = MutableStateFlow<List<CartItem>>(emptyList())
     val cartItems: StateFlow<List<CartItem>> = _cartItems.asStateFlow()
@@ -38,6 +41,7 @@ class CartViewModel @Inject constructor(
 
     private fun fetchCartItems() {
         _cartItems.value = CartRepository.getCartItems()
+        recalculateTotalPrice()
     }
 
     fun addToCart(product: Product, shop: Shop?) {
@@ -62,4 +66,10 @@ class CartViewModel @Inject constructor(
         CartRepository.clearCart()
         fetchCartItems()
     }
+
+    private fun recalculateTotalPrice() {
+        val totalPrice = _cartItems.value.sumOf { it.price }
+        cartState = cartState.copy(totalPrice = totalPrice)
+    }
+
 }

@@ -21,6 +21,8 @@ import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun CartScreenContent(
@@ -28,6 +30,7 @@ fun CartScreenContent(
     viewModel: CartViewModel = hiltViewModel()
 ) {
     val cartItems by viewModel.cartItems.collectAsState()
+    val totalPrice = viewModel.cartState.totalPrice
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -39,7 +42,11 @@ fun CartScreenContent(
         DisplayCartItems(cartItems = cartItems)
         Spacer(modifier = Modifier.padding(6.dp))
 
-        TotalPrice(viewModel)
+        Text(
+            text = "Ukupno: $totalPrice rsd",
+            style = MaterialTheme.typography.h6,
+            color = MP_Green
+        )
         Spacer(modifier = Modifier.padding(6.dp))
 
         Button(
@@ -52,6 +59,7 @@ fun CartScreenContent(
                 text = "Nastavi na plaćanje",
                 color = MP_White,
                 style = MaterialTheme.typography.body1,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(horizontal = 50.dp, vertical = 6.dp)
             )

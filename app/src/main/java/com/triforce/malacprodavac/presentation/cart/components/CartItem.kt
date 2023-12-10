@@ -7,5 +7,5 @@ data class CartItem(
     val product: Product,
     val shop: Shop?,
     var quantity: Int = 1,
-    var price: Double = 0.00
+    var price: Double = product.price * quantity
 )
