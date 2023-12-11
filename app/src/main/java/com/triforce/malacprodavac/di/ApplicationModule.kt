@@ -1,8 +1,14 @@
 package com.triforce.malacprodavac.di
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -56,6 +62,7 @@ import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
 import com.triforce.malacprodavac.domain.use_case.notifications.GetNotifications
 import com.triforce.malacprodavac.domain.use_case.notifications.Notification
+import com.triforce.malacprodavac.domain.use_case.notifications.Subscribe
 import com.triforce.malacprodavac.domain.use_case.order.AddOrder
 import com.triforce.malacprodavac.domain.use_case.order.DeleteOrder
 import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
@@ -94,17 +101,17 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.sse.EventSources
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ApplicationModule {
-
     @Provides
     @Singleton
     fun provideMoshi(): Moshi =
@@ -185,14 +192,22 @@ object ApplicationModule {
     @Singleton
     fun provideOkHttpClient(authInterceptorImpl: AuthInterceptorImpl): OkHttpClient =
         OkHttpClient.Builder()
+            .connectTimeout(6, TimeUnit.SECONDS)
+            .readTimeout(0, TimeUnit.SECONDS)
             .addInterceptor(authInterceptorImpl)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
+
     @Provides
     @Singleton
-    fun provideEventSource(client: OkHttpClient) =
-        EventSources.createFactory(client)
+    fun provideSSERequest(): Request =
+        Request.Builder()
+            .url(NotificationsApi.ROUTE + "/subscribe")
+            .header("Accept", "applicaiton/json")
+            .addHeader("Accept", "text/event-stream")
+            .build()
+
 
     @Singleton
     @Provides
@@ -219,7 +234,10 @@ object ApplicationModule {
     fun provideSharedPreferences(
         @ApplicationContext context: Context,
     ): SharedPreferences =
-        context.getSharedPreferences(AppSharedPreferences.SHARED_PREFS, Context.MODE_PRIVATE)
+        context.getSharedPreferences(
+            AppSharedPreferences.SHARED_PREFS,
+            Context.MODE_PRIVATE
+        )
 
     /* DATABASE */
 
@@ -283,8 +301,13 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideNotificationUseCase(getNotifications: GetNotifications) =
-        Notification(getNotifications)
+    fun provideSubscribeUseCase(repository: NotificationsRepository) =
+        Subscribe(repository)
+
+    @Provides
+    @Singleton
+    fun provideNotificationUseCase(getNotifications: GetNotifications, subscribe: Subscribe) =
+        Notification(getNotifications, subscribe)
 
     @Provides
     @Singleton
@@ -370,7 +393,13 @@ object ApplicationModule {
         addProductImages: AddProductImages,
         getProductForId: GetProductForId,
         updateProduct: UpdateProduct,
-    ) = ProductUseCase(addProduct, getAllProducts, getProductForId, updateProduct, addProductImages)
+    ) = ProductUseCase(
+        addProduct,
+        getAllProducts,
+        getProductForId,
+        updateProduct,
+        addProductImages
+    )
 
     @Provides
     @Singleton
@@ -493,5 +522,35 @@ object ApplicationModule {
         ).addTypeConverter(converters)
             .fallbackToDestructiveMigration()
             .build()
+
+    @Singleton
+    @Provides
+    fun provideNotificationBuilder(
+        @ApplicationContext context: Context
+    ): NotificationCompat.Builder =
+        NotificationCompat.Builder(context, "MAIN_CHANNEL_ID")
+            .setContentTitle("Welcome")
+            .setContentText("NOTIFICATION TEXT")
+            .setSmallIcon(androidx.core.R.drawable.notification_bg)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+
+    @SuppressLint("ObsoleteSdkInt")
+    @Singleton
+    @Provides
+    fun provideNotificationManager(
+        @ApplicationContext context: Context
+    ): NotificationManagerCompat {
+        val notificationManager = NotificationManagerCompat.from(context)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "Channel ID",
+                "Main Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+        return notificationManager
+    }
 
 }

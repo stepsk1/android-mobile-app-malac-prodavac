@@ -1,8 +1,6 @@
 package com.triforce.malacprodavac
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.memory.MemoryCache
@@ -12,18 +10,6 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class MalacProdavacApp : Application(), ImageLoaderFactory {
-
-    override fun onCreate() {
-        super.onCreate()
-        val notificationChannel = NotificationChannel(
-            "malac_prodavac",
-            "Malac Prodavac",
-            NotificationManager.IMPORTANCE_HIGH
-        )
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(notificationChannel)
-    }
-
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this)
             .memoryCache {
