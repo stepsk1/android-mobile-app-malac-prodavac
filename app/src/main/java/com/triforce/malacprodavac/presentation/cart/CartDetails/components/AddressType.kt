@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -35,8 +36,10 @@ fun AddressType(
         style = MaterialTheme.typography.body1,
         color = MP_Black
     )
+    Spacer(modifier = Modifier.padding(6.dp))
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .shadow(
@@ -46,12 +49,13 @@ fun AddressType(
             )
             .clip(RoundedCornerShape(6.dp))
             .background(MP_Gray)
-            .padding(vertical = 6.dp)
+            .padding(vertical = 16.dp, horizontal = 20.dp)
     ) {
         Text(
-            text = "${viewModel.cartState.user?.address}",
+            text = "${viewModel.cartState.user?.address}\n${viewModel.cartState.user?.phoneNumber}",
             style = MaterialTheme.typography.body1,
-            color = MP_Black
+            color = MP_Black,
+            textAlign = TextAlign.Center
         )
     }
 }

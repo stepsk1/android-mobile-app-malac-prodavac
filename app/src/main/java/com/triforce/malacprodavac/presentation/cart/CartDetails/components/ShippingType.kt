@@ -35,6 +35,7 @@ fun ShippingType (
         style = MaterialTheme.typography.body1,
         color = MP_Black
     )
+    Spacer(modifier = Modifier.padding(6.dp))
 
     Column(
         modifier = Modifier
