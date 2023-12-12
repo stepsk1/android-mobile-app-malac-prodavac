@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.presentation.cart.CartDetails
 
-
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

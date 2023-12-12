@@ -1,7 +1,6 @@
 package com.triforce.malacprodavac.presentation.cart
 
 import com.triforce.malacprodavac.domain.model.User
-import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.util.enum.DeliveryMethod
 import com.triforce.malacprodavac.util.enum.PaymentMethod
 import java.time.LocalDate

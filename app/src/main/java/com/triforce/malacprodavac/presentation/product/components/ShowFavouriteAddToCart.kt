@@ -33,8 +33,6 @@ import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
-import com.triforce.malacprodavac.presentation.cart.components.BoughtProducts
-import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.product.ProductEvent
 import com.triforce.malacprodavac.presentation.product.ProductViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -52,12 +50,9 @@ fun ShowFavouriteAddToCart(
 
     val imageVector: ImageVector
 
-    if (viewModel.state.isFavorite == true) imageVector = Icons.Outlined.Favorite
+    if (viewModel.state.isFavorite) imageVector = Icons.Outlined.Favorite
     else imageVector = Icons.Outlined.FavoriteBorder
 
-    fun addToBoughtProducts(item: ProductAmount) {
-        BoughtProducts.listOfBoughtProducts.add(item)
-    }
 
     val context = LocalContext.current
 

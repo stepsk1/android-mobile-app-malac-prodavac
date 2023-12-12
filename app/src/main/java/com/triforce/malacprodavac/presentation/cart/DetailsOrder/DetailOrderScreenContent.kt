@@ -1,18 +1,15 @@
 package com.triforce.malacprodavac.presentation.cart.DetailsOrder
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -38,8 +35,6 @@ import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
-import com.triforce.malacprodavac.ui.theme.MP_GreenDark
-import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
 import com.triforce.malacprodavac.util.enum.DeliveryMethod
@@ -135,12 +130,13 @@ fun DetailsOrderScreenContent(
             )
             Spacer(modifier = Modifier.padding(6.dp))
 
-            if (cartState.selectedShipping == DeliveryMethod.ByCourier) {
+            if (cartState.selectedShipping == DeliveryMethod.SelfPickup) {
                 Text(
                     text = "Vreme preuzimanja paketa: ${cartState.scheduleDate} ${cartState.scheduleTime}",
                     style = MaterialTheme.typography.body1,
                     color = MP_Black
                 )
+                Spacer(modifier = Modifier.padding(6.dp))
             }
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -182,13 +178,14 @@ fun DetailsOrderScreenContent(
                 }
             }
 
-            Spacer(modifier = Modifier.padding(16.dp))
+            Spacer(modifier = Modifier.padding(6.dp))
 
             Text(
                 text = "Ukupan iznos:\n${cartState.totalPrice} rsd",
                 style = MaterialTheme.typography.h6,
                 color = MP_Pink_Dark,
-                fontWeight = FontWeight.W400
+                fontWeight = FontWeight.W400,
+                textAlign = TextAlign.Center
             )
         }
     }

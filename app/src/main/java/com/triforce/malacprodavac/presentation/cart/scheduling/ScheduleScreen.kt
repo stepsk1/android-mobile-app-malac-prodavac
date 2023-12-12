@@ -1,7 +1,6 @@
 package com.triforce.malacprodavac.presentation.cart.scheduling
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -31,8 +31,9 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
+import com.triforce.malacprodavac.presentation.cart.CartEvent
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.presentation.cart.components.ChooseDateAndTime
-import com.triforce.malacprodavac.presentation.cart.components.TotalPrice
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -40,10 +41,11 @@ import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_White
 
-
 @Composable
-fun ScheduleScreen(navController: NavController, viewModel: ScheduleViewModel = hiltViewModel()) {
-
+fun ScheduleScreen(
+    navController: NavController,
+    viewModel: CartViewModel = hiltViewModel()
+) {
     Box(
         modifier = Modifier
             .background(MP_White)
@@ -59,6 +61,7 @@ fun ScheduleScreen(navController: NavController, viewModel: ScheduleViewModel = 
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(horizontal = 20.dp, vertical = 200.dp)
+                .align(Alignment.Center)
         ) {
             Text(
                 text = "Zakazivanje Paketa",
@@ -66,10 +69,11 @@ fun ScheduleScreen(navController: NavController, viewModel: ScheduleViewModel = 
                 color = MP_Black
             )
             Spacer(modifier = Modifier.height(16.dp))
-            ChooseDateAndTime()
-            TotalPrice()
+            ChooseDateAndTime(viewModel)
+
             Button(
                 onClick = {
+                    viewModel.onEvent(CartEvent.makeOrder)
                     navController.navigate(Screen.DetailsOrderScreen.route)
                 },
                 colors = ButtonDefaults.buttonColors(MP_Green)
@@ -77,7 +81,8 @@ fun ScheduleScreen(navController: NavController, viewModel: ScheduleViewModel = 
                 Text(
                     text = "Zakaži porudžbinu",
                     color = MP_White,
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.body1,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
