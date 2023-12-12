@@ -8,23 +8,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.remote.orders.dto.CreateOrderDto
 import com.triforce.malacprodavac.data.remote.orders.dto.CreateSchedulePickupDto
+import com.triforce.malacprodavac.data.repository.cart.CartRepository
 import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ScheduledPickupRepository
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.presentation.cart.components.BoughtProducts
+import com.triforce.malacprodavac.presentation.cart.components.CartItem
 import com.triforce.malacprodavac.presentation.cart.scheduling.ScheduleState
 import com.triforce.malacprodavac.util.enum.DeliveryMethod
 import com.triforce.malacprodavac.util.enum.PaymentMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CartDetailsViewModel @Inject constructor(
     private val repository: OrderRepository,
-    savedStateHandle: SavedStateHandle,
     private val repositorySchedule: ScheduledPickupRepository
 ) : ViewModel() {
+
 
     var state by mutableStateOf(CartDetailsState())
     var stateSchedule by mutableStateOf(ScheduleState())
@@ -34,7 +39,6 @@ class CartDetailsViewModel @Inject constructor(
             CartDetailsEvent.order -> {
                 for (boughtProduct in BoughtProducts.listOfBoughtProducts) {
                     buyProducts(
-                        true,
                         boughtProduct.product.id,
                         boughtProduct.amount,
                         BoughtProducts.deliveryMethod,
@@ -50,7 +54,6 @@ class CartDetailsViewModel @Inject constructor(
     }
 
     private fun buyProducts(
-        fetchFromRemote: Boolean,
         productId: Int,
         quantity: Int,
         deliveryMethod: DeliveryMethod,

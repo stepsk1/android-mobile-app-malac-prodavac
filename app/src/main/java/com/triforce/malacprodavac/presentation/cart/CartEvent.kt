@@ -5,4 +5,5 @@ import com.triforce.malacprodavac.presentation.product.ProductEvent
 
 sealed class CartEvent {
     object quantityChange : CartEvent()
+    object makeOrder : CartEvent()
 }

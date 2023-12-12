@@ -46,7 +46,7 @@ fun CartScreenContent(
         Spacer(modifier = Modifier.padding(6.dp))
 
         Text(
-            text = "Ukupno: $totalPrice rsd",
+            text = "Ukupno: ${totalPrice} rsd",
             style = MaterialTheme.typography.h6,
             color = MP_Green
         )
