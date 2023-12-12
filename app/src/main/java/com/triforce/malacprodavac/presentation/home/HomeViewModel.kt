@@ -1,38 +1,26 @@
 package com.triforce.malacprodavac.presentation.home
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.launchdarkly.eventsource.MessageEvent
-import com.triforce.malacprodavac.SSEClient
-import com.triforce.malacprodavac.SSEHandler
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val profile: Profile,
-    private val sseClient: SSEClient
-) : ViewModel(), SSEHandler {
+    private val profile: Profile
+) : ViewModel() {
     var state by mutableStateOf(HomeScreenState())
 
     init {
         state.copy(isLoading = true)
         me()
         getToken()
-        viewModelScope.launch(Dispatchers.IO) {
-            sseClient.initSse(this@HomeViewModel) { error ->
-                Log.e("ERROR_CB", error.message.toString())
-                error.printStackTrace()
-            }
-        }
     }
 
     fun onEvent(event: HomeEvent) {
@@ -77,26 +65,5 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    override fun onSSEConnectionOpened() {
-        Log.i("HOME VM", "CONN OPEN!")
-    }
-
-    override fun onSSEConnectionClosed() {
-        Log.i("HOME VM", "CONN CLOSED!")
-    }
-
-    override fun onSSEEventReceived(event: String, messageEvent: MessageEvent) {
-        Log.i("HOME VM", "NEW EVENT RECEIVED!")
-    }
-
-    override fun onSSEError(t: Throwable) {
-        Log.i("HOME VM", "CONN ERROR!")
-        t.printStackTrace()
-    }
-
-    fun disconnect() {
-        sseClient.disconnect()
     }
 }

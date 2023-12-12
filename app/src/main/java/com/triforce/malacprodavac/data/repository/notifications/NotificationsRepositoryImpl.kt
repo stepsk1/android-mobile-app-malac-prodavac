@@ -9,10 +9,10 @@ import com.triforce.malacprodavac.data.services.SessionManager
 import com.triforce.malacprodavac.domain.model.notifications.Notification
 import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
 import com.triforce.malacprodavac.domain.util.Resource
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,31 +26,12 @@ class NotificationsRepositoryImpl @Inject constructor(
     private val notificationPayloadDao = db.notificationPayloadDao
     private val notificationDao = db.notificationDao
 
-    override suspend fun subscribe(): Flow<Resource<String>> {
+    override suspend fun subscribe(): Flow<Resource<Unit>> {
         return flow {
-            coroutineScope {
-                val resp = api.subscribe().execute()
-                resp.isSuccessful.let {
-//                    try {
-//                        while (isActive) {
-//                            val line = input?.readLine() ?: continue
-//                            if (line.startsWith("data:")) {
-//                                try {
-//                                    emit(Resource.Success(data = line.toString()))
-//                                } catch (e: Exception) {
-//                                    e.printStackTrace()
-//                                }
-//                            }
-//                        }
-//                    } catch (e: IOException) {
-//                        e.printStackTrace()
-//                    } finally {
-//                        input?.close()
-//                    }
-                }
+            api.subscribe()
+            withContext(Dispatchers.IO) {
+                subscribe()
             }
-
-            emit(Resource.Loading(false))
         }
     }
 
