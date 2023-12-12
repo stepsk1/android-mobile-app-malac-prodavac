@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.cart.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
@@ -31,6 +33,7 @@ fun CartScreenContent(
 ) {
     val cartItems by viewModel.cartItems.collectAsState()
     val totalPrice = viewModel.cartState.totalPrice
+    val context = LocalContext.current
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,8 +54,16 @@ fun CartScreenContent(
 
         Button(
             onClick = {
-                navController.navigate(Screen.CartDetailsScreen.route)
-            },
+                if (cartItems.isNotEmpty()) navController.navigate(Screen.CartDetailsScreen.route)
+                else {
+                    Toast
+                        .makeText(
+                            context,
+                            "Korpa je prazna!",
+                            Toast.LENGTH_LONG
+                        )
+                        .show()
+                } },
             colors = ButtonDefaults.buttonColors(MP_Green)
         ) {
             Text(
