@@ -17,7 +17,9 @@ import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 
 @Composable
-fun CartScreen(navController: NavController) {
+fun CartScreen(
+    navController: NavController
+) {
     Scaffold(
         topBar = {
             GoBackComp("Moja korpa", navController, true)

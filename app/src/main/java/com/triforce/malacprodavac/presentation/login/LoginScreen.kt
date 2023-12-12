@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.SpaceLarge
@@ -44,7 +45,11 @@ import com.triforce.malacprodavac.ui.theme.SpaceMedium
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel(),
+    cartViewModel: CartViewModel = hiltViewModel()
+) {
 
     val state = viewModel.state
     val pullRefreshState = rememberPullRefreshState(
@@ -54,6 +59,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
 
     if (viewModel.isUserAuthenticated()) {
         LaunchedEffect(Unit) {
+            cartViewModel.clearCart()
             navController.navigate(Screen.HomeScreen.route)
         }
     }

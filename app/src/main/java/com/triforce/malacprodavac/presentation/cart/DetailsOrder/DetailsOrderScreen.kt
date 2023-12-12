@@ -39,7 +39,7 @@ fun DetailsOrderScreen(navController: NavController) {
     val viewModel: CartDetailsViewModel = hiltViewModel()
     val state = viewModel.state
 //    val totalPrice: Double = state.totalPrice
-    val totalPrice: Double = TotalPrice()
+    //val totalPrice: Double = TotalPrice()
 
     val year = BoughtProducts.localDate.split("-")[0]
     val month = BoughtProducts.localDate.split("-")[1]
@@ -101,7 +101,7 @@ fun DetailsOrderScreen(navController: NavController) {
                     )
 
                     Text(
-                        text = "Ukupan iznos: $totalPrice",
+                        text = "Ukupan iznos: 0",
                         style = MaterialTheme.typography.body1,
                         color = MP_Black
                     )

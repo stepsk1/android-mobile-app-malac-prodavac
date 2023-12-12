@@ -3,6 +3,7 @@ package com.triforce.malacprodavac.presentation.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.services.SessionManager
@@ -10,6 +11,7 @@ import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.validate.ValidateEmail
 import com.triforce.malacprodavac.domain.use_case.validate.ValidatePassword
 import com.triforce.malacprodavac.domain.util.Resource
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: Login,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val validateEmail: ValidateEmail = ValidateEmail()
     private val validatePassword: ValidatePassword = ValidatePassword()
@@ -90,6 +92,7 @@ class LoginViewModel @Inject constructor(
                     is Resource.Success -> {
                         state = state.copy(
                             isSuccessful = true
+
                         )
                     }
 
