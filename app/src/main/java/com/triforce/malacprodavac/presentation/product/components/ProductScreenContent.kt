@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.product.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -63,8 +65,20 @@ fun ProductScreenContent(
 
     val colorForeground = MP_Green
     val colorBackground = MP_GreenLight
+    val context = LocalContext.current
 
     val scrollState = rememberScrollState()
+
+    if(state.createReviewError != null)
+    {
+        Toast
+            .makeText(
+                context,
+                state.createReviewError,
+                Toast.LENGTH_LONG
+            )
+            .show()
+    }
 
     if (product != null && shop != null) {
         Scaffold(
