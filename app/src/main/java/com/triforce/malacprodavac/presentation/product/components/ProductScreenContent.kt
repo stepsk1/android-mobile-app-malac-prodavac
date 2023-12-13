@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.IconButton
@@ -82,6 +83,7 @@ fun ProductScreenContent(
 
     if (product != null && shop != null) {
         Scaffold(
+            modifier = Modifier.padding(bottom = 100.dp),
             content = { padding ->
                 Box(
                     modifier = Modifier
@@ -143,14 +145,13 @@ fun ProductScreenContent(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(16.dp)
-                                    .weight(1f)
                             ) {
                                 items(state.reviews) { review ->
                                     Column {
                                         Text(
                                             text = review.text.ifEmpty { "Korisnik nije ostavio komentar" },
                                             softWrap = true,
-                                        )
+                                            )
                                         RatingStars(
                                             rating = review.rating.toDouble()
                                         )
