@@ -1,11 +1,22 @@
 package com.triforce.malacprodavac.di
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.triforce.malacprodavac.MainActivity
+import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
 import com.triforce.malacprodavac.data.local.RoomConverters
 import com.triforce.malacprodavac.data.remote.Api
@@ -93,12 +104,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.sse.EventSources
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -181,18 +195,16 @@ object ApplicationModule {
     @Singleton
     fun provideReviewRepliesApi(retrofit: Retrofit): ReviewRepliesApi = retrofit.create()
 
+
     @Provides
     @Singleton
     fun provideOkHttpClient(authInterceptorImpl: AuthInterceptorImpl): OkHttpClient =
         OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(0, TimeUnit.SECONDS)
             .addInterceptor(authInterceptorImpl)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
-
-    @Provides
-    @Singleton
-    fun provideEventSource(client: OkHttpClient) =
-        EventSources.createFactory(client)
 
     @Singleton
     @Provides
@@ -494,4 +506,49 @@ object ApplicationModule {
             .fallbackToDestructiveMigration()
             .build()
 
+    /** NOTIFICATIONS **/
+    @Provides
+    @Singleton
+    fun provideNotificationBuilder(
+        @ApplicationContext context: Context
+    ): NotificationCompat.Builder {
+        val clickIntent = Intent(
+            Intent.ACTION_VIEW,
+            Screen.NotificationScreen.DEEPLINK_URI.toUri(),
+            context,
+            MainActivity::class.java
+        )
+
+        val clickPendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(clickIntent)
+            getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE)
+        }
+
+        return NotificationCompat
+            .Builder(context, R.string.notification_channel_id.toString())
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setSmallIcon(R.drawable.logo_gradient)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(clickPendingIntent)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationManager(
+        @ApplicationContext context: Context
+    ): NotificationManagerCompat {
+        val notificationManager = NotificationManagerCompat.from(context)
+        val channel = NotificationChannel(
+            R.string.notification_channel_id.toString(),
+            "Novosti",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        notificationManager.createNotificationChannel(channel)
+        return notificationManager
+    }
+
+    @Provides
+    @Singleton
+    fun provideApplicationCoroutineScope(): CoroutineScope =
+        CoroutineScope(SupervisorJob() + Dispatchers.Default)
 }

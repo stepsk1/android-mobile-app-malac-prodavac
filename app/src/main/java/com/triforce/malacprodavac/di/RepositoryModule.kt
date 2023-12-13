@@ -5,6 +5,7 @@ import com.triforce.malacprodavac.data.repository.categories.CategoryRepositoryI
 import com.triforce.malacprodavac.data.repository.couriers.CourierRepositoryImpl
 import com.triforce.malacprodavac.data.repository.customers.CustomerRepositoryImpl
 import com.triforce.malacprodavac.data.repository.notifications.NotificationsRepositoryImpl
+import com.triforce.malacprodavac.data.repository.notifications.NotificationsSSEClientImpl
 import com.triforce.malacprodavac.data.repository.orders.OrderRepositoryImpl
 import com.triforce.malacprodavac.data.repository.products.ProductRepositoryImpl
 import com.triforce.malacprodavac.data.repository.products.reviews.ReviewsRepositoryImpl
@@ -21,6 +22,7 @@ import com.triforce.malacprodavac.domain.repository.OrderRepository
 import com.triforce.malacprodavac.domain.repository.ScheduledPickupRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
+import com.triforce.malacprodavac.domain.repository.notifications.NotificationsSSEClient
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.products.reviews.ReviewsRepository
 import com.triforce.malacprodavac.domain.repository.products.reviews.replies.ReviewRepliesRepository
@@ -113,4 +115,10 @@ abstract class RepositoryModule {
     abstract fun bindReviewRepliesRepository(
         reviewRepliesRepositoryImpl: ReviewRepliesRepositoryImpl
     ): ReviewRepliesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNotificationsSSEClient(
+        notificationsSSEClientImpl: NotificationsSSEClientImpl
+    ): NotificationsSSEClient
 }

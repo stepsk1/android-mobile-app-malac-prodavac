@@ -5,7 +5,6 @@ import com.triforce.malacprodavac.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface NotificationsRepository {
-    suspend fun subscribe(): Flow<Resource<Unit>>
 
     suspend fun getNotifications(): Flow<Resource<List<Notification>>>
 
