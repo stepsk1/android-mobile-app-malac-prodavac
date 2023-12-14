@@ -136,6 +136,15 @@ class MalacProdavacApp : Application(), ImageLoaderFactory, SSEHandler {
                     result?.title ?: ""
                 )
             }
+
+            MessageEventType.AvailableAgainFromFavoriteShop -> {
+                val adapter = moshi.adapter<NotificationDataType.AvailableAgainFromFavoriteShop>()
+                val result = adapter.fromJson(messageEvent.data)
+                showSimpleNotification(
+                    result?.title ?: "",
+                    result?.product ?: ""
+                )
+            }
         }
 
     }

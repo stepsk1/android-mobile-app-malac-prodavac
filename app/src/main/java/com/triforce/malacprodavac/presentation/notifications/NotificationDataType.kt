@@ -11,6 +11,8 @@ sealed class NotificationDataType {
 
     data class NewProductFromFavoriteShop(val title: String, val product: String) :
         NotificationDataType()
+    data class AvailableAgainFromFavoriteShop(val title: String, val product: String) :
+        NotificationDataType()
 
     data class ProductsAvailableAtNewLocation(val title: String, val location: String?) :
         NotificationDataType()
