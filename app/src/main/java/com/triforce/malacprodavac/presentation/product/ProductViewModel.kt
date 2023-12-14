@@ -39,14 +39,6 @@ class ProductViewModel @Inject constructor(
                 state = state.copy(isBuyed = true)
             }
 
-            is ProductEvent.favoriteProduct -> { // POGLEDAJ PONOVO
-                state = state.copy(isFavorite = true)
-            }
-
-            is ProductEvent.removeFavoriteProduct -> { // POGLEDAJ PONOVO
-                state = state.copy(isFavorite = false)
-            }
-
             is ProductEvent.CreateReview -> {
                 createReview(event.text, event.rating)
             }
@@ -173,7 +165,6 @@ class ProductViewModel @Inject constructor(
                                 state.copy(
                                     product = it,
                                     thumbnailUrl = if (it.productMedias?.isNotEmpty() == true) "http://softeng.pmf.kg.ac.rs:10010/products/${it.productMedias.first().productId}/medias/${it.productMedias.first().id}" else null,
-                                    isFavorite = result.data.isFavored ?: false
                                 )
                         }
                         state.product?.let {

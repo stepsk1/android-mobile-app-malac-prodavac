@@ -1,17 +1,13 @@
 package com.triforce.malacprodavac.presentation.product.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.R
@@ -25,7 +21,7 @@ fun ProductBottomBar(
     navController: NavController,
     viewModel: ProductViewModel,
     viewModelFavProduct: FavoriteViewModel
-){
+) {
     Column {
 
         viewModel.state.product?.let {
@@ -33,7 +29,7 @@ fun ProductBottomBar(
                 navController = navController,
                 viewModel = viewModel,
                 viewModelFavourite = viewModelFavProduct,
-                mainProduct = it
+                product = it
             )
         }
 

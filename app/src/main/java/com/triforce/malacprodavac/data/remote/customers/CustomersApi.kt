@@ -44,7 +44,7 @@ interface CustomersApi {
     @GET("${ROUTE}/{id}/favoriteProducts")
     suspend fun getFavoriteProducts(
         @Path("id") customerId: Int,
-        //@QueryMap queryMap: MutableMap<String, String>
+        @QueryMap queryMap: MutableMap<String, String>
     ): PaginationResult<FavoriteProduct>
 
     @DELETE("${ROUTE}/{id}/favoriteProducts/{favoriteProductId}")

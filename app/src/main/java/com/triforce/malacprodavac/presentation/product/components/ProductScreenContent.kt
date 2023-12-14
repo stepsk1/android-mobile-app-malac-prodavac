@@ -101,7 +101,7 @@ fun ProductScreenContent(
                             navController = navController,
                             products = shop.products,
                             title = "Više od ${shop.businessName}",
-                            route = Screen.HighlightSection.route + "?id=${shop.id}"
+                            route = Screen.PublicProfile.route + "?id=${shop.id}&role=1"
                         )
 
                         Row(

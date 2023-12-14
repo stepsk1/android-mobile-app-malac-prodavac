@@ -14,9 +14,6 @@ data class ProductState(
     val isBuyed: Boolean = false,
 
 
-    val isFavorite: Boolean = false,
-
-
     val user: User? = null,
     val token: String? = null,
     val shop: Shop? = null,

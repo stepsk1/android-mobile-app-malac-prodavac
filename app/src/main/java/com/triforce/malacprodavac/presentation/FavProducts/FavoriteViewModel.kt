@@ -6,11 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triforce.malacprodavac.data.remote.customers.dto.CreateFavoriteProductDto
+import com.triforce.malacprodavac.data.services.filter.Filter
+import com.triforce.malacprodavac.data.services.filter.FilterBuilder
+import com.triforce.malacprodavac.data.services.filter.FilterOperation
+import com.triforce.malacprodavac.data.services.filter.SingleFilter
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.presentation.product.FavouriteProduct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,16 +33,17 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun onEvent(event: FavoriteEvent) {
-        when(event) {
-            is FavoriteEvent.AddFavProduct -> {
-                addFavProduct(state.customerId!!, CreateFavoriteProductDto(productId = event.productId))
-            }
-            is FavoriteEvent.GetFavProducts -> {
-                getFavProducts(state.customerId!!)
-            }
-            is FavoriteEvent.DeleteFavProduct -> {
-                deleteFavProduct(state.customerId!!, favoriteProductId = event.productId)
-            }
+        when (event) {
+            is FavoriteEvent.AddFavProduct -> addFavProduct(
+                state.customerId!!,
+                CreateFavoriteProductDto(productId = event.productId)
+            )
+
+            is FavoriteEvent.GetFavProducts -> getFavProducts(state.customerId!!)
+            is FavoriteEvent.DeleteFavProduct -> deleteFavProduct(
+                state.customerId!!,
+                event.productId
+            )
         }
     }
 
@@ -47,7 +51,16 @@ class FavoriteViewModel @Inject constructor(
         userId: Int,
     ) {
         viewModelScope.launch {
-            repository.getFavoriteProducts(userId, true).collect { result ->
+            val query = FilterBuilder.buildFilterQueryMap(
+                Filter(
+                    filter = listOf(),
+                    order = null,
+                    limit = null,
+                    offset = null
+                )
+            )
+
+            repository.getFavoriteProducts(userId, true, query).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<FavoriteProduct>) {
@@ -55,20 +68,44 @@ class FavoriteViewModel @Inject constructor(
                         }
                     }
 
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
     }
 
+    private suspend fun getFavProduct(userId: Int, productId: Int): FavoriteProduct? {
+        var favoriteProduct: FavoriteProduct? = null
+
+        viewModelScope.launch {
+            val query = FilterBuilder.buildFilterQueryMap(
+                Filter(
+                    filter = listOf(
+                        SingleFilter("productId", FilterOperation.Eq, productId)
+                    ),
+                    order = null,
+                    limit = null,
+                    offset = null
+                )
+            )
+
+            repository.getFavoriteProducts(userId, true, query).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        if (result.data is List<FavoriteProduct> && result.data.isNotEmpty()) {
+                            favoriteProduct = result.data.first()
+                        }
+                    }
+
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
+                }
+            }
+        }.join()
+
+        return favoriteProduct
+    }
 
     private fun addFavProduct(
         userId: Int,
@@ -83,67 +120,69 @@ class FavoriteViewModel @Inject constructor(
                         }
                     }
 
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
     }
-
 
     private fun deleteFavProduct(
         userId: Int,
-        favoriteProductId: Int
+        productId: Int
     ) {
         viewModelScope.launch {
-            repository.deleteFavoriteProduct(userId, favoriteProductId).collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        if (result.data is FavoriteProduct) {
-                            state = state.copy(favProduct = result.data)
+            val favProduct = getFavProduct(userId, productId)
+
+            favProduct?.let { product ->
+                repository.deleteFavoriteProduct(userId, product.id)
+                    .collect { result ->
+                        when (result) {
+                            is Resource.Success -> {
+                                if (result.data is FavoriteProduct) {
+                                    state = state.copy(favProduct = result.data)
+                                    updateFavoriteProductsAfterDeletion(productId)
+                                }
+                            }
+
+                            is Resource.Error -> handleError()
+                            is Resource.Loading -> handleLoading(result.isLoading)
                         }
                     }
-
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
-                }
             }
         }
     }
 
-    private fun me(){
+    private fun updateFavoriteProductsAfterDeletion(productId: Int) {
+        val updatedList = state.favProducts.toMutableList()
+        updatedList.removeIf { it.product?.id == productId }
+        state = state.copy(favProducts = updatedList)
+    }
+
+    private fun me() {
         viewModelScope.launch {
             profile.getMe().collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        if(result.data != null) {
+                        if (result.data != null) {
                             state = state.copy(
                                 customerId = result.data.customer!!.id
                             )
                             getFavProducts(state.customerId!!)
                         }
                     }
-                    is Resource.Error -> Unit
 
-                    is Resource.Loading -> {
-                        state = state.copy(isLoading = result.isLoading)
-                    }
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
+    }
+
+    private fun handleError() {
+    }
+
+    private fun handleLoading(isLoading: Boolean) {
+        state = state.copy(isLoading = isLoading)
     }
 }
