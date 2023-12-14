@@ -26,7 +26,6 @@ class FavoriteViewModel @Inject constructor(
 ) : ViewModel() {
 
     var state by mutableStateOf(FavoriteState())
-    var orderStatus: String = ""
 
     init {
         me()

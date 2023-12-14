@@ -1,7 +1,5 @@
 package com.triforce.malacprodavac.data.repository.customers
 
-import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
-import com.triforce.malacprodavac.data.remote.auth.AuthApi
 import com.triforce.malacprodavac.data.remote.customers.CustomersApi
 import com.triforce.malacprodavac.data.remote.customers.dto.CreateCustomerDto
 import com.triforce.malacprodavac.data.remote.customers.dto.CreateFavoriteProductDto
@@ -22,9 +20,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CustomerRepositoryImpl @Inject constructor(
-    private val api: CustomersApi,
-    private val apiAuth: AuthApi,
-    private val db: MalacProdavacDatabase
+    private val api: CustomersApi
 ) : CustomerRepository {
     override suspend fun registerCustomer(
         createCustomer: CreateCustomer
@@ -49,8 +45,6 @@ class CustomerRepositoryImpl @Inject constructor(
                 null
             }
             customer?.let {
-//                authenticateUser(it)
-//                dao.insertUser(listOf(it.user.toUserEntity()))
                 emit(Resource.Success(data = it))
             }
             emit(Resource.Loading(isLoading = false))
@@ -91,13 +85,13 @@ class CustomerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertFavoriteProduct(
-        id: Int,
+        customerId: Int,
         createFavoriteProductDto: CreateFavoriteProductDto
     ): Flow<Resource<FavoriteProduct>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
             val favoriteProduct = try {
-                api.createFavoriteProduct(id, createFavoriteProductDto)
+                api.createFavoriteProduct(customerId, createFavoriteProductDto)
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't add favorite product."))

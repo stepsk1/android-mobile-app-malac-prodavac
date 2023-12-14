@@ -16,27 +16,33 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
 import com.triforce.malacprodavac.domain.model.customers.FavoriteShop
-import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
-import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopEvent
 import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
+import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
+import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun FavShopItem(
@@ -44,6 +50,7 @@ fun FavShopItem(
     viewModel: FavoriteShopViewModel,
     navController: NavController
 ) {
+    var showDialog by remember { mutableStateOf(false) }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -78,7 +85,7 @@ fun FavShopItem(
 
                 ) {
                     Text(
-                        text = favoriteShop.shop!!.businessName!!, //.product!!.title,
+                        text = favoriteShop.shop!!.businessName!!,
                         style = MaterialTheme.typography.h6,
                         color = MP_Black
                     )
@@ -90,10 +97,69 @@ fun FavShopItem(
                         modifier = Modifier
                             .size(36.dp)
                             .clickable {
-                                viewModel.onEvent(FavoriteShopEvent.DeleteFavShop)
+                                showDialog = true
                             }
                     )
                 }
+
+                if (showDialog) {
+                    AlertDialog(
+                        containerColor = MP_White,
+                        onDismissRequest = {
+                            showDialog = false
+                        },
+                        title = {
+                            Text(
+                                text = "Obriši prodavca iz liste omiljenih",
+                                style = MaterialTheme.typography.h5,
+                                color = MP_Pink_Dark,
+                                fontWeight = FontWeight.W300
+                            )
+                        },
+                        text = {
+                            Text(
+                                text = "Da li ste sigurni da želite da obrišete ${favoriteShop.shop!!.businessName} iz liste omiljenih prodavca?",
+                                style = MaterialTheme.typography.body1,
+                                color = MP_Black,
+                                fontWeight = FontWeight.W300
+                            )
+                        },
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    viewModel.onEvent(FavoriteShopEvent.DeleteFavShop(favoriteShop.id))
+                                    showDialog = false
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MP_Green
+                                )
+                            ) {
+                                Text(
+                                    text = "Da",
+                                    style = MaterialTheme.typography.body1,
+                                    color = MP_White
+                                )
+                            }
+                        },
+                        dismissButton = {
+                            Button(
+                                onClick = {
+                                    showDialog = false
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MP_Pink
+                                )
+                            ) {
+                                Text(
+                                    text = "Ne",
+                                    style = MaterialTheme.typography.body1,
+                                    color = MP_White
+                                )
+                            }
+                        }
+                    )
+                }
+
                 Text(
                     text = "Od " + favoriteShop.shop!!.openFromDays + " do " + favoriteShop.shop.openTillDays,
                     style = MaterialTheme.typography.body2,

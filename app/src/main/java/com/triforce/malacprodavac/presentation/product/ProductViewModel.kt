@@ -81,10 +81,6 @@ class ProductViewModel @Inject constructor(
 
             getProduct(productId)
             getReviews(productId)
-
-            FavouriteProduct.favouriteProductId = productId
-            FavouriteProduct.favouriteProduct = state.product
-            FavouriteProduct.favProducts.add(state.product)
         }
     }
 
