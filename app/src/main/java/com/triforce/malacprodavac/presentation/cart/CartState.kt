@@ -10,8 +10,6 @@ import java.time.format.DateTimeFormatter
 data class CartState (
     val totalPrice: Double = 0.00,
 
-    val selectedShipping: DeliveryMethod = DeliveryMethod.SelfPickup,
-    val selectedPayment: PaymentMethod = PaymentMethod.PayPal,
     val selectedAddress: String = "",
 
     val user: User? = null,
@@ -34,7 +32,4 @@ data class CartState (
 
     val localDate: String = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")),
     val localTime: String = LocalTime.NOON.toString(),
-
-    val scheduleDate: String = "",
-    val scheduleTime: String = "",
 )

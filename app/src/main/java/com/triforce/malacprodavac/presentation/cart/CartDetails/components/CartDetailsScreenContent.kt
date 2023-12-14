@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.data.repository.cart.CartRepository
 import com.triforce.malacprodavac.presentation.cart.CartEvent
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -31,7 +32,6 @@ fun CartDetailsScreenContent(
     navController: NavController,
     viewModel: CartViewModel = hiltViewModel()
 ) {
-    val cartItems by viewModel.cartItems.collectAsState()
     val totalPrice = viewModel.cartState.totalPrice
 
     Column(
@@ -66,7 +66,7 @@ fun CartDetailsScreenContent(
 
         Button(
             onClick = {
-                if (viewModel.cartState.selectedShipping == DeliveryMethod.ByCourier)
+                if (CartRepository.getShipping() == DeliveryMethod.ByCourier)
                 {
                     viewModel.onEvent(CartEvent.makeOrder)
                     navController.navigate(Screen.DetailsOrderScreen.route)

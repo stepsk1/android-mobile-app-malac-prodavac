@@ -93,8 +93,8 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             repositoryOrder.insertOrder(
                 createOrder = CreateOrderDto(
-                    deliveryMethod = cartState.selectedShipping,
-                    paymentMethod = cartState.selectedPayment,
+                    deliveryMethod = CartRepository.getShipping(),
+                    paymentMethod = CartRepository.getPayment(),
                     productId = cartItem.product.id,
                     quantity = cartItem.quantity.value
                 )
@@ -103,7 +103,7 @@ class CartViewModel @Inject constructor(
                     is Resource.Success -> {
                         result.data?.let {
 
-                            if (cartState.selectedShipping == DeliveryMethod.SelfPickup)
+                            if (CartRepository.getShipping() == DeliveryMethod.SelfPickup)
                                 scheduleProducts(cartItem)
                             else
                                 cartState = cartState.copy(isSuccessful = true)
@@ -130,7 +130,7 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             repositorySchedule.insertScheduledPickup(
                 id = cartItem.orderId,
-                createSchedulePickup = CreateSchedulePickupDto(date = cartState.localDate, timeOfDay = cartState.localTime)
+                createSchedulePickup = CreateSchedulePickupDto(date = CartRepository.getScheduleDate(), timeOfDay = CartRepository.getScheduleTime())
             ).collect { result ->
                 when (result) {
                     is Resource.Success -> {

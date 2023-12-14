@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.triforce.malacprodavac.data.repository.cart.CartRepository
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -36,7 +37,6 @@ import java.time.format.DateTimeFormatter
 fun ChooseDateAndTime(
     viewModel: CartViewModel
 ) {
-
     val context = LocalContext.current
 
     var pickedDate by remember {
@@ -129,7 +129,7 @@ fun ChooseDateAndTime(
         ) {
             pickedDate = it
 
-            viewModel.cartState = viewModel.cartState.copy(scheduleDate = pickedDate.toString())
+            CartRepository.setScheduleDate(pickedDate.toString())
         }
     }
 
@@ -153,7 +153,7 @@ fun ChooseDateAndTime(
         ) {
             pickedTime = it
 
-            viewModel.cartState = viewModel.cartState.copy(scheduleTime = pickedTime.toString())
+            CartRepository.setScheduleTime(pickedTime.toString())
         }
     }
 }

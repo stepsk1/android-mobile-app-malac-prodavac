@@ -32,6 +32,7 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.data.repository.cart.CartRepository
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -52,7 +53,7 @@ fun DetailsOrderScreenContent(
             .fillMaxSize()
             .background(MP_Green)
             .padding(horizontal = 20.dp)
-            .padding(top = 20.dp)
+            .padding(top = 40.dp)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -115,7 +116,7 @@ fun DetailsOrderScreenContent(
             }
 
             Text(
-                text = "Način plaćanja:\n${cartState.selectedPayment.name}",
+                text = "Način plaćanja:\n${CartRepository.getPayment()}",
                 style = MaterialTheme.typography.body1,
                 color = MP_Black,
                 textAlign = TextAlign.Center
@@ -130,11 +131,12 @@ fun DetailsOrderScreenContent(
             )
             Spacer(modifier = Modifier.padding(6.dp))
 
-            if (cartState.selectedShipping == DeliveryMethod.SelfPickup) {
+            if (CartRepository.getShipping() == DeliveryMethod.SelfPickup) {
                 Text(
-                    text = "Vreme preuzimanja paketa: ${cartState.scheduleDate} ${cartState.scheduleTime}",
+                    text = "Preuzimanja paketa:\n${CartRepository.getScheduleDate()} ${CartRepository.getScheduleTime()}",
                     style = MaterialTheme.typography.body1,
-                    color = MP_Black
+                    color = MP_Black,
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.padding(6.dp))
             }

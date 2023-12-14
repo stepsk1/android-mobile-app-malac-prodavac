@@ -1,60 +1,48 @@
 package com.triforce.malacprodavac.presentation.cart.DetailsOrder
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.Text
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
-import com.triforce.malacprodavac.BottomNavigationMenuContent
-import com.triforce.malacprodavac.R
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
-import com.triforce.malacprodavac.presentation.store.components.GoBackComp
+import com.triforce.malacprodavac.data.repository.cart.CartRepository
+import com.triforce.malacprodavac.ui.theme.MP_Green
+import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun DetailsOrderScreen(
     navController: NavController
 ) {
     Scaffold(
-        topBar = {
-            GoBackComp("Moja korpa", navController, true)
-        },
         content = { padding ->
             DetailsOrderScreenContent()
         },
-        bottomBar = {
-            BottomNavigationMenu(
-                navController = navController,
-                items = listOf(
-                    BottomNavigationMenuContent(
-                        title = "Početna",
-                        graphicID = Icons.Default.Home,
-                        screen = Screen.HomeScreen,
-                        isActive = false
-                    ),
-                    BottomNavigationMenuContent(
-                        title = "Market",
-                        graphicID = ImageVector.vectorResource(R.drawable.logo_green),
-                        screen = Screen.StoreScreen,
-                        isActive = false
-                    ),
-                    BottomNavigationMenuContent(
-                        title = "Profil",
-                        graphicID = Icons.Default.Person,
-                        screen = Screen.PrivateProfile,
-                        isActive = false
-                    ),
-                    BottomNavigationMenuContent(
-                        title = "Korpa",
-                        graphicID = Icons.Default.ShoppingCart,
-                        screen = Screen.CartScreen,
-                        isActive = true
-                    )
-                ))
-        }
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    CartRepository.clearCart()
+                    navController.navigate(Screen.HomeScreen.route)
+                },
+                backgroundColor = MP_White,
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+            ) {
+                Text(
+                    text = "Vrati se na početnu",
+                    color = MP_Green,
+                    style = MaterialTheme.typography.body1,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center
     )
 }

@@ -11,11 +11,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import com.triforce.malacprodavac.data.repository.cart.CartRepository
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
@@ -24,6 +27,8 @@ import com.triforce.malacprodavac.ui.theme.MP_Gray
 fun ShippingType (
     viewModel: CartViewModel
 ) {
+    val selectedShippingOption = remember { mutableStateOf(CartRepository.getShipping()) }
+
     Text(
         text = "Način slanja:",
         style = MaterialTheme.typography.body1,
@@ -48,9 +53,10 @@ fun ShippingType (
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(
-                    selected = (shippingOption == viewModel.cartState.selectedShipping),
+                    selected = (shippingOption == selectedShippingOption.value),
                     onClick = {
-                        viewModel.cartState = viewModel.cartState.copy(selectedShipping = shippingOption)
+                        selectedShippingOption.value = shippingOption
+                        CartRepository.setShipping(shippingOption)
                     }
                 )
                 Text(
