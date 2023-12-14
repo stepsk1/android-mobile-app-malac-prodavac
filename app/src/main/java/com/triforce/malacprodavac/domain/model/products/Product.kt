@@ -2,6 +2,7 @@ package com.triforce.malacprodavac.domain.model.products
 
 import com.squareup.moshi.Json
 import com.triforce.malacprodavac.domain.model.Category
+import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
 import com.triforce.malacprodavac.domain.model.products.productMedias.ProductMedia
 import com.triforce.malacprodavac.domain.model.products.reviews.Review
 import com.triforce.malacprodavac.domain.model.shops.Shop
@@ -30,7 +31,8 @@ data class Product(
 
     val isFavored: Boolean?,
 
-    val productMedias: List<ProductMedia>? = emptyList(),
+    val productMedias: List<ProductMedia> = emptyList(),
+    val favoriteProducts: List<FavoriteProduct> = emptyList(),
     val shop: Shop?,
     val category: Category?,
     val reviews: List<Review>?,
