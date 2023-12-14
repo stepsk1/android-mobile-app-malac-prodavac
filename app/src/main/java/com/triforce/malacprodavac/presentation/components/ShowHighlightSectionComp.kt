@@ -43,7 +43,6 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
-import com.triforce.malacprodavac.presentation.product.ProductEvent
 import com.triforce.malacprodavac.presentation.product.ProductViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
@@ -139,7 +138,6 @@ fun HighlightSectionProduct(
     viewModel: ProductViewModel = hiltViewModel(),
     viewModelFavourite: FavoriteViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
     val isFavorite = remember { mutableStateOf(product?.isFavored ?: false) }
 
     BoxWithConstraints(
@@ -242,14 +240,12 @@ fun HighlightSectionProduct(
                                         .size(20.dp)
                                         .clickable {
                                             if (!isFavorite.value) {
-                                                viewModel.onEvent(ProductEvent.favoriteProduct)
                                                 viewModelFavourite.onEvent(
                                                     FavoriteEvent.AddFavProduct(
                                                         product.id
                                                     )
                                                 )
                                             } else {
-                                                viewModel.onEvent(ProductEvent.removeFavoriteProduct)
                                                 viewModelFavourite.onEvent(
                                                     FavoriteEvent.DeleteFavProduct(
                                                         product.id
