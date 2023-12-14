@@ -20,7 +20,7 @@ data class Shop(
     val createdAt: String?,
 
     val isFavored: Boolean?,
-    val favoriteShops: List<FavoriteShop> = emptyList(),
+    val favoriteShops: List<FavoriteShop>? = emptyList(),
 
     val user: User?,
     val products: List<Product>?,
