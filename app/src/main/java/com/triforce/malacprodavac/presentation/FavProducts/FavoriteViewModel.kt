@@ -9,14 +9,11 @@ import com.triforce.malacprodavac.data.remote.customers.dto.CreateFavoriteProduc
 import com.triforce.malacprodavac.data.services.filter.Filter
 import com.triforce.malacprodavac.data.services.filter.FilterBuilder
 import com.triforce.malacprodavac.data.services.filter.FilterOperation
-import com.triforce.malacprodavac.data.services.filter.FilterOrder
 import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.data.services.filter.SingleOrder
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.presentation.product.FavouriteProduct
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,10 +33,17 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun onEvent(event: FavoriteEvent) {
-        when(event) {
-            is FavoriteEvent.AddFavProduct -> addFavProduct(state.customerId!!, CreateFavoriteProductDto(productId = event.productId))
+        when (event) {
+            is FavoriteEvent.AddFavProduct -> addFavProduct(
+                state.customerId!!,
+                CreateFavoriteProductDto(productId = event.productId)
+            )
+
             is FavoriteEvent.GetFavProducts -> getFavProducts(state.customerId!!)
-            is FavoriteEvent.DeleteFavProduct -> deleteFavProduct(state.customerId!!, event.productId)
+            is FavoriteEvent.DeleteFavProduct -> deleteFavProduct(
+                state.customerId!!,
+                event.productId
+            )
         }
     }
 
@@ -47,7 +51,14 @@ class FavoriteViewModel @Inject constructor(
         userId: Int,
     ) {
         viewModelScope.launch {
-            val query = FilterBuilder.buildFilterQueryMap(Filter(filter = listOf(), order = null, limit = null, offset = null))
+            val query = FilterBuilder.buildFilterQueryMap(
+                Filter(
+                    filter = listOf(),
+                    order = null,
+                    limit = null,
+                    offset = null
+                )
+            )
 
             repository.getFavoriteProducts(userId, true, query).collect { result ->
                 when (result) {
@@ -56,6 +67,7 @@ class FavoriteViewModel @Inject constructor(
                             state = state.copy(favProducts = result.data)
                         }
                     }
+
                     is Resource.Error -> handleError()
                     is Resource.Loading -> handleLoading(result.isLoading)
                 }
@@ -85,6 +97,7 @@ class FavoriteViewModel @Inject constructor(
                             favoriteProduct = result.data.first()
                         }
                     }
+
                     is Resource.Error -> handleError()
                     is Resource.Loading -> handleLoading(result.isLoading)
                 }
@@ -106,6 +119,7 @@ class FavoriteViewModel @Inject constructor(
                             state = state.copy(favProduct = result.data)
                         }
                     }
+
                     is Resource.Error -> handleError()
                     is Resource.Loading -> handleLoading(result.isLoading)
                 }
@@ -127,6 +141,7 @@ class FavoriteViewModel @Inject constructor(
                             is Resource.Success -> {
                                 if (result.data is FavoriteProduct) {
                                     state = state.copy(favProduct = result.data)
+                                    updateFavoriteProductsAfterDeletion(productId)
                                 }
                             }
 
@@ -138,18 +153,25 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    private fun me(){
+    private fun updateFavoriteProductsAfterDeletion(productId: Int) {
+        val updatedList = state.favProducts.toMutableList()
+        updatedList.removeIf { it.product?.id == productId }
+        state = state.copy(favProducts = updatedList)
+    }
+
+    private fun me() {
         viewModelScope.launch {
             profile.getMe().collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        if(result.data != null) {
+                        if (result.data != null) {
                             state = state.copy(
                                 customerId = result.data.customer!!.id
                             )
                             getFavProducts(state.customerId!!)
                         }
                     }
+
                     is Resource.Error -> handleError()
                     is Resource.Loading -> handleLoading(result.isLoading)
                 }
