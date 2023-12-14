@@ -3,6 +3,7 @@ package com.triforce.malacprodavac.presentation.store.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,56 +36,59 @@ fun GoBackComp(
     isLight: Boolean = false,
 ) {
     var color = MP_White
-    if(isLight) color = Color.Gray
+    if (isLight) color = Color.Gray
 
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .background(if(isLight) MP_White else Color.Transparent)
-            .fillMaxWidth()
-            .padding(15.dp)
-    ) {
+    Box {
         Row(
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .size(width = 240.dp, height = 35.dp)
+                .background(if (isLight) MP_White else Color.Transparent)
+                .fillMaxWidth()
+                .padding(15.dp)
         ) {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .size(width = 240.dp, height = 35.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Search",
+                    tint = color,
+                    modifier = Modifier
+                        .size(25.dp)
+                        .clickable {
+                            navController.popBackStack()
+                            //navController.navigate(Screen.HomeScreen.route)
+                        }
+                )
+
+                Text(
+                    text = if (msg.length > 15) {
+                        msg.subSequence(0, 15).toString() + "..."
+                    } else {
+                        msg
+                    },
+                    style = MaterialTheme.typography.body1,
+                    color = color,
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                )
+            }
+
             Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Search",
+                imageVector = ImageVector.vectorResource(id = R.drawable.baseline_circle_notifications_24),
+                contentDescription = "Notifications",
                 tint = color,
                 modifier = Modifier
                     .size(25.dp)
                     .clickable {
-                        navController.popBackStack()
-                        //navController.navigate(Screen.HomeScreen.route)
+                        navController.navigate(Screen.NotificationScreen.route)
                     }
             )
-
-            Text(
-                text = if (msg.length > 15) {
-                    msg.subSequence(0, 15).toString() + "..."
-                } else {
-                    msg
-                },
-                style = MaterialTheme.typography.body1,
-                color = color,
-                modifier = Modifier
-                    .padding(start = 10.dp)
-            )
         }
-
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.baseline_circle_notifications_24),
-            contentDescription = "Notifications",
-            tint = color,
-            modifier = Modifier
-                .size(25.dp)
-                .clickable {
-                    navController.navigate(Screen.NotificationScreen.route)
-                }
-        )
     }
+
 }

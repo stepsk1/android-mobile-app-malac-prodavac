@@ -5,8 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.domain.model.notifications.Notification
-import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
+import com.triforce.malacprodavac.domain.use_case.notifications.NotificationsUseCase
 import com.triforce.malacprodavac.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
-    private val repository: NotificationsRepository,
+    private val notificationsUseCase: NotificationsUseCase
 ) : ViewModel() {
 
     var state by mutableStateOf(NotificationsState())
@@ -23,31 +22,36 @@ class NotificationsViewModel @Inject constructor(
         getNotifications(true)
     }
 
-    private fun getNotifications(fetchFromRemote: Boolean) {
+    private fun getNotifications(fetchFromRemote: Boolean, page: Int = 1, perPage: Int = 20) {
         viewModelScope.launch {
-            repository.getNotifications().collect { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        result.data?.let {
-                            if (result.data is List<Notification>) {
-                                state = state.copy(notifications = result.data)
+            notificationsUseCase.getNotifications(page, perPage)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            result.data?.let {
+                                state = state.copy(
+                                    notifications = state.notifications + result.data.data,
+                                    currentPage = result.data.meta.currentPage,
+                                    isLastPage = result.data.meta.isLastPage
+                                )
                             }
-                            println("NOTIFIKACIJE")
-                            println(state.notifications)
+                        }
+
+                        is Resource.Error -> {
+                            Unit
+                        }
+
+                        is Resource.Loading -> {
+                            state = state.copy(
+                                isLoading = result.isLoading
+                            )
                         }
                     }
-
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
                 }
-            }
         }
+    }
+
+    fun loadNextPage() {
+        getNotifications(true, state.currentPage + 1, state.perPage)
     }
 }

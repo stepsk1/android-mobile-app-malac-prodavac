@@ -66,7 +66,7 @@ import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
 import com.triforce.malacprodavac.domain.use_case.notifications.GetNotifications
-import com.triforce.malacprodavac.domain.use_case.notifications.Notification
+import com.triforce.malacprodavac.domain.use_case.notifications.NotificationsUseCase
 import com.triforce.malacprodavac.domain.use_case.order.AddOrder
 import com.triforce.malacprodavac.domain.use_case.order.DeleteOrder
 import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
@@ -296,7 +296,7 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideNotificationUseCase(getNotifications: GetNotifications) =
-        Notification(getNotifications)
+        NotificationsUseCase(getNotifications)
 
     @Provides
     @Singleton

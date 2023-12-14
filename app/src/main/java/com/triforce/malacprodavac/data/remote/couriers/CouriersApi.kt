@@ -1,9 +1,8 @@
 package com.triforce.malacprodavac.data.remote.couriers
 
-import com.triforce.malacprodavac.data.remote.Api
 import com.triforce.malacprodavac.data.remote.couriers.dto.CreateCourierDto
 import com.triforce.malacprodavac.domain.model.Courier
-import com.triforce.malacprodavac.domain.model.PaginationResponse
+import com.triforce.malacprodavac.domain.model.pagination.PaginationResult
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -16,7 +15,7 @@ interface CouriersApi {
     ): Courier
 
     @GET(ROUTE)
-    suspend fun getCouriers(@QueryMap queryMap: MutableMap<String, String>):PaginationResponse<Courier>
+    suspend fun getCouriers(@QueryMap queryMap: MutableMap<String, String>): PaginationResult<Courier>
 
     companion object {
         const val ROUTE = "/couriers"

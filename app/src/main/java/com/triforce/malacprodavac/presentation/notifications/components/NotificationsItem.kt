@@ -3,7 +3,6 @@ package com.triforce.malacprodavac.presentation.notifications.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -26,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.domain.model.notifications.Notification
 import com.triforce.malacprodavac.presentation.notifications.NotificationsViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
-import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
 
@@ -34,7 +31,7 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 fun NotificationsItem(
     notification: Notification,
     viewModel: NotificationsViewModel
-){
+) {
     var showTime by remember { mutableStateOf(false) }
 
     var createdAt: String = notification.createdAt
@@ -62,7 +59,6 @@ fun NotificationsItem(
                 showTime = !showTime
             }
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()

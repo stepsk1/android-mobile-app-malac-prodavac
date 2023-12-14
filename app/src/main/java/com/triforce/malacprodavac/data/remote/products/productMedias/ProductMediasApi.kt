@@ -2,7 +2,7 @@ package com.triforce.malacprodavac.data.remote.products.productMedias
 
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
 import com.triforce.malacprodavac.data.remote.products.productMedias.dto.Count
-import com.triforce.malacprodavac.domain.model.PaginationResponse
+import com.triforce.malacprodavac.domain.model.pagination.PaginationResult
 import com.triforce.malacprodavac.domain.model.products.productMedias.ProductMedia
 import okhttp3.MultipartBody
 import retrofit2.http.DELETE
@@ -18,7 +18,7 @@ interface ProductMediasApi {
     suspend fun create(@Path("id") id: Int, @Part() images: List<MultipartBody.Part>): Count
 
     @GET(ROUTE)
-    suspend fun getProductMedias(@Path("id") productId: Int): PaginationResponse<ProductMedia>
+    suspend fun getProductMedias(@Path("id") productId: Int): PaginationResult<ProductMedia>
 
     @DELETE("${ROUTE}/{mediaId}")
     suspend fun deleteProductMedia(

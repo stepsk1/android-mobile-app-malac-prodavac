@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.presentation.registration
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -158,7 +157,6 @@ class RegistrationViewModel @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        Log.d("DSF","SDFSDf")
                         state = state.copy(successful = true)
                     }
                 }
