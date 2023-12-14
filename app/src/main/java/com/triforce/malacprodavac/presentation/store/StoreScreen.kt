@@ -20,11 +20,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -60,14 +58,12 @@ import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
-fun StoreScreen(navController: NavController)
-{
+fun StoreScreen(navController: NavController) {
     val viewModel: StoreViewModel = hiltViewModel()
     val state = viewModel.state
-    //val context = LocalContext.current
 
     val Categories: List<Category> = state.categories
-    var features : List<Feature> = listOf()
+    var features: List<Feature> = listOf()
     var flagNumber: Int = 0
 
     Categories.forEach {
@@ -107,7 +103,7 @@ fun StoreScreen(navController: NavController)
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
-    ){
+    ) {
         LinearGradient(color1 = MP_GreenDark, color2 = MP_GreenLight)
         RoundedBackgroundComp(top = 65.dp, color = MP_White)
 
@@ -168,7 +164,7 @@ fun TitleTextContentSection(
     sectionText: String,
     iconImage: ImageVector,
     iconColor: Color
-){
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
