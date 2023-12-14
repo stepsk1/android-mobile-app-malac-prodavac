@@ -9,5 +9,6 @@ data class CartItem(
     val product: Product,
     val shop: Shop?,
     var quantity: MutableState<Int> = mutableStateOf(1),
-    var price: MutableState<Double> = mutableStateOf(product.price)
+    var price: MutableState<Double> = mutableStateOf(product.price),
+    var orderId: Int = 0
 )

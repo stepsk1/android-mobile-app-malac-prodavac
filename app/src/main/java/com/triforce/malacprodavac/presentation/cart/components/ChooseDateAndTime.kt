@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.triforce.malacprodavac.data.repository.cart.CartRepository
+import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
@@ -32,8 +34,9 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ChooseDateAndTime() {
-
+fun ChooseDateAndTime(
+    viewModel: CartViewModel
+) {
     val context = LocalContext.current
 
     var pickedDate by remember {
@@ -112,7 +115,7 @@ fun ChooseDateAndTime() {
                     context,
                     "Uspešno izabran datum",
                     Toast.LENGTH_LONG
-                )
+                ).show()
             }
             negativeButton(text = "Poništi")
         }
@@ -125,7 +128,8 @@ fun ChooseDateAndTime() {
             )
         ) {
             pickedDate = it
-            BoughtProducts.localDate = pickedDate.toString()
+
+            CartRepository.setScheduleDate(pickedDate.toString())
         }
     }
 
@@ -148,8 +152,8 @@ fun ChooseDateAndTime() {
             timeRange = LocalTime.of(7,0)..LocalTime.of(22,0)
         ) {
             pickedTime = it
-            BoughtProducts.localTime = pickedTime.toString()
+
+            CartRepository.setScheduleTime(pickedTime.toString())
         }
     }
-
 }

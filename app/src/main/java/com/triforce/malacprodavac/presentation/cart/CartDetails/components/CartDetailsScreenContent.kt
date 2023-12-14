@@ -1,6 +1,5 @@
-package com.triforce.malacprodavac.presentation.cart.components
+package com.triforce.malacprodavac.presentation.cart.CartDetails.components
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,61 +11,73 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.data.repository.cart.CartRepository
+import com.triforce.malacprodavac.presentation.cart.CartEvent
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
+import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_White
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
+import com.triforce.malacprodavac.util.enum.DeliveryMethod
 
 @Composable
-fun CartScreenContent(
+fun CartDetailsScreenContent(
     navController: NavController,
     viewModel: CartViewModel = hiltViewModel()
 ) {
-    val cartItems by viewModel.cartItems.collectAsState()
     val totalPrice = viewModel.cartState.totalPrice
-    val context = LocalContext.current
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .background(MP_White)
             .fillMaxSize()
+            .padding(horizontal = 20.dp)
     ) {
+        Text(
+            text = "Plaćanje",
+            style = MaterialTheme.typography.h6,
+            color = MP_Black
+        )
+        Spacer(modifier = Modifier.padding(12.dp))
 
-        DisplayCartItems(cartItems = cartItems, navController = navController)
+        AddressType(viewModel)
+        Spacer(modifier = Modifier.padding(6.dp))
+
+        PaymentType(viewModel)
+        Spacer(modifier = Modifier.padding(6.dp))
+
+        ShippingType(viewModel)
         Spacer(modifier = Modifier.padding(6.dp))
 
         Text(
             text = "Ukupno: ${totalPrice} rsd",
-            style = MaterialTheme.typography.h6,
-            color = MP_Green
+            style = MaterialTheme.typography.body1,
+            color = MP_Black
         )
         Spacer(modifier = Modifier.padding(6.dp))
 
         Button(
             onClick = {
-                if (cartItems.isNotEmpty()) navController.navigate(Screen.CartDetailsScreen.route)
-                else {
-                    Toast
-                        .makeText(
-                            context,
-                            "Korpa je prazna!",
-                            Toast.LENGTH_LONG
-                        )
-                        .show()
-                } },
+                if (CartRepository.getShipping() == DeliveryMethod.ByCourier)
+                {
+                    viewModel.onEvent(CartEvent.makeOrder)
+                    navController.navigate(Screen.DetailsOrderScreen.route)
+                }
+                else
+                    navController.navigate(Screen.SchedulingScreen.route)
+            },
             colors = ButtonDefaults.buttonColors(MP_Green)
         ) {
             Text(
-                text = "Nastavi na plaćanje",
+                text = "Izvrši porudžbinu",
                 color = MP_White,
                 style = MaterialTheme.typography.body1,
                 fontWeight = FontWeight.Bold,

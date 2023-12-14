@@ -94,7 +94,6 @@ fun ShowHighlightSectionComp(
                     .padding(vertical = 6.dp, horizontal = 15.dp)
             )
 
-            Log.d("SHOW_Highlight_Section_Comp", route)
         }
 
         ShowHighlightedProducts(subProducts, navController)
