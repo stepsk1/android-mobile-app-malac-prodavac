@@ -1,5 +1,6 @@
 package com.triforce.malacprodavac.presentation.product.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.IconButton
@@ -27,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -63,11 +66,24 @@ fun ProductScreenContent(
 
     val colorForeground = MP_Green
     val colorBackground = MP_GreenLight
+    val context = LocalContext.current
 
     val scrollState = rememberScrollState()
 
+    if(state.createReviewError != null)
+    {
+        Toast
+            .makeText(
+                context,
+                state.createReviewError,
+                Toast.LENGTH_LONG
+            )
+            .show()
+    }
+
     if (product != null && shop != null) {
         Scaffold(
+            modifier = Modifier.padding(bottom = 100.dp),
             content = { padding ->
                 Box(
                     modifier = Modifier
@@ -129,14 +145,13 @@ fun ProductScreenContent(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(16.dp)
-                                    .weight(1f)
                             ) {
                                 items(state.reviews) { review ->
                                     Column {
                                         Text(
                                             text = review.text.ifEmpty { "Korisnik nije ostavio komentar" },
                                             softWrap = true,
-                                        )
+                                            )
                                         RatingStars(
                                             rating = review.rating.toDouble()
                                         )
