@@ -69,7 +69,7 @@ fun CallToActionFavourite(
                         } else {
                             viewModelFavShop.onEvent(
                                 FavoriteShopEvent.DeleteFavShop(
-                                    shop.id
+                                    shop.favoriteShops[0].id
                                 )
                             )
                         }

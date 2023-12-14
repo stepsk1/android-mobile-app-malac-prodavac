@@ -61,17 +61,17 @@ fun ProfilePublicScreen(
                 ShopDescComp(user, shop)
                 Spacer(modifier = Modifier.padding(16.dp))
 
+                CallToActionFavourite(
+                    shop = shop,
+                    "Ukoliko želite da pratite naš rad, kako bi znali kada smo u Vašoj okolini:"
+                )
+                Spacer(modifier = Modifier.padding(16.dp))
+
                 ShowHighlightSectionComp(
                     navController = navController,
                     products = shop?.products,
                     title = "Naši najnoviji Proizvodi",
                     route = Screen.HighlightSection.route + "?id=${shop?.id}"
-                )
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                CallToActionFavourite(
-                    shop = shop,
-                    "Ukoliko želite da pratite naš rad, kako bi znali kada smo u Vašoj okolini:"
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
 
