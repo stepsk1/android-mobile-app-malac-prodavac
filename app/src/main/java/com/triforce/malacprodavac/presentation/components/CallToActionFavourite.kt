@@ -67,11 +67,12 @@ fun CallToActionFavourite(
                                 )
                             )
                         } else {
-                            viewModelFavShop.onEvent(
-                                FavoriteShopEvent.DeleteFavShop(
-                                    shop.favoriteShops[0].id
+                            if (shop.favoriteShops?.isNotEmpty() == true)
+                                viewModelFavShop.onEvent(
+                                    FavoriteShopEvent.DeleteFavShop(
+                                        shop.favoriteShops[0].id
+                                    )
                                 )
-                            )
                         }
                         isFavorite.value = !isFavorite.value
                     }
