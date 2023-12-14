@@ -235,12 +235,12 @@ fun HighlightSectionProduct (
                                         .size(20.dp)
                                         .clickable {
                                             if (!product.isFavored) {
-                                                viewModel.onEvent(ProductEvent.favoriteProduct) // POGLEDAJ PONOVO
+                                                viewModel.onEvent(ProductEvent.favoriteProduct)
                                                 viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct(product.id))
                                                 Toast
                                                     .makeText(
                                                         context,
-                                                        "Dodat u omiljene proizvode",
+                                                        "${product.title} dodat u omiljene",
                                                         Toast.LENGTH_LONG
                                                     )
                                                     .show()
@@ -250,7 +250,7 @@ fun HighlightSectionProduct (
                                                 Toast
                                                     .makeText(
                                                         context,
-                                                        "Već se nalazi u omiljenim proizvodima",
+                                                        "${product.title} obrisan iz omiljenih",
                                                         Toast.LENGTH_LONG
                                                     )
                                                     .show()

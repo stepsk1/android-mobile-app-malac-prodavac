@@ -59,14 +59,17 @@ class CustomerRepositoryImpl @Inject constructor(
 
     override suspend fun getFavoriteProducts(
         customerId: Int,
-        fetchFromRemote: Boolean
+        fetchFromRemote: Boolean,
+        queryMap: MutableMap<String, String>
     ): Flow<Resource<List<FavoriteProduct>>> {
+
         return flow {
+
             emit(Resource.Loading(isLoading = true))
+
             val favoriteProducts = try {
-                api.getFavoriteProducts(
-                    customerId
-                )
+                api.getFavoriteProducts(customerId, queryMap)
+
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't add favorite product."))
@@ -74,7 +77,7 @@ class CustomerRepositoryImpl @Inject constructor(
             } catch (e: HttpException) {
                 e.printStackTrace()
                 if (e.code() == HttpURLConnection.HTTP_CONFLICT) {
-                    emit(Resource.Error("Favorite  product is't exist!"))
+                    emit(Resource.Error("Favorite  product doesn't exist!"))
                 } else {
                     emit(Resource.Error("Couldn't add favorite product."))
                 }
