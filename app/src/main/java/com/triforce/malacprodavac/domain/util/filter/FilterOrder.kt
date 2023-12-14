@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.data.services.filter
+package com.triforce.malacprodavac.domain.util.filter
 
 enum class FilterOrder(val order: String) {
     Asc("asc"),

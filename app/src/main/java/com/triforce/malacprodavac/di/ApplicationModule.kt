@@ -54,6 +54,10 @@ import com.triforce.malacprodavac.domain.use_case.auth.IsAuthenticated
 import com.triforce.malacprodavac.domain.use_case.category.CategoryUseCase
 import com.triforce.malacprodavac.domain.use_case.category.GetCategories
 import com.triforce.malacprodavac.domain.use_case.category.GetCategory
+import com.triforce.malacprodavac.domain.use_case.couriers.CourierUseCase
+import com.triforce.malacprodavac.domain.use_case.couriers.CreateCourier
+import com.triforce.malacprodavac.domain.use_case.couriers.GetCourier
+import com.triforce.malacprodavac.domain.use_case.couriers.GetCouriers
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.FavoriteProduct
@@ -409,6 +413,27 @@ object ApplicationModule {
             addSchedulePickup,
             updateSchedulePickup
         )
+
+    @Provides
+    @Singleton
+    fun provideCreateCourier(repository: CourierRepository) = CreateCourier(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCouriers(repository: CourierRepository) = GetCouriers(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCourier(repository: CourierRepository) = GetCourier(repository)
+
+
+    @Provides
+    @Singleton
+    fun provideCourierUseCase(
+        createCourier: CreateCourier,
+        getCourier: GetCourier,
+        getCouriers: GetCouriers
+    ) = CourierUseCase(createCourier, getCouriers, getCourier)
 
     @Provides
     @Singleton

@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.presentation.store.category
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,17 +7,16 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.data.services.filter.Filter
-import com.triforce.malacprodavac.data.services.filter.FilterBuilder
-import com.triforce.malacprodavac.data.services.filter.FilterOperation
-import com.triforce.malacprodavac.data.services.filter.FilterOrder
-import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.data.services.filter.SingleOrder
+import com.triforce.malacprodavac.domain.util.filter.Filter
+import com.triforce.malacprodavac.domain.util.filter.FilterBuilder
+import com.triforce.malacprodavac.domain.util.filter.FilterOperation
+import com.triforce.malacprodavac.domain.util.filter.FilterOrder
+import com.triforce.malacprodavac.domain.util.filter.SingleFilter
+import com.triforce.malacprodavac.domain.util.filter.SingleOrder
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.presentation.highlightSection.HighlightSectionEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

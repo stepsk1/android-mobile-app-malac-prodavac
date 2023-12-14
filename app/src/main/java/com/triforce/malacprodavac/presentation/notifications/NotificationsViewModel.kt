@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
-    private val notificationsUseCase: NotificationsUseCase
+    private val notificationsUseCase: NotificationsUseCase,
 ) : ViewModel() {
 
     var state by mutableStateOf(NotificationsState())
@@ -21,6 +21,31 @@ class NotificationsViewModel @Inject constructor(
     init {
         getNotifications(true)
     }
+
+//    private fun getCouriers(page: Int = 1, perPage: Int = 20) {
+//        viewModelScope.launch {
+//            val routeStartAndEndFilters = generateRouteStartAndEndFilters(
+//                Pair(40.0, 40.0), Pair(45.0, 45.0), DistanceKMToCoordinateOffset.Ten
+//            )
+//            val filters = FilterBuilder.buildFilterQueryMap(
+//                Filter(
+//                    routeStartAndEndFilters,
+//                    null,
+//                    null,
+//                    null
+//                )
+//            )
+//            courierUseCase.getCouriers(filters).collect {
+//                when (it) {
+//                    is Resource.Error -> {}
+//                    is Resource.Loading -> {}
+//                    is Resource.Success -> {
+//                        Log.i(NotificationsViewModel::class.simpleName, it.data.toString())
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun getNotifications(fetchFromRemote: Boolean, page: Int = 1, perPage: Int = 20) {
         viewModelScope.launch {

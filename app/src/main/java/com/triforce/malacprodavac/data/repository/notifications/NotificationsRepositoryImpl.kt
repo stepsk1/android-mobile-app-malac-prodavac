@@ -5,10 +5,10 @@ import com.triforce.malacprodavac.data.local.notifications.relations.Notificatio
 import com.triforce.malacprodavac.data.mappers.notifications.toNotificationPayloadWithRelations
 import com.triforce.malacprodavac.data.remote.notifications.NotificationsApi
 import com.triforce.malacprodavac.data.services.SessionManager
-import com.triforce.malacprodavac.data.services.filter.Filter
-import com.triforce.malacprodavac.data.services.filter.FilterBuilder
-import com.triforce.malacprodavac.data.services.filter.FilterOrder
-import com.triforce.malacprodavac.data.services.filter.SingleOrder
+import com.triforce.malacprodavac.domain.util.filter.Filter
+import com.triforce.malacprodavac.domain.util.filter.FilterBuilder
+import com.triforce.malacprodavac.domain.util.filter.FilterOrder
+import com.triforce.malacprodavac.domain.util.filter.SingleOrder
 import com.triforce.malacprodavac.domain.model.notifications.Notification
 import com.triforce.malacprodavac.domain.model.pagination.PaginationResult
 import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
