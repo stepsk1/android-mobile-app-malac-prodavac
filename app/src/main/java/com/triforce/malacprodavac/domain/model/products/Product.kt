@@ -32,7 +32,7 @@ data class Product(
     val isFavored: Boolean?,
 
     val productMedias: List<ProductMedia> = emptyList(),
-    val favoriteProducts: List<FavoriteProduct> = emptyList(),
+    val favoriteProducts: List<FavoriteProduct>? = emptyList(),
     val shop: Shop?,
     val category: Category?,
     val reviews: List<Review>?,
