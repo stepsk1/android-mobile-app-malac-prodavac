@@ -1,7 +1,7 @@
 package com.triforce.malacprodavac.data.remote.products.reviews
 
 import com.triforce.malacprodavac.data.remote.products.ProductsApi
-import com.triforce.malacprodavac.domain.model.PaginationResponse
+import com.triforce.malacprodavac.domain.model.pagination.PaginationResult
 import com.triforce.malacprodavac.domain.model.products.reviews.CreateReviewDto
 import com.triforce.malacprodavac.domain.model.products.reviews.Review
 import com.triforce.malacprodavac.domain.model.products.reviews.UpdateReviewDto
@@ -19,7 +19,7 @@ interface ReviewsApi {
     ): Review
 
     @GET(ROUTE)
-    suspend fun getReviews(@Path("productId") productId: Int): PaginationResponse<Review>
+    suspend fun getReviews(@Path("productId") productId: Int): PaginationResult<Review>
 
     @GET("${ROUTE}/{reviewId}")
     suspend fun getReview(

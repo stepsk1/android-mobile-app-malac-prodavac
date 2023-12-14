@@ -6,16 +6,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteScreen
 import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopScreen
 import com.triforce.malacprodavac.presentation.add_edit_product.addProduct.AddProductScreen
 import com.triforce.malacprodavac.presentation.add_edit_product.advertisingProduct.AdvertisingProductScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
 import com.triforce.malacprodavac.presentation.cart.CartScreen
 import com.triforce.malacprodavac.presentation.cart.DetailsOrder.DetailsOrderScreen
 import com.triforce.malacprodavac.presentation.cart.scheduling.ScheduleScreen
-import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
-import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductScreen
 import com.triforce.malacprodavac.presentation.highlightSection.HighlightSection
 import com.triforce.malacprodavac.presentation.home.HomeScreen
 import com.triforce.malacprodavac.presentation.home.shopHome.ShopHomeScreen
@@ -32,6 +32,7 @@ import com.triforce.malacprodavac.presentation.profile.profilePrivate.userScreen
 import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicScreen
 import com.triforce.malacprodavac.presentation.registration.RegistrationScreen
 import com.triforce.malacprodavac.presentation.store.StoreScreen
+import com.triforce.malacprodavac.presentation.store.category.StoreCategoryScreen
 import com.triforce.malacprodavac.presentation.transactions.TransactionScreen
 
 @Composable
@@ -88,7 +89,7 @@ fun Navigation() {
             StoreCategoryScreen(navController = navController)
         }
 
-        composable(route = Screen.CartScreen.route+ "?productId={productId}",
+        composable(route = Screen.CartScreen.route + "?productId={productId}",
             arguments = listOf(
                 navArgument(
                     name = "productId"
@@ -204,7 +205,10 @@ fun Navigation() {
             FavoriteShopScreen(navController = navController)
         }
 
-        composable(route = Screen.NotificationScreen.route) {
+        composable(
+            route = Screen.NotificationScreen.route,
+            deepLinks = listOf(navDeepLink { uriPattern = Screen.NotificationScreen.DEEPLINK_URI })
+        ) {
             NotificationsScreen(navController = navController)
         }
 
