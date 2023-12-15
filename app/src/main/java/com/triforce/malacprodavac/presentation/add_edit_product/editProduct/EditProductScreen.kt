@@ -133,9 +133,7 @@ fun EditProductScreen(
                     onTextValueChange = {
                         viewModel.onEvent(EditProductEvent.TitleChanged(it))
                     },
-                    placeholder = "Naziv",
-                    colorBackground = colorBackground,
-                    colorForeground = colorForeground
+                    placeholder = "Naziv"
                 )
                 Text(state.titleError ?: "", color = Color.Red)
 
@@ -145,9 +143,7 @@ fun EditProductScreen(
                     onTextValueChange = {
                         viewModel.onEvent(EditProductEvent.DescChanged(it))
                     },
-                    placeholder = "Opis",
-                    colorBackground = colorBackground,
-                    colorForeground = colorForeground
+                    placeholder = "Opis"
                 )
 
                 Row(
@@ -192,9 +188,7 @@ fun EditProductScreen(
                     onTextValueChange = {
                         viewModel.onEvent(EditProductEvent.PriceChanged(it.toDouble()))
                     },
-                    placeholder = "0.00",
-                    colorBackground = colorBackground,
-                    colorForeground = colorForeground
+                    placeholder = "0.00"
                 )
                 Text(state.priceError ?: "", color = Color.Red)
 

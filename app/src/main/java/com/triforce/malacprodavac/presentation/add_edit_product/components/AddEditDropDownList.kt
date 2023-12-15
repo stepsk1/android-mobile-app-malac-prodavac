@@ -25,7 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
+import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_White
 
 
@@ -57,8 +57,8 @@ fun AddEditDropDownList(
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.h6,
-            color = MP_Pink_Dark,
+            style = MaterialTheme.typography.body1,
+            color = MP_Black,
             fontWeight = FontWeight.W400,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -92,7 +92,7 @@ fun AddEditDropDownList(
                     DropdownMenuItem(
                         text = {
                             Text(
-                                entry.toString(), color = MP_Pink_Dark
+                                entry.toString(), color = MP_Black
                             )
                         },
                         onClick = {
