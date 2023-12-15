@@ -10,6 +10,7 @@ import androidx.navigation.navDeepLink
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteScreen
 import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopScreen
 import com.triforce.malacprodavac.presentation.add_edit_product.addProduct.AddProductScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.addProductImage.AddProductImageScreen
 import com.triforce.malacprodavac.presentation.add_edit_product.advertisingProduct.AdvertisingProductScreen
 import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductScreen
 import com.triforce.malacprodavac.presentation.cart.CartDetails.CartDetailsScreen
@@ -179,6 +180,20 @@ fun Navigation() {
             )
         ) {
             EditProductScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.AddProductImage.route + "?productId={productId}",
+            arguments = listOf(
+                navArgument(
+                    name = "productId"
+                ) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
+            AddProductImageScreen(navController = navController)
         }
 
         composable(route = Screen.OrderScreen.route) {

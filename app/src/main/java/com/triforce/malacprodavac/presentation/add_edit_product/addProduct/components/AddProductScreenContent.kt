@@ -1,6 +1,5 @@
 package com.triforce.malacprodavac.presentation.add_edit_product.addProduct.components
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -52,15 +50,8 @@ fun AddProductScreenContent(
     )
 
     if (state.isCreateSuccessful && state.createdProduct != null) {
-        Toast
-            .makeText(
-                LocalContext.current,
-                "Uspešno je kreiran novi proizvod",
-                Toast.LENGTH_LONG
-            )
-            .show()
         LaunchedEffect(Unit) {
-            navController.navigate(Screen.ProductScreen.route + "?productId=${state.createdProduct.id}") {
+            navController.navigate(Screen.AddProductImage.route + "?productId=${state.createdProduct.id}") {
                 popUpTo(Screen.AddProduct.route) {
                     inclusive = true
                 }

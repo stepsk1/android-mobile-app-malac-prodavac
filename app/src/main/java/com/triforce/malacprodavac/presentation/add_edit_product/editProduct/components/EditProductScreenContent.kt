@@ -24,6 +24,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.domain.util.enum.Currency
 import com.triforce.malacprodavac.domain.util.enum.UnitOfMeasurement
@@ -62,14 +64,21 @@ fun EditProductScreenContent(
         onRefresh = {}
     )
 
-    if (state.isUpdateSuccessful) {
+    if (state.isUpdateSuccessful && product != null) {
         Toast
             .makeText(
                 context,
                 "Uspešno ste izmenili proizvod!",
-                Toast.LENGTH_LONG
+                Toast.LENGTH_LONG,
             )
             .show()
+        LaunchedEffect(Unit) {
+            navController.navigate(Screen.ProductScreen.route + "?productId=${product.id}") {
+                popUpTo(Screen.AddProduct.route) {
+                    inclusive = true
+                }
+            }
+        }
     }
 
 
