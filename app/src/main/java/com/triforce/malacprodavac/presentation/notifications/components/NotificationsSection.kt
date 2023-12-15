@@ -1,46 +1,60 @@
 package com.triforce.malacprodavac.presentation.notifications.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.triforce.malacprodavac.domain.model.notifications.Notification
-import com.triforce.malacprodavac.presentation.notifications.NotificationsState
 import com.triforce.malacprodavac.presentation.notifications.NotificationsViewModel
 
 @Composable
 fun NotificationsSection(
+    isLoading: Boolean = false,
+    isLastPage: Boolean = false,
+    loadNext: () -> Unit,
     notifications: List<Notification>,
     viewModel: NotificationsViewModel
 ) {
-    var state by remember { mutableStateOf(NotificationsState()) }
 
-    Column(
+    val scrollState = rememberLazyListState()
+
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(1),
-            modifier = Modifier
-                .requiredHeight(600.dp)
-        ) {
-            items(notifications.size) {// how many items do we have
-                // define one of items
-
+        LazyColumn(state = scrollState) {
+            items(notifications) {
                 NotificationsItem(
-                    notification = notifications[notifications.size - it - 1],
+                    notification = it,
                     viewModel = viewModel
                 )
+            }
+            item {
+                if (isLoading) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp), horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    LaunchedEffect(scrollState.canScrollForward) {
+                        if (!isLastPage && !scrollState.canScrollForward) {
+                            loadNext()
+                        }
+                    }
+                }
             }
         }
     }

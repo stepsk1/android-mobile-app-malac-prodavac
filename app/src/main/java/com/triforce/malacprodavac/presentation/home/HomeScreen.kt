@@ -14,6 +14,8 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +33,6 @@ import com.triforce.malacprodavac.LinearGradient
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
-import com.triforce.malacprodavac.presentation.cart.CartViewModel
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
 import com.triforce.malacprodavac.presentation.home.components.GreetingSection
@@ -42,6 +43,7 @@ import com.triforce.malacprodavac.ui.theme.MP_GreenDark
 import com.triforce.malacprodavac.ui.theme.MP_Pink
 import com.triforce.malacprodavac.ui.theme.MP_White
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -141,11 +143,42 @@ fun HomeScreen(
         }
     }
     if (!state.isLoading) {
-        Box(
+        Scaffold(
             modifier = Modifier
                 .background(MP_White)
-                .fillMaxSize()
-        ) {
+                .fillMaxSize(),
+            bottomBar = {
+                BottomNavigationMenu(
+                    navController = navController,
+                    items = listOf(
+                        BottomNavigationMenuContent(
+                            title = "Početna",
+                            graphicID = Icons.Default.Home,
+                            screen = Screen.HomeScreen,
+                            isActive = true
+                        ),
+                        BottomNavigationMenuContent(
+                            title = "Market",
+                            graphicID = ImageVector.vectorResource(R.drawable.logo_green),
+                            screen = Screen.StoreScreen,
+                            isActive = false
+                        ),
+                        BottomNavigationMenuContent(
+                            title = "Profil",
+                            graphicID = Icons.Default.Person,
+                            screen = Screen.PrivateProfile,
+                            isActive = false
+                        ),
+                        BottomNavigationMenuContent(
+                            title = "Korpa",
+                            graphicID = Icons.Default.ShoppingCart,
+                            screen = Screen.CartScreen,
+                            isActive = false
+                        )
+                    )
+                )
+            }
+        ) { it ->
             LinearGradient(color1 = MP_Green, color2 = MP_Green)
             RoundedBackgroundComp(top = 100.dp, color = MP_White)
 
@@ -162,35 +195,7 @@ fun HomeScreen(
                     features = features
                 )
             }
-            BottomNavigationMenu(
-                navController = navController,
-                items = listOf(
-                    BottomNavigationMenuContent(
-                        title = "Početna",
-                        graphicID = Icons.Default.Home,
-                        screen = Screen.HomeScreen,
-                        isActive = true
-                    ),
-                    BottomNavigationMenuContent(
-                        title = "Market",
-                        graphicID = ImageVector.vectorResource(R.drawable.logo_green),
-                        screen = Screen.StoreScreen,
-                        isActive = false
-                    ),
-                    BottomNavigationMenuContent(
-                        title = "Profil",
-                        graphicID = Icons.Default.Person,
-                        screen = Screen.PrivateProfile,
-                        isActive = false
-                    ),
-                    BottomNavigationMenuContent(
-                        title = "Korpa",
-                        graphicID = Icons.Default.ShoppingCart,
-                        screen = Screen.CartScreen,
-                        isActive = false
-                    )
-                ), modifier = Modifier.align(Alignment.BottomCenter)
-            )
+
         }
     } else {
         Box(modifier = Modifier.fillMaxSize()) {

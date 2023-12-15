@@ -48,7 +48,7 @@ data class ProductEntity(
     val category: CategoryEntity? = null
 
     @Ignore
-    val productImages: List<ProductMediaEntity> = listOf()
+    val productMedia: ProductMediaEntity? = null
 
     @Ignore
     val reviews: List<ReviewEntity> = listOf()

@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.data.services.filter
+package com.triforce.malacprodavac.domain.util.filter
 
 data class Filter<T : Any>(
     val filter: List<SingleFilter<T>>?,

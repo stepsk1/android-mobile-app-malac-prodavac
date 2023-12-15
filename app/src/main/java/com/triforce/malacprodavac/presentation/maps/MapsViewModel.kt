@@ -7,8 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.triforce.malacprodavac.data.services.filter.Filter
-import com.triforce.malacprodavac.data.services.filter.FilterBuilder
+import com.triforce.malacprodavac.domain.util.filter.Filter
+import com.triforce.malacprodavac.domain.util.filter.FilterBuilder
 import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.domain.repository.ShopRepository
 import com.triforce.malacprodavac.domain.util.Resource

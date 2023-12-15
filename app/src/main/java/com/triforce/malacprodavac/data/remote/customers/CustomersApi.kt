@@ -5,10 +5,10 @@ import com.triforce.malacprodavac.data.remote.customers.dto.CreateCustomerDto
 import com.triforce.malacprodavac.data.remote.customers.dto.CreateFavoriteProductDto
 import com.triforce.malacprodavac.data.repository.customers.favoriteShops.dto.CreateFavoriteShopDto
 import com.triforce.malacprodavac.domain.model.Customer
-import com.triforce.malacprodavac.domain.model.PaginationResponse
 import com.triforce.malacprodavac.domain.model.SchedulePickup
 import com.triforce.malacprodavac.domain.model.customers.FavoriteProduct
 import com.triforce.malacprodavac.domain.model.customers.FavoriteShop
+import com.triforce.malacprodavac.domain.model.pagination.PaginationResult
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -24,7 +24,7 @@ interface CustomersApi {
     ): Customer
 
     @GET(ROUTE)
-    suspend fun getCustomers(@QueryMap queryMap: MutableMap<String, String>): PaginationResponse<Customer>
+    suspend fun getCustomers(@QueryMap queryMap: MutableMap<String, String>): PaginationResult<Customer>
 
     @GET("${ROUTE}/{id}")
     suspend fun getCustomer(@Path("id") customerId: Int): Customer
@@ -44,8 +44,8 @@ interface CustomersApi {
     @GET("${ROUTE}/{id}/favoriteProducts")
     suspend fun getFavoriteProducts(
         @Path("id") customerId: Int,
-        //@QueryMap queryMap: MutableMap<String, String>
-    ): PaginationResponse<FavoriteProduct>
+        @QueryMap queryMap: MutableMap<String, String>
+    ): PaginationResult<FavoriteProduct>
 
     @DELETE("${ROUTE}/{id}/favoriteProducts/{favoriteProductId}")
     suspend fun deleteFavoriteProduct(
@@ -57,7 +57,7 @@ interface CustomersApi {
     suspend fun getCustomerSchedulePickups(
         @Path("id") customerId: Int,
         //@QueryMap queryMap: MutableMap<String, String>
-    ): PaginationResponse<SchedulePickup>
+    ): PaginationResult<SchedulePickup>
 
     @GET("${ROUTE}/{id}/scheduledPickups/{scheduledPickupId}")
     suspend fun getCustomerSchedulePickupsById(
@@ -76,9 +76,9 @@ interface CustomersApi {
     suspend fun getFavoriteShops(
         @Path("id") customerId: Int,
         //@QueryMap queryMap: MutableMap<String, String>
-    ): PaginationResponse<FavoriteShop>
+    ): PaginationResult<FavoriteShop>
 
-    @DELETE("${ROUTE}/{id}/favoriteShops/favoriteProductId/{favoriteShopId}")
+    @DELETE("${ROUTE}/{id}/favoriteShops/{favoriteShopId}")
     suspend fun deleteFavoriteShop(
         @Path("id") customerId: Int,
         @Path("favoriteShopId") favoriteShopId: Int

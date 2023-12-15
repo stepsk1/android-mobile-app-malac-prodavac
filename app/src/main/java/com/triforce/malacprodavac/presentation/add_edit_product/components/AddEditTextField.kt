@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -29,15 +28,13 @@ fun AddEditTextField(
     isError: Boolean = false,
     onTextValueChange: (String) -> Unit,
     placeholder: String,
-    keyboardType: KeyboardType = KeyboardType.Text,
-    colorBackground: Color,
-    colorForeground: Color
+    keyboardType: KeyboardType = KeyboardType.Text
 
 ) {
     Column {
         Text(
             text = label,
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.body1,
             color = MP_Black,
             fontWeight = FontWeight.W400,
             textAlign = TextAlign.Center,
@@ -52,7 +49,7 @@ fun AddEditTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            maxLines = 3,
+            maxLines = 2,
             placeholder = {
                 Text(
                     text = placeholder,

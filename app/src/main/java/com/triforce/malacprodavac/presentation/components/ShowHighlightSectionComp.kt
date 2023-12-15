@@ -1,7 +1,5 @@
 package com.triforce.malacprodavac.presentation.components
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +23,8 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,8 +43,6 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
-import com.triforce.malacprodavac.presentation.product.ProductEvent
-import com.triforce.malacprodavac.presentation.product.ProductViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -59,8 +57,14 @@ fun ShowHighlightSectionComp(
     title: String,
     route: String
 ) {
-    val subProducts = if ( products != null ) {
-        products.subList(0, if (products.size > 3) { 4 } else { products.size })
+    val subProducts = if (products != null) {
+        products.subList(
+            0, if (products.size > 3) {
+                4
+            } else {
+                products.size
+            }
+        )
     } else null
 
     Column(
@@ -94,7 +98,6 @@ fun ShowHighlightSectionComp(
                     .padding(vertical = 6.dp, horizontal = 15.dp)
             )
 
-            Log.d("SHOW_Highlight_Section_Comp", route)
         }
 
         ShowHighlightedProducts(subProducts, navController)
@@ -110,10 +113,10 @@ fun ShowHighlightedProducts(
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(
-            top = if ( bottomNavigation) 1.5.dp else 16.dp,
+            top = if (bottomNavigation) 1.5.dp else 16.dp,
             start = 10.dp,
             end = 10.dp,
-            bottom = if ( bottomNavigation) 80.dp else 15.dp
+            bottom = if (bottomNavigation) 80.dp else 15.dp
         )
     ) {
         if (products != null) {
@@ -128,13 +131,12 @@ fun ShowHighlightedProducts(
 }
 
 @Composable
-fun HighlightSectionProduct (
+fun HighlightSectionProduct(
     product: Product?,
     navController: NavController,
-    viewModel: ProductViewModel = hiltViewModel(),
     viewModelFavourite: FavoriteViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
+    val isFavorite = remember { mutableStateOf(product?.isFavored ?: false) }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -144,7 +146,7 @@ fun HighlightSectionProduct (
                 spotColor = MP_Black,
                 shape = RoundedCornerShape(7.5.dp)
             )
-            .aspectRatio(0.8F) // ratio is 1x1 so whatever the width is, the height will be the same
+            .aspectRatio(0.8F)
             .clip(RoundedCornerShape(10.dp))
             .background(MP_White)
             .clickable {
@@ -155,7 +157,8 @@ fun HighlightSectionProduct (
     ) {
         if (product != null) {
 
-            val imageUrl = if (product.productMedias?.isNotEmpty() == true) "http://softeng.pmf.kg.ac.rs:10010/products/${product.productMedias.first().productId}/medias/${product.productMedias.first().id}" else null
+            val imageUrl =
+                if (product.productMedia != null) "http://softeng.pmf.kg.ac.rs:10010/products/${product.productMedia.productId}/medias/${product.productMedia.id}" else null
 
             Box(
                 modifier = Modifier
@@ -203,9 +206,9 @@ fun HighlightSectionProduct (
                             )
                     ) {
                         Text(
-                            text = if (product.title.length <= 16 ){
+                            text = if (product.title.length <= 16) {
                                 product.title
-                            }else{
+                            } else {
                                 product.title.take(16) + "..."
                             },
                             style = MaterialTheme.typography.body2,
@@ -226,37 +229,30 @@ fun HighlightSectionProduct (
                                 color = MP_Green,
                                 fontWeight = FontWeight.Bold
                             )
-                            if ( product.isFavored != null ) {
-
+                            if (product.isFavored != null) {
                                 Icon(
-                                    imageVector = if (product.isFavored) { Icons.Filled.Favorite } else { Icons.Filled.FavoriteBorder },
+                                    imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                     contentDescription = "favourite_product",
                                     tint = MP_Pink,
                                     modifier = Modifier
                                         .size(20.dp)
                                         .clickable {
-                                            if (!product.isFavored) {
-                                                viewModel.onEvent(ProductEvent.favoriteProduct) // POGLEDAJ PONOVO
-                                                viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct(product.id))
-                                                Toast
-                                                    .makeText(
-                                                        context,
-                                                        "Dodat u omiljene proizvode",
-                                                        Toast.LENGTH_LONG
+                                            if (!isFavorite.value) {
+                                                viewModelFavourite.onEvent(
+                                                    FavoriteEvent.AddFavProduct(
+                                                        product.id
                                                     )
-                                                    .show()
+                                                )
                                             } else {
-                                                viewModel.onEvent(ProductEvent.removeFavoriteProduct)
-                                                viewModelFavourite.onEvent(FavoriteEvent.DeleteFavProduct(product.id))
-                                                Toast
-                                                    .makeText(
-                                                        context,
-                                                        "Već se nalazi u omiljenim proizvodima",
-                                                        Toast.LENGTH_LONG
+                                                viewModelFavourite.onEvent(
+                                                    FavoriteEvent.DeleteFavProduct(
+                                                        product.id
                                                     )
-                                                    .show()
+                                                )
                                             }
-                                        })
+                                            isFavorite.value = !isFavorite.value
+                                        }
+                                )
                             }
                         }
                     }

@@ -7,19 +7,16 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.data.services.filter.Filter
-import com.triforce.malacprodavac.data.services.filter.FilterBuilder
-import com.triforce.malacprodavac.data.services.filter.FilterOperation
-import com.triforce.malacprodavac.data.services.filter.FilterOrder
-import com.triforce.malacprodavac.data.services.filter.SingleFilter
-import com.triforce.malacprodavac.data.services.filter.SingleOrder
+import com.triforce.malacprodavac.domain.util.filter.Filter
+import com.triforce.malacprodavac.domain.util.filter.FilterBuilder
+import com.triforce.malacprodavac.domain.util.filter.FilterOperation
+import com.triforce.malacprodavac.domain.util.filter.FilterOrder
+import com.triforce.malacprodavac.domain.util.filter.SingleFilter
+import com.triforce.malacprodavac.domain.util.filter.SingleOrder
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.repository.products.ProductRepository
 import com.triforce.malacprodavac.domain.repository.ShopRepository
-import com.triforce.malacprodavac.domain.repository.users.UserRepository
-import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.presentation.profile.profilePublic.ProfilePublicState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,10 +25,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HighlightSectionViewModel @Inject constructor(

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MalacProdavac</string>
+    <string name="notification_channel_id">triforce.malac_prodavac</string>
 </resources>

@@ -10,7 +10,6 @@ import com.triforce.malacprodavac.domain.model.customers.FavoriteShop
 import com.triforce.malacprodavac.domain.repository.CustomerRepository
 import com.triforce.malacprodavac.domain.use_case.profile.Profile
 import com.triforce.malacprodavac.domain.util.Resource
-import com.triforce.malacprodavac.presentation.profile.profilePublic.FavoriteShopObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,32 +19,34 @@ import javax.inject.Inject
 class FavoriteShopViewModel @Inject constructor(
     private val repository: CustomerRepository,
     private val profile: Profile
-) : ViewModel(){
+) : ViewModel() {
 
     var state by mutableStateOf(FavoriteShopState())
+
     init {
         me()
     }
+
     fun onEvent(event: FavoriteShopEvent) {
-        when(event) {
-            is FavoriteShopEvent.AddFavShop -> {
-                addFavShop(state.customerId!!, CreateFavoriteShopDto(shopId = FavoriteShopObject.favoriteShopId))
-            }
-            is FavoriteShopEvent.GetFavShops -> {
-                getFavShops(state.customerId!!, true)
-            }
-            is FavoriteShopEvent.DeleteFavShop -> {
-                deleteFavShop(state.customerId!!, FavoriteShopObject.favoriteShopId)
-            }
+        when (event) {
+            is FavoriteShopEvent.AddFavShop -> addFavShop(
+                state.customerId!!,
+                CreateFavoriteShopDto(shopId = event.shopId)
+            )
+
+            is FavoriteShopEvent.GetFavShops -> getFavShops(state.customerId!!)
+            is FavoriteShopEvent.DeleteFavShop -> deleteFavShop(
+                state.customerId!!,
+                event.favoriteShopId
+            )
         }
     }
 
     private fun getFavShops(
-        id: Int,
-        fetchFromRemote: Boolean
+        id: Int
     ) {
         viewModelScope.launch {
-            repository.getFavoriteShops(id, fetchFromRemote).collect { result ->
+            repository.getFavoriteShops(id, true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         if (result.data is List<FavoriteShop>) {
@@ -53,15 +54,8 @@ class FavoriteShopViewModel @Inject constructor(
                         }
                     }
 
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
@@ -80,66 +74,61 @@ class FavoriteShopViewModel @Inject constructor(
                         }
                     }
 
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
     }
 
     private fun deleteFavShop(
-        id: Int,
+        userId: Int,
         favoriteShopId: Int
     ) {
         viewModelScope.launch {
-            repository.deleteFavoriteShop(id, favoriteShopId).collect { result ->
+            repository.deleteFavoriteShop(userId, favoriteShopId).collect { result ->
                 when (result) {
                     is Resource.Success -> {
-
+                        updateFavoriteShopsAfterDeletion(favoriteShopId)
                     }
 
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
     }
 
-    private fun me(){
+    private fun updateFavoriteShopsAfterDeletion(favoriteShopId: Int) {
+        val updatedList = state.favShops.toMutableList()
+        updatedList.removeIf { it.id == favoriteShopId }
+        state = state.copy(favShops = updatedList)
+    }
+
+    private fun me() {
         viewModelScope.launch {
             profile.getMe().collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        if(result.data != null) {
+                        if (result.data != null) {
                             state = state.copy(
                                 customerId = result.data.customer!!.id
                             )
-                            getFavShops(state.customerId!!, true)
+                            getFavShops(state.customerId!!)
                         }
                     }
-                    is Resource.Error -> Unit
 
-                    is Resource.Loading -> {
-                        state = state.copy(isLoading = result.isLoading)
-                    }
-
-                    else -> {}
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
+    }
+
+    private fun handleError() {
+    }
+
+    private fun handleLoading(isLoading: Boolean) {
+        state = state.copy(isLoading = isLoading)
     }
 }

@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.data.services.filter
+package com.triforce.malacprodavac.domain.util.filter
 
 import kotlin.reflect.full.declaredMemberProperties
 

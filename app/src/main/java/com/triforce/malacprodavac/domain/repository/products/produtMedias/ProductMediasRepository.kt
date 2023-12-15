@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import java.io.File
 
 interface ProductMediasRepository {
-    suspend fun createProductImages(productId: Int, images: List<File>): Flow<Resource<Int>>
+    suspend fun createProductImage(productId: Int, image: File): Flow<Resource<ProductMedia>>
     suspend fun getProductImages(productId: Int): Flow<Resource<List<ProductMedia>>>
 
     suspend fun deleteProductImage(productId: Int, mediaId: Int): Flow<Resource<ProductMedia>>

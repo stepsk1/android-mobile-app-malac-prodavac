@@ -1,7 +1,7 @@
 package com.triforce.malacprodavac.data.remote.products.reviews.replies
 
 import com.triforce.malacprodavac.data.remote.products.reviews.ReviewsApi
-import com.triforce.malacprodavac.domain.model.PaginationResponse
+import com.triforce.malacprodavac.domain.model.pagination.PaginationResult
 import com.triforce.malacprodavac.domain.model.products.reviews.reviewReplies.CreateReviewReplyDto
 import com.triforce.malacprodavac.domain.model.products.reviews.reviewReplies.ReviewReply
 import retrofit2.http.Body
@@ -21,7 +21,7 @@ interface ReviewRepliesApi {
     suspend fun getReviewReplies(
         @Path("productId") productId: Int,
         @Path("reviewId") reviewId: Int,
-    ): PaginationResponse<ReviewReply>
+    ): PaginationResult<ReviewReply>
 
     @GET("${ReviewsApi.ROUTE}/{replyId}")
     suspend fun getReviewReply(

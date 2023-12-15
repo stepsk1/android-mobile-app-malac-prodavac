@@ -12,7 +12,6 @@ import com.triforce.malacprodavac.domain.model.products.UpdateProductDto
 import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
 import com.triforce.malacprodavac.domain.util.Resource
 import com.triforce.malacprodavac.domain.util.compressedFileFromUri
-import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,15 +36,19 @@ class AdvertisingProductViewModel @Inject constructor(
             is AdvertisingProductEvent.TitleChanged -> {
                 state = state.copy(product = state.product?.copy(title = event.title))
             }
+
             is AdvertisingProductEvent.DescChanged -> {
                 state = state.copy(product = state.product?.copy(desc = event.desc))
             }
+
             is AdvertisingProductEvent.LocationChanged -> {
                 state = state.copy(product = state.product?.copy(availableAt = event.location))
             }
+
             is AdvertisingProductEvent.StartAdvertisingChanged -> {
                 state = state.copy(product = state.product?.copy(availableFromHours = event.start))
             }
+
             is AdvertisingProductEvent.EndAdvertisingChanged -> {
                 state = state.copy(product = state.product?.copy(availableTillHours = event.end))
             }
@@ -74,7 +77,7 @@ class AdvertisingProductViewModel @Inject constructor(
                 updateProduct(state.product?.id!!, updateProduct)
             }
 
-            else -> { }
+            else -> {}
         }
     }
 
@@ -114,8 +117,8 @@ class AdvertisingProductViewModel @Inject constructor(
                         result.data?.let {
                             state = state.copy(
                                 product = result.data,
-                                thumbUrl = if (result.data.productMedias!!.isNotEmpty())
-                                    "http://softeng.pmf.kg.ac.rs:10010/products/${result.data.productMedias.first().productId}/medias/${result.data.productMedias.first().id}"
+                                thumbUrl = if (result.data.productMedia != null)
+                                    "http://softeng.pmf.kg.ac.rs:10010/products/${result.data.productMedia.productId}/medias/${result.data.productMedia.id}"
                                 else null
                             )
                         }
@@ -135,10 +138,10 @@ class AdvertisingProductViewModel @Inject constructor(
         }
     }
 
-    private fun changeProductImages(context: Context, uris: List<Uri>) {
+    private fun changeProductImage(context: Context, uri: Uri) {
         viewModelScope.launch {
-            val files = uris.map { compressedFileFromUri(context, it) }
-            productUseCase.addProductImages(state.product?.id!!, files).collect {
+            val files = compressedFileFromUri(context, uri)
+            productUseCase.setProductImage(state.product?.id!!, files).collect {
                 when (it) {
                     is Resource.Error -> {
 

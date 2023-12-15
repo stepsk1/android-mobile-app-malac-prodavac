@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Email
@@ -49,7 +48,6 @@ fun ProfileHeroComp(
     navController: NavController,
     private: Boolean
 ) {
-
     if (user != null) {
         Column {
             Box(
@@ -155,14 +153,7 @@ fun ProfileHeroComp(
                                 }
                             } else {
                                 if (user.roles.first().equals("Shop", ignoreCase = true)) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.FavoriteBorder,
-                                        contentDescription = "Omiljen",
-                                        tint = MP_White,
-                                        modifier = Modifier
-                                            .size(35.dp)
-                                            .clickable { }
-                                    )
+
                                 }
                             }
 

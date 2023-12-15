@@ -16,7 +16,8 @@ interface CustomerRepository {
 
     suspend fun getFavoriteProducts(
         customerId: Int,
-        fetchFromRemote: Boolean
+        fetchFromRemote: Boolean,
+        queryMap: MutableMap<String, String>
     ): Flow<Resource<List<FavoriteProduct>>>
 
     suspend fun insertFavoriteProduct(

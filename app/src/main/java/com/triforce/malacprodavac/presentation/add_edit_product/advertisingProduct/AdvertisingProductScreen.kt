@@ -116,9 +116,7 @@ fun AdvertisingProductScreen(
                 onTextValueChange = {
 
                 },
-                placeholder = "Naziv",
-                colorBackground = colorBackground,
-                colorForeground = colorForeground
+                placeholder = "Naziv"
             )
 
             AddEditTextField(
@@ -127,9 +125,7 @@ fun AdvertisingProductScreen(
                 onTextValueChange = {
 
                 },
-                placeholder = "Opis",
-                colorBackground = colorBackground,
-                colorForeground = colorForeground
+                placeholder = "Opis"
             )
 
             AddEditTextField(
@@ -138,9 +134,7 @@ fun AdvertisingProductScreen(
                 onTextValueChange = {
                     viewModel.onEvent(AdvertisingProductEvent.LocationChanged(it))
                 },
-                placeholder = "Lokacija",
-                colorBackground = colorBackground,
-                colorForeground = colorForeground
+                placeholder = "Lokacija"
             )
 
             Row(

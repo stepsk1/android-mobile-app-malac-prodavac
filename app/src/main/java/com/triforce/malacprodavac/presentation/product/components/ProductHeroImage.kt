@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 fun ProductHeroImage(
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
+    imageKey: String? = null
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
@@ -41,7 +42,7 @@ fun ProductHeroImage(
             .data(imageUrl)
             .dispatcher(Dispatchers.IO)
             .memoryCachePolicy(CachePolicy.ENABLED)
-            .memoryCacheKey(imageUrl)
+            .memoryCacheKey(imageKey)
             .placeholder(placeholder)
             .error(placeholder)
             .fallback(placeholder)

@@ -2,17 +2,20 @@ package com.triforce.malacprodavac.data.repository.notifications
 
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
 import com.triforce.malacprodavac.data.local.notifications.relations.NotificationPayloadWithRelations
-import com.triforce.malacprodavac.data.mappers.notifications.notificationPayload.toNotification
 import com.triforce.malacprodavac.data.mappers.notifications.toNotificationPayloadWithRelations
 import com.triforce.malacprodavac.data.remote.notifications.NotificationsApi
 import com.triforce.malacprodavac.data.services.SessionManager
+import com.triforce.malacprodavac.domain.util.filter.Filter
+import com.triforce.malacprodavac.domain.util.filter.FilterBuilder
+import com.triforce.malacprodavac.domain.util.filter.FilterOrder
+import com.triforce.malacprodavac.domain.util.filter.SingleOrder
 import com.triforce.malacprodavac.domain.model.notifications.Notification
+import com.triforce.malacprodavac.domain.model.pagination.PaginationResult
 import com.triforce.malacprodavac.domain.repository.notifications.NotificationsRepository
 import com.triforce.malacprodavac.domain.util.Resource
-import kotlinx.coroutines.Dispatchers
+import com.triforce.malacprodavac.domain.util.helpers.calculateLimitAndOffset
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,26 +29,28 @@ class NotificationsRepositoryImpl @Inject constructor(
     private val notificationPayloadDao = db.notificationPayloadDao
     private val notificationDao = db.notificationDao
 
-    override suspend fun subscribe(): Flow<Resource<Unit>> {
-        return flow {
-            api.subscribe()
-            withContext(Dispatchers.IO) {
-                subscribe()
-            }
-        }
-    }
-
-    override suspend fun getNotifications(): Flow<Resource<List<Notification>>> {
+    override suspend fun getNotifications(
+        page: Int,
+        perPage: Int
+    ): Flow<Resource<PaginationResult<Notification>>> {
         return flow {
             emit(Resource.Loading(true))
             val authUserId = sessionManager.getAuthUserId()
-            val notifications =
-                notificationPayloadDao.findNotificationPayloadsWithRelations(authUserId)
+//            val notifications =
+//                notificationPayloadDao.findNotificationPayloadsWithRelations(authUserId)
 
-            emit(Resource.Success(data = notifications.map { it.toNotification() }))
-
+//            emit(Resource.Success(data = notifications.map { it.toNotification() }))
+            val (limit, offset) = calculateLimitAndOffset(page, perPage)
+            val filters = FilterBuilder.buildFilterQueryMap(
+                Filter(
+                    null,
+                    listOf(SingleOrder("createdAt", FilterOrder.Desc)),
+                    offset,
+                    limit
+                )
+            )
             val remoteNotificationsResp = try {
-                api.getNotifications()
+                api.getNotifications(filters)
             } catch (e: IOException) {
                 e.printStackTrace()
                 emit(Resource.Error("Couldn't find user."))
@@ -60,7 +65,7 @@ class NotificationsRepositoryImpl @Inject constructor(
                 it.data.forEach { notification ->
                     insertNotificationPayloadWithRelations(notification.toNotificationPayloadWithRelations())
                 }
-                emit(Resource.Success(data = it.data))
+                emit(Resource.Success(data = it))
             }
 
             emit(Resource.Loading(false))

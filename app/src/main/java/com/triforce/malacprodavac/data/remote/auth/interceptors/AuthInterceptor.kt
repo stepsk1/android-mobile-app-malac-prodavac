@@ -22,7 +22,7 @@ class AuthInterceptorImpl @Inject constructor(
             (request.url.pathSegments.contains("me") && response.isSuccessful)
         ) {
             val cookie = response.header("Set-Cookie", null)
-            val jwt = cookie!!.split(";")[0]
+            val jwt = cookie?.split(";")?.first()
             refreshToken(jwt)
         } else if ((request.url.pathSegments.contains("logout") && response.code == HttpURLConnection.HTTP_NO_CONTENT)
             || response.code == HttpURLConnection.HTTP_UNAUTHORIZED

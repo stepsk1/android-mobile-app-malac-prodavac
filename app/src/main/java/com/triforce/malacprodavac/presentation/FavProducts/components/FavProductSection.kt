@@ -1,9 +1,7 @@
 package com.triforce.malacprodavac.presentation.FavProducts.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -31,8 +29,7 @@ fun FavProductSection(
                 .requiredHeight(530.dp)
         ) {
 
-            items(favoriteProducts.size) {// how many items do we have
-                // define one of items
+            items(favoriteProducts.size) {
                 FavProductItem(
                     favoriteProduct = favoriteProducts[it],
                     viewModel = viewModel,

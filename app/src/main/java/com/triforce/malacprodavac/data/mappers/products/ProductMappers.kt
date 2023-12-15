@@ -29,9 +29,7 @@ fun ProductEntity.toProduct(): Product = Product(
     createdAt = createdAt,
     updatedAt = updatedAt,
     shop = shop?.toShop(),
-    productMedias = productImages.map {
-        it.toProductMedia()
-    },
+    productMedia = productMedia?.toProductMedia(),
     category = category?.toCategory(),
     reviews = reviews.map {
         it.toReview()

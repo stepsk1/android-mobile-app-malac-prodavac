@@ -13,15 +13,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,8 +34,6 @@ import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
 import com.triforce.malacprodavac.presentation.cart.CartViewModel
-import com.triforce.malacprodavac.presentation.cart.components.BoughtProducts
-import com.triforce.malacprodavac.presentation.cart.components.ProductAmount
 import com.triforce.malacprodavac.presentation.product.ProductEvent
 import com.triforce.malacprodavac.presentation.product.ProductViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
@@ -43,21 +42,14 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun ShowFavouriteAddToCart(
-    mainProduct: Product,
+    product: Product,
     navController: NavController,
     viewModel: ProductViewModel,
     viewModelFavourite: FavoriteViewModel
 ) {
+    val isFavorite = remember { mutableStateOf(product.isFavored ?: false) }
+
     val cartViewModel: CartViewModel = hiltViewModel()
-
-    val imageVector: ImageVector
-
-    if (viewModel.state.isFavorite == true) imageVector = Icons.Outlined.Favorite
-    else imageVector = Icons.Outlined.FavoriteBorder
-
-    fun addToBoughtProducts(item: ProductAmount) {
-        BoughtProducts.listOfBoughtProducts.add(item)
-    }
 
     val context = LocalContext.current
 
@@ -78,34 +70,29 @@ fun ShowFavouriteAddToCart(
                 vertical = 10.dp,
             )
     ) {
-        Icon(imageVector = imageVector,
-            contentDescription = "FavoriteBorder",
+        Icon(
+            imageVector = if (isFavorite.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+            contentDescription = "favourite_product",
             tint = MP_Pink,
             modifier = Modifier
                 .size(50.dp)
                 .clickable {
-                    if (!viewModel.state.isFavorite) {
-                        viewModel.onEvent(ProductEvent.favoriteProduct)
-                        viewModelFavourite.onEvent(FavoriteEvent.AddFavProduct(productId = mainProduct.id))
-                        Toast
-                            .makeText(
-                                context,
-                                "Dodat u omiljene proizvode",
-                                Toast.LENGTH_LONG
+                    if (!isFavorite.value) {
+                        viewModelFavourite.onEvent(
+                            FavoriteEvent.AddFavProduct(
+                                product.id
                             )
-                            .show()
+                        )
                     } else {
-                        viewModel.onEvent(ProductEvent.removeFavoriteProduct)
-                        viewModelFavourite.onEvent(FavoriteEvent.DeleteFavProduct(mainProduct.id))
-                        Toast
-                            .makeText(
-                                context,
-                                "Već se nalazi u omiljenim proizvodima",
-                                Toast.LENGTH_LONG
+                        viewModelFavourite.onEvent(
+                            FavoriteEvent.DeleteFavProduct(
+                                product.id
                             )
-                            .show()
+                        )
                     }
-                })
+                    isFavorite.value = !isFavorite.value
+                }
+        )
 
         Text(text = "Dodaj u korpu",
             style = MaterialTheme.typography.h5,
@@ -122,7 +109,7 @@ fun ShowFavouriteAddToCart(
                             )
                             .show()
 
-                        cartViewModel.addToCart(mainProduct, viewModel.state.shop)
+                        cartViewModel.addToCart(product, viewModel.state.shop)
                         navController.navigate(Screen.CartScreen.route)
 
                     } else {

@@ -17,7 +17,9 @@ interface ProductsApi {
     suspend fun create(@Body() createPostDto: CreateProductDto): Product
 
     @GET(ROUTE)
-    suspend fun getProducts(@QueryMap() queryMap: MutableMap<String, String>): PaginationResponse<Product>
+    suspend fun getProducts(
+        @QueryMap() queryMap: MutableMap<String, String>
+    ): PaginationResponse<Product>
 
     @GET("${ROUTE}/{id}")
     suspend fun getProduct(@Path("id") id: Int): Product

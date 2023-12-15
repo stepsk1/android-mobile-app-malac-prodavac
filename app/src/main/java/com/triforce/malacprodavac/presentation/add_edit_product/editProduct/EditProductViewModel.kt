@@ -28,7 +28,7 @@ class EditProductViewModel @Inject constructor(
     init {
         savedStateHandle.get<Int>("productId")?.let { productId ->
             if (productId != -1) {
-                getProduct(true, productId)
+                getProduct(productId)
             }
         }
         getCategories()
@@ -36,88 +36,79 @@ class EditProductViewModel @Inject constructor(
 
     fun onEvent(event: EditProductEvent) {
         when (event) {
-            is EditProductEvent.CategoryIdChanged -> {
-                state = state.copy(product = state.product?.copy(categoryId = event.categoryId))
-            }
+            is EditProductEvent.CategoryIdChanged -> state =
+                state.copy(product = state.product?.copy(categoryId = event.categoryId))
 
-            is EditProductEvent.CurrencyChanged -> {
-                state = state.copy(product = state.product?.copy(currency = event.currency))
-            }
+            is EditProductEvent.CurrencyChanged -> state =
+                state.copy(product = state.product?.copy(currency = event.currency))
 
-            is EditProductEvent.DescChanged -> {
-                state = state.copy(product = state.product?.copy(desc = event.desc))
-            }
+            is EditProductEvent.DescChanged -> state =
+                state.copy(product = state.product?.copy(desc = event.desc))
 
-            is EditProductEvent.PriceChanged -> {
-                state = state.copy(product = state.product?.copy(price = event.price))
-            }
+            is EditProductEvent.PriceChanged -> state =
+                state.copy(product = state.product?.copy(price = event.price))
 
-            is EditProductEvent.TitleChanged -> {
-                state = state.copy(product = state.product?.copy(title = event.title))
-            }
+            is EditProductEvent.TitleChanged -> state =
+                state.copy(product = state.product?.copy(title = event.title))
 
-            is EditProductEvent.UnitOfMeasurementChanged -> {
-                state =
-                    state.copy(product = state.product?.copy(unitOfMeasurement = event.unitOfMeasurement))
-            }
+            is EditProductEvent.UnitOfMeasurementChanged -> state =
+                state.copy(product = state.product?.copy(unitOfMeasurement = event.unitOfMeasurement))
 
-            is EditProductEvent.Submit -> {
-                state = if (state.product?.title.isNullOrBlank()) {
-                    state.copy(titleError = "Unesite naziv!")
-                } else {
-                    state.copy(titleError = null)
-                }
-                state = if (state.product?.price!! <= 0.0) {
-                    state.copy(priceError = "Unesite cenu!")
-                } else {
-                    state.copy(priceError = null)
-                }
-                if (state.titleError != null || state.priceError != null)
-                    return
-
-                val updateProduct = UpdateProductDto(
-                    unitOfMeasurement = state.product?.unitOfMeasurement,
-                    currency = state.product?.currency,
-                    title = state.product?.title,
-                    desc = state.product?.desc,
-                    price = state.product?.price,
-                    categoryId = state.product?.categoryId,
-                    availableAt = state.product?.availableAt,
-                    availableAtLatitude = state.product?.availableAtLatitude,
-                    availableAtLongitude = state.product?.availableAtLongitude,
-                    availableFromHours = state.product?.availableFromHours,
-                    availableTillHours = state.product?.availableTillHours
-                )
-
-                if (state.imageUris.isNotEmpty()) changeProductImages(
-                    event.context,
-                    state.imageUris
-                )
-                updateProduct(state.product?.id!!, updateProduct)
-            }
-
-            is EditProductEvent.ChangeProductImages -> {
-                state = state.copy(imageUris = event.imageUris)
-            }
+            is EditProductEvent.Submit -> onSubmit(event.context)
+            is EditProductEvent.ChangeProductImage -> state =
+                state.copy(imageUri = event.imageUri, thumbUrl = event.imageUri.toString())
         }
     }
 
-    private fun changeProductImages(context: Context, uris: List<Uri>) {
+    private fun onSubmit(context: Context) {
+        state = if (state.product?.title.isNullOrBlank())
+            state.copy(titleError = "Unesite naziv!")
+        else
+            state.copy(titleError = null)
+
+        state = if (state.product?.price!! <= 0.0)
+            state.copy(priceError = "Unesite cenu!")
+        else
+            state.copy(priceError = null)
+
+        if (state.titleError != null || state.priceError != null)
+            return
+
+        val updateProduct = updateProductDtoFromState()
+
+        if (state.imageUri != null)
+            changeProductImage(
+                context,
+                state.imageUri!!
+            )
+
+        updateProduct(state.product?.id!!, updateProduct)
+    }
+
+    private fun updateProductDtoFromState(): UpdateProductDto {
+        return UpdateProductDto(
+            unitOfMeasurement = state.product?.unitOfMeasurement,
+            currency = state.product?.currency,
+            title = state.product?.title,
+            desc = state.product?.desc,
+            price = state.product?.price,
+            categoryId = state.product?.categoryId,
+            availableAt = state.product?.availableAt,
+            availableAtLatitude = state.product?.availableAtLatitude,
+            availableAtLongitude = state.product?.availableAtLongitude,
+            availableFromHours = state.product?.availableFromHours,
+            availableTillHours = state.product?.availableTillHours
+        )
+    }
+
+    private fun changeProductImage(context: Context, uri: Uri) {
         viewModelScope.launch {
-            val files = uris.map { compressedFileFromUri(context, it) }
-            productUseCase.addProductImages(state.product?.id!!, files).collect {
+            val file = compressedFileFromUri(context, uri)
+            productUseCase.setProductImage(state.product?.id!!, file).collect {
                 when (it) {
-                    is Resource.Error -> {
-
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(isLoading = it.isLoading)
-                    }
-
-                    is Resource.Success -> {
-                        getProduct(true, state.product?.id!!)
-                    }
+                    is Resource.Success -> getProduct(state.product?.id!!)
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(it.isLoading)
                 }
             }
         }
@@ -136,44 +127,30 @@ class EditProductViewModel @Inject constructor(
                         }
                     }
 
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
     }
 
-    private fun getProduct(fetchFromRemote: Boolean, productId: Int) {
+    private fun getProduct(productId: Int) {
         viewModelScope.launch {
-            productUseCase.getProductForId(productId, fetchFromRemote).collect { result ->
+            productUseCase.getProductForId(productId, true).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let {
                             state = state.copy(
                                 product = result.data,
-                                thumbUrl = if (result.data.productMedias!!.isNotEmpty())
-                                    "http://softeng.pmf.kg.ac.rs:10010/products/${result.data.productMedias.first().productId}/medias/${result.data.productMedias.first().id}"
+                                thumbUrl = if (result.data.productMedia != null)
+                                    "http://softeng.pmf.kg.ac.rs:10010/products/${result.data.productMedia.productId}/medias/${result.data.productMedia.id}"
                                 else null
                             )
                         }
                     }
 
-                    is Resource.Error -> {
-                        Unit
-                    }
-
-                    is Resource.Loading -> {
-                        state = state.copy(
-                            isLoading = result.isLoading
-                        )
-                    }
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
@@ -183,18 +160,24 @@ class EditProductViewModel @Inject constructor(
         viewModelScope.launch {
             categoryUseCases.getCategories().collect { result ->
                 when (result) {
-                    is Resource.Error -> {}
-                    is Resource.Loading -> {
-                        state = state.copy(isLoading = result.isLoading)
-                    }
-
                     is Resource.Success -> {
                         result.data?.let {
                             state = state.copy(categories = it)
                         }
                     }
+
+                    is Resource.Error -> handleError()
+                    is Resource.Loading -> handleLoading(result.isLoading)
                 }
             }
         }
+    }
+
+
+    private fun handleError() {
+    }
+
+    private fun handleLoading(isLoading: Boolean) {
+        state = state.copy(isLoading = isLoading)
     }
 }

@@ -14,6 +14,7 @@ sealed class Screen(val route: String) {
     data object HighlightSection : Screen("highlight_section")
     data object AddProduct : Screen("add_product")
     data object EditProduct : Screen("edit_product")
+    data object AddProductImage : Screen("add_product_image")
     data object OrderScreen : Screen("order_screen")
     data object TransactionScreen : Screen("transaction_screen")
     data object FavoriteProductsScreen : Screen("favorite_products")
@@ -21,7 +22,10 @@ sealed class Screen(val route: String) {
     data object SchedulingScreen : Screen("scheduling_screen")
     data object MyProductsScreen : Screen("my_products_screen")
     object FavoriteShopScreen : Screen("favorite_shops")
-    data object NotificationScreen : Screen("notification_screen")
+    data object NotificationScreen : Screen("notification_screen") {
+        const val DEEPLINK_URI = "http://softeng.pmf.kg.ac.rs:10010/notifications"
+    }
+
     data object PrivateProfile : Screen("private_profile_screen")
     data object PublicProfile : Screen("public_profile_screen")
     data object ShopPrivateScreen : Screen("shop_private_screen")

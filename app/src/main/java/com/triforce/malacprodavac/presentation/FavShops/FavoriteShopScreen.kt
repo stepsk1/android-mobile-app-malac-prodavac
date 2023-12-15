@@ -50,7 +50,6 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 fun FavoriteShopScreen(navController: NavController, viewModel: FavoriteShopViewModel = hiltViewModel()){
 
     val state = viewModel.state
-    val favShops: List<FavoriteShop> = state.favShops
 
     Box(
        modifier = Modifier
@@ -74,7 +73,7 @@ fun FavoriteShopScreen(navController: NavController, viewModel: FavoriteShopView
                 style = MaterialTheme.typography.h5
             )
             FavShopSection(
-                favoriteShops = favShops,
+                favoriteShops = state.favShops,
                 viewModel = viewModel,
                 navController = navController
             )

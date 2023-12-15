@@ -1,11 +1,22 @@
 package com.triforce.malacprodavac.di
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.triforce.malacprodavac.MainActivity
+import com.triforce.malacprodavac.R
+import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.data.local.MalacProdavacDatabase
 import com.triforce.malacprodavac.data.local.RoomConverters
 import com.triforce.malacprodavac.data.remote.Api
@@ -43,6 +54,10 @@ import com.triforce.malacprodavac.domain.use_case.auth.IsAuthenticated
 import com.triforce.malacprodavac.domain.use_case.category.CategoryUseCase
 import com.triforce.malacprodavac.domain.use_case.category.GetCategories
 import com.triforce.malacprodavac.domain.use_case.category.GetCategory
+import com.triforce.malacprodavac.domain.use_case.couriers.CourierUseCase
+import com.triforce.malacprodavac.domain.use_case.couriers.CreateCourier
+import com.triforce.malacprodavac.domain.use_case.couriers.GetCourier
+import com.triforce.malacprodavac.domain.use_case.couriers.GetCouriers
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.AddFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.DeleteFavProduct
 import com.triforce.malacprodavac.domain.use_case.favoriteProduct.FavoriteProduct
@@ -55,7 +70,7 @@ import com.triforce.malacprodavac.domain.use_case.login.Login
 import com.triforce.malacprodavac.domain.use_case.login.LoginUser
 import com.triforce.malacprodavac.domain.use_case.login.Me
 import com.triforce.malacprodavac.domain.use_case.notifications.GetNotifications
-import com.triforce.malacprodavac.domain.use_case.notifications.Notification
+import com.triforce.malacprodavac.domain.use_case.notifications.NotificationsUseCase
 import com.triforce.malacprodavac.domain.use_case.order.AddOrder
 import com.triforce.malacprodavac.domain.use_case.order.DeleteOrder
 import com.triforce.malacprodavac.domain.use_case.order.GetAllOrders
@@ -63,10 +78,10 @@ import com.triforce.malacprodavac.domain.use_case.order.GetOrderForId
 import com.triforce.malacprodavac.domain.use_case.order.Order
 import com.triforce.malacprodavac.domain.use_case.order.UpdateOrder
 import com.triforce.malacprodavac.domain.use_case.product.AddProduct
-import com.triforce.malacprodavac.domain.use_case.product.AddProductImages
 import com.triforce.malacprodavac.domain.use_case.product.GetAllProducts
 import com.triforce.malacprodavac.domain.use_case.product.GetProductForId
 import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
+import com.triforce.malacprodavac.domain.use_case.product.SetProductImage
 import com.triforce.malacprodavac.domain.use_case.product.UpdateProduct
 import com.triforce.malacprodavac.domain.use_case.product.replies.CreateReview
 import com.triforce.malacprodavac.domain.use_case.product.replies.GetReview
@@ -93,12 +108,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.sse.EventSources
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -181,18 +199,16 @@ object ApplicationModule {
     @Singleton
     fun provideReviewRepliesApi(retrofit: Retrofit): ReviewRepliesApi = retrofit.create()
 
+
     @Provides
     @Singleton
     fun provideOkHttpClient(authInterceptorImpl: AuthInterceptorImpl): OkHttpClient =
         OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(0, TimeUnit.SECONDS)
             .addInterceptor(authInterceptorImpl)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
-
-    @Provides
-    @Singleton
-    fun provideEventSource(client: OkHttpClient) =
-        EventSources.createFactory(client)
 
     @Singleton
     @Provides
@@ -284,7 +300,7 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideNotificationUseCase(getNotifications: GetNotifications) =
-        Notification(getNotifications)
+        NotificationsUseCase(getNotifications)
 
     @Provides
     @Singleton
@@ -367,10 +383,10 @@ object ApplicationModule {
     fun provideProductUseCase(
         addProduct: AddProduct,
         getAllProducts: GetAllProducts,
-        addProductImages: AddProductImages,
+        setProductImage: SetProductImage,
         getProductForId: GetProductForId,
         updateProduct: UpdateProduct,
-    ) = ProductUseCase(addProduct, getAllProducts, getProductForId, updateProduct, addProductImages)
+    ) = ProductUseCase(addProduct, getAllProducts, getProductForId, updateProduct, setProductImage)
 
     @Provides
     @Singleton
@@ -400,6 +416,27 @@ object ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideCreateCourier(repository: CourierRepository) = CreateCourier(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCouriers(repository: CourierRepository) = GetCouriers(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetCourier(repository: CourierRepository) = GetCourier(repository)
+
+
+    @Provides
+    @Singleton
+    fun provideCourierUseCase(
+        createCourier: CreateCourier,
+        getCourier: GetCourier,
+        getCouriers: GetCouriers
+    ) = CourierUseCase(createCourier, getCouriers, getCourier)
+
+    @Provides
+    @Singleton
     fun provideProductMediasRepositoryImpl(
         api: ProductMediasApi,
         db: MalacProdavacDatabase,
@@ -408,8 +445,8 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideAddProductImagesUseCase(repository: ProductMediasRepository) =
-        AddProductImages(repository)
+    fun provideSetProductImage(repository: ProductMediasRepository) =
+        SetProductImage(repository)
 
     @Provides
     @Singleton
@@ -494,4 +531,49 @@ object ApplicationModule {
             .fallbackToDestructiveMigration()
             .build()
 
+    /** NOTIFICATIONS **/
+    @Provides
+    @Singleton
+    fun provideNotificationBuilder(
+        @ApplicationContext context: Context
+    ): NotificationCompat.Builder {
+        val clickIntent = Intent(
+            Intent.ACTION_VIEW,
+            Screen.NotificationScreen.DEEPLINK_URI.toUri(),
+            context,
+            MainActivity::class.java
+        )
+
+        val clickPendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(clickIntent)
+            getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE)
+        }
+
+        return NotificationCompat
+            .Builder(context, R.string.notification_channel_id.toString())
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setSmallIcon(R.drawable.logo_gradient)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(clickPendingIntent)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationManager(
+        @ApplicationContext context: Context
+    ): NotificationManagerCompat {
+        val notificationManager = NotificationManagerCompat.from(context)
+        val channel = NotificationChannel(
+            R.string.notification_channel_id.toString(),
+            "Novosti",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        notificationManager.createNotificationChannel(channel)
+        return notificationManager
+    }
+
+    @Provides
+    @Singleton
+    fun provideApplicationCoroutineScope(): CoroutineScope =
+        CoroutineScope(SupervisorJob() + Dispatchers.Default)
 }

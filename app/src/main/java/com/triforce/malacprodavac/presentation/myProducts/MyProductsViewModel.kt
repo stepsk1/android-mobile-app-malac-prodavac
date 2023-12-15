@@ -9,10 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.triforce.malacprodavac.data.services.filter.Filter
-import com.triforce.malacprodavac.data.services.filter.FilterBuilder
-import com.triforce.malacprodavac.data.services.filter.FilterOperation
-import com.triforce.malacprodavac.data.services.filter.SingleFilter
+import com.triforce.malacprodavac.domain.util.filter.Filter
+import com.triforce.malacprodavac.domain.util.filter.FilterBuilder
+import com.triforce.malacprodavac.domain.util.filter.FilterOperation
+import com.triforce.malacprodavac.domain.util.filter.SingleFilter
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.domain.model.shops.Shop
 import com.triforce.malacprodavac.domain.repository.ShopRepository

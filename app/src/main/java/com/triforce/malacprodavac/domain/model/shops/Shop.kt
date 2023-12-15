@@ -2,6 +2,7 @@ package com.triforce.malacprodavac.domain.model.shops
 
 import com.squareup.moshi.Json
 import com.triforce.malacprodavac.domain.model.User
+import com.triforce.malacprodavac.domain.model.customers.FavoriteShop
 import com.triforce.malacprodavac.domain.model.products.Product
 
 data class Shop(
@@ -19,6 +20,7 @@ data class Shop(
     val createdAt: String?,
 
     val isFavored: Boolean?,
+    val favoriteShops: List<FavoriteShop>? = emptyList(),
 
     val user: User?,
     val products: List<Product>?,

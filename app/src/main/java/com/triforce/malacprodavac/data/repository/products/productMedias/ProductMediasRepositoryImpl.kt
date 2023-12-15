@@ -22,24 +22,24 @@ class ProductMediasRepositoryImpl @Inject constructor(
     private val db: MalacProdavacDatabase,
     private val sessionManager: SessionManager
 ) : ProductMediasRepository {
-    override suspend fun createProductImages(
+    override suspend fun createProductImage(
         productId: Int,
-        images: List<File>
-    ): Flow<Resource<Int>> {
+        image: File
+    ): Flow<Resource<ProductMedia>> {
         return flow {
             emit(Resource.Loading(isLoading = true))
-            val parts = images.map {
+            val part =
                 MultipartBody.Part.createFormData(
-                    "images",
-                    it.name,
-                    it.asRequestBody("image/jpeg".toMediaType())
+                    "image",
+                    image.name,
+                    image.asRequestBody("image/jpeg".toMediaType())
                 )
-            }
 
-            val productMedias = try {
+
+            val productMedia = try {
                 api.create(
                     productId,
-                    parts
+                    part
                 )
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -51,8 +51,8 @@ class ProductMediasRepositoryImpl @Inject constructor(
                 null
             }
 
-            productMedias?.let {
-                emit(Resource.Success(data = it.count))
+            productMedia?.let {
+                emit(Resource.Success(data = it))
             }
             emit(Resource.Loading(isLoading = false))
         }

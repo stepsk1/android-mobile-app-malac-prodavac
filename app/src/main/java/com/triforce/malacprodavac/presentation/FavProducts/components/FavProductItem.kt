@@ -16,12 +16,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.Screen
@@ -32,6 +40,8 @@ import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
 import com.triforce.malacprodavac.ui.theme.MP_Pink
+import com.triforce.malacprodavac.ui.theme.MP_Pink_Dark
+import com.triforce.malacprodavac.ui.theme.MP_White
 
 @Composable
 fun FavProductItem(
@@ -39,6 +49,7 @@ fun FavProductItem(
     viewModel: FavoriteViewModel,
     navController: NavController
 ) {
+    var showDialog by remember { mutableStateOf(false) }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -81,8 +92,66 @@ fun FavProductItem(
                     modifier = Modifier
                         .size(36.dp)
                         .clickable {
-                            viewModel.onEvent(FavoriteEvent.DeleteFavProduct(favoriteProduct.productId))
+                            showDialog = true
                         }
+                )
+            }
+
+            if (showDialog) {
+                AlertDialog(
+                    containerColor = MP_White,
+                    onDismissRequest = {
+                        showDialog = false
+                    },
+                    title = {
+                        Text(
+                            text = "Obriši proizvod iz liste omiljenih",
+                            style = MaterialTheme.typography.h5,
+                            color = MP_Pink_Dark,
+                            fontWeight = FontWeight.W300
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = "Da li ste sigurni da želite da obrišete ${favoriteProduct.product!!.title} iz liste omiljenih proizvoda?",
+                            style = MaterialTheme.typography.body1,
+                            color = MP_Black,
+                            fontWeight = FontWeight.W300
+                        )
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                viewModel.onEvent(FavoriteEvent.DeleteFavProduct(favoriteProduct.productId))
+                                showDialog = false
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MP_Green
+                            )
+                        ) {
+                            Text(
+                                text = "Da",
+                                style = MaterialTheme.typography.body1,
+                                color = MP_White
+                            )
+                        }
+                    },
+                    dismissButton = {
+                        Button(
+                            onClick = {
+                                showDialog = false
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MP_Pink
+                            )
+                        ) {
+                            Text(
+                                text = "Ne",
+                                style = MaterialTheme.typography.body1,
+                                color = MP_White
+                            )
+                        }
+                    }
                 )
             }
 
@@ -105,4 +174,3 @@ fun FavProductItem(
         }
     }
 }
-
