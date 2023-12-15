@@ -78,10 +78,10 @@ import com.triforce.malacprodavac.domain.use_case.order.GetOrderForId
 import com.triforce.malacprodavac.domain.use_case.order.Order
 import com.triforce.malacprodavac.domain.use_case.order.UpdateOrder
 import com.triforce.malacprodavac.domain.use_case.product.AddProduct
-import com.triforce.malacprodavac.domain.use_case.product.AddProductImages
 import com.triforce.malacprodavac.domain.use_case.product.GetAllProducts
 import com.triforce.malacprodavac.domain.use_case.product.GetProductForId
 import com.triforce.malacprodavac.domain.use_case.product.ProductUseCase
+import com.triforce.malacprodavac.domain.use_case.product.SetProductImage
 import com.triforce.malacprodavac.domain.use_case.product.UpdateProduct
 import com.triforce.malacprodavac.domain.use_case.product.replies.CreateReview
 import com.triforce.malacprodavac.domain.use_case.product.replies.GetReview
@@ -383,10 +383,10 @@ object ApplicationModule {
     fun provideProductUseCase(
         addProduct: AddProduct,
         getAllProducts: GetAllProducts,
-        addProductImages: AddProductImages,
+        setProductImage: SetProductImage,
         getProductForId: GetProductForId,
         updateProduct: UpdateProduct,
-    ) = ProductUseCase(addProduct, getAllProducts, getProductForId, updateProduct, addProductImages)
+    ) = ProductUseCase(addProduct, getAllProducts, getProductForId, updateProduct, setProductImage)
 
     @Provides
     @Singleton
@@ -445,8 +445,8 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideAddProductImagesUseCase(repository: ProductMediasRepository) =
-        AddProductImages(repository)
+    fun provideSetProductImage(repository: ProductMediasRepository) =
+        SetProductImage(repository)
 
     @Provides
     @Singleton

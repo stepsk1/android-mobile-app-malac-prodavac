@@ -158,7 +158,7 @@ fun HighlightSectionProduct(
         if (product != null) {
 
             val imageUrl =
-                if (product.productMedias?.isNotEmpty() == true) "http://softeng.pmf.kg.ac.rs:10010/products/${product.productMedias.first().productId}/medias/${product.productMedias.first().id}" else null
+                if (product.productMedia != null) "http://softeng.pmf.kg.ac.rs:10010/products/${product.productMedia.productId}/medias/${product.productMedia.id}" else null
 
             Box(
                 modifier = Modifier

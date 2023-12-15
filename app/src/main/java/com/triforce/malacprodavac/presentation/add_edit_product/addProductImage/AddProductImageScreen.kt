@@ -1,16 +1,17 @@
-package com.triforce.malacprodavac.presentation.add_edit_product.editProduct
+package com.triforce.malacprodavac.presentation.add_edit_product.addProductImage
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.triforce.malacprodavac.presentation.add_edit_product.addProductImage.components.AddProductImageContentScreen
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductViewModel
 import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.components.EditProductBottomBar
-import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.components.EditProductScreenContent
 import com.triforce.malacprodavac.presentation.store.components.GoBackComp
 
 @Composable
-fun EditProductScreen(
+fun AddProductImageScreen(
     navController: NavController,
     viewModel: EditProductViewModel = hiltViewModel()
 ) {
@@ -18,10 +19,10 @@ fun EditProductScreen(
 
     Scaffold(
         topBar = {
-            GoBackComp("Izmeni proizvod", navController, true)
+            GoBackComp("Dodaj slike", navController, true)
         },
         content = { padding ->
-            EditProductScreenContent(navController, viewModel, padding)
+            AddProductImageContentScreen(navController, viewModel, padding)
         },
         bottomBar = {
             EditProductBottomBar(

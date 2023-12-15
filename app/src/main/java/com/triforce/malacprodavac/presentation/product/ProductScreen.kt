@@ -1,10 +1,7 @@
 package com.triforce.malacprodavac.presentation.product
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
@@ -23,7 +20,7 @@ fun ProductScreen(
             GoBackComp("Malac Pijaca", navController, true)
         },
         content = { padding ->
-            ProductScreenContent(navController, viewModel)
+            ProductScreenContent(navController, viewModel, padding)
         },
         bottomBar = {
             ProductBottomBar(navController, viewModel, viewModelFavProduct)

@@ -6,7 +6,7 @@ import com.triforce.malacprodavac.domain.util.enum.Currency
 import com.triforce.malacprodavac.domain.util.enum.UnitOfMeasurement
 
 sealed class EditProductEvent {
-    data class ChangeProductImages(val imageUris: List<Uri>) :
+    data class ChangeProductImage(val imageUri: Uri) :
         EditProductEvent()
 
     data class UnitOfMeasurementChanged(val unitOfMeasurement: UnitOfMeasurement) :

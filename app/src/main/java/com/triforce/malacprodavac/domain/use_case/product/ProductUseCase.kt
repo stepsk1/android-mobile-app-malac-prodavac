@@ -5,5 +5,5 @@ data class ProductUseCase(
     val getAllProducts: GetAllProducts,
     val getProductForId: GetProductForId,
     val updateProduct: UpdateProduct,
-    val addProductImages: AddProductImages
+    val setProductImage: SetProductImage
 )

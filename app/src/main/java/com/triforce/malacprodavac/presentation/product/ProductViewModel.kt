@@ -160,7 +160,8 @@ class ProductViewModel @Inject constructor(
                             state =
                                 state.copy(
                                     product = it,
-                                    thumbnailUrl = if (it.productMedias?.isNotEmpty() == true) "http://softeng.pmf.kg.ac.rs:10010/products/${it.productMedias.first().productId}/medias/${it.productMedias.first().id}" else null,
+                                    thumbnailUrl = if (it.productMedia != null) "http://softeng.pmf.kg.ac.rs:10010/products/${it.productMedia.productId}/medias/${it.productMedia.id}" else null,
+                                    thumbnailKey = it.productMedia?.key,
                                 )
                         }
                         state.product?.let {

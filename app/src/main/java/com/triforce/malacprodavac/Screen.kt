@@ -14,6 +14,7 @@ sealed class Screen(val route: String) {
     data object HighlightSection : Screen("highlight_section")
     data object AddProduct : Screen("add_product")
     data object EditProduct : Screen("edit_product")
+    data object AddProductImage : Screen("add_product_image")
     data object OrderScreen : Screen("order_screen")
     data object TransactionScreen : Screen("transaction_screen")
     data object FavoriteProductsScreen : Screen("favorite_products")

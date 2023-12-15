@@ -71,7 +71,7 @@ fun DetailsOrderScreenContent(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
+            ) {
                 Spacer(modifier = Modifier.padding(6.dp))
 
                 Icon(
@@ -144,7 +144,8 @@ fun DetailsOrderScreenContent(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 for (cartItem in cartItems.collectAsState().value) {
                     Row(modifier = Modifier.padding(bottom = 6.dp)) {
-                        val imageUrl = if (cartItem.product.productMedias?.isNotEmpty() == true) "http://softeng.pmf.kg.ac.rs:10010/products/${cartItem.product.productMedias.first().productId}/medias/${cartItem.product.productMedias.first().id}" else null
+                        val imageUrl =
+                            if (cartItem.product.productMedia != null) "http://softeng.pmf.kg.ac.rs:10010/products/${cartItem.product.productMedia.productId}/medias/${cartItem.product.productMedia.id}" else null
                         Box(
                             modifier = Modifier
                                 .size(

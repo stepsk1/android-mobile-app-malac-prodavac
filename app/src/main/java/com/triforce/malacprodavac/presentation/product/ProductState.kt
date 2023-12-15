@@ -9,6 +9,7 @@ data class ProductState(
     val product: Product? = null,
     val reviews: List<Review>? = emptyList(),
     val thumbnailUrl: String? = null,
+    val thumbnailKey: String? = null,
     val createReviewError: String? = null,
     val isLoading: Boolean = false,
     val isBuyed: Boolean = false,
