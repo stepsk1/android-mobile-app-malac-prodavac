@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,12 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -50,6 +49,7 @@ import com.triforce.malacprodavac.ui.theme.MP_White
 fun ProductScreenContent(
     navController: NavController,
     viewModel: ProductViewModel,
+    padding: PaddingValues
 ) {
     var isCreateReviewOpen by remember { mutableStateOf(false) }
 
@@ -70,8 +70,7 @@ fun ProductScreenContent(
 
     val scrollState = rememberScrollState()
 
-    if(state.createReviewError != null)
-    {
+    if (state.createReviewError != null) {
         Toast
             .makeText(
                 context,
@@ -82,97 +81,91 @@ fun ProductScreenContent(
     }
 
     if (product != null && shop != null) {
-        Scaffold(
-            modifier = Modifier.padding(bottom = 100.dp),
-            content = { padding ->
-                Box(
+        Box(
+            modifier = Modifier
+                .verticalScroll(state = scrollState)
+                .background(MP_White)
+                .padding(padding)
+                .height(1400.dp)
+        ) {
+
+            if (isCreateReviewOpen) {
+                CreateReviewDialog(closeCreateReviewDialog, createReviewCallback)
+            }
+
+            LinearGradient(color1 = colorForeground, color2 = colorBackground)
+            RoundedBackgroundComp(top = 260.dp, color = MP_White)
+
+            Column {
+                Spacer(modifier = Modifier.padding(16.dp))
+                ProductHeroImage(imageUrl = state.thumbnailUrl)
+
+                Spacer(modifier = Modifier.padding(22.dp))
+                ProductDetails(product = product)
+
+                if (product.shopId == viewModel.state.user?.shop?.id)
+                    ProductOptions(product, navController, true)
+
+                Spacer(Modifier.height(22.dp))
+                ShowHighlightSectionComp(
+                    navController = navController,
+                    products = shop.products,
+                    title = "Više od ${shop.businessName}",
+                    route = Screen.PublicProfile.route + "?id=${shop.id}&role=1"
+                )
+
+                Row(
                     modifier = Modifier
-                        .verticalScroll(state = scrollState)
-                        .background(MP_White)
-                        .padding(padding)
-                        .height(1400.dp)
+                        .padding(horizontal = 20.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-
-                    if (isCreateReviewOpen) {
-                        CreateReviewDialog(closeCreateReviewDialog, createReviewCallback)
+                    Text(
+                        text = "Komentari:",
+                        style = MaterialTheme.typography.body2,
+                        color = MP_Black,
+                        fontWeight = FontWeight.W500
+                    )
+                    IconButton(onClick = openCreateReviewDialog) {
+                        Icon(Icons.Filled.Add, contentDescription = "Create a Review")
                     }
+                }
 
-                    LinearGradient(color1 = colorForeground, color2 = colorBackground)
-                    RoundedBackgroundComp(top = 260.dp, color = MP_White)
+                if (state.reviews != null) {
 
-                    Column {
-                        Spacer(modifier = Modifier.padding(16.dp))
-                        ProductHeroImage(imageUrl = state.thumbnailUrl)
-
-                        Spacer(modifier = Modifier.padding(22.dp))
-                        ProductDetails(product = product)
-
-                        if (product.shopId == viewModel.state.user?.shop?.id) {
-                            Spacer(modifier = Modifier.padding(16.dp))
-                            ProductOptions(product, navController, true)
-                        }
-
-                        Spacer(Modifier.height(22.dp))
-                        ShowHighlightSectionComp(
-                            navController = navController,
-                            products = shop.products,
-                            title = "Više od ${shop.businessName}",
-                            route = Screen.PublicProfile.route + "?id=${shop.id}&role=1"
-                        )
-
-                        Row(
-                            modifier = Modifier
-                                .padding(horizontal = 20.dp)
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Komentari:",
-                                style = MaterialTheme.typography.body2,
-                                color = MP_Black,
-                                fontWeight = FontWeight.W500
-                            )
-                            IconButton(onClick = openCreateReviewDialog) {
-                                Icon(Icons.Filled.Add, contentDescription = "Create a Review")
-                            }
-                        }
-
-                        if (state.reviews != null) {
-
-                            Spacer(Modifier.height(16.dp))
-                            LazyColumn(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                            ) {
-                                items(state.reviews) { review ->
-                                    Column {
-                                        Text(
-                                            text = review.text.ifEmpty { "Korisnik nije ostavio komentar" },
-                                            softWrap = true,
-                                            )
-                                        RatingStars(
-                                            rating = review.rating.toDouble()
-                                        )
-                                        Row(
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            modifier = Modifier.fillMaxWidth()
-                                        ) {
-                                            Text(
-                                                review.createdAt.split("T")[0]
-                                            )
-                                            Text(
-                                                review.customer?.user?.firstName + " " + review.customer?.user?.lastName
-                                            )
-                                        }
-                                    }
+                    Spacer(Modifier.height(16.dp))
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        items(state.reviews) { review ->
+                            Column {
+                                Text(
+                                    text = review.text.ifEmpty { "Korisnik nije ostavio komentar" },
+                                    softWrap = true,
+                                )
+                                RatingStars(
+                                    rating = review.rating.toDouble()
+                                )
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        review.createdAt.split("T")[0]
+                                    )
+                                    Text(
+                                        review.customer?.user?.firstName + " " + review.customer?.user?.lastName
+                                    )
                                 }
                             }
                         }
                     }
                 }
             }
-        )
+        }
     }
+
 }

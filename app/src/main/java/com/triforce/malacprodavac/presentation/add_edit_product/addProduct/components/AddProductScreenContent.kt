@@ -93,7 +93,6 @@ fun AddProductScreenContent(
                 placeholder = "Unesite naziv proizvoda..."
             )
             Text(state.titleError ?: "", color = Color.Red)
-            Spacer(modifier = Modifier.padding(paddingBetween))
 
             AddEditTextField(
                 label = "Opis proizvoda",
