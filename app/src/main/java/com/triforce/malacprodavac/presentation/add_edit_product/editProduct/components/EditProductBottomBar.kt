@@ -1,5 +1,6 @@
-package com.triforce.malacprodavac.presentation.add_edit_product.addProduct.components
+package com.triforce.malacprodavac.presentation.add_edit_product.editProduct.components
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
@@ -14,23 +15,23 @@ import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.add_edit_product.addProduct.AddProductEvent
-import com.triforce.malacprodavac.presentation.add_edit_product.addProduct.AddProductViewModel
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditSubmitButton
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductEvent
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductViewModel
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
 
 @Composable
-fun AddProductBottomBar(
+fun EditProductBottomBar(
     navController: NavController,
-    viewModel: AddProductViewModel,
-
-    ) {
+    viewModel: EditProductViewModel,
+    context: Context
+) {
     Column {
         AddEditSubmitButton(
             Modifier.clickable {
-                viewModel.onEvent(AddProductEvent.Submit)
+                viewModel.onEvent(EditProductEvent.Submit(context))
             },
-            isEdit = false
+            isEdit = true
         )
 
         BottomNavigationMenu(
