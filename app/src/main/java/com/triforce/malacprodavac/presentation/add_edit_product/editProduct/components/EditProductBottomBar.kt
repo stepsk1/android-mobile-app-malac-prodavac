@@ -1,39 +1,38 @@
-package com.triforce.malacprodavac.presentation.product.components
+package com.triforce.malacprodavac.presentation.add_edit_product.editProduct.components
 
+import android.content.Context
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 import com.triforce.malacprodavac.BottomNavigationMenuContent
 import com.triforce.malacprodavac.R
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
+import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditSubmitButton
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductEvent
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductViewModel
 import com.triforce.malacprodavac.presentation.components.BottomNavigationMenu
-import com.triforce.malacprodavac.presentation.product.ProductViewModel
 
 @Composable
-fun ProductBottomBar(
+fun EditProductBottomBar(
     navController: NavController,
-    viewModel: ProductViewModel,
-    viewModelFavProduct: FavoriteViewModel
+    viewModel: EditProductViewModel,
+    context: Context
 ) {
     Column {
-
-        if (viewModel.state.product != null)
-            if (viewModel.state.product!!.shopId != viewModel.state.user?.shop?.id)
-                viewModel.state.product?.let {
-                    ShowFavouriteAddToCart(
-                        navController = navController,
-                        viewModel = viewModel,
-                        viewModelFavourite = viewModelFavProduct,
-                        product = it
-                    )
-                }
+        AddEditSubmitButton(
+            Modifier.clickable {
+                viewModel.onEvent(EditProductEvent.Submit(context))
+            },
+            isEdit = true
+        )
 
         BottomNavigationMenu(
             navController = navController,

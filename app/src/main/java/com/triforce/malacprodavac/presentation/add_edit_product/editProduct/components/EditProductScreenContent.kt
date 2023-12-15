@@ -1,4 +1,4 @@
-package com.triforce.malacprodavac.presentation.add_edit_product.advertisingProduct
+package com.triforce.malacprodavac.presentation.add_edit_product.editProduct.components
 
 import android.Manifest
 import android.os.Build
@@ -11,49 +11,51 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.triforce.malacprodavac.LinearGradient
+import com.triforce.malacprodavac.Screen
+import com.triforce.malacprodavac.domain.model.Category
+import com.triforce.malacprodavac.domain.util.enum.Currency
+import com.triforce.malacprodavac.domain.util.enum.UnitOfMeasurement
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditDropDownList
 import com.triforce.malacprodavac.presentation.add_edit_product.components.AddEditTextField
-import com.triforce.malacprodavac.presentation.cart.CartDetails.components.GoBackNoSearch
-import com.triforce.malacprodavac.presentation.components.RoundedBackgroundComp
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductEvent
+import com.triforce.malacprodavac.presentation.add_edit_product.editProduct.EditProductViewModel
 import com.triforce.malacprodavac.presentation.product.components.ProductHeroImage
-import com.triforce.malacprodavac.presentation.profile.profilePrivate.components.AdvertisingProductButton
-import com.triforce.malacprodavac.ui.theme.MP_Orange
-import com.triforce.malacprodavac.ui.theme.MP_Orange_Dark
 import com.triforce.malacprodavac.ui.theme.MP_White
-
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
 @Composable
-fun AdvertisingProductScreen(
+fun EditProductScreenContent(
     navController: NavController,
-    viewModel: AdvertisingProductViewModel = hiltViewModel()
+    viewModel: EditProductViewModel,
+    padding: PaddingValues
 ) {
     val context = LocalContext.current
 
     val state = viewModel.state
     val product = state.product
-
-    val colorBackground = MP_Orange_Dark
-    val colorForeground = MP_Orange
 
     val scrollState = rememberScrollState()
 
@@ -62,40 +64,50 @@ fun AdvertisingProductScreen(
         onRefresh = {}
     )
 
-    if (state.isUpdateSuccessful) {
+    if (state.isUpdateSuccessful && product != null) {
         Toast
             .makeText(
                 context,
-                "Uspešno ste oglasili proizvod!",
-                Toast.LENGTH_LONG
+                "Uspešno ste izmenili proizvod!",
+                Toast.LENGTH_LONG,
             )
             .show()
+        LaunchedEffect(Unit) {
+            navController.navigate(Screen.ProductScreen.route + "?productId=${product.id}") {
+                popUpTo(Screen.AddProduct.route) {
+                    inclusive = true
+                }
+            }
+        }
     }
 
-    val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        Manifest.permission.READ_MEDIA_IMAGES
-    } else {
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    }
-    val permissionState = rememberPermissionState(
-        permission = permission
-    )
+
+    val permission =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+    val permissionState = rememberPermissionState(permission = permission)
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.PickMultipleVisualMedia(5)
-    ) { }
+    ) { uris ->
+        if (uris.isNotEmpty()) {
+            viewModel.onEvent(EditProductEvent.ChangeProductImages(uris))
+        }
+    }
+
+    val paddingBetween = 12.dp
 
     Box(
         modifier = Modifier
+            .padding(padding)
             .pullRefresh(pullRefreshState)
             .verticalScroll(state = scrollState)
             .background(MP_White)
     ) {
-        LinearGradient(color1 = colorForeground, color2 = colorBackground)
-        RoundedBackgroundComp(top = 250.dp, color = MP_White)
-
-        Column {
-            GoBackNoSearch(msg = "Oglasi proizvod", navController = navController)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .height(830.dp)
+        ) {
             ProductHeroImage(
                 modifier = Modifier.clickable {
                     if (!permissionState.status.isGranted) {
@@ -108,34 +120,44 @@ fun AdvertisingProductScreen(
                 },
                 imageUrl = state.thumbUrl
             )
-            Spacer(modifier = Modifier.padding(20.dp))
+            Spacer(modifier = Modifier.padding(paddingBetween))
 
             AddEditTextField(
                 label = "Naziv proizvoda",
+                isError = state.titleError != null,
                 text = state.product?.title ?: "",
                 onTextValueChange = {
-
+                    viewModel.onEvent(EditProductEvent.TitleChanged(it))
                 },
                 placeholder = "Naziv"
             )
+            Text(state.titleError ?: "", color = Color.Red)
 
             AddEditTextField(
                 label = "Opis proizvoda",
                 text = state.product?.desc ?: "",
                 onTextValueChange = {
-
+                    viewModel.onEvent(EditProductEvent.DescChanged(it))
                 },
                 placeholder = "Opis"
             )
+            Spacer(modifier = Modifier.padding(paddingBetween))
 
-            AddEditTextField(
-                label = "Lokacija oglašavanja",
-                text = state.product?.availableAt ?: "",
-                onTextValueChange = {
-                    viewModel.onEvent(AdvertisingProductEvent.LocationChanged(it))
+            AddEditDropDownList(
+                entries = state.categories,
+                selectedEntry = state.categories.find { it.id == state.product?.categoryId }
+                    ?.toString(),
+                handleSelect = { category ->
+                    viewModel.onEvent(
+                        EditProductEvent.CategoryIdChanged(
+                            (category as Category).id
+                        )
+                    )
                 },
-                placeholder = "Lokacija"
+                label = "Kategorija",
+                fill = true
             )
+            Spacer(modifier = Modifier.padding(paddingBetween))
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -144,78 +166,46 @@ fun AdvertisingProductScreen(
                     .padding(horizontal = 20.dp)
             ) {
                 AddEditDropDownList(
-                    entries = listOf(
-                        7.0,
-                        8.0,
-                        9.0,
-                        10.0,
-                        11.0,
-                        12.0,
-                        13.0,
-                        14.0,
-                        15.0,
-                        16.0,
-                        17.0,
-                        18.0,
-                        19.0,
-                        20.0,
-                        21.0,
-                        22.0
-                    ),
-                    selectedEntry = state.product?.availableFromHours?.toInt().toString(),
+                    entries = enumValues<UnitOfMeasurement>().toList(),
+                    selectedEntry = state.product?.unitOfMeasurement?.toString(),
                     handleSelect = { unit ->
                         viewModel.onEvent(
-                            AdvertisingProductEvent.StartAdvertisingChanged(
-                                unit as Double
+                            EditProductEvent.UnitOfMeasurementChanged(
+                                unit as UnitOfMeasurement
                             )
                         )
                     },
-                    label = "Početak oglašavanja",
+                    label = "Mera",
                     fill = false
                 )
 
                 AddEditDropDownList(
-                    entries = listOf(
-                        8.0,
-                        9.0,
-                        10.0,
-                        11.0,
-                        12.0,
-                        13.0,
-                        14.0,
-                        15.0,
-                        16.0,
-                        17.0,
-                        18.0,
-                        19.0,
-                        20.0,
-                        21.0,
-                        22.0,
-                        23.0
-                    ),
-                    selectedEntry = state.product?.availableTillHours?.toInt().toString(),
-                    handleSelect = { unit ->
+                    entries = enumValues<Currency>().toList(),
+                    selectedEntry = state.product?.currency?.toString(),
+                    handleSelect = { currency ->
                         viewModel.onEvent(
-                            AdvertisingProductEvent.StartAdvertisingChanged(
-                                unit as Double
+                            EditProductEvent.CurrencyChanged(
+                                currency as Currency
                             )
                         )
                     },
-                    label = "Kraj oglašavanja",
+                    label = "Valuta",
                     fill = false
                 )
             }
-            Spacer(modifier = Modifier.padding(10.dp))
-            AdvertisingProductButton(
-                Modifier.clickable {
-                    viewModel.onEvent(AdvertisingProductEvent.Submit(context))
+            Spacer(modifier = Modifier.padding(paddingBetween))
+
+            AddEditTextField(
+                label = "Cena",
+                isError = state.priceError != null,
+                text = product?.price.toString(),
+                onTextValueChange = {
+                    viewModel.onEvent(EditProductEvent.PriceChanged(it.toDouble()))
                 },
-                product = product,
-                navController = navController,
-                advertising = true,
-                change = true,
+                placeholder = "0.00"
             )
-            Spacer(modifier = Modifier.padding(10.dp))
+            Text(state.priceError ?: "", color = Color.Red)
+            Spacer(modifier = Modifier.padding(paddingBetween))
         }
     }
 }

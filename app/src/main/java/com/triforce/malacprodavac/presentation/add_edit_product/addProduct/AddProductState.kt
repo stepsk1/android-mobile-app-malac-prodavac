@@ -14,6 +14,7 @@ data class AddProductState(
     val errorMessage: String? = null,
     val titleError: String? = null,
     val priceError: String? = null,
+    
     val unitOfMeasurement: UnitOfMeasurement = UnitOfMeasurement.KG,
     val currency: Currency = Currency.RSD,
     val title: String = "",

@@ -5,6 +5,7 @@ import com.triforce.malacprodavac.domain.model.Category
 import com.triforce.malacprodavac.domain.model.products.Product
 
 data class EditProductState(
+
     val productId: Int? = -1,
     val product: Product? = null,
     val isLoading: Boolean = false,
