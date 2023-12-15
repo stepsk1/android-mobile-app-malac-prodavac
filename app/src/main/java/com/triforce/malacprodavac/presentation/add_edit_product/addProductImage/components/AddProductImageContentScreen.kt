@@ -145,7 +145,8 @@ fun AddProductImageContentScreen(
                             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                         )
                 },
-                imageUrl = state.thumbUrl
+                imageUrl = state.thumbUrl,
+                imageKey = state.thumbKey
             )
         }
     }

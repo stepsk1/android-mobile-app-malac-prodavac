@@ -38,14 +38,16 @@ fun ShopDescComp(
             )
             Spacer(modifier = Modifier.padding(6.dp))
             Text(
-                text = "Radno vreme: ${shop?.openFrom} - ${shop?.openTill}",
+                text = "Radno vreme: ".plus(shop?.openFrom ?: "Nepoznato").plus("-")
+                    .plus(shop?.openTill ?: "Nepoznato"),
                 style = MaterialTheme.typography.body1,
                 color = Color.Gray,
                 fontWeight = FontWeight.W300,
                 maxLines = 1
             )
             Text(
-                text = "Radni dani: ${shop?.openFromDays} - ${shop?.openTillDays}",
+                text = "Radni dani: ".plus(shop?.openFromDays ?: "Nepoznato").plus("-")
+                    .plus(shop?.openTillDays ?: "Nepoznato"),
                 style = MaterialTheme.typography.body1,
                 color = Color.Gray,
                 fontWeight = FontWeight.W300,
@@ -53,7 +55,7 @@ fun ShopDescComp(
             )
             Spacer(modifier = Modifier.padding(6.dp))
             Text(
-                text = "Kontakt: ${user.phoneNumber}",
+                text = "Kontakt: ".plus(user.phoneNumber ?: "Nepoznato"),
                 style = MaterialTheme.typography.body1,
                 color = MP_Black,
                 fontWeight = FontWeight.W400,
