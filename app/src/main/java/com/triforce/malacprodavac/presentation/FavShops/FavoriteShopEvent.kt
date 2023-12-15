@@ -1,8 +1,7 @@
 package com.triforce.malacprodavac.presentation.FavShops
 
 sealed class FavoriteShopEvent {
-
-    object AddFavShop: FavoriteShopEvent()
-    object GetFavShops: FavoriteShopEvent()
-    object DeleteFavShop: FavoriteShopEvent()
+    data class AddFavShop(val shopId: Int) : FavoriteShopEvent()
+    object GetFavShops : FavoriteShopEvent()
+    data class DeleteFavShop(val favoriteShopId: Int) : FavoriteShopEvent()
 }

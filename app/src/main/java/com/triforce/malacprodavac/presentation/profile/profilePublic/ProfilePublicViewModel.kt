@@ -37,27 +37,12 @@ class ProfilePublicViewModel @Inject constructor(
 
                         state = state.copy(role = 1)
 
-                        FavoriteShopObject.favoriteShopId = id
-                        FavoriteShopObject.favoriteShop = state.user?.shop
-
                         getShop(id)
                     }
                 }
             } else {
                 me()
                 getToken()
-            }
-        }
-    }
-
-    fun onEvent(event: ProfilePublicEvent) {
-        state = when (event) {
-            is ProfilePublicEvent.favoriteShop -> {
-                state.copy(isFavorite = true)
-            }
-
-            is ProfilePublicEvent.removeFavoriteShop -> {
-                state.copy(isFavorite = false)
             }
         }
     }
@@ -103,7 +88,10 @@ class ProfilePublicViewModel @Inject constructor(
                                 state = state.copy(shop = result.data, isLoading = false)
                             }
                         }
-                        is Resource.Error -> { Unit }
+
+                        is Resource.Error -> {
+                            Unit
+                        }
 
                         is Resource.Loading -> {
                             state = state.copy(

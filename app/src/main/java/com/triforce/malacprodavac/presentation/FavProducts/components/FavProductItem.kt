@@ -49,7 +49,7 @@ fun FavProductItem(
     viewModel: FavoriteViewModel,
     navController: NavController
 ) {
-    var showDialog by remember { mutableStateOf<Boolean>(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     BoxWithConstraints(
         modifier = Modifier

@@ -1,7 +1,6 @@
 package com.triforce.malacprodavac.presentation.profile.profilePublic
 
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,10 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-//import coil.compose.AsyncImage
-//import coil.request.ImageRequest
 import com.triforce.malacprodavac.Screen
-import com.triforce.malacprodavac.presentation.FavShops.FavoriteShopViewModel
 import com.triforce.malacprodavac.presentation.components.CallToActionFavourite
 import com.triforce.malacprodavac.presentation.components.ShowHighlightSectionComp
 import com.triforce.malacprodavac.presentation.components.ShowShopDetailsSection
@@ -34,7 +30,6 @@ fun ProfilePublicScreen(
     navController: NavController,
     viewModel: ProfilePublicViewModel = hiltViewModel(),
 ) {
-    val viewModelFavShop: FavoriteShopViewModel = hiltViewModel()
     val state = viewModel.state
 
     val scrollState = rememberScrollState()
@@ -66,18 +61,17 @@ fun ProfilePublicScreen(
                 ShopDescComp(user, shop)
                 Spacer(modifier = Modifier.padding(16.dp))
 
+                CallToActionFavourite(
+                    shop = shop,
+                    "Ukoliko želite da pratite naš rad, kako bi znali kada smo u Vašoj okolini:"
+                )
+                Spacer(modifier = Modifier.padding(16.dp))
+
                 ShowHighlightSectionComp(
                     navController = navController,
                     products = shop?.products,
                     title = "Naši najnoviji Proizvodi",
                     route = Screen.HighlightSection.route + "?id=${shop?.id}"
-                )
-                Spacer(modifier = Modifier.padding(16.dp))
-
-                CallToActionFavourite(
-                    "Ukoliko želite da pratite naš rad, kako bi znali kada smo u Vašoj okolini:",
-                    viewModel,
-                    viewModelFavShop
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
 

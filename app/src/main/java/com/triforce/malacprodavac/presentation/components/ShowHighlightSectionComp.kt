@@ -43,7 +43,6 @@ import com.triforce.malacprodavac.Screen
 import com.triforce.malacprodavac.domain.model.products.Product
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteEvent
 import com.triforce.malacprodavac.presentation.FavProducts.FavoriteViewModel
-import com.triforce.malacprodavac.presentation.product.ProductViewModel
 import com.triforce.malacprodavac.ui.theme.MP_Black
 import com.triforce.malacprodavac.ui.theme.MP_Gray
 import com.triforce.malacprodavac.ui.theme.MP_Green
@@ -135,7 +134,6 @@ fun ShowHighlightedProducts(
 fun HighlightSectionProduct(
     product: Product?,
     navController: NavController,
-    viewModel: ProductViewModel = hiltViewModel(),
     viewModelFavourite: FavoriteViewModel = hiltViewModel(),
 ) {
     val isFavorite = remember { mutableStateOf(product?.isFavored ?: false) }
@@ -148,7 +146,7 @@ fun HighlightSectionProduct(
                 spotColor = MP_Black,
                 shape = RoundedCornerShape(7.5.dp)
             )
-            .aspectRatio(0.8F) // ratio is 1x1 so whatever the width is, the height will be the same
+            .aspectRatio(0.8F)
             .clip(RoundedCornerShape(10.dp))
             .background(MP_White)
             .clickable {
